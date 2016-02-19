@@ -34,9 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Surat.Serendip.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SandboxTFS\SuratFramework\Surat.Serendip.Common\bin\Debug\Surat.Serendip.Common.dll</HintPath>
+    <Reference Include="Surat.Serendip.Common">
+      <HintPath>..\Surat.Serendip.Common\bin\Debug\Surat.Serendip.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
