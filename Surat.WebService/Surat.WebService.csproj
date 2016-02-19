@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4677D79F-9F8A-4BDA-AAF9-D897295D7A85}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Surat.WebService</RootNamespace>
+    <AssemblyName>Surat.WebService</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Cassia, Version=2.0.0.60, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Cassia.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.Common, Version=0.9.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.CoreSet, Version=0.9.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.CoreSet.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.Entity, Version=0.9.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.Report">
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.Report.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.Rule, Version=0.9.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.Rule.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.Rule.Rules.Uretim, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.Rule.Rules.Uretim.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.WinForm.Inka">
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinForm.Inka.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.WinForm.Maliyet">
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinForm.Maliyet.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.WinForm.Uretim">
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinForm.Uretim.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.WinFormBase">
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinFormBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Serendip.WinFormLib, Version=0.9.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinFormLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Surat.Base\Surat.Base.csproj">
+      <Project>{acefb07c-7868-48c1-b97c-efab66222d09}</Project>
+      <Name>Surat.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Business\Surat.Business.csproj">
+      <Project>{7b4498a3-8f9d-42e1-83e8-0a6d7fe5581f}</Project>
+      <Name>Surat.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Common\Surat.Common.csproj">
+      <Project>{340fc2e4-ad67-428a-b302-9ef7a93decd1}</Project>
+      <Name>Surat.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Document.Base\Surat.Document.Base.csproj">
+      <Project>{101f41a7-9be3-4752-b2ae-80b5a89b5b9f}</Project>
+      <Name>Surat.Document.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Document.Business\Surat.Document.Business.csproj">
+      <Project>{8e876fed-6ddc-4031-b8e2-e04fa8b1518c}</Project>
+      <Name>Surat.Document.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Document.Common\Surat.Document.Common.csproj">
+      <Project>{b1bbf1ab-8821-4585-9552-0ebe3d7bd774}</Project>
+      <Name>Surat.Document.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Framework.Service\Surat.Framework.Service.csproj">
+      <Project>{1ef93bb6-e006-4e8c-9ea7-29a2da1849b5}</Project>
+      <Name>Surat.Framework.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.WebService.Base\Surat.WebService.Base.csproj">
+      <Project>{2ef199b9-254b-46ab-943d-175287b7bf6d}</Project>
+      <Name>Surat.WebService.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.WebService.Business\Surat.WebService.Business.csproj">
+      <Project>{65a8d152-8a85-43be-ae1f-3373959f0f70}</Project>
+      <Name>Surat.WebService.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.WebService.Common\Surat.WebService.Common.csproj">
+      <Project>{4477cc7e-9b12-42fc-8fc9-72e98e9c8719}</Project>
+      <Name>Surat.WebService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.WebService.ServiceLayer\Surat.WebService.ServiceLayer.csproj">
+      <Project>{49138de0-7ba5-41a9-bbcd-17896939f76f}</Project>
+      <Name>Surat.WebService.ServiceLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>55273</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/WebService/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,292 @@
+﻿<div class="col-xs-12" id="BaseDiv">
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+        <script id="parameters_popup_template" type="text/x-kendo-tmpl">
+            <div id="parameters_window">
+                <ul>
+                    <li>
+                        <label for="TypeName">Nesne Tipi</label>
+
+                        <input type="hidden" class="k-textbox" name="parentId" data-bind="value:ParentId" />
+                        <input type="text" class="k-textbox" name="TypeName" required validationmessage="Nesne Tipi boş bırakılamaz" data-bind="value:TypeName" />
+
+                    </li>
+                    <li>
+                        <label for="Format">Format</label>
+                        <input type="text" class="k-textbox" name="Format" required validationmessage="Format alanı boş bırakılamaz" data-bind="value:Format" />
+                    </li>
+                    <li>
+                        <label for="ParameterValue">Parametre Değeri</label>
+                        <input type="text" class="k-textbox" name="ParameterValue" required validationmessage="Parametre Değeri boş bırakılamaz" data-bind="value:ParameterValue" />
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <script id="parameters_delete_window_template" type="text/x-kendo-tmpl">
+            <strong>#=TypeName#</strong>  Nesne Tipi silinsin mi? </p>
+
+            <button class="k-button" id="parameters_yesButton">Evet</button>
+            <button class="k-button" id="parameters_noButton"> Hayır</button>
+        </script>
+        <div id="parameters_deletewindow"></div>
+        <div class="col-xs-12">
+            <div id="parameters_toolbar"></div>
+        </div>
+        <div class="col-xs-4">
+            <br />
+            <input type="hidden" class="k-textbox" name="txtParent" id="txtParent" value="" />
+
+            <div id="parameters_systemTree"></div>
+        </div>
+        <div class="col-xs-8">
+            <br />
+            <div id="parameters_Grid"></div>
+        </div>
+        <script>
+            var parameters_parent;
+            var parameters_systemSource = new kendo.data.TreeListDataSource({
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetSystems", "Systems")",
+                        type: "POST"
+                    },
+                    parameterMap: function (data, operation) {
+                        if (operation != "read") {
+
+
+                            var result = {};
+
+                            for (var i = 0; i < data.models.length; i++) {
+                                var perm = data.models[i];
+
+                                for (var member in perm) {
+                                    result["systems[" + i + "]." + member] = perm[member];
+                                }
+                            }
+
+                            return result;
+                        }
+                    }
+                },
+                batch: true,
+                schema: {
+                    model: {
+                        id: "Id",
+                        fields: {
+                            Id: { type: "number", editable: false, nullable: true },
+                            parentId: { field: "ParentId", nullable: true },
+                            TypeName: { validation: { required: true } }
+                        }
+                    }
+                }
+            });
+            var parameters_DataSource = new kendo.data.DataSource({
+                transport: {
+                    create: {
+                        url: createUrl,
+                        type: "POST"
+                    },
+                    read: {
+                        url: readUrl,
+                        type: "POST"
+                    },
+                    update: {
+                        url: updateUrl,
+                        type: "POST"
+                    },
+                    destroy: {
+                        url: "@Url.Action("Delete","Parameters")",
+                        type: "POST"
+                    },
+                    parameterMap: function (data, operation) {
+                        if (operation != "read") {
+
+
+                            var result = {};
+
+                            for (var i = 0; i < data.models.length; i++) {
+                                var perm = data.models[i];
+
+                                for (var member in perm) {
+                                    result["parameters[" + i + "]." + member] = perm[member];
+                                }
+                            }
+
+                            return result;
+                        }
+                    }
+                },
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    total: "total",
+                    data: "data",
+                    model: {
+                        id: "Id",
+                        fields: {
+                            ObjectTypeName: { type: "string", validation: { required: true } },
+                            Format: { type: "string" },
+                            ParameterValue: { type: "string", validation: { required: true } }
+
+                        }
+                    }
+                }
+            });
+            $(document).ready(function () {
+
+                $("#parameters_toolbar").kendoToolBar({
+                    items: [
+                        { type: "button", text: "Yeni Ekle", icon: "plus", click: newRow },
+                        { type: "button", text: "Güncelle", icon: "refresh", click: updateRow },
+                        { type: "button", text: "Sil", icon: "cancel", click: deleteRow }
+                    ]
+                });
+
+                $("#parameters_systemTree").kendoTreeList({
+                    dataSource: parameters_systemSource,
+                    selectable: true,
+                    columns: [
+                        { field: "ObjectTypeName", expandable: true, title: "Nesne Tipi", width: 250 }
+                    ],
+                    change: function (e) {
+                        var parameters_systemTree = $("#parameters_systemTree").data("kendoTreeList");
+                        var parameters_selectedItem = parameters_systemTree.dataItem(parameters_systemTree.select());
+                        if (parameters_selectedItem != "undefined") {
+                            parameters_parent =parameters_selectedItem.Id;
+                        }
+                        else {
+                            parameters_parent = null;
+                        }
+                        var parameters_treelist = $("#parameters_systemTree").data("kendoTreeList"),
+                           parameters_selected = parameters_treelist.select();
+                        if (parameters_selected.length) {
+                            $("#txtParent").attr("value", parameters_parent);
+                        }
+                        else {
+                            parameters_parent = null;
+                            $("#txtParent").attr("value", parameters_parent);
+                        }
+                        fillParameters();
+
+                    }
+                });
+
+                $("#parameters_Grid").kendoGrid({
+
+                    pageable: {
+                        messages: {
+                            display: "Toplam {2} kaydın  {0} - {1} gösteriliyor", //{0} is the index of the first record on the page, {1} - index of the last record on the page, {2} is the total amount of records
+                            empty: "Hiç veri yok",
+                            page: "Sayfa",
+                            of: "toplam {0}", //{0} is total amount of pages
+                            itemsPerPage: "Sayfa içerisinde gösterilecek kayıt sayısı",
+                            first: "İlk sayfaya gidin",
+                            previous: "Önceki sayfaya gidin",
+                            next: "Sonraki sayfaya gidin",
+                            last: "Son sayfaya gidin",
+                            refresh: "Yenileyin"
+                        }
+                    },
+                    height: 430,
+                    selectable: "row",
+                    columns: [
+                        { field: "ObjectTypeName", title: "Nesne Tipi" },
+                        { field: "Format", title: "Format" },
+                        { field: "ParameterValue", title: "Parametre Değeri" }
+                    ],
+                    editable: {
+                        mode: "popup",
+                        template: kendo.template($("#parameters_popup_template").html())
+                    },
+                    edit: function (e) {
+                        if (e.model.isNew()) {
+                            $(".k-window-title").text("Yeni Kayıt");
+                            $(".k-grid-update").html('<span class="k-icon k-update"></span>Kaydet');
+                            $(".k-grid-cancel").html('<span class="k-icon k-cancel"></span>İptal');
+
+                        } else {
+                            $(".k-window-title").text("Güncelle");
+                            $(".k-grid-update").html('<span class="k-icon k-update"></span>Güncelle');
+                            $(".k-grid-cancel").html('<span class="k-icon k-cancel"></span>İptal');
+                        }
+                    },
+                    serverPaging: true
+                });
+
+            });
+
+            function createUrl(e) {
+                return '@Url.Action("Add","Parameters")?parent=' + parameters_parent;
+            }
+
+            function readUrl(e) {
+                return '@Url.Action("GetParametersBySystem","Parameters")?parent=' + parameters_parent;
+            }
+            function updateUrl(e) {
+                return '@Url.Action("Update","Parameters")?parent=' + parameters_parent;
+            }
+            function fillParameters() {
+                var parameters_gridParameter = $("#parameters_Grid").data("kendoGrid");
+                parameters_gridParameter.dataSource.read();
+                parameters_gridParameter.refresh();
+                parameters_gridParameter.setDataSource(parameters_DataSource);
+            }
+            function updateRow(e) {
+                
+                    var parameters_gridList = $("#parameters_Grid").data("kendoGrid"),
+                              parameters_selected = parameters_gridList.select();
+                    if (parameters_selected.length) {
+                        parameters_gridList.editRow(parameters_selected);
+                    }
+            }
+            function newRow(e) {
+                var parameters_treelist = $("#parameters_systemTree").data("kendoTreeList"),
+                               parameters_selected = parameters_treelist.select();
+                if (parameters_selected.length) {
+                    var parameters_grid = $("#parameters_Grid").data("kendoGrid");
+                    var parameters_dataSource = parameters_grid.dataSource;
+                    var total = parameters_dataSource.data().length;
+                    parameters_dataSource.insert(total, {});
+                    parameters_dataSource.page(parameters_dataSource.totalPages());
+                    parameters_grid.editRow(parameters_grid.tbody.children().last());
+                }
+                else
+                {
+                    alert("Lütfen sistem seçiniz");
+                }
+            }
+            function deleteRow(e) {
+                var parameters_entityGrid = $("#parameters_Grid").data("kendoGrid");
+                var parameters_dataSource = parameters_entityGrid.dataSource;
+                var parameters_rows = parameters_entityGrid.select();
+                parameters_rows.each(function (index, row) {
+                    var parameters_selectedItem = parameters_entityGrid.dataItem(row);
+                    var parameters_window = $("#parameters_deletewindow").kendoWindow({
+                        title: "Nesne Tipi silme onayı?",
+                        visible: false,
+                        width: "400px",
+                        height: "200px",
+                    }).data("kendoWindow");
+
+                    parameters_windowTemplate = kendo.template($("#parameters_delete_window_template").html());
+                    parameters_window.content(parameters_windowTemplate(parameters_selectedItem));
+                    parameters_window.open().center();
+
+                    $("#parameters_yesButton").click(function () {
+                        parameters_entityGrid.dataSource.remove(parameters_selectedItem)
+                        parameters_entityGrid.dataSource.sync()
+                        parameters_window.close();
+                        $("#txtParent").attr("value", "");
+                        var parameters_systemTree = $("#parameters_systemTree").data("kendoTreeList");
+                        parameters_systemTree.dataSource.read();
+                        parameters_systemTree.refresh();
+                    })
+                    $("#parameters_noButton").click(function () {
+                        parameters_window.close();
+                    })
+
+                });
+            }
+           
+        </script>
+    </div>
+</div>

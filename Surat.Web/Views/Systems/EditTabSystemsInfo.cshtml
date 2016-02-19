@@ -1,0 +1,58 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Sistem Tanımı Bilgisi</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label class="col-md-4 control-label" for="UserName">Obje Tipi Adı</label>
+                                <div class="col-md-8">
+                                    <input type="hidden" id="ParentId" name="ParentId" style="width:100%" data-bind="value: System.parentId" class="k-textbox" />
+                                    <input type="text" id="ObjectTypeName" name="ObjectTypeName" style="width:100%" data-bind="value: System.ObjectTypeName" required validationmessage="Obje tipi adı alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Name">Sistem</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="Name" name="Name" style="width:100%" data-bind="value:System.Name" required validationmessage="Sistem alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Name">Küçük Resim yolu</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="SmallImagePath" name="SmallImagePath" style="width:100%" data-bind="value:System.SmallImagePath" required validationmessage="Küçük Resim alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Name">Büyük Resim yolu</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="LargeImagePath" name="LargeImagePath" style="width:100%" data-bind="value:System.LargeImagePath" required validationmessage="Büyük Resim alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left;padding-left:130px">
+                                    <input type="checkbox" id="IsActive" name="IsActive" data-bind="checked:System.IsActive" />&nbsp; Sistemi Aktif Et?
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>

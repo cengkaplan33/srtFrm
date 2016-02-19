@@ -1,0 +1,181 @@
+﻿/*Global Start*/
+
+
+label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.required {
+    font-weight: bold;
+}
+
+.accept, .status {
+    padding-left: 90px;
+}
+
+.confirm {
+    text-align: right;
+}
+
+.valid {
+    color: green;
+}
+
+.invalid {
+    color: red;
+}
+
+span.k-tooltip {
+    margin-left: 6px;
+}
+
+.silinmis {
+    text-decoration: line-through;
+}
+
+.category-label {
+    vertical-align: middle;
+    padding-right: .5em;
+}
+
+.toolbar {
+    float: right;
+}
+
+.k-textbox {
+    width: 11.8em;
+}
+/*Global End*/
+
+/*Pages Start*/
+#pages_window {
+    padding: 30px;
+}
+
+#pages_window ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#pages_window li {
+    margin: 5px 0;
+}
+
+#pages_category {
+    vertical-align: middle;
+}
+
+#pages_grid .k-grid-toolbar {
+    padding: .6em 1.3em;
+}
+
+/*Pages End*/
+
+/*Parameters Start*/
+
+#parameters_window {
+    padding: 30px;
+}
+
+#parameters_window ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#parameters_window li {
+    margin: 5px 0;
+}
+
+#parameters_grid .k-grid-toolbar {
+    padding: .6em 1.3em;
+}
+
+#parameters_category {
+    vertical-align: middle;
+}
+/*Parameters End*/
+
+/*Roles Start*/
+#roles_window {
+    padding: 30px;
+}
+
+#roles_window ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#roles_window li {
+    margin: 5px 0;
+}
+
+#roles_grid .k-grid-toolbar {
+    padding: .6em 1.3em;
+}
+
+#roles_category {
+    vertical-align: middle;
+}
+/*Roles End*/
+
+/*Systems Start*/
+
+#systems_window {
+    padding: 30px;
+}
+
+#systems_window ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#systems_window li {
+    margin: 5px 0;
+}
+
+#systems_grid .k-grid-toolbar {
+    padding: .6em 1.3em;
+}
+
+#systems_category {
+    vertical-align: middle;
+}
+
+/*Systems End*/
+
+/*Users Start*/
+
+#user_window {
+    padding: 30px;
+}
+
+#user_window ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#user_window li {
+    margin: 5px 0;
+}
+
+#user_grid .k-grid-toolbar {
+    padding: .6em 1.3em;
+}
+
+#user_category {
+    vertical-align: middle;
+}
+
+#DefaultWorkgroup {
+    max-width: 200px;
+}
+
+/*Users End*/

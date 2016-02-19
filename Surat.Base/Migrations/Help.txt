@@ -1,0 +1,16 @@
+﻿http://www.appetere.com/Blogs/SteveM/April-2012/Entity-Framework-Code-First-Migrations
+
+Migration alt yapısının oluşturulması,İlk veritabanı oluşturma ve verilerin yüklenmesi
+0) entity framework ilgili proje için kurulur. Nuget aracılığı ile
+1)Enable-Migrations -ProjectName Surat.Base -StartUpProjectName Surat.TestApplication -Verbose (-Force)
+Configuration dosyası oluşturulur.
+2)Add-Migration Initial komutu ile, Tabloları oluşturacak kodun olduğu dosya oluşturulur. (StartUp projesinde Connection belirtilmelidir. Buna bakıyor.)
+3)Update-Database ile uygulanır. 
+  Configuration içindeki, Seed metoduda çalıştırılır. İlk veriler yüklenir.
+  DBMigrationHistory kayıt atılır. Veritabanının güncel versiyonu buradan takip edilir. Tekrar update-database çalıştırıldığında, kaldığı yerdne devam eder.
+
+Veritabanının güncellenmesi
+1)Add-Migration V1 komutu ile, Tabloları oluşturacak kodun olduğu dosya oluşturulur. 
+Model üzerindeki değişiklikler, bu dosyaya aktarılır. Sadece veri eklenecek ise, model üzerinde herhangi bir (küçük) değişiklik yapılmalıdır.
+2)update-database komutu çağrılır.
+Farklar uygulanır. Seed metodu tekrar çağrılır. (Aynı kayıtları tekrar ekleme durumu var.Id varsa, tekrar eklemez. Id olmayan durumlara dikkat edilmelidir.)

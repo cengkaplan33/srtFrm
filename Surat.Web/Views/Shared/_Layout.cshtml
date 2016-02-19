@@ -1,0 +1,167 @@
+﻿@{
+    var leftMenu = Html.Partial("~/Views/Shared/_MasterLeftNavigation.cshtml", new Surat.WebServer.LeftNavigationModel((string)ViewData["NavigationPath"]));
+    var navbar = Html.Partial("~/Views/Shared/_NavBar.cshtml");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    @Styles.Render("~/Bundles/css")
+    @Styles.Render("~/Bundles/FrameworkStyle")
+    @RenderSection("Head", false)
+    @Scripts.Render("~/Bundles/js")
+
+    <script>
+        var _notification = null;
+
+        $(document).ready(function () {
+            _notification = $("#popupNotification").kendoNotification({
+                button: true,
+                autoHideAfter: 2000,
+                appendTo: "#notification",
+                stacking: "up"
+            }).data("kendoNotification");
+        });
+
+        function setBreadCrumb(page1, caption1, page2, caption2, page3, caption3) {
+            $("#breadcrumb").empty();
+            $("#breadcrumb").append('<li><i class="ace-icon fa fa-home home-icon"></i><a href="#">Anasayfa</a></li>');
+            if (page1) {
+                $("#breadcrumb").append('<li><a href="' + page1 + '">' + caption1 + '</a></li>');
+            }
+            if (page2) {
+                $("#breadcrumb").append('<li><a href="' + page2 + '">' + caption2 + '</a></li>');
+            }
+            if (page3) {
+                $("#breadcrumb").append('<li><a href="' + page3 + '">' + caption3 + '</a></li>');
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        .form-group { margin-bottom: 6px; }
+    </style> 
+</head>
+<body class="no-skin">
+    @navbar
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+        @leftMenu
+        <div class="main-content">
+            <div class="main-container-inner">
+                @Html.Partial("_KendoTopMenu")
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+                    </script>
+                    <ul id="breadcrumb" class="breadcrumb">
+                        <li><i class="ace-icon fa fa-home home-icon"></i><a href="#">Anasayfa</a> </li>
+                        <li class="active"></li>
+                    </ul>
+                </div>
+
+                <div id="notification">
+
+                </div>
+                <span id="popupNotification"></span>
+
+                @RenderBody()
+            </div>
+        </div>
+        <!-- /.main-container-inner -->
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="fa fa-double-angle-up icon-only bigger-110">
+            </i>
+        </a>
+    </div>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#id-change-style').on(ace.click_event, function () {
+                var toggler = $('#menu-toggler');
+                var fixed = toggler.hasClass('fixed');
+                var display = toggler.hasClass('display');
+
+                if (toggler.closest('.navbar').length == 1) {
+                    $('#menu-toggler').remove();
+                    toggler = $('#sidebar').before('<a id="menu-toggler" data-target="#sidebar" class="menu-toggler" href="#">\
+							<span class="sr-only">Toggle sidebar</span>\
+							<span class="toggler-text"></span>\
+						 </a>').prev();
+
+                    var ace_sidebar = $('#sidebar').ace_sidebar('ref');
+                    ace_sidebar.set('mobile_style', 2);
+
+                    var icon = $(this).children().detach();
+                    $(this).text('Hide older Ace toggle button').prepend(icon);
+
+                    $('#id-push-content').closest('div').hide();
+                    $('#id-push-content').removeAttr('checked');
+                    $('.sidebar').removeClass('push_away');
+                } else {
+                    $('#menu-toggler').remove();
+                    toggler = $('.navbar-brand').before('<button data-target="#sidebar" id="menu-toggler" class="three-bars pull-left menu-toggler navbar-toggle" type="button">\
+							<span class="sr-only">Toggle sidebar</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>\
+						</button>').prev();
+
+                    var ace_sidebar = $('#sidebar').ace_sidebar('ref');
+                    ace_sidebar.set('mobile_style', 1);
+
+                    var icon = $(this).children().detach();
+                    $(this).text('Show older Ace toggle button').prepend(icon);
+
+                    $('#id-push-content').closest('div').show();
+                }
+
+                if (fixed) toggler.addClass('fixed');
+                if (display) toggler.addClass('display');
+
+                $('.sidebar[data-sidebar-hover=true]').ace_sidebar_hover('reset');
+                $('.sidebar[data-sidebar-scroll=true]').ace_sidebar_scroll('reset');
+
+                return false;
+            });
+
+            $('#id-push-content').removeAttr('checked').on('click', function () {
+                $('.sidebar').toggleClass('push_away');
+            });
+
+            $('.date-picker').datepicker({ format: 'dd/mm/yyyy',  autoclose: true, language: 'tr' }).next().on(ace.click_event, function () {
+                $(this).prev().focus();
+            });
+
+            $('.btn').addClass("btn-round").addClass("btn-sm");
+
+            $.mask.definitions['~'] = '[+-]';
+            $('.input-mask-date').mask('99/99/9999');
+            $('.input-mask-phone').mask('(999) 999-9999');
+            $('.input-mask-eyescript').mask('~9.99 ~9.99 999');
+            $(".input-mask-product").mask("a*-999-a999", { placeholder: " ", completed: function () { alert("You typed the following: " + this.val()); } });
+
+
+            $(function () {
+                $.reject({
+                    reject: {
+                        msie: 9, // Microsoft Internet Explorer
+                    },
+                    close: false, // Prevent closing of window
+                    paragraph1: '<i class="ace-icon fa fa-coffee green"></i> inka.kaynak.com.tr <b class="dark-gray">Chrome, Firefox, Internet Explorer 10 ve üzeri</b> sürümleri desteklemektedir.',
+                    paragraph2: "Lütfen Internet Explorer'ı güncelleyiniz ya da diğer tarayıcılar ile giriş yapınız.",
+                    header: 'Desteklenmeyen tarayıcı sürümü', // Header Text
+                    browserShow: true,
+                    display: ['chrome', 'firefox', 'safari'],
+                    closeESC: false,
+                    fadeInTime: 'medium',
+                });
+            });
+
+
+        });
+    </script>
+</body>
+</html>

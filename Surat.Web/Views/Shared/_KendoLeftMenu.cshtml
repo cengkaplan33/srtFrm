@@ -1,0 +1,147 @@
+﻿@model Surat.WebServer.LeftNavigationModel
+<div id="sidebar" class="sidebar responsive" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
+ 
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+    </script>
+
+    @*<a href="#/home/about">aaa</a>
+        <a href="#/Company/Index">aaa</a>*@
+
+    <ul class="nav nav-list">
+        @{
+            var activeSection = 0;
+            var activeLink = 0;
+            var activethreelink = 0;
+            var i = 0;
+        }
+        @foreach (var section in Model.Sections)
+        {
+            if (section == Model.ActiveSection)
+            {
+                activeSection = i;
+            }
+            i++;
+
+            if (section.Links.Count > 0)
+            {
+                var liClass = (section == Model.ActiveSection ? "active open" : "");
+                <li class="@liClass">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon @(section.CssClass)">
+                        </i><span class="menu-text">
+                            @(section.Title)
+                        </span><b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        @{var y = 0;}
+                        @foreach (var link in section.Links)
+                        {
+                            if (link == Model.ActiveLink)
+                            {
+                                activeLink = y;
+                            }
+                            y++;
+
+                            var url = "#";
+                            if (link.Url == null)
+                            {
+                                if (link.Controller != null)
+                                {
+                                    url = "~/" + link.Controller;
+                                }
+                            }
+                            else
+                            {
+                                url = link.Url;
+                            }
+
+                            if (url.StartsWith("~/"))
+                            {
+                                url = VirtualPathUtility.ToAbsolute(url);
+                            }
+                            var target = link.Target;
+                            if (target != null)
+                            {
+                                target += " target=" + target;
+                            }
+
+                            var toogleClass = "";
+                            if (link.Links.Count > 0)
+                            {
+                                toogleClass = "class=dropdown-toggle";
+                            }
+
+                            url = "#" + url;
+
+                            var classText = link.CssClass + (Model.ActiveLink == link ? " active" : "");
+                            classText = link.Links.Count > 0 ? "active open" : classText;
+                            <li class="@classText">
+                                <a href="@url" @target @toogleClass>
+                                    <i class="fa fa-double-angle-right">
+                                    </i>
+                                    @if (link.Links.Count > 0)
+                                    {
+                                        <span class="menu-text">
+                                            @link.Title
+                                            @{ classText = "active open";  }
+                                        </span>
+                                        <b class="arrow fa fa-angle-down"></b>
+                                    }
+                                    else
+                                    {
+                                        @link.Title
+                                    }
+                                </a>
+                                @if (link.Links.Count > 0)
+                                {
+
+                                    <ul class="submenu">
+                                        @{ var z = 0; }
+                                        @foreach (var l in link.Links)
+                                        {
+                                            var classthreeLevelText = link.CssClass + (Model.ActiveThreeLink == l ? "active" : "");
+
+                                            var urlsub = l.Url == null ? ("~/" + l.Controller) : l.Url;
+                                            if (urlsub.StartsWith("~/"))
+                                            {
+                                                urlsub = VirtualPathUtility.ToAbsolute(urlsub);
+                                            }
+                                            var targetsub = l.Target;
+                                            if (targetsub != null)
+                                            {
+                                                targetsub += " target=" + targetsub;
+                                            }
+                                            <li class="@classthreeLevelText">
+                                                <a href="@urlsub" @targetsub>
+                                                    <i class="fa fa-double-angle-right">
+                                                    </i>
+                                                    @l.Title
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+
+                            //link'in css Class'ı da kullanılabilir
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                var classText = (section == Model.ActiveSection ? "active" : "");
+                <li class="@classText">
+                    <a href="@(section.Url)">
+                        <i class="menu-icon @(section.CssClass)">
+                        </i><span class="menu-text">
+                            @(section.Title)
+                        </span>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+  
+</div>

@@ -1,0 +1,153 @@
+body{
+    font-family: 'Ebrima','Tahoma';
+    line-height : 1 !important;
+    font-size : 13px;
+}
+
+.login-container {
+  width: 600px;
+
+}
+
+@media only screen and (max-width: 540px)
+{
+.login-container {
+width: 98%;
+}
+}
+
+.border-bottom
+{
+  border-bottom: 1px solid #CCC;  
+}
+
+.gray
+{
+    color : Gray;
+}
+
+.dark-gray
+{
+    color :#404040;
+}
+
+.bordro-print
+{
+    line-height: 15px !important;
+}
+
+label
+{
+    font-size : 12px;
+}
+.navbar{
+    background : black;
+}
+
+h1 {
+  font-family: "Ebrima","Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    font-family: "Ebrima","Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h3 {
+  font-family: "Ebrima,Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h4 {
+  font-family: "Ebrima","Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h5 {
+  font-family: "Ebrima","Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h6 {
+  font-family: "Ebrima","Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.profile-skills .progress .progress-bar {
+  font-family: "Ebrima","Tahoma";
+}
+
+.tree .icon-plus[class*="icon-"]:first-child:before {
+  font-family: "Ebrima","Tahoma";
+}
+
+.table-header {
+background-color: #dd5a43;
+font-weight: bold;
+line-height: 28px;
+}
+
+.comp {
+     background-image: url(image.png);
+ }
+
+ @media only screen and (min-resolution: 2dppx) {
+     .comp {
+         background-image: url(image@2x.png);
+     }
+ }
+ 
+ 
+.badge-golden, .label-golden {
+color: white !important;
+background-color: #daa520 !important;
+}
+
+.alert {
+  margin: 2px 5px 2px 3px;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+          box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+.modal-header
+{
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.modal-footer
+{
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.modal-body
+{
+    min-height : 100px;
+    }
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  }
+  .modal-sm {
+    width: 300px;
+  }
+  .model-header
+{
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+
+}

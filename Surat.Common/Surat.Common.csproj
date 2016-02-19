@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{340FC2E4-AD67-428A-B302-9EF7A93DECD1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Surat.Common</RootNamespace>
+    <AssemblyName>Surat.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\IApplicationContext.cs" />
+    <Compile Include="Application\IFrameworkManager.cs" />
+    <Compile Include="Cache\ICacheManager.cs" />
+    <Compile Include="Data\Constants.cs" />
+    <Compile Include="Data\Enumeration.cs" />
+    <Compile Include="Entity\IAuditableEntity.cs" />
+    <Compile Include="Entity\AuditableEntityBase.cs" />
+    <Compile Include="Entity\EntityBase.cs" />
+    <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="Globalization\IGlobalizationManager.cs" />
+    <Compile Include="Log\ITraceManager.cs" />
+    <Compile Include="Mail\IMailManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Security\ISecurityManager.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\MigrationUtility.cs" />
+    <Compile Include="Utilities\SecurityUtility.cs" />
+    <Compile Include="Utilities\SerializeUtility.cs" />
+    <Compile Include="Utilities\ExceptionUtility.cs" />
+    <Compile Include="Utilities\TimeUtility.cs" />
+    <Compile Include="Utilities\TypeConversionUtility.cs" />
+    <Compile Include="ViewModel\AccessibleActionView.cs" />
+    <Compile Include="ViewModel\RelationGroupAccessiblePageView.cs" />
+    <Compile Include="ViewModel\AccessiblePageView.cs" />
+    <Compile Include="ViewModel\ADUserAddResponseView.cs" />
+    <Compile Include="ViewModel\CompanySiteShortView.cs" />
+    <Compile Include="ViewModel\ExternalSystemsUsersView.cs" />
+    <Compile Include="ViewModel\DBConnectionView.cs" />
+    <Compile Include="ViewModel\RequestedContextView.cs" />
+    <Compile Include="ViewModel\GlobalizationKeyValueView.cs" />
+    <Compile Include="ViewModel\SystemDetailedView.cs" />
+    <Compile Include="ViewModel\RoleShortView.cs" />
+    <Compile Include="ViewModel\SystemView.cs" />
+    <Compile Include="ViewModel\ADUserView.cs" />
+    <Compile Include="ViewModel\ADUserDetailView.cs" />
+    <Compile Include="ViewModel\LoginView.cs" />
+    <Compile Include="ViewModel\WorkgroupView.cs" />
+    <Compile Include="ViewModel\GlobalizationKeyView.cs" />
+    <Compile Include="ViewModel\ParameterValueView.cs" />
+    <Compile Include="ViewModel\CompanySiteView.cs" />
+    <Compile Include="ViewModel\UserDetailedView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\" />
+    <Folder Include="RequiredDLLs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Docs\Class.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
