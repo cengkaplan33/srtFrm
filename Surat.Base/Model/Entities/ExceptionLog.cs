@@ -13,16 +13,46 @@ namespace Surat.Base.Model.Entities
     {
         [Index("IX_ExceptionLog_Date_ExceptionLevel", 1)]
         public DateTime LogDate { get; set; }
-        [Index("IX_ExceptionLog_Date_ExceptionLevel", 2)]
+        
+        [Index("IX_ExceptionLog_Date_ExceptionLevel", 2)]        
         [Required]
         public int SystemId { get; set; }
+        
         [Required]
         public byte ExceptionLevel { get; set; }
+        
         [Required][MaxLength(50)]
         public string ExceptionType { get; set; }
+        
         [Required][MaxLength(5000)]
         public string Data { get; set; }
+        
         [Required]
         public int InsertedByUser { get; set; }
+        
+        [Required][MaxLength(60)]
+        public string ApplicationName { get; set; }
+
+        [Required][MaxLength(10)]
+        public string ApplicationBaseType { get; set; }
+
+        [Required][MaxLength(50)]
+        public string HostName { get; set; }
+
+        [Required][MaxLength(60)]
+        public string Source { get; set; }
+
+        [Required][MaxLength(500)]
+        public string Message { get; set; }
+
+        [Required]
+        public int  StatusCode { get; set; }
+
+        [MaxLength(30)]
+        public string  InsertUserName { get; set; }       
+
+        public string AllXml { get; set; }
+
+
     }
 }
