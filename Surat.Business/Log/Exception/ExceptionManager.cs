@@ -209,7 +209,7 @@ namespace Surat.Business.Log
             exceptionlogItem.Message = exceptionToLog.Message;
             exceptionlogItem.Source = exceptionToLog.Source;
             exceptionlogItem.StatusCode = 0;
-            exceptionlogItem.ApplicationName = context.SystemName;
+            exceptionlogItem.ApplicationName = context.ApplicationName;
             exceptionData.AppendLine(GetInnerExceptionMessages(exceptionToLog));
             exceptionlogItem.Data = exceptionData.ToString();            
             exceptionlogItem.ExceptionType = exceptionToLog.GetType().Name;

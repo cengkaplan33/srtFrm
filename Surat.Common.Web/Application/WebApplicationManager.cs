@@ -130,7 +130,7 @@ namespace Surat.WebServer.Application
             catch (Exception exception)
             {
 
-                PublishException(exception);
+                //PublishException(exception);
                 //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
             }           
@@ -150,8 +150,15 @@ namespace Surat.WebServer.Application
             else return globalizationKey;
         }
 
-        public void PublishException(Exception exception)
+        public string PublishException(Exception exception)
         {
+
+            if (HttpContext.Current.Request != null)
+                this.Framework.Context.ApplicationName = HttpContext.Current.Request.ServerVariables["APPL_MD_PATH"];
+            
+            if (string.IsNullOrEmpty(this.Framework.Context.ApplicationName))
+                this.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
+
             this.Framework.Context.CurrentVariables = new HttpRequestView(HttpContext.Current.Request);
             this.Framework.Context.ApplicationBaseType = "Web";
 
@@ -160,8 +167,9 @@ namespace Surat.WebServer.Application
             { 
                 if (this.Framework.Context.IsCurrentUserAssigned)
                     currentUser = this.Framework.Context.CurrentUser;
-                this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
+              return  this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
             }
+            else  return Constants.Message.FrameworkNotInitialized;
             //else ToDo: Framework üzerinden publish edilemez. Başka bir yöntem takip edilmelidir.
         }
 

@@ -76,14 +76,21 @@ namespace Surat.WebServer.Base
 
         public string PublishException(Exception exception)
         {
-            this.WebApplicationManager.Framework.Context.ApplicationBaseType = "Web";
-            this.WebApplicationManager.Framework.Context.CurrentVariables = new HttpRequestView(System.Web.HttpContext.Current.Request);
+            this.exceptionMessage = this.WebApplicationManager.PublishException(exception);
 
-            if (this.WebApplicationManager.Framework.IsContextInitialized)
+            //if (Request != null)
+            //    this.WebApplicationManager.Framework.Context.ApplicationName =Request.ServerVariables["APPL_MD_PATH"];
 
-                this.exceptionMessage = this.WebApplicationManager.Framework.Exception.Publish(this.WebApplicationManager.Framework.Context, exception, this.WebApplicationManager.Context.CurrentUser);
-            else this.exceptionMessage = Constants.Message.FrameworkNotInitialized;
-            //else  To Do : Framework initialize olmadığı durumda, Exception publish edilemez. Ele alınmalıdır.
+            //if (string.IsNullOrEmpty(this.WebApplicationManager.Framework.Context.ApplicationName))
+            //    this.WebApplicationManager.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
+
+            //this.WebApplicationManager.Framework.Context.ApplicationBaseType = "Web";
+            //this.WebApplicationManager.Framework.Context.MachineName= "Web";
+
+            //if (this.WebApplicationManager.Framework.IsContextInitialized)
+            //    this.exceptionMessage = this.WebApplicationManager.Framework.Exception.Publish(this.WebApplicationManager.Framework.Context, exception, this.WebApplicationManager.Context.CurrentUser);
+            //else this.exceptionMessage = Constants.Message.FrameworkNotInitialized;
+            ////else  To Do : Framework initialize olmadığı durumda, Exception publish edilemez. Ele alınmalıdır.
 
             return this.exceptionMessage;
         }

@@ -42,6 +42,7 @@ namespace Surat.Base
         private string machineName;
         private string applicationBaseType;
         private object currentVariables;
+        private string applicationName;
         #endregion
 
         #region Public Members
@@ -111,6 +112,17 @@ namespace Surat.Base
             }
             set {
                 currentVariables = value;
+            }
+        }
+        public string ApplicationName
+        {
+            get
+            {
+                return applicationName;
+            }
+            set
+            {
+                applicationName = value;
             }
         }
         public DbContext DBContext
