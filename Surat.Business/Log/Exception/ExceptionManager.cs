@@ -162,6 +162,8 @@ namespace Surat.Business.Log
                 shortExceptionMessage = exceptionlogItem.Data;
 
                 exceptionlogItem.Data = exceptionlogItem.Data + " " + exception.ToString();
+                
+                
                 HandleWriteExceptionLog(exceptionlogItem);
             }
             catch
@@ -197,17 +199,35 @@ namespace Surat.Business.Log
             {
                 exceptionlogItem.SystemId = context.SystemId;
                 exceptionlogItem.Data = exceptionToLog.Message;
-            };               
-    
+            
+            };
 
+            exceptionlogItem.InsertUserName = currentUser == null ? "": currentUser.Name;
+            exceptionlogItem.HostName = context.MachineName;
+            exceptionlogItem.AllXml = "";
+            exceptionlogItem.ApplicationBaseType = context.ApplicationBaseType;
+            exceptionlogItem.Message = exceptionToLog.Message;
+            exceptionlogItem.Source = exceptionToLog.Source;
+            exceptionlogItem.StatusCode = 0;
+            exceptionlogItem.ApplicationName = context.SystemName;
             exceptionData.AppendLine(GetInnerExceptionMessages(exceptionToLog));
             exceptionlogItem.Data = exceptionData.ToString();            
             exceptionlogItem.ExceptionType = exceptionToLog.GetType().Name;
             exceptionlogItem.LogDate = TimeUtility.GetCurrentDateTime();
+            exceptionlogItem.ApplicationVariables = context.CurrentVariables;
 
             if (currentUser != null)
+            {
                 exceptionlogItem.InsertedByUser = currentUser.UserId;
-            else exceptionlogItem.InsertedByUser = 0;
+                exceptionlogItem.InsertUserName = currentUser.Name;
+            }
+            else
+            {
+                exceptionlogItem.InsertedByUser = 0;
+                exceptionlogItem.InsertUserName =  "";
+            }
+
+            exceptionlogItem.AllXml = SerializeUtility.SerializeToXML(context.CurrentVariables);
 
             return exceptionlogItem;
         }
@@ -270,6 +290,8 @@ namespace Surat.Business.Log
         }
 
     }
+
+
 
 #endregion
 

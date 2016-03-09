@@ -3,12 +3,8 @@ using Surat.Business.Application;
 using Surat.Business.Base;
 using Surat.Common.Data;
 using Surat.Common.ViewModel;
-using Surat.SerendipApplication.Business;
 using Surat.Web;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -133,7 +129,9 @@ namespace Surat.WebServer.Application
             }
             catch (Exception exception)
             {
-                this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
+
+                PublishException(exception);
+                //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
             }           
         }
@@ -154,6 +152,9 @@ namespace Surat.WebServer.Application
 
         public void PublishException(Exception exception)
         {
+            this.Framework.Context.CurrentVariables = new HttpRequestView(HttpContext.Current.Request);
+            this.Framework.Context.ApplicationBaseType = "Web";
+
             UserDetailedView currentUser = null;
             if (this.Framework.IsContextInitialized)
             { 

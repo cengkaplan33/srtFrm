@@ -49,7 +49,9 @@ namespace Surat.Base.Model.Entities
         public int  StatusCode { get; set; }
 
         [MaxLength(30)]
-        public string  InsertUserName { get; set; }       
+        public string  InsertUserName { get; set; }
+
+        public virtual object  ApplicationVariables { get; set; }
 
         public string AllXml { get; set; }
 

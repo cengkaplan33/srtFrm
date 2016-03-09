@@ -67,7 +67,7 @@ namespace Surat.Base.Exceptions
         {
             get
             {
-                return StandartMessage;
+                return standartMessage;
             }
             set { standartMessage = value; }
         }      

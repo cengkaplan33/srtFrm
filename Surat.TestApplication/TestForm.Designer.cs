@@ -45,6 +45,7 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
+            this.btnLogTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -217,11 +218,22 @@
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
+            // btnLogTest
+            // 
+            this.btnLogTest.Location = new System.Drawing.Point(271, 37);
+            this.btnLogTest.Name = "btnLogTest";
+            this.btnLogTest.Size = new System.Drawing.Size(75, 23);
+            this.btnLogTest.TabIndex = 17;
+            this.btnLogTest.Text = "Log Test";
+            this.btnLogTest.UseVisualStyleBackColor = true;
+            this.btnLogTest.Click += new System.EventHandler(this.btnLogTest_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 348);
+            this.ClientSize = new System.Drawing.Size(379, 348);
+            this.Controls.Add(this.btnLogTest);
             this.Controls.Add(this.button17);
             this.Controls.Add(this.button16);
             this.Controls.Add(this.button15);
@@ -264,6 +276,7 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button btnLogTest;
     }
 }
 

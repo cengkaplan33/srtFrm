@@ -35,11 +35,13 @@ namespace Surat.Base
         private IFrameworkManager frameworkManager;
         protected DbContext dbContext;
         private string systemName;
-        private int systemId;
+        private int systemId;        
         private UserDetailedView currentUser;
         private List<InitializedContextView> initializedContexts;
         private InitializedContextView activeInitializedContext;
-
+        private string machineName;
+        private string applicationBaseType;
+        private object currentVariables;
         #endregion
 
         #region Public Members
@@ -82,7 +84,35 @@ namespace Surat.Base
                 return systemName;
             }    
         }
-
+        public string MachineName
+        {
+            get
+            {
+                return System.Environment.MachineName;
+            }
+            set
+            {
+                machineName = value;
+            }
+        }
+        public string ApplicationBaseType
+        {
+            get {
+                return applicationBaseType;
+            }
+            set { 
+                applicationBaseType = value;
+            }
+        }
+        public object CurrentVariables
+        {
+            get {
+                return currentVariables;
+            }
+            set {
+                currentVariables = value;
+            }
+        }
         public DbContext DBContext
         {
             get

@@ -513,5 +513,20 @@ namespace Surat.TestApplication
                 string s = exception.Message;
             }
         }
+
+        private void btnLogTest_Click(object sender, EventArgs e)
+        {
+            UserDetailedView currentUser = null;
+            FrameworkApplicationManager framework = new FrameworkApplicationManager();
+            try
+            {
+                currentUser = framework.Security.ValidateUser("Admin2", "1");
+            }
+            catch (Exception exception)
+            {
+
+                framework.Exception.Publish(framework.Context, exception, currentUser);
+            }
+        }
     }
 }

@@ -1,21 +1,19 @@
-﻿using Surat.Base.Application;
-using Surat.Common.Data;
+﻿using Surat.Common.Data;
+using Surat.Common.ViewModel;
 using Surat.SerendipApplication.Business;
 using Surat.WebServer.ActionFilters;
 using Surat.WebServer.Application;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Surat.WebServer.Base
 {
-    [SuratAuthorizationFilter][LogActionFilter]
-    public class SuratControllerBase : Controller,IDisposable
+    [SuratAuthorizationFilter]
+    [LogActionFilter]
+    public class SuratControllerBase : Controller, IDisposable
     {
         #region Constructor
 
@@ -23,16 +21,16 @@ namespace Surat.WebServer.Base
         {
             try
             {
-                Thread.CurrentThread.CurrentCulture = 
+                Thread.CurrentThread.CurrentCulture =
                     CultureInfo.GetCultureInfo(this.WebApplicationManager.Framework.Globalization.GetCurrentCultureName());
                 Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             }
             catch (Exception exception)
             {
                 this.PublishException(exception);
-            }            
+            }
         }
-        
+
         #endregion
 
         #region Private Members
@@ -40,14 +38,14 @@ namespace Surat.WebServer.Base
         private WebApplicationManager webApplicationManager;
         private SerendipApplicationManager serendip;
         private string exceptionMessage;
- 
+
         #endregion
 
         #region Public Members
 
-        public string ExceptionMessage 
+        public string ExceptionMessage
         {
-            get { return exceptionMessage; } 
+            get { return exceptionMessage; }
         }
 
         public WebApplicationManager WebApplicationManager
@@ -58,7 +56,7 @@ namespace Surat.WebServer.Base
                     webApplicationManager = new WebApplicationManager();
 
                 return webApplicationManager;
-            } 
+            }
         }
 
         public SerendipApplicationManager Serendip
@@ -77,14 +75,18 @@ namespace Surat.WebServer.Base
         #region Methods
 
         public string PublishException(Exception exception)
-        {       
+        {
+            this.WebApplicationManager.Framework.Context.ApplicationBaseType = "Web";
+            this.WebApplicationManager.Framework.Context.CurrentVariables = new HttpRequestView(System.Web.HttpContext.Current.Request);
+
             if (this.WebApplicationManager.Framework.IsContextInitialized)
+
                 this.exceptionMessage = this.WebApplicationManager.Framework.Exception.Publish(this.WebApplicationManager.Framework.Context, exception, this.WebApplicationManager.Context.CurrentUser);
             else this.exceptionMessage = Constants.Message.FrameworkNotInitialized;
             //else  To Do : Framework initialize olmadığı durumda, Exception publish edilemez. Ele alınmalıdır.
 
             return this.exceptionMessage;
-        }        
+        }
 
         #endregion
 
@@ -100,9 +102,9 @@ namespace Surat.WebServer.Base
             }
             catch
             {
-               //ToDo : Ele alınmalıdır.                
+                //ToDo : Ele alınmalıdır.                
             }
-            
+
         }
 
         #endregion
