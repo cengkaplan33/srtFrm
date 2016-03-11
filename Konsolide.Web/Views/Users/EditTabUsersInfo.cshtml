@@ -1,0 +1,80 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Kullanıcı Bilgisi</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
+                        <input type="hidden" id="DefaultWorkgroup" name="DefaultWorkgroup" style="width:100%" data-bind="value: User.DefaultWorkgroup"  class="k-textbox" />
+                        <input type="hidden" id="DefaultRole" name="DefaultRole" style="width:100%" data-bind="value: User.DefaultRole" class="k-textbox" />
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label class="col-md-4 control-label" for="UserName">Kullanıcı Adı</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="UserName" name="UserName" style="width:100%" data-bind="value: User.UserName" required validationmessage="Kullanıcı adı alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Name">Ad Soyad</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="Name" name="Name" style="width:100%" data-bind="value:User.Name" required validationmessage="Ad soyad alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Password">Şifre</label>
+                                <div class="col-md-8">
+                                    <input type="password" id="Password" name="Password" style="width:100%" data-bind="value:User.Password" required validationmessage="Şifre alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Not">Not</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="Notes" name="Notes" style="width:100%" data-bind="value:User.Notes" class="k-textbox" />
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left; padding-left:130px">
+                                  <input type="checkbox" id="IsActive" name="IsActive" data-bind="checked: User.IsActive"  />&nbsp; Aktif mi? 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                               
+                                <div class="col-md-12" style="text-align:left;padding-left:130px">
+                                    <input type="checkbox" id="IsActiveDirectoryUser" name="IsActiveDirectoryUser" data-bind="checked: User.IsActiveDirectoryUser" />&nbsp; Aktif Directory Kullanıcısı mı?
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left;padding-left:130px">
+                                    <input type="checkbox" id="IsExternalUser" name="IsExternalUser" data-bind="checked: User.IsExternalUser" />&nbsp; Dış kullanıcı mı?
+                                </div>
+                            </div>
+                            <div class="form-group">
+                               
+                                <div class="col-md-12" style="text-align:left;padding-left:130px">
+                                    <input type="checkbox" id="IsLocked" name="IsLocked" data-bind="checked: User.IsLocked" />&nbsp; Kullanıcıyı İptal Et?
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+
+        
+    </div>
+</div>
