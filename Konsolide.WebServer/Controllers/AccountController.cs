@@ -1,7 +1,7 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.ViewModel;
-using Konsolide.WebServer.Application;
-using Konsolide.WebServer.Base;
+using KonsolideRapor.WebServer.Application;
+using KonsolideRapor.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
-namespace Konsolide.WebServer.Controllers
+namespace KonsolideRapor.WebServer.Controllers
 {
     public class AccountController : KonsolideControllerBase
     {

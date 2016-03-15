@@ -61,13 +61,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsolideRapor.Business", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsolideRapor.Common", "KonsolideRapor.Common\KonsolideRapor.Common.csproj", "{D8107173-D9AC-42CF-83D0-A922E6E8CE48}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KonsolideWeb", "KonsolideWeb", "{AD721884-F03B-4215-93AF-CA3AF12EC86E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KonsolideRaporWeb", "KonsolideRaporWeb", "{AD721884-F03B-4215-93AF-CA3AF12EC86E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsolide.Web", "Konsolide.Web\Konsolide.Web.csproj", "{CE6D57BA-E342-425F-9485-34AA06FAC612}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsolideRapor.Web", "Konsolide.Web\KonsolideRapor.Web.csproj", "{CE6D57BA-E342-425F-9485-34AA06FAC612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsolide.Web.Common", "Konsolide.Web.Common\Konsolide.Web.Common.csproj", "{FAB4469A-97EB-4BDB-91BA-DA32867304C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsolideRapor.Web.Common", "Konsolide.Web.Common\KonsolideRapor.Web.Common.csproj", "{FAB4469A-97EB-4BDB-91BA-DA32867304C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsolide.WebServer", "Konsolide.WebServer\Konsolide.WebServer.csproj", "{A0EB6CF4-0FF3-4463-8178-E56222C2C84C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsolideRapor.WebServer", "Konsolide.WebServer\KonsolideRapor.WebServer.csproj", "{A0EB6CF4-0FF3-4463-8178-E56222C2C84C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

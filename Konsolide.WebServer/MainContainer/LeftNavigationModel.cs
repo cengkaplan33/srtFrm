@@ -1,11 +1,12 @@
 ﻿using Surat.Common.Data;
 using Surat.Common.ViewModel;
-using Konsolide.WebServer.Application;
+using KonsolideRapor.WebServer.Application;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-namespace Konsolide.WebServer
+using KonsolideRapor.Common.Data;
+namespace KonsolideRapor.WebServer
 {
     public partial class LeftNavigationModel
     {
@@ -14,6 +15,7 @@ namespace Konsolide.WebServer
 
         public LeftNavigationModel(string navigationPath)
         {
+            
             LeftNavigationSection systemsSection;
             LeftNavigationLink sectionSubLink;
             string systemTypeName;
@@ -29,7 +31,7 @@ namespace Konsolide.WebServer
             #endregion
 
             //ToDo : Recursive yapı ile, sistemler hiyerarşik olarak işlenmeli. Şuan bir seviye alt sistemler işlendi.
-            int rootSystemId = this.WebApplicationManager.Framework.Configuration.System.GetSystemIdByTypeName(Constants.Application.PlatformSystemName);
+            int rootSystemId = this.WebApplicationManager.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideConstants.Application.PlatformSystemName);
 
             List<SystemView> systems = GetSubSystems(rootSystemId, accessiblePagesList);
 
@@ -85,14 +87,15 @@ namespace Konsolide.WebServer
         #region Methods
 
         public List<SystemView> GetSubSystems(int parentSystemId, List<AccessiblePageView> allAccessiblePages)
-        {
-            List<SystemView> systemList = (from systemPages in allAccessiblePages
+        {var sss=  (from systemPages in allAccessiblePages
                                            where systemPages.SystemParentId == parentSystemId
                                            select new SystemView
                                            {
                                                Id = systemPages.SystemId,
                                                Name = systemPages.SystemName                   
-                                           }).GroupBy(g => new { g.Id }).Select(s => s.FirstOrDefault()).ToList();
+                                           });
+        var ddd = sss.ToString();
+            List<SystemView> systemList = sss.GroupBy(g => new { g.Id }).Select(s => s.FirstOrDefault()).ToList();
 
             return systemList;
         }

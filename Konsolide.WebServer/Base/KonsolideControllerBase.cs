@@ -1,14 +1,14 @@
 ﻿using Surat.Common.Data;
 using Surat.Common.ViewModel;
-using Konsolide.WebServer.ActionFilters;
-using Konsolide.WebServer.Application;
+using KonsolideRapor.WebServer.ActionFilters;
+using KonsolideRapor.WebServer.Application;
 using System;
 using System.Globalization;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Konsolide.WebServer.Base
+namespace KonsolideRapor.WebServer.Base
 {
     [KonsolideAuthorizationFilter]
     [LogActionFilter]

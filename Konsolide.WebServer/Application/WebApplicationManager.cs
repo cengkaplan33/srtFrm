@@ -1,4 +1,4 @@
-﻿using Konsolide.Web;
+﻿using KonsolideRapor.Web;
 using Surat.Base.Exceptions;
 using Surat.Business.Application;
 using Surat.Business.Base;
@@ -12,7 +12,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 
-namespace Konsolide.WebServer.Application
+namespace KonsolideRapor.WebServer.Application
 {
     public class WebApplicationManager : ApplicationManager
     {

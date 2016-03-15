@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Konsolide.WebServer.ViewModel
+namespace KonsolideRapor.WebServer.ViewModel
 {
     public class LogoutView
     {

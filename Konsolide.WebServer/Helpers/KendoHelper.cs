@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Konsolide.Web.App_Code
+namespace KonsolideRapor.Web.App_Code
 {
     public class KendoPagingParameter
     {

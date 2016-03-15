@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace Konsolide.WebServer.Application
+namespace KonsolideRapor.WebServer.Application
 {
     public class WebApplicationContext : IDisposable
     {

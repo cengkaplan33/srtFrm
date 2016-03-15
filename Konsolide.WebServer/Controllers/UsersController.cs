@@ -1,9 +1,9 @@
-﻿using Konsolide.WebServer.Base;
+﻿using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Base.Repositories;
 using Surat.Common.Data;
-using Konsolide.WebServer.Application;
-using Konsolide.WebServer.Base;
+using KonsolideRapor.WebServer.Application;
+using KonsolideRapor.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

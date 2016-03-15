@@ -50,13 +50,14 @@
   <ItemGroup>
     <Compile Include="Model\KonsolideDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\Entities\Bank.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Application\" />
+    <Folder Include="Bank\" />
     <Folder Include="Base\" />
     <Folder Include="Configuration\" />
     <Folder Include="Manage\" />
-    <Folder Include="Model\Entities\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>

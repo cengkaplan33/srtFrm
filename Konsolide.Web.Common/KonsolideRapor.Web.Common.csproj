@@ -7,8 +7,8 @@
     <ProjectGuid>{FAB4469A-97EB-4BDB-91BA-DA32867304C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Konsolide.Web.Common</RootNamespace>
-    <AssemblyName>Konsolide.Web.Common</AssemblyName>
+    <RootNamespace>KonsolideRapor.Web.Common</RootNamespace>
+    <AssemblyName>KonsolideRapor.Web.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

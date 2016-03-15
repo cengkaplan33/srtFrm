@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Konsolide.Web.Common
+namespace KonsolideRapor.Web.Common
 {
     public class WebConstants
     {

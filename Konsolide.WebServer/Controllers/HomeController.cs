@@ -1,4 +1,4 @@
-﻿using Konsolide.WebServer.Base;
+﻿using KonsolideRapor.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Konsolide.WebServer.Controllers
+namespace KonsolideRapor.WebServer.Controllers
 {
     
         public class HomeController : KonsolideControllerBase
@@ -47,7 +47,10 @@ namespace Konsolide.WebServer.Controllers
                 return View();
             }
 
-           
+            public ActionResult Index()
+            {
+                return View();
+            }
             #endregion
 
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 
-namespace Konsolide.WebServer.Helpers
+namespace KonsolideRapor.WebServer.Helpers
 {
     public class MVCUtility
     {
