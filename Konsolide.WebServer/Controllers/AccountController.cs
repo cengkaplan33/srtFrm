@@ -36,7 +36,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 ViewBag.Message = this.ExceptionMessage;
 
             //Set CurrentCulture
-            this.WebApplicationManager.Context.CurrentCulture = this.WebApplicationManager.Framework.Globalization.Context.CurrentCulture;
+            this.WebApplicationManager.Context.CurrentCulture = this.WebApplicationManager.KonsolideRapor.Framework.Globalization.Context.CurrentCulture;
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 Session.Clear();
                 Session.Abandon();
                 FormsAuthentication.SignOut();
-                if (this.WebApplicationManager.Framework.Context.IsCurrentUserAssigned)
+                if (this.WebApplicationManager.KonsolideRapor.Framework.Context.IsCurrentUserAssigned)
                     this.WebApplicationManager.Logout();
                 //ToDo : else : Aktif session nasıl kapatılabilir.                       
                 

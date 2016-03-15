@@ -113,6 +113,8 @@ namespace KonsolideRapor.Business.Manage
         }
 
         #endregion
+        #region Methods
 
+        #endregion
     }
 }

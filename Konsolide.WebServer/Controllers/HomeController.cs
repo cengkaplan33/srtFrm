@@ -35,8 +35,10 @@ namespace KonsolideRapor.WebServer.Controllers
 
                 try
                 {
-                    ViewBag.Title = this.WebApplicationManager.Framework.Context.Product.CustomerProductName;
-                    ViewBag.SessionStart = this.WebApplicationManager.Framework.Context.CurrentUser.SessionStart;
+                   
+                    ViewBag.Title = this.WebApplicationManager.KonsolideRapor.Framework.Context.Product.CustomerProductName;
+                    ViewBag.SessionStart = this.WebApplicationManager.KonsolideRapor.Framework.Context.CurrentUser.SessionStart;
+                    
                 }
                 catch (Exception)
                 {

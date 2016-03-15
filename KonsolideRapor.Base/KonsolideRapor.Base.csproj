@@ -52,6 +52,7 @@
     <Compile Include="Application\KonsolideRaporApplicationContext.cs" />
     <Compile Include="Configuration\KonsolideRaporConfigurationContext.cs" />
     <Compile Include="Manage\KonsolideRaporContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\KonsolideRaporDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Entities\Bank.cs" />

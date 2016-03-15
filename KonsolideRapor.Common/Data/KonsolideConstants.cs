@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KonsolideRapor.Common.Data
 {
-    public class KonsolideConstants
+    public class KonsolideRaporConstants
     {
         #region Application
 

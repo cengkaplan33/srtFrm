@@ -30,8 +30,8 @@ namespace KonsolideRapor.WebServer.ActionFilters
                 try
                 {
                     //Session timeout kontrolü - CurrentUser bulunamaz.                                  
-                    if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
-                        !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
+                    if (!controller.WebApplicationManager.KonsolideRapor.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
+                        !controller.WebApplicationManager.KonsolideRapor.Framework.Security.HasActionRight(action))
                     {
                         filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
                         return;

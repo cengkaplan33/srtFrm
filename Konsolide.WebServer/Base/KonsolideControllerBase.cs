@@ -21,7 +21,7 @@ namespace KonsolideRapor.WebServer.Base
             try
             {
                 Thread.CurrentThread.CurrentCulture =
-                    CultureInfo.GetCultureInfo(this.WebApplicationManager.Framework.Globalization.GetCurrentCultureName());
+                    CultureInfo.GetCultureInfo(this.WebApplicationManager.KonsolideRapor.Framework.Globalization.GetCurrentCultureName());
                 Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             }
             catch (Exception exception)
@@ -68,16 +68,16 @@ namespace KonsolideRapor.WebServer.Base
             this.exceptionMessage = this.WebApplicationManager.PublishException(exception);
 
             //if (Request != null)
-            //    this.WebApplicationManager.Framework.Context.ApplicationName =Request.ServerVariables["APPL_MD_PATH"];
+            //    this.WebApplicationManager.KonsolideRapor.Framework.Context.ApplicationName =Request.ServerVariables["APPL_MD_PATH"];
 
-            //if (string.IsNullOrEmpty(this.WebApplicationManager.Framework.Context.ApplicationName))
-            //    this.WebApplicationManager.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
+            //if (string.IsNullOrEmpty(this.WebApplicationManager.KonsolideRapor.Framework.Context.ApplicationName))
+            //    this.WebApplicationManager.KonsolideRapor.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
 
-            //this.WebApplicationManager.Framework.Context.ApplicationBaseType = "Web";
-            //this.WebApplicationManager.Framework.Context.MachineName= "Web";
+            //this.WebApplicationManager.KonsolideRapor.Framework.Context.ApplicationBaseType = "Web";
+            //this.WebApplicationManager.KonsolideRapor.Framework.Context.MachineName= "Web";
 
-            //if (this.WebApplicationManager.Framework.IsContextInitialized)
-            //    this.exceptionMessage = this.WebApplicationManager.Framework.Exception.Publish(this.WebApplicationManager.Framework.Context, exception, this.WebApplicationManager.Context.CurrentUser);
+            //if (this.WebApplicationManager.KonsolideRapor.Framework.IsContextInitialized)
+            //    this.exceptionMessage = this.WebApplicationManager.KonsolideRapor.Framework.Exception.Publish(this.WebApplicationManager.KonsolideRapor.Framework.Context, exception, this.WebApplicationManager.Context.CurrentUser);
             //else this.exceptionMessage = Constants.Message.FrameworkNotInitialized;
             ////else  To Do : Framework initialize olmadığı durumda, Exception publish edilemez. Ele alınmalıdır.
 

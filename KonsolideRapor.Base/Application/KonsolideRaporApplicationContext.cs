@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace KonsolideRapor.Base.Application
 {
-    public class KonsolideRaporApplicationContext : ApplicationContextBase, IApplicationContext
+    public class KonsolideRaporApplicationContext : FrameworkContext
     {
         #region Constructor
 
         public KonsolideRaporApplicationContext(IKonsolideRaporApplicationManager konsolideRaporApplicationManager)
-            : base(konsolideRaporApplicationManager.GetFrameworkManager(), KonsolideConstants.Application.KonsolideRaporSystemName)
+            : base(konsolideRaporApplicationManager.GetFrameworkManager())
         {
             this.konsolideRaporApplicationManager = konsolideRaporApplicationManager;
         }

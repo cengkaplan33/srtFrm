@@ -33,7 +33,7 @@ namespace KonsolideRapor.Business.Configuration
 
         #region Public Members        
 
-        public IKonsolideRaporApplicationManager DocumentApplicationManager
+        public IKonsolideRaporApplicationManager KonsolideRaporApplicationManager
         {
             get
             {
@@ -47,7 +47,7 @@ namespace KonsolideRapor.Business.Configuration
             get
             {
                 if (applicationContext == null)
-                    applicationContext = (KonsolideRaporApplicationContext)this.DocumentApplicationManager.GetKonsolideRaporApplicationContext();
+                    applicationContext = (KonsolideRaporApplicationContext)this.KonsolideRaporApplicationManager.GetKonsolideRaporApplicationContext();
 
                 return applicationContext;
             }
@@ -66,7 +66,7 @@ namespace KonsolideRapor.Business.Configuration
             get
             {
                 if (frameworkApplicationManager == null)
-                    frameworkApplicationManager = this.DocumentApplicationManager.GetFrameworkManager();
+                    frameworkApplicationManager = this.KonsolideRaporApplicationManager.GetFrameworkManager();
 
                 return frameworkApplicationManager;
             }
