@@ -39,15 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\IKonsolideRaporApplicationManager.cs" />
     <Compile Include="Data\KonsolideConstants.cs" />
     <Compile Include="Data\KonsolideEnumeration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Application\" />
     <Folder Include="Base\" />
     <Folder Include="Utilities\" />
     <Folder Include="ViewModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Surat.Common\Surat.Common.csproj">
+      <Project>{340fc2e4-ad67-428a-b302-9ef7a93decd1}</Project>
+      <Name>Surat.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

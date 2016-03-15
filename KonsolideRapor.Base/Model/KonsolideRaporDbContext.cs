@@ -8,14 +8,14 @@ using KonsolideRapor.Common.Data;
 using Surat.Base.Model.Entities;
 namespace KonsolideRapor.Base.Model
 {
-    public class KonsolideDbContext:DbContext
+    public class KonsolideRaporDbContext:DbContext
     {
         #region Constructor
 
-        public KonsolideDbContext()
+        public KonsolideRaporDbContext()
             : base("name=SuratFrameworkConnection")
         {
-            Database.SetInitializer<KonsolideDbContext>(null);
+            Database.SetInitializer<KonsolideRaporDbContext>(null);
             this.systemName = KonsolideConstants.Application.PlatformSystemName;
         }
 
