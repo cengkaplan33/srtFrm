@@ -46,10 +46,15 @@ namespace KonsolideRapor.WebServer.Controllers
             try
             {
                 this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password);
-                
+                Bank bnk = new Bank() { 
+                Code="test",
+                Name="test"
+
+                };
+                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveBank(bnk);
                 if (returnUrl == null)
                 {
-                    return Json(new { returnUrl = "/" });
+                    return Json(new { returnUrl = "/" },JsonRequestBehavior.AllowGet);
                     //return RedirectToAction("Index", "Home");
                 }
                 else

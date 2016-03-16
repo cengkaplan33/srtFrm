@@ -52,6 +52,10 @@
     <Compile Include="Application\KonsolideRaporApplicationContext.cs" />
     <Compile Include="Configuration\KonsolideRaporConfigurationContext.cs" />
     <Compile Include="Manage\KonsolideRaporContext.cs" />
+    <Compile Include="Migrations\201603151448389_V1.cs" />
+    <Compile Include="Migrations\201603151448389_V1.Designer.cs">
+      <DependentUpon>201603151448389_V1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\KonsolideRaporDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +82,11 @@
       <Project>{340fc2e4-ad67-428a-b302-9ef7a93decd1}</Project>
       <Name>Surat.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201603151448389_V1.resx">
+      <DependentUpon>201603151448389_V1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

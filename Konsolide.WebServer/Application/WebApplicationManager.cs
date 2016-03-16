@@ -102,7 +102,7 @@ namespace KonsolideRapor.WebServer.Application
                     currentUser = (UserDetailedView)HttpContext.Current.Session["CurrentUser"];
 
             if (currentUser != null)
-                konsolideRapor = new KonsolideRaporApplicationManager();
+                konsolideRapor = new KonsolideRaporApplicationManager(this.konsolideRaporApplicationManager.Framework,currentUser);
             else konsolideRapor = new KonsolideRaporApplicationManager();
 
             return konsolideRapor;
@@ -119,7 +119,7 @@ namespace KonsolideRapor.WebServer.Application
                 {
                     this.KonsolideRapor.Framework.Trace.AppendLine(this.KonsolideRapor.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
                     this.KonsolideRapor.Framework.StartUserSession(currentUser);
-                    this.Context.CurrentUser = currentUser;
+                    this.KonsolideRapor.Framework.Context.CurrentUser = currentUser;
                     this.KonsolideRapor.Framework.Trace.AppendLine(this.KonsolideRapor.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
                 }
                 else

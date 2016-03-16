@@ -3,10 +3,12 @@ using KonsolideRapor.Base.Model;
 using KonsolideRapor.Business.Configuration;
 using KonsolideRapor.Business.Manage;
 using KonsolideRapor.Common.Application;
+using Surat.Base.Cache;
 using Surat.Business.Application;
 using Surat.Business.Base;
 using Surat.Common.Application;
 using Surat.Common.Data;
+using Surat.Common.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +20,23 @@ namespace KonsolideRapor.Business.Application
     {
           #region Constructor
 
-        public KonsolideRaporApplicationManager():this(null)
+        public KonsolideRaporApplicationManager():this(null,null)
         {
 
         }
 
-        public KonsolideRaporApplicationManager(FrameworkApplicationManager applicationManager)
+        public KonsolideRaporApplicationManager(FrameworkApplicationManager applicationManager, UserDetailedView currentUser)
         {
             if (applicationManager != null)
+           
                 this.framework = applicationManager;
-            else this.framework = InitializeFramework();  
+                
+            else this.framework = InitializeFramework();
+            if (currentUser != null)
+            {
+                this.Context.CurrentUser = currentUser;
+                InitializeUserRelatedContext();
+            }
         }
 
         #endregion
@@ -143,6 +152,45 @@ namespace KonsolideRapor.Business.Application
             this.Framework.Trace.AppendLine(this.Context.SystemName, "ConfigurationManager Initialized.", TraceLevel.Basic);
         }
 
+        private void InitializeUserRelatedContext()
+        {
+            //Framework var olan bir kullanıcı ile başlatıldığında kullanılır. Kullanıcı oturum açmıştır. Aynı kullanıcı set edilerek, işlemlere devam edilir.
+            //ToDo : Servis üzerinden gelindiği zaman bunlara gerek yok. Sayfa yükleme ve benzeri?? Ele alınmalıdır.
+
+            if (this.Context.CurrentUser.IsAdmin)
+            {
+                if (!this.Framework.Context.Configuration.IsUserAccessiblePagesLoaded())
+                {
+                    List<AccessiblePageView> userAccessiblePages = (List<AccessiblePageView>)CacheUtility.GetCachedObject(Constants.CacheList.UserAccessiblePages);
+
+                    if (userAccessiblePages == null)
+                    {
+                        userAccessiblePages = this.Framework.Configuration.Page.GetAllPages();
+                        this.Framework.Cache.SetObjectInCache(Constants.CacheList.UserAccessiblePages, userAccessiblePages);
+                    }
+
+                    this.Framework.Context.Configuration.UserAccessiblePages = userAccessiblePages;
+                }
+
+                if (!this.Framework.Context.Configuration.IsUserAccessibleActionsLoaded())
+                {
+                    List<AccessibleActionView> userAccessibleActions = (List<AccessibleActionView>)CacheUtility.GetCachedObject(Constants.CacheList.UserAccessibleActions);
+
+                    if (userAccessibleActions == null)
+                    {
+                        userAccessibleActions = this.Framework.Configuration.Action.GetAllActions();
+                        this.Framework.Cache.SetObjectInCache(Constants.CacheList.UserAccessibleActions, userAccessibleActions);
+                    }
+
+                    this.Framework.Context.Configuration.UserAccessibleActions = userAccessibleActions;
+                }
+            }
+            else
+            {
+                this.Framework.Context.Configuration.UserAccessiblePages = this.Framework.Security.GetUserAccessiblePages(this.Context.CurrentUser);
+                this.Framework.Context.Configuration.UserAccessibleActions = this.Framework.Configuration.Action.GetAllActions();
+            }
+        }
      
 
         #endregion              

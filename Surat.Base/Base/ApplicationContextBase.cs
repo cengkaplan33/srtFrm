@@ -148,6 +148,7 @@ namespace Surat.Base
             get
             {
                 if (currentUser == null)
+                    
                     currentUser = this.ContextOperations.GetCurrentUser();
 
                  return currentUser;
@@ -189,13 +190,13 @@ namespace Surat.Base
 
                     if (entry.State == EntityState.Added)
                     {
-                        auditableEntity.InsertedByUser = this.CurrentUser.UserId;
+                        auditableEntity.InsertedByUser = this.ApplicationContext.ApplicationContext.CurrentUser.UserId;
                         auditableEntity.InsertedDate = TimeUtility.GetCurrentDateTime();
                         auditableEntity.IsActive = true;
                     }
                     else
                     {
-                        auditableEntity.ChangedByUser = this.CurrentUser.UserId;
+                        auditableEntity.ChangedByUser = this.ApplicationContext.ApplicationContext.CurrentUser.UserId;
                         auditableEntity.ChangedDate = TimeUtility.GetCurrentDateTime();
                     }
                 }                            

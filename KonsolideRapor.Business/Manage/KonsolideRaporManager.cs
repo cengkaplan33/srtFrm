@@ -3,6 +3,8 @@ using KonsolideRapor.Base.Manage;
 using KonsolideRapor.Base.Repositories;
 using KonsolideRapor.Common.Application;
 using Surat.Base.Application;
+using Surat.Base.Exceptions;
+using Surat.Base.Model.Entities;
 using Surat.Common.Application;
 using Surat.Common.Security;
 using System;
@@ -19,7 +21,7 @@ namespace KonsolideRapor.Business.Manage
 
         public KonsolideRaporManager(IKonsolideRaporApplicationManager konsolideRaporApplicationmanager)
         {
-
+            this.konsolideRaporApplicationManager = konsolideRaporApplicationmanager;
         }
 
         #endregion
@@ -114,6 +116,48 @@ namespace KonsolideRapor.Business.Manage
 
         #endregion
         #region Methods
+
+        public void SaveBank(Bank bank)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                if (bank.Id == 0)
+                {
+                    bank.IsActive = true;
+                    bank.InsertedDate = DateTime.Now;
+                    bank.InsertedByUser=1;
+                    this.Bank.Add(bank);
+                }
+                //else
+                //{
+                //    SuratUser selectedUser = this.User.GetObjectByParameters(p => p.Id == user.Id);
+                //    if (selectedUser.Password != user.Password)
+                //    {
+                //        selectedUser.LastPasswordChangedDate = DateTime.Now;
+                //        selectedUser.Password = user.Password;
+                //    }
+
+                //    selectedUser.Name = user.Name;
+                //    selectedUser.Notes = user.Notes;
+                //    selectedUser.UserName = user.UserName;
+                //    selectedUser.ChangedDate = DateTime.Now;
+                //    selectedUser.IsActive = user.IsActive;
+                //    selectedUser.IsActiveDirectoryUser = user.IsActiveDirectoryUser;
+                //    selectedUser.IsExternalUser = user.IsExternalUser;
+                //    selectedUser.IsLocked = user.IsLocked;
+                //    this.User.Update(selectedUser);
+                //}
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveBank", this.ApplicationContext.SystemId, exception);
+            }
+        }
 
         #endregion
     }
