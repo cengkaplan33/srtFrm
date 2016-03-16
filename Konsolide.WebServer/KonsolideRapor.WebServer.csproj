@@ -7,8 +7,8 @@
     <ProjectGuid>{A0EB6CF4-0FF3-4463-8178-E56222C2C84C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Konsolide.WebServer</RootNamespace>
-    <AssemblyName>Konsolide.WebServer</AssemblyName>
+    <RootNamespace>KonsolideRapor.WebServer</RootNamespace>
+    <AssemblyName>KonsolideRapor.WebServer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -107,9 +107,21 @@
     <Compile Include="ViewModel\LogoutView.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Konsolide.Web.Common\Konsolide.Web.Common.csproj">
+    <ProjectReference Include="..\Konsolide.Web.Common\KonsolideRapor.Web.Common.csproj">
       <Project>{fab4469a-97eb-4bdb-91ba-da32867304c3}</Project>
-      <Name>Konsolide.Web.Common</Name>
+      <Name>KonsolideRapor.Web.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KonsolideRapor.Base\KonsolideRapor.Base.csproj">
+      <Project>{4989aee2-0ceb-4a36-8945-fcb243941b40}</Project>
+      <Name>KonsolideRapor.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KonsolideRapor.Business\KonsolideRapor.Business.csproj">
+      <Project>{f24c4813-f90e-46d7-b425-97e36db6b539}</Project>
+      <Name>KonsolideRapor.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KonsolideRapor.Common\KonsolideRapor.Common.csproj">
+      <Project>{d8107173-d9ac-42cf-83d0-a922e6e8ce48}</Project>
+      <Name>KonsolideRapor.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Surat.Base\Surat.Base.csproj">
       <Project>{acefb07c-7868-48c1-b97c-efab66222d09}</Project>

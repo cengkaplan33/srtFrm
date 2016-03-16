@@ -1,4 +1,5 @@
-﻿using Konsolide.Web;
+﻿using KonsolideRapor.Business.Application;
+using KonsolideRapor.Web;
 using Surat.Base.Exceptions;
 using Surat.Business.Application;
 using Surat.Business.Base;
@@ -12,7 +13,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 
-namespace Konsolide.WebServer.Application
+namespace KonsolideRapor.WebServer.Application
 {
     public class WebApplicationManager : ApplicationManager
     {
@@ -23,11 +24,13 @@ namespace Konsolide.WebServer.Application
 
         }
 
-        public WebApplicationManager(FrameworkApplicationManager applicationManager)
+        public WebApplicationManager(KonsolideRaporApplicationManager konsolideRaporApplicationManager)
         {
-            if (applicationManager != null)
-                this.framework = applicationManager;
-            else this.framework = InitializeFramework();            
+            if (konsolideRaporApplicationManager != null)
+                this.konsolideRaporApplicationManager = konsolideRaporApplicationManager;
+            else this.konsolideRaporApplicationManager = InitializeKonsolideRapor();
+           
+            //else this.konsolideRapor=InitializeApplicationContext
         }
 
         #endregion
@@ -35,8 +38,8 @@ namespace Konsolide.WebServer.Application
         #region Private Members
 
         private WebApplicationContext context;
-        private FrameworkApplicationManager framework;  
- 
+
+        private KonsolideRaporApplicationManager konsolideRaporApplicationManager;
         #endregion
 
         #region Public Members
@@ -52,14 +55,16 @@ namespace Konsolide.WebServer.Application
             }
         }
 
-        public FrameworkApplicationManager Framework
+      
+
+        public KonsolideRaporApplicationManager KonsolideRapor
         {
             get
             {
-                return framework;
+                return konsolideRaporApplicationManager;
             }
-        }        
-
+        }
+     
         #endregion
 
         #region Static Methods
@@ -78,14 +83,16 @@ namespace Konsolide.WebServer.Application
 
         private WebApplicationContext InitializeApplicationContext()
         {
-            WebApplicationContext context = new WebApplicationContext(this.Framework.Context);
+            WebApplicationContext context = new WebApplicationContext(this.KonsolideRapor.Context);
             
             return context;
         }
  
-        private FrameworkApplicationManager InitializeFramework()
+      
+
+        private KonsolideRaporApplicationManager InitializeKonsolideRapor()
         {
-            FrameworkApplicationManager framework;
+            KonsolideRaporApplicationManager konsolideRapor;
             UserDetailedView currentUser = null;
 
             //Session da user varsa, ona göre framework başlatılacaktır.
@@ -93,12 +100,12 @@ namespace Konsolide.WebServer.Application
             if (HttpContext.Current != null)
                 if (HttpContext.Current.Session["CurrentUser"] != null)
                     currentUser = (UserDetailedView)HttpContext.Current.Session["CurrentUser"];
-            
+
             if (currentUser != null)
-                framework = new FrameworkApplicationManager(currentUser);
-            else framework = new FrameworkApplicationManager();            
-            
-            return framework;
+                konsolideRapor = new KonsolideRaporApplicationManager();
+            else konsolideRapor = new KonsolideRaporApplicationManager();
+
+            return konsolideRapor;
         }
 
         public void Login(string userName, string password)
@@ -106,21 +113,21 @@ namespace Konsolide.WebServer.Application
             UserDetailedView currentUser = null;
             try
             {                
-                currentUser = this.Framework.Security.ValidateUser(userName, password);
+                currentUser = this.KonsolideRapor.Framework.Security.ValidateUser(userName, password);
 
                 if (currentUser != null)
                 {
-                    this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
-                    this.Framework.StartUserSession(currentUser);
+                    this.KonsolideRapor.Framework.Trace.AppendLine(this.KonsolideRapor.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
+                    this.KonsolideRapor.Framework.StartUserSession(currentUser);
                     this.Context.CurrentUser = currentUser;
-                    this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
+                    this.KonsolideRapor.Framework.Trace.AppendLine(this.KonsolideRapor.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
                 }
                 else
                 {
                     this.Context.WrongPasswordProcessCount++;
-                    if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
+                    if (this.Context.WrongPasswordProcessCount == this.KonsolideRapor.Framework.Context.Security.MaxWrongPasswordAttempts)
                     {
-                        this.Framework.Security.SaveUserLock(userName, password, true);
+                        this.KonsolideRapor.Framework.Security.SaveUserLock(userName, password, true);
                     }
                     else throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId, 
                         String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId,Constants.Message.UserNotAuthorized),userName));
@@ -132,22 +139,22 @@ namespace Konsolide.WebServer.Application
             {
 
                 //PublishException(exception);
-                //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
+                //this.KonsolideRapor.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
             }           
         }
 
         public void TraceAppendLine(string systemName, string traceInformation, TraceLevel traceLevel)
         {
-            if (this.Framework.IsContextInitialized)
-                this.Framework.Trace.AppendLine(systemName, traceInformation, traceLevel);
+            if (this.KonsolideRapor.Framework.IsContextInitialized)
+                this.KonsolideRapor.Framework.Trace.AppendLine(systemName, traceInformation, traceLevel);
             //else ToDo: Framework üzerinden Trace yazılamaz. Başka bir yöntem takip edilmelidir.
         }
 
         public string GetGlobalizationKeyValue(int systemId,string globalizationKey)
         {
-            if (this.Framework.IsContextInitialized)
-                return this.Framework.Globalization.GetGlobalizationKeyValue(systemId,globalizationKey);
+            if (this.KonsolideRapor.Framework.IsContextInitialized)
+                return this.KonsolideRapor.Framework.Globalization.GetGlobalizationKeyValue(systemId,globalizationKey);
             else return globalizationKey;
         }
 
@@ -155,20 +162,20 @@ namespace Konsolide.WebServer.Application
         {
 
             if (HttpContext.Current.Request != null)
-                this.Framework.Context.ApplicationName = HttpContext.Current.Request.ServerVariables["APPL_MD_PATH"];
+                this.KonsolideRapor.Framework.Context.ApplicationName = HttpContext.Current.Request.ServerVariables["APPL_MD_PATH"];
             
-            if (string.IsNullOrEmpty(this.Framework.Context.ApplicationName))
-                this.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
+            if (string.IsNullOrEmpty(this.KonsolideRapor.Framework.Context.ApplicationName))
+                this.KonsolideRapor.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
 
-            this.Framework.Context.CurrentVariables = new HttpRequestView(HttpContext.Current.Request);
-            this.Framework.Context.ApplicationBaseType = "Web";
+            this.KonsolideRapor.Framework.Context.CurrentVariables = new HttpRequestView(HttpContext.Current.Request);
+            this.KonsolideRapor.Framework.Context.ApplicationBaseType = "Web";
 
             UserDetailedView currentUser = null;
-            if (this.Framework.IsContextInitialized)
+            if (this.KonsolideRapor.Framework.IsContextInitialized)
             { 
-                if (this.Framework.Context.IsCurrentUserAssigned)
-                    currentUser = this.Framework.Context.CurrentUser;
-              return  this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
+                if (this.KonsolideRapor.Framework.Context.IsCurrentUserAssigned)
+                    currentUser = this.KonsolideRapor.Framework.Context.CurrentUser;
+              return  this.KonsolideRapor.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
             }
             else  return Constants.Message.FrameworkNotInitialized;
             //else ToDo: Framework üzerinden publish edilemez. Başka bir yöntem takip edilmelidir.
@@ -179,11 +186,11 @@ namespace Konsolide.WebServer.Application
             try
             {
                 FormsAuthentication.SignOut();
-                this.Framework.CloseUserSession();
+                this.KonsolideRapor.Framework.CloseUserSession();
             }
             catch (Exception exception)
             {
-                this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, null);
+                this.KonsolideRapor.Framework.Exception.Publish(this.Context.FrameworkContext, exception, null);
                 throw exception;
             }  
         }       
@@ -195,7 +202,7 @@ namespace Konsolide.WebServer.Application
         public override void Dispose()
         {
             base.Dispose();
-            this.Framework.Dispose();
+            this.KonsolideRapor.Framework.Dispose();
         }
 
         #endregion

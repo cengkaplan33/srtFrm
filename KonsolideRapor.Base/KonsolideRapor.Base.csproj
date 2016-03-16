@@ -48,16 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\KonsolideDbContext.cs" />
+    <Compile Include="Application\KonsolideRaporContextFactory.cs" />
+    <Compile Include="Application\KonsolideRaporApplicationContext.cs" />
+    <Compile Include="Configuration\KonsolideRaporConfigurationContext.cs" />
+    <Compile Include="Manage\KonsolideRaporContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\KonsolideRaporDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\Entities\Bank.cs" />
+    <Compile Include="Repositories\BankRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Application\" />
     <Folder Include="Base\" />
-    <Folder Include="Configuration\" />
-    <Folder Include="Manage\" />
-    <Folder Include="Model\Entities\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -67,6 +69,10 @@
     <ProjectReference Include="..\KonsolideRapor.Common\KonsolideRapor.Common.csproj">
       <Project>{d8107173-d9ac-42cf-83d0-a922e6e8ce48}</Project>
       <Name>KonsolideRapor.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Surat.Base\Surat.Base.csproj">
+      <Project>{acefb07c-7868-48c1-b97c-efab66222d09}</Project>
+      <Name>Surat.Base</Name>
     </ProjectReference>
     <ProjectReference Include="..\Surat.Common\Surat.Common.csproj">
       <Project>{340fc2e4-ad67-428a-b302-9ef7a93decd1}</Project>

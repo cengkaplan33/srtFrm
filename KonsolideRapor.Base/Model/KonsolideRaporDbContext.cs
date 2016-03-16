@@ -5,17 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KonsolideRapor.Common.Data;
+using Surat.Base.Model.Entities;
 namespace KonsolideRapor.Base.Model
 {
-    public class KonsolideDbContext:DbContext
+    public class KonsolideRaporDbContext:DbContext
     {
         #region Constructor
 
-        public KonsolideDbContext()
+        public KonsolideRaporDbContext()
             : base("name=SuratFrameworkConnection")
         {
-            Database.SetInitializer<KonsolideDbContext>(null);
-            this.systemName = KonsolideConstants.Application.KonsolideSystemName;
+            Database.SetInitializer<KonsolideRaporDbContext>(null);
+            this.systemName = KonsolideRaporConstants.Application.PlatformSystemName;
         }
 
         #endregion
@@ -33,7 +34,7 @@ namespace KonsolideRapor.Base.Model
             get { return systemName; }
         }
 
-      
+        public DbSet<Bank> Bankalar { get; set; }
 
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using Surat.Base;
+﻿using KonsolideRapor.Base.Application;
+using Surat.Base;
 using Surat.Base.Application;
 using Surat.Base.Exceptions;
 using Surat.Common.Application;
@@ -9,24 +10,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-
-namespace Konsolide.WebServer.Application
+using KonsolideRapor.Common.Data;
+namespace KonsolideRapor.WebServer.Application
 {
     public class WebApplicationContext : IDisposable
     {
         #region Constructor
 
-        public WebApplicationContext(FrameworkContext frameworkContextParameter)           
+        public WebApplicationContext(KonsolideRaporApplicationContext konsolideRaporApplicationContextParameter)           
         {            
-            frameworkContext = frameworkContextParameter;
-            systemName = Constants.Application.WebFrameworkSystemName;
-            systemId = frameworkContext.Configuration.GetSystemIdByName(Constants.Application.WebFrameworkSystemName);
+            frameworkContext = konsolideRaporApplicationContextParameter.FrameworkContext;
+            konsolideRaporApplicationContext = konsolideRaporApplicationContextParameter;
+            systemName = KonsolideRaporConstants.Application.KonsolideRaporWebSystemName;
+            systemId = frameworkContext.Configuration.GetSystemIdByName(KonsolideRaporConstants.Application.KonsolideRaporWebSystemName);
         }
         #endregion
 
         #region Private Members
 
         private FrameworkContext frameworkContext;
+        private KonsolideRaporApplicationContext konsolideRaporApplicationContext;
         private string systemName;
         private int systemId;
         private byte wrongPasswordProcessCount;
@@ -59,7 +62,13 @@ namespace Konsolide.WebServer.Application
                 return frameworkContext;
             }
         }
-
+        public KonsolideRaporApplicationContext KonsolideRaporContext
+        {
+            get
+            {
+                return konsolideRaporApplicationContext;
+            }
+        }
         public Culture CurrentCulture
         {
             get

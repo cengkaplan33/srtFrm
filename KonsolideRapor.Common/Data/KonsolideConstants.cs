@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace KonsolideRapor.Common.Data
 {
-    public class KonsolideConstants
+    public class KonsolideRaporConstants
     {
         #region Application
 
         public class Application
         {
-            public const String KonsolideSystemName = "KonsolideRapor";
-          
+            public const String PlatformSystemName = "SuratApplicationPlatform";
+            public const String KonsolideRaporSystemName = "KonsolideRapor";
+            public const String KonsolideRaporWebSystemName = "KonsolideRaporWeb";
         }
 
         #endregion   

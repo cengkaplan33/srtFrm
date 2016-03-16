@@ -1,7 +1,7 @@
 ﻿using Surat.Business.Log;
 using Surat.Common.Data;
-using Konsolide.WebServer.Base;
-using Konsolide.WebServer.Helpers;
+using KonsolideRapor.WebServer.Base;
+using KonsolideRapor.WebServer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Konsolide.WebServer.ActionFilters
+namespace KonsolideRapor.WebServer.ActionFilters
 {
     public class LogActionFilter : ActionFilterAttribute, IActionFilter
     {

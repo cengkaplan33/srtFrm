@@ -1,7 +1,7 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.ViewModel;
-using Konsolide.WebServer.Application;
-using Konsolide.WebServer.Base;
+using KonsolideRapor.WebServer.Application;
+using KonsolideRapor.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
-namespace Konsolide.WebServer.Controllers
+namespace KonsolideRapor.WebServer.Controllers
 {
     public class AccountController : KonsolideControllerBase
     {
@@ -36,7 +36,7 @@ namespace Konsolide.WebServer.Controllers
                 ViewBag.Message = this.ExceptionMessage;
 
             //Set CurrentCulture
-            this.WebApplicationManager.Context.CurrentCulture = this.WebApplicationManager.Framework.Globalization.Context.CurrentCulture;
+            this.WebApplicationManager.Context.CurrentCulture = this.WebApplicationManager.KonsolideRapor.Framework.Globalization.Context.CurrentCulture;
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace Konsolide.WebServer.Controllers
                 Session.Clear();
                 Session.Abandon();
                 FormsAuthentication.SignOut();
-                if (this.WebApplicationManager.Framework.Context.IsCurrentUserAssigned)
+                if (this.WebApplicationManager.KonsolideRapor.Framework.Context.IsCurrentUserAssigned)
                     this.WebApplicationManager.Logout();
                 //ToDo : else : Aktif session nasıl kapatılabilir.                       
                 

@@ -1,8 +1,8 @@
 ﻿using Surat.Business.Log;
 using Surat.Common.Data;
-using Konsolide.Web.Common;
-using Konsolide.WebServer.Base;
-using Konsolide.WebServer.Helpers;
+using KonsolideRapor.Web.Common;
+using KonsolideRapor.WebServer.Base;
+using KonsolideRapor.WebServer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Konsolide.WebServer.ActionFilters
+namespace KonsolideRapor.WebServer.ActionFilters
 {
     public class KonsolideAuthorizationFilter : AuthorizeAttribute
     {
@@ -30,8 +30,8 @@ namespace Konsolide.WebServer.ActionFilters
                 try
                 {
                     //Session timeout kontrolü - CurrentUser bulunamaz.                                  
-                    if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
-                        !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
+                    if (!controller.WebApplicationManager.KonsolideRapor.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
+                        !controller.WebApplicationManager.KonsolideRapor.Framework.Security.HasActionRight(action))
                     {
                         filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
                         return;

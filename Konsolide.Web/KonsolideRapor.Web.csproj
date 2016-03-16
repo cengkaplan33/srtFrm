@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Konsolide.Web</RootNamespace>
-    <AssemblyName>Konsolide.Web</AssemblyName>
+    <RootNamespace>KonsolideRapor.Web</RootNamespace>
+    <AssemblyName>KonsolideRapor.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -3194,13 +3194,13 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Konsolide.Web.Common\Konsolide.Web.Common.csproj">
+    <ProjectReference Include="..\Konsolide.Web.Common\KonsolideRapor.Web.Common.csproj">
       <Project>{fab4469a-97eb-4bdb-91ba-da32867304c3}</Project>
-      <Name>Konsolide.Web.Common</Name>
+      <Name>KonsolideRapor.Web.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Konsolide.WebServer\Konsolide.WebServer.csproj">
+    <ProjectReference Include="..\Konsolide.WebServer\KonsolideRapor.WebServer.csproj">
       <Project>{a0eb6cf4-0ff3-4463-8178-e56222c2c84c}</Project>
-      <Name>Konsolide.WebServer</Name>
+      <Name>KonsolideRapor.WebServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Surat.Base\Surat.Base.csproj">
       <Project>{acefb07c-7868-48c1-b97c-efab66222d09}</Project>

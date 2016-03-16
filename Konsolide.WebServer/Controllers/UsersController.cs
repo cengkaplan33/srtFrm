@@ -1,9 +1,9 @@
-﻿using Konsolide.WebServer.Base;
+﻿using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Base.Repositories;
 using Surat.Common.Data;
-using Konsolide.WebServer.Application;
-using Konsolide.WebServer.Base;
+using KonsolideRapor.WebServer.Application;
+using KonsolideRapor.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +46,7 @@ namespace Surat.WebServer.Controllers
             
             try
             {
-                var users = this.WebApplicationManager.Framework.Security.User.GetUsersActive();
+                var users = this.WebApplicationManager.KonsolideRapor.Framework.Security.User.GetUsersActive();
                var total = users.Count();
                var data =users.OrderBy(m=>m.Id).Skip(skip).Take(pageSize).ToList();
                return Json(new { total = total, data = data },JsonRequestBehavior.AllowGet);
@@ -54,7 +54,7 @@ namespace Surat.WebServer.Controllers
             catch (Exception exception)
             {            
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.KonsolideRapor.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
@@ -64,14 +64,14 @@ namespace Surat.WebServer.Controllers
             try
             {
              
-                    this.WebApplicationManager.Framework.Security.SaveUser(user);
+                    this.WebApplicationManager.KonsolideRapor.Framework.Security.SaveUser(user);
 
                     return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {           
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.KonsolideRapor.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
@@ -81,14 +81,14 @@ namespace Surat.WebServer.Controllers
             try
             {
 
-                this.WebApplicationManager.Framework.Security.SaveUser(user);
+                this.WebApplicationManager.KonsolideRapor.Framework.Security.SaveUser(user);
 
                 return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.KonsolideRapor.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
@@ -98,14 +98,14 @@ namespace Surat.WebServer.Controllers
             try
             {
                
-                this.WebApplicationManager.Framework.Security.DeleteUser(users);
+                this.WebApplicationManager.KonsolideRapor.Framework.Security.DeleteUser(users);
 
                 return Json(new {Result="Kayıt başarılı bir şekilde silindi"},JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {            
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.KonsolideRapor.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 

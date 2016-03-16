@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Konsolide.WebServer.Base
+namespace KonsolideRapor.WebServer.Base
 {
     public class KonsolideWebViewPageBase<T> : WebViewPage<T>
     {   
