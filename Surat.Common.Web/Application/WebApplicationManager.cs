@@ -5,11 +5,13 @@ using Surat.Common.Data;
 using Surat.Common.ViewModel;
 using Surat.Web;
 using System;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using System.Linq;
 
 namespace Surat.WebServer.Application
 {
@@ -68,7 +70,16 @@ namespace Surat.WebServer.Application
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfiguration.RegisterRoutes(RouteTable.Routes);
-            BundleConfiguration.RegisterBundles(BundleTable.Bundles); 
+            BundleConfiguration.RegisterBundles(BundleTable.Bundles);
+
+            //Typeof(
+            //var sss= new Surat.WebServer.Base.SuratControllerBase();
+            //Assembly asm = Assembly.GetExecutingAssembly();
+            //Surat.WebServer.Base.SuratControllerBase
+            //var ssss = asm.GetTypes()
+            //    .Where(type => typeof(Controller).IsAssignableFrom(type)) //filter controllers
+            //    .SelectMany(type => type.GetMethods())
+            //    .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
         }
 
         #endregion
@@ -111,6 +122,7 @@ namespace Surat.WebServer.Application
                 {
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
                     this.Framework.StartUserSession(currentUser);
+                    //this.Framework.SetCurrentUser(currentUser);
                     this.Context.CurrentUser = currentUser;
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
                 }

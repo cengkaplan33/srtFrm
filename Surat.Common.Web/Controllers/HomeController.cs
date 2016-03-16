@@ -1,4 +1,5 @@
-﻿using Surat.WebServer.Application;
+﻿using Surat.WebServer.ActionFilters;
+using Surat.WebServer.Application;
 using Surat.WebServer.Base;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [SuratAuthorizationFilter]
         public ActionResult Spa()
         {
 
@@ -46,6 +48,7 @@ namespace Surat.WebServer.Controllers
             return View();
         }
 
+        [SuratAuthorizationFilter]
         public ActionResult Index()
         {
             return View();

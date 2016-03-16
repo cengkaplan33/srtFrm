@@ -282,6 +282,21 @@ namespace Surat.Business.Security
             return this.ApplicationContext.Configuration.UserAccessibleActions.Any(p => p.TypeName == actionTypeName);          
         }
 
+        public bool HasPageRight(string pageName)
+        {
+            if (this.User.IsAdmin(this.ApplicationContext.CurrentUser.ShortName, this.ApplicationContext.CurrentUser.UserId))
+                return true;
+
+            return this.ApplicationContext.Configuration.UserAccessiblePages.Any(p => (p.ObjectTypePrefix == pageName || p.PageName== pageName));
+        }
+
+        public bool HasRight(string actionName)
+        {
+            if (HasActionRight(actionName) || HasPageRight(actionName))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #region User
@@ -308,18 +323,20 @@ namespace Surat.Business.Security
         {
             List<AccessiblePageView> accessiblePages;
 
-            string query = @"	select DISTINCT suratPages.Id as PageId,suratPages.SystemId,suratPages.Name as PageName,suratPages.ObjectTypePrefix,suratPages.ObjectTypeName,
-	suratSystems.Name as SystemName,suratSystems.ParentId as SystemParentId,suratPages.SmallImagePath,suratPages.BigImagePath
-	from dbo.Pages suratPages
-	INNER JOIN SuratSystems suratSystems
-	ON suratPages.SystemId = suratSystems.Id	
-	LEFT JOIN AccessibleItems accessibleItems
-	ON suratPages.Id = accessibleItems.DBObjectId
-	where 
-	(suratPages.IsAccessControlRequired = 0)
+            string query = @"	
+select DISTINCT suratPages.Id as PageId,suratPages.SystemId,suratPages.Name as PageName,suratPages.ObjectTypePrefix,suratPages.ObjectTypeName,
+suratSystems.Name as SystemName,suratSystems.ParentId as SystemParentId,suratPages.SmallImagePath,suratPages.BigImagePath
+from dbo.Pages suratPages
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id	
+LEFT JOIN AccessibleItems accessibleItems ON suratPages.Id = accessibleItems.DBObjectId
+where 
+    suratPages.IsActive = 1
+    AND 
+	(
+	suratPages.IsAccessControlRequired = 0
 	OR
-	(suratPages.IsActive = 1)
-	AND
+	(
+	suratPages.IsAccessControlRequired = 1 and 
 	(accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
 	AND
 	(accessibleItems.RelationGroupId IN 
@@ -327,6 +344,8 @@ namespace Surat.Business.Security
 		  Select relationGroups.Id from dbo.RelationGroups relationGroups
 		  where (relationGroups.UserId = @UserId)
 		  UNION
+
+            /*** role den gelen erişim hakları ***/
 		  Select relationGroups.Id from dbo.RelationGroups relationGroups
 		  where 
 		  (		  	
@@ -337,6 +356,7 @@ namespace Surat.Business.Security
 		     )
 		  )
 		  UNION
+            /*** workgroup tan gelen erişim hakları ***/
 		  Select relationGroups.Id from dbo.RelationGroups relationGroups
 		  where 
 		  (
@@ -347,7 +367,7 @@ namespace Surat.Business.Security
 			 )
 		  )
 		 )
-	)";
+	)))";
             accessiblePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessiblePageView>(
                                 query, new SqlParameter("@UserId", currentUser.UserId)).ToList(); 
 

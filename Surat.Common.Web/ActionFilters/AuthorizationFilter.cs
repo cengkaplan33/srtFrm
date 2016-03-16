@@ -31,7 +31,7 @@ namespace Surat.WebServer.ActionFilters
                 {
                     //Session timeout kontrolü - CurrentUser bulunamaz.                                  
                     if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
-                        !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
+                        !controller.WebApplicationManager.Framework.Security.HasRight(action))
                     {
                         filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
                         return;
