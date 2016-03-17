@@ -29,7 +29,11 @@ namespace KonsolideRapor.WebServer.Controllers
             #endregion
 
             #region Methods
-
+            public ActionResult Index()
+            {
+                return View();
+            }
+            [AllowAnonymous]
             public ActionResult Spa()
             {
 
@@ -37,7 +41,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 {
                    
                     ViewBag.Title = this.WebApplicationManager.KonsolideRapor.Framework.Context.Product.CustomerProductName;
-                    ViewBag.SessionStart = this.WebApplicationManager.KonsolideRapor.Framework.Context.CurrentUser.SessionStart;
+                   ViewBag.SessionStart = this.WebApplicationManager.KonsolideRapor.Framework.Context.CurrentUser.SessionStart;
                     
                 }
                 catch (Exception)
@@ -49,10 +53,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 return View();
             }
 
-            public ActionResult Index()
-            {
-                return View();
-            }
+         
             #endregion
 
         }

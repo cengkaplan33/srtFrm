@@ -33,7 +33,7 @@ namespace KonsolideRapor.WebServer.ActionFilters
                     if (!controller.WebApplicationManager.KonsolideRapor.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
                         !controller.WebApplicationManager.KonsolideRapor.Framework.Security.HasActionRight(action))
                     {
-                        filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
+                      filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
                         return;
                     }
                 }

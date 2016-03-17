@@ -19,9 +19,9 @@ namespace KonsolideRapor.Business.Manage
     {
         #region Constructor
 
-        public KonsolideRaporManager(IKonsolideRaporApplicationManager konsolideRaporApplicationmanager)
+        public KonsolideRaporManager(IKonsolideRaporApplicationManager konsolideRaporApplicationManager)
         {
-            this.konsolideRaporApplicationManager = konsolideRaporApplicationmanager;
+            this.konsolideRaporApplicationManager = konsolideRaporApplicationManager;
         }
 
         #endregion
@@ -34,7 +34,6 @@ namespace KonsolideRapor.Business.Manage
         private FrameworkContext frameworkContext;
         private ISecurityManager securityManager;
         private BankRepository bank;
-
         #endregion
 
         #region Public Members
@@ -103,6 +102,7 @@ namespace KonsolideRapor.Business.Manage
 
         #region Repositories
 
+
         public BankRepository Bank
         {
             get
@@ -115,50 +115,81 @@ namespace KonsolideRapor.Business.Manage
         }
 
         #endregion
+
         #region Methods
 
-        public void SaveBank(Bank bank)
+       public List<Bank> GetBankList()
         {
-            int initializedDBContextId;
             try
             {
-                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-
-                if (bank.Id == 0)
-                {
-                    bank.IsActive = true;
-                    bank.InsertedDate = DateTime.Now;
-                    bank.InsertedByUser=1;
-                    this.Bank.Add(bank);
-                }
-                //else
-                //{
-                //    SuratUser selectedUser = this.User.GetObjectByParameters(p => p.Id == user.Id);
-                //    if (selectedUser.Password != user.Password)
-                //    {
-                //        selectedUser.LastPasswordChangedDate = DateTime.Now;
-                //        selectedUser.Password = user.Password;
-                //    }
-
-                //    selectedUser.Name = user.Name;
-                //    selectedUser.Notes = user.Notes;
-                //    selectedUser.UserName = user.UserName;
-                //    selectedUser.ChangedDate = DateTime.Now;
-                //    selectedUser.IsActive = user.IsActive;
-                //    selectedUser.IsActiveDirectoryUser = user.IsActiveDirectoryUser;
-                //    selectedUser.IsExternalUser = user.IsExternalUser;
-                //    selectedUser.IsLocked = user.IsLocked;
-                //    this.User.Update(selectedUser);
-                //}
-
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                return this.Bank.GetAll().ToList();
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext, "SaveBank", this.ApplicationContext.SystemId, exception);
+                throw new EntityProcessException(this.FrameworkContext, "GetBankList", this.ApplicationContext.SystemId, exception);
             }
         }
+       public List<Bank> GetActiveBankList()
+       {
+           try
+           {
+               return this.Bank.GetObjectsByParameters(m=>m.IsActive==true).ToList();
+           }
+           catch (Exception exception)
+           {
+               throw new EntityProcessException(this.FrameworkContext, "GetBankList", this.ApplicationContext.SystemId, exception);
+           }
+       }
+       public void SaveBank(Bank bank)
+       {
+           int initializedDBContextId;
+           try
+           {
+               initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
+               if (bank.Id == 0)
+               {
+
+                   this.Bank.Add(bank);
+               }
+               else
+               {
+                   Bank selectedBank = this.Bank.GetObjectByParameters(p => p.Id == bank.Id);
+                   
+                   selectedBank.IsActive = bank.IsActive;
+                   selectedBank.Code = bank.Code;
+                   selectedBank.Name = bank.Name;
+                   this.Bank.Update(selectedBank);
+               }
+
+               this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+           }
+           catch (Exception exception)
+           {
+               throw new EntityProcessException(this.FrameworkContext, "SaveBank", this.ApplicationContext.SystemId, exception);
+           }
+       }
+       public void DestroyBank(Bank bank)
+       {
+           int initializedDBContextId;
+           try
+           {
+               initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+              
+                   Bank selectedBank = this.Bank.GetObjectByParameters(p => p.Id == bank.Id);
+
+                   selectedBank.IsActive =false;
+                   this.Bank.Update(selectedBank);
+
+               this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+           }
+           catch (Exception exception)
+           {
+               throw new EntityProcessException(this.FrameworkContext, "SaveBank", this.ApplicationContext.SystemId, exception);
+           }
+       }
         #endregion
+
     }
 }

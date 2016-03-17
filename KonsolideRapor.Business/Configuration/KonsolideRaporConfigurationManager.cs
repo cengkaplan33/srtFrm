@@ -17,7 +17,7 @@ namespace KonsolideRapor.Business.Configuration
 
         public KonsolideRaporConfigurationManager(IKonsolideRaporApplicationManager konsolideRaporApplicationManager)
         {
-            
+
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace KonsolideRapor.Business.Configuration
 
         #endregion
 
-        #region Public Members        
+        #region Public Members
 
         public IKonsolideRaporApplicationManager KonsolideRaporApplicationManager
         {
@@ -87,12 +87,13 @@ namespace KonsolideRapor.Business.Configuration
 
         #region Repository
 
-      
+   
 
         #endregion
 
         #region Methods
 
         #endregion
+
     }
 }

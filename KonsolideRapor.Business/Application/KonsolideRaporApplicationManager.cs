@@ -18,25 +18,20 @@ namespace KonsolideRapor.Business.Application
 {
     public class KonsolideRaporApplicationManager : ApplicationManager, IKonsolideRaporApplicationManager
     {
-          #region Constructor
 
-        public KonsolideRaporApplicationManager():this(null,null)
+        #region Constructor
+
+        public KonsolideRaporApplicationManager()
+            : this(null)
         {
 
         }
 
-        public KonsolideRaporApplicationManager(FrameworkApplicationManager applicationManager, UserDetailedView currentUser)
+        public KonsolideRaporApplicationManager(FrameworkApplicationManager applicationManager)
         {
             if (applicationManager != null)
-           
                 this.framework = applicationManager;
-                
             else this.framework = InitializeFramework();
-            if (currentUser != null)
-            {
-                this.Context.CurrentUser = currentUser;
-                InitializeUserRelatedContext();
-            }
         }
 
         #endregion
@@ -46,9 +41,8 @@ namespace KonsolideRapor.Business.Application
         private KonsolideRaporApplicationContext context;
         private FrameworkApplicationManager framework;
         private KonsolideRaporManager konsolideRaporManager;
-      
-        private KonsolideRaporConfigurationManager configurationManager;        
- 
+        private KonsolideRaporConfigurationManager configurationManager;
+
         #endregion
 
         #region Public Members
@@ -86,7 +80,7 @@ namespace KonsolideRapor.Business.Application
             }
         }
 
-    
+       
 
         public KonsolideRaporConfigurationManager Configuration
         {
@@ -99,7 +93,8 @@ namespace KonsolideRapor.Business.Application
             }
         }
 
-      
+
+
         #endregion
 
         #region IKonsolideRaporApplicationManager
@@ -115,7 +110,7 @@ namespace KonsolideRapor.Business.Application
         }
 
         #endregion
-        
+
         #region Methods
 
         private FrameworkApplicationManager InitializeFramework()
@@ -141,7 +136,7 @@ namespace KonsolideRapor.Business.Application
         }
 
         private void InitializeKonsolideRaporManager()
-        {            
+        {
             konsolideRaporManager = new KonsolideRaporManager(this);
             this.Framework.Trace.AppendLine(this.Context.SystemName, "KonsolideRaporManager Initialized.", TraceLevel.Basic);
         }
@@ -152,57 +147,18 @@ namespace KonsolideRapor.Business.Application
             this.Framework.Trace.AppendLine(this.Context.SystemName, "ConfigurationManager Initialized.", TraceLevel.Basic);
         }
 
-        private void InitializeUserRelatedContext()
-        {
-            //Framework var olan bir kullanıcı ile başlatıldığında kullanılır. Kullanıcı oturum açmıştır. Aynı kullanıcı set edilerek, işlemlere devam edilir.
-            //ToDo : Servis üzerinden gelindiği zaman bunlara gerek yok. Sayfa yükleme ve benzeri?? Ele alınmalıdır.
+      
 
-            if (this.Context.CurrentUser.IsAdmin)
-            {
-                if (!this.Framework.Context.Configuration.IsUserAccessiblePagesLoaded())
-                {
-                    List<AccessiblePageView> userAccessiblePages = (List<AccessiblePageView>)CacheUtility.GetCachedObject(Constants.CacheList.UserAccessiblePages);
-
-                    if (userAccessiblePages == null)
-                    {
-                        userAccessiblePages = this.Framework.Configuration.Page.GetAllPages();
-                        this.Framework.Cache.SetObjectInCache(Constants.CacheList.UserAccessiblePages, userAccessiblePages);
-                    }
-
-                    this.Framework.Context.Configuration.UserAccessiblePages = userAccessiblePages;
-                }
-
-                if (!this.Framework.Context.Configuration.IsUserAccessibleActionsLoaded())
-                {
-                    List<AccessibleActionView> userAccessibleActions = (List<AccessibleActionView>)CacheUtility.GetCachedObject(Constants.CacheList.UserAccessibleActions);
-
-                    if (userAccessibleActions == null)
-                    {
-                        userAccessibleActions = this.Framework.Configuration.Action.GetAllActions();
-                        this.Framework.Cache.SetObjectInCache(Constants.CacheList.UserAccessibleActions, userAccessibleActions);
-                    }
-
-                    this.Framework.Context.Configuration.UserAccessibleActions = userAccessibleActions;
-                }
-            }
-            else
-            {
-                this.Framework.Context.Configuration.UserAccessiblePages = this.Framework.Security.GetUserAccessiblePages(this.Context.CurrentUser);
-                this.Framework.Context.Configuration.UserAccessibleActions = this.Framework.Configuration.Action.GetAllActions();
-            }
-        }
-     
-
-        #endregion              
+        #endregion
 
         #region Dispose
-        
+
         public override void Dispose()
         {
             this.Framework.Trace.WriteTraceToFile();
-            this.Context.Dispose();            
+            this.Context.Dispose();
         }
 
-        #endregion        
+        #endregion
     }
 }

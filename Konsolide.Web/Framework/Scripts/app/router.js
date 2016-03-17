@@ -7,11 +7,12 @@ define(['kendo'],
         layout.render($("#app"));
 
         
-        router.route("/", function() {
-            require(['text!/home/index'], function(view) {
-                loadView(null, view);
-            });
-        });
+        //router.route("/", function() {
+        //    require(['text!/home/index'], function(view) {
+        //        loadView(null, view);
+        //    });
+        //});
+      
         router.route("/Users/Index", function () {
             require(['user-indexViewModel', 'text!/Users/Index'], function (viewModel, view) {
                 loadView(viewModel, view, function () {
@@ -26,53 +27,25 @@ define(['kendo'],
 
             });
         });
-        router.route("/Workgroups/Index", function () {
-            require(['workgroup-indexViewModel', 'text!/Workgroups/Index'], function (viewModel, view) {
+        router.route("/Bankalar/Index", function () {
+            require(['bankalar-indexViewModel', 'text!/Bankalar/Index'], function (viewModel, view) {
                 loadView(viewModel, view, function () {
-                    kendo.bind($("#workgroupTree"), viewModel);
+                    kendo.bind($("#bankgrid").find(".k-grid-toolbar"), viewModel);
                 });
             });
         });
-        router.route("/Workgroups/Edit/:status/:id", function () {
-            require(['workgroup-editViewModel', 'text!/Workgroups/Edit'], function (viewModel, view) {
+        router.route("/Bankalar/Edit/:id", function () {
+            require(['bankalar-editViewModel', 'text!/Bankalar/Edit'], function (viewModel, view) {
                 loadView(viewModel.loadData(), view);
                 kendo.bind($("#form"), viewModel);
 
             });
         });
-        router.route("/Roles/Index", function () {
-            require(['roles-indexViewModel', 'text!/Roles/Index'], function (viewModel, view) {
-                loadView(viewModel, view, function () {
-                    kendo.bind($("#rolesgrid").find(".k-grid-toolbar"), viewModel);
-                });
-            });
-        });
-        router.route("/Roles/Edit/:id", function () {
-            require(['roles-editViewModel', 'text!/Roles/Edit'], function (viewModel, view) {
-                loadView(viewModel.loadData(), view);
-                kendo.bind($("#form"), viewModel);
-
-            });
-        });
-        router.route("/Systems/Index", function () {
-            require(['systems-indexViewModel', 'text!/Systems/Index'], function (viewModel, view) {
-                loadView(viewModel, view, function () {
-                    kendo.bind($("#systemsTree"), viewModel);
-                });
-            });
-        });
-        router.route("/Systems/Edit/:status/:id", function () {
-            require(['systems-editViewModel', 'text!/Systems/Edit'], function (viewModel, view) {
-                loadView(viewModel.loadData(), view);
-                kendo.bind($("#form"), viewModel);
-
-            });
-        });
-        router.route("/home/index", function() {
-            require(['text!/home/index'], function(view) {
-                loadView(null, view);
-            });
-        });
+        //router.route("/home/index", function() {
+        //    require(['text!/home/index'], function(view) {
+        //        loadView(null, view);
+        //    });
+        //});
 
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {

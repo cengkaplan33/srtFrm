@@ -31,6 +31,7 @@ namespace KonsolideRapor.WebServer.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {            
+            
             ViewBag.ReturnUrl = returnUrl;
             if (!string.IsNullOrEmpty(this.ExceptionMessage))
                 ViewBag.Message = this.ExceptionMessage;
@@ -46,12 +47,7 @@ namespace KonsolideRapor.WebServer.Controllers
             try
             {
                 this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password);
-                Bank bnk = new Bank() { 
-                Code="test",
-                Name="test"
 
-                };
-                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveBank(bnk);
                 if (returnUrl == null)
                 {
                     return Json(new { returnUrl = "/" },JsonRequestBehavior.AllowGet);
@@ -59,7 +55,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 }
                 else
                 {
-                    return Json(new { returnUrl = returnUrl });                    
+                    return Json(new { returnUrl = returnUrl },JsonRequestBehavior.AllowGet);                    
                 }
             }
             catch (Exception exception)
@@ -80,12 +76,12 @@ namespace KonsolideRapor.WebServer.Controllers
                     this.WebApplicationManager.Logout();
                 //ToDo : else : Aktif session nasıl kapatılabilir.                       
                 
-                return Json(new { sonuc="Çıkış işleminiz gerçekleştirildi"});
+                return Json(new { sonuc="Çıkış işleminiz gerçekleştirildi"},JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { sonuc = this.PublishException(exception)});
+                return Json(new { sonuc = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
             }
         }
 

@@ -17,10 +17,9 @@ namespace KonsolideRapor.WebServer.Application
     {
         #region Constructor
 
-        public WebApplicationContext(KonsolideRaporApplicationContext konsolideRaporApplicationContextParameter)           
-        {            
-            frameworkContext = konsolideRaporApplicationContextParameter.FrameworkContext;
-            konsolideRaporApplicationContext = konsolideRaporApplicationContextParameter;
+        public WebApplicationContext(FrameworkContext frameworkContextParameter)
+        {
+            frameworkContext = frameworkContextParameter;
             systemName = KonsolideRaporConstants.Application.KonsolideRaporWebSystemName;
             systemId = frameworkContext.Configuration.GetSystemIdByName(KonsolideRaporConstants.Application.KonsolideRaporWebSystemName);
         }
@@ -29,12 +28,11 @@ namespace KonsolideRapor.WebServer.Application
         #region Private Members
 
         private FrameworkContext frameworkContext;
-        private KonsolideRaporApplicationContext konsolideRaporApplicationContext;
         private string systemName;
         private int systemId;
         private byte wrongPasswordProcessCount;
         private Culture currentCulture;
-
+        private KonsolideRaporApplicationContext konsolideRaporApplicationContext;
         #endregion
 
         #region Public Members
@@ -62,13 +60,14 @@ namespace KonsolideRapor.WebServer.Application
                 return frameworkContext;
             }
         }
-        public KonsolideRaporApplicationContext KonsolideRaporContext
+        public KonsolideRaporApplicationContext  KonsolideRaporApplicationContext
         {
             get
             {
                 return konsolideRaporApplicationContext;
             }
         }
+        
         public Culture CurrentCulture
         {
             get
@@ -99,31 +98,31 @@ namespace KonsolideRapor.WebServer.Application
                 return wrongPasswordProcessCount;
             }
             set
-            {                
+            {
                 wrongPasswordProcessCount = value;
                 if (HttpContext.Current != null)
-                    HttpContext.Current.Session["WrongPasswordProcessCount"] = wrongPasswordProcessCount;   
+                    HttpContext.Current.Session["WrongPasswordProcessCount"] = wrongPasswordProcessCount;
             }
         }
 
         public UserDetailedView CurrentUser
-        { 
+        {
             get
-            { 
+            {
                 return this.FrameworkContext.CurrentUser;
             }
             set
-            {      
+            {
                 if (HttpContext.Current != null)
-                    HttpContext.Current.Session["CurrentUser"] = value;                
+                    HttpContext.Current.Session["CurrentUser"] = value;
             }
         }
 
-        #endregion       
+        #endregion
 
         #region Methods
-        
-        #endregion        
+
+        #endregion
 
         #region IDisposable
 
