@@ -61,6 +61,7 @@
       <DependentUpon>201603180936152_V11.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    
     <Compile Include="Model\Entities\PaymentCollecting.cs" />
     <Compile Include="Model\KonsolideRaporDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
