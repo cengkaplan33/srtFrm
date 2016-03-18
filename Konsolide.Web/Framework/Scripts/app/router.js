@@ -41,6 +41,22 @@ define(['kendo'],
 
             });
         });
+
+        router.route("/PaymentCollecting/Index", function () {
+            require(['paymentCollecting-indexViewModel', 'text!/paymentCollecting/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#payColgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+        router.route("/PaymentCollecting/Edit/:id", function () {
+            require(['paymentCollecting-editViewModel', 'text!/paymentCollecting/Edit'], function (viewModel, view) {
+                loadView(viewModel.loadData(), view);
+                kendo.bind($("#form"), viewModel);
+
+            });
+        });
         //router.route("/home/index", function() {
         //    require(['text!/home/index'], function(view) {
         //        loadView(null, view);

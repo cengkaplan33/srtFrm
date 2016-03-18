@@ -7,15 +7,19 @@
         'router': '/Framework/Scripts/app/router',
         //models
         'userModel': 'models/userModel',       
-        'bankModel':'models/bankModel',
+        'bankModel': 'models/bankModel',
+        'paymentCollectingModel': 'models/paymentCollectingModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
         'bankalar-indexViewModel': 'viewModels/bankalar/indexViewModel',
         'bankalar-editViewModel': 'viewModels/bankalar/editViewModel',
+        'paymentCollecting-indexViewModel': 'viewModels/paymentCollecting/indexViewModel',
+        'paymentCollecting-editViewModel': 'viewModels/paymentCollecting/editViewModel',
         //datasources       
         'userDatasource': 'datasources/userDatasource',
         'bankDatasource': 'datasources/bankDatasource',
+        'paymentCollectingDatasource': 'datasources/paymentCollectingDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },
