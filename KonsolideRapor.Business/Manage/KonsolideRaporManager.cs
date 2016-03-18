@@ -34,6 +34,7 @@ namespace KonsolideRapor.Business.Manage
         private FrameworkContext frameworkContext;
         private ISecurityManager securityManager;
         private BankRepository bank;
+        private PaymentCollectingRepository paymentCollecting;
         #endregion
 
         #region Public Members
@@ -114,11 +115,25 @@ namespace KonsolideRapor.Business.Manage
             }
         }
 
+
+        public PaymentCollectingRepository PaymentCollecting
+        {
+            get
+            {
+                if (paymentCollecting == null)
+                    paymentCollecting = new PaymentCollectingRepository(this.ApplicationContext.KonsolideRapor);
+
+                return paymentCollecting;
+            }
+        }
+
         #endregion
 
         #region Methods
 
-       public List<Bank> GetBankList()
+        #region Bank Method
+
+        public List<Bank> GetBankList()
         {
             try
             {
@@ -129,66 +144,154 @@ namespace KonsolideRapor.Business.Manage
                 throw new EntityProcessException(this.FrameworkContext, "GetBankList", this.ApplicationContext.SystemId, exception);
             }
         }
-       public List<Bank> GetActiveBankList()
-       {
-           try
-           {
-               return this.Bank.GetObjectsByParameters(m=>m.IsActive==true).ToList();
-           }
-           catch (Exception exception)
-           {
-               throw new EntityProcessException(this.FrameworkContext, "GetBankList", this.ApplicationContext.SystemId, exception);
-           }
-       }
-       public void SaveBank(Bank bank)
-       {
-           int initializedDBContextId;
-           try
-           {
-               initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
-               if (bank.Id == 0)
-               {
+        public List<Bank> GetActiveBankList()
+        {
+            try
+            {
+                return this.Bank.GetObjectsByParameters(m => m.IsActive == true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetBankList", this.ApplicationContext.SystemId, exception);
+            }
+        }
 
-                   this.Bank.Add(bank);
-               }
-               else
-               {
-                   Bank selectedBank = this.Bank.GetObjectByParameters(p => p.Id == bank.Id);
-                   
-                   selectedBank.IsActive = bank.IsActive;
-                   selectedBank.Code = bank.Code;
-                   selectedBank.Name = bank.Name;
-                   this.Bank.Update(selectedBank);
-               }
+        public void SaveBank(Bank bank)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
-               this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-           }
-           catch (Exception exception)
-           {
-               throw new EntityProcessException(this.FrameworkContext, "SaveBank", this.ApplicationContext.SystemId, exception);
-           }
-       }
-       public void DestroyBank(Bank bank)
-       {
-           int initializedDBContextId;
-           try
-           {
-               initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                if (bank.Id == 0)
+                {
 
-              
-                   Bank selectedBank = this.Bank.GetObjectByParameters(p => p.Id == bank.Id);
+                    this.Bank.Add(bank);
+                }
+                else
+                {
+                    Bank selectedBank = this.Bank.GetObjectByParameters(p => p.Id == bank.Id);
 
-                   selectedBank.IsActive =false;
-                   this.Bank.Update(selectedBank);
+                    selectedBank.IsActive = bank.IsActive;
+                    selectedBank.Code = bank.Code;
+                    selectedBank.Name = bank.Name;
+                    this.Bank.Update(selectedBank);
+                }
 
-               this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-           }
-           catch (Exception exception)
-           {
-               throw new EntityProcessException(this.FrameworkContext, "SaveBank", this.ApplicationContext.SystemId, exception);
-           }
-       }
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "SaveBank", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void DestroyBank(Bank bank)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+
+                Bank selectedBank = this.Bank.GetObjectByParameters(p => p.Id == bank.Id);
+
+                selectedBank.IsActive = false;
+                this.Bank.Update(selectedBank);
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "SaveBank", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        #endregion
+
+        #region PaymentCollecting Method
+
+        public List<PaymentCollecting> GetPaymentCollectingList()
+        {
+            try
+            {
+                return this.PaymentCollecting.GetAll().ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetPaymentCollectingList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+
+        public List<PaymentCollecting> GetActivePaymentCollectingList()
+        {
+            try
+            {
+                return this.PaymentCollecting.GetObjectsByParameters(m => m.IsActive == true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetActivePaymentCollectingList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void SavePaymentCollecting(PaymentCollecting paymentCollecting)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                if (paymentCollecting.Id == 0)
+                {
+
+                    this.PaymentCollecting.Add(paymentCollecting);
+                }
+                else
+                {
+                    PaymentCollecting selectedPayCol = this.PaymentCollecting.GetObjectByParameters(p => p.Id == paymentCollecting.Id);
+
+                    selectedPayCol.IsActive = true;
+                    selectedPayCol.Code = paymentCollecting.Code;
+                    selectedPayCol.Name = paymentCollecting.Name;
+                    selectedPayCol.IsCollection = paymentCollecting.IsCollection;
+                    selectedPayCol.IsPayment = paymentCollecting.IsPayment;
+                    this.PaymentCollecting.Update(selectedPayCol);
+                }
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "savePaymentCollectings", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void DestroyPaymentCollecting(PaymentCollecting paymentCollecting)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+
+                PaymentCollecting selectedPayCol = this.PaymentCollecting.GetObjectByParameters(p => p.Id == paymentCollecting.Id);
+
+                selectedPayCol.IsActive = false;
+                this.PaymentCollecting.Update(selectedPayCol);
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "savePaymentCollectings", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        #endregion
+
         #endregion
 
     }

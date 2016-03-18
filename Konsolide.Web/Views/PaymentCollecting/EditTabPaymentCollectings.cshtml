@@ -1,0 +1,55 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Ödeme Tahsilat Tanımı</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label class="col-md-4 control-label" for="Code">Ödeme Tahsilat Kodu</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="Code" name="Code" style="width:100%" data-bind="value: PayCol.Code" required validationmessage="Ödeme Tahsilat Kodu alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Name">Ödeme Tahsilat Adı</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="Name" name="Name" style="width:100%" data-bind="value:PayCol.Name" required validationmessage="Ödeme Tahsilat Adı alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left; padding-left:130px">
+                                    <input type="checkbox" id="IsPayment" name="IsPayment" data-bind="checked: PayCol.IsPayment" />&nbsp; Ödeme mi?                                   
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left;padding-left:130px">
+                                    <input type="checkbox" id="IsCollection" name="IsCollection" data-bind="checked: PayCol.IsCollection" />&nbsp; Tahsilat mi?
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>

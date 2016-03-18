@@ -35,6 +35,7 @@ namespace KonsolideRapor.Base.Model
         }
 
         public DbSet<Bank> Bankalar { get; set; }
+        public DbSet<PaymentCollecting> PaymentCollectings { get; set; }
 
         #endregion
 
