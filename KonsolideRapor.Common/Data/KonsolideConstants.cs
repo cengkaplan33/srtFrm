@@ -12,7 +12,7 @@ namespace KonsolideRapor.Common.Data
 
         public class Application
         {
-            public const String PlatformSystemName = "SuratApplicationPlatform";
+            //public const String PlatformSystemName = "SuratApplicationPlatform";
             public const String KonsolideRaporSystemName = "KonsolideRapor";
             public const String KonsolideRaporWebSystemName = "KonsolideRaporWeb";
         }

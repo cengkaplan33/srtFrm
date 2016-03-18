@@ -31,7 +31,8 @@ namespace KonsolideRapor.WebServer
             #endregion
 
             //ToDo : Recursive yapı ile, sistemler hiyerarşik olarak işlenmeli. Şuan bir seviye alt sistemler işlendi.
-            int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.PlatformSystemName);
+            //int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.PlatformSystemName);
+            int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.KonsolideRaporWebSystemName);
 
             List<SystemView> systems = GetSubSystems(rootSystemId, accessiblePagesList);
 
