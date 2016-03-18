@@ -32,7 +32,7 @@ namespace KonsolideRapor.WebServer
 
             //ToDo : Recursive yapı ile, sistemler hiyerarşik olarak işlenmeli. Şuan bir seviye alt sistemler işlendi.
             //int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.PlatformSystemName);
-            int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.KonsolideRaporWebSystemName);
+            int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(Constants.Application.PlatformSystemName);
 
             List<SystemView> systems = GetSubSystems(rootSystemId, accessiblePagesList);
 
