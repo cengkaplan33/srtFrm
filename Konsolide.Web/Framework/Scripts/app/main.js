@@ -6,24 +6,20 @@
         'text': '/Framework/Scripts/text',
         'router': '/Framework/Scripts/app/router',
         //models
-        'userModel': 'models/userModel',
-        'rolesModel': 'models/rolesModel',
-        'workgroupModel': 'models/workgroupModel',
-        'systemsModel': 'models/systemsModel',
-        //viewModels
+        'userModel': 'models/userModel',       
+        'bankModel': 'models/bankModel',
+        'paymentCollectingModel': 'models/paymentCollectingModel',
+        //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
-        'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
-        'workgroup-editViewModel': 'viewModels/workgroup/editViewModel',
-        'roles-indexViewModel':'viewModels/roles/indexViewModel',
-        'roles-editViewModel': 'viewModels/roles/editViewModel',
-        'systems-indexViewModel': 'viewModels/systems/indexViewModel',
-        'systems-editViewModel': 'viewModels/systems/editViewModel',
-        //datasources
+        'bankalar-indexViewModel': 'viewModels/bankalar/indexViewModel',
+        'bankalar-editViewModel': 'viewModels/bankalar/editViewModel',
+        'paymentCollecting-indexViewModel': 'viewModels/paymentCollecting/indexViewModel',
+        'paymentCollecting-editViewModel': 'viewModels/paymentCollecting/editViewModel',
+        //datasources       
         'userDatasource': 'datasources/userDatasource',
-        'rolesDatasource': 'datasources/rolesDatasource',
-        'workgroupDatasource': 'datasources/workgroupDatasource',
-        'systemsDatasource':'datasources/systemsDatasource',
+        'bankDatasource': 'datasources/bankDatasource',
+        'paymentCollectingDatasource': 'datasources/paymentCollectingDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

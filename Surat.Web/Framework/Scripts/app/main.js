@@ -10,6 +10,7 @@
         'rolesModel': 'models/rolesModel',
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
+        'exceptionsModel': 'models/exceptionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -19,11 +20,13 @@
         'roles-editViewModel': 'viewModels/roles/editViewModel',
         'systems-indexViewModel': 'viewModels/systems/indexViewModel',
         'systems-editViewModel': 'viewModels/systems/editViewModel',
+        'exceptions-indexViewModel': 'viewModels/exceptions/indexViewModel',
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
-        'systemsDatasource':'datasources/systemsDatasource',
+        'systemsDatasource': 'datasources/systemsDatasource',
+        'exceptionsDatasource': 'datasources/exceptionsDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

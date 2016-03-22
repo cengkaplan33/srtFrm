@@ -19,18 +19,18 @@ namespace KonsolideRapor.WebServer.Application
     {
         #region Constructor
 
-        public WebApplicationManager():this(null)
+        public WebApplicationManager()
+            : this(null)
         {
 
         }
 
-        public WebApplicationManager(KonsolideRaporApplicationManager konsolideRaporApplicationManager)
+        public WebApplicationManager(FrameworkApplicationManager frameworkApplicationManager)
         {
-            if (konsolideRaporApplicationManager != null)
-                this.konsolideRaporApplicationManager = konsolideRaporApplicationManager;
-            else this.konsolideRaporApplicationManager = InitializeKonsolideRapor();
-           
-            //else this.konsolideRapor=InitializeApplicationContext
+            if (frameworkApplicationManager != null)
+                this.framework = frameworkApplicationManager;
+            else this.framework = InitializeFramework();
+            this.konsolideRaporApplicationManager = InitializeKonsolideRapor();
         }
 
         #endregion
@@ -38,7 +38,7 @@ namespace KonsolideRapor.WebServer.Application
         #region Private Members
 
         private WebApplicationContext context;
-
+        private FrameworkApplicationManager framework;
         private KonsolideRaporApplicationManager konsolideRaporApplicationManager;
         #endregion
 
@@ -55,8 +55,13 @@ namespace KonsolideRapor.WebServer.Application
             }
         }
 
-      
-
+        public FrameworkApplicationManager Framework
+        {
+            get
+            {
+                return framework;
+            }
+        }
         public KonsolideRaporApplicationManager KonsolideRapor
         {
             get
@@ -64,7 +69,6 @@ namespace KonsolideRapor.WebServer.Application
                 return konsolideRaporApplicationManager;
             }
         }
-     
         #endregion
 
         #region Static Methods
@@ -74,7 +78,7 @@ namespace KonsolideRapor.WebServer.Application
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfiguration.RegisterRoutes(RouteTable.Routes);
-            BundleConfiguration.RegisterBundles(BundleTable.Bundles); 
+            BundleConfiguration.RegisterBundles(BundleTable.Bundles);
         }
 
         #endregion
@@ -83,16 +87,14 @@ namespace KonsolideRapor.WebServer.Application
 
         private WebApplicationContext InitializeApplicationContext()
         {
-            WebApplicationContext context = new WebApplicationContext(this.KonsolideRapor.Context);
-            
+            WebApplicationContext context = new WebApplicationContext(this.Framework.Context);
+
             return context;
         }
- 
-      
 
-        private KonsolideRaporApplicationManager InitializeKonsolideRapor()
+        private FrameworkApplicationManager InitializeFramework()
         {
-            KonsolideRaporApplicationManager konsolideRapor;
+            FrameworkApplicationManager framework;
             UserDetailedView currentUser = null;
 
             //Session da user varsa, ona göre framework başlatılacaktır.
@@ -102,35 +104,42 @@ namespace KonsolideRapor.WebServer.Application
                     currentUser = (UserDetailedView)HttpContext.Current.Session["CurrentUser"];
 
             if (currentUser != null)
-                konsolideRapor = new KonsolideRaporApplicationManager();
-            else konsolideRapor = new KonsolideRaporApplicationManager();
+                framework = new FrameworkApplicationManager(currentUser);
+            else framework = new FrameworkApplicationManager();
 
-            return konsolideRapor;
+            return framework;
+        }
+        private KonsolideRaporApplicationManager InitializeKonsolideRapor()
+        {
+            KonsolideRaporApplicationManager konsolideRaporApplicationManager;
+//
+            konsolideRaporApplicationManager = new KonsolideRaporApplicationManager(this.Framework);
+            return konsolideRaporApplicationManager;
         }
 
         public void Login(string userName, string password)
         {
             UserDetailedView currentUser = null;
             try
-            {                
-                currentUser = this.KonsolideRapor.Framework.Security.ValidateUser(userName, password);
+            {
+                currentUser = this.Framework.Security.ValidateUser(userName, password);
 
                 if (currentUser != null)
                 {
-                    this.KonsolideRapor.Framework.Trace.AppendLine(this.KonsolideRapor.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
-                    this.KonsolideRapor.Framework.StartUserSession(currentUser);
+                    this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
+                    this.Framework.StartUserSession(currentUser);
                     this.Context.CurrentUser = currentUser;
-                    this.KonsolideRapor.Framework.Trace.AppendLine(this.KonsolideRapor.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
+                    this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
                 }
                 else
                 {
                     this.Context.WrongPasswordProcessCount++;
-                    if (this.Context.WrongPasswordProcessCount == this.KonsolideRapor.Framework.Context.Security.MaxWrongPasswordAttempts)
+                    if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
                     {
-                        this.KonsolideRapor.Framework.Security.SaveUserLock(userName, password, true);
+                        this.Framework.Security.SaveUserLock(userName, password, true);
                     }
-                    else throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId, 
-                        String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId,Constants.Message.UserNotAuthorized),userName));
+                    else throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                        String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
                 }
 
                 FormsAuthentication.SetAuthCookie(userName, false);
@@ -139,22 +148,22 @@ namespace KonsolideRapor.WebServer.Application
             {
 
                 //PublishException(exception);
-                //this.KonsolideRapor.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
+                //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
-            }           
+            }
         }
 
         public void TraceAppendLine(string systemName, string traceInformation, TraceLevel traceLevel)
         {
-            if (this.KonsolideRapor.Framework.IsContextInitialized)
-                this.KonsolideRapor.Framework.Trace.AppendLine(systemName, traceInformation, traceLevel);
+            if (this.Framework.IsContextInitialized)
+                this.Framework.Trace.AppendLine(systemName, traceInformation, traceLevel);
             //else ToDo: Framework üzerinden Trace yazılamaz. Başka bir yöntem takip edilmelidir.
         }
 
-        public string GetGlobalizationKeyValue(int systemId,string globalizationKey)
+        public string GetGlobalizationKeyValue(int systemId, string globalizationKey)
         {
-            if (this.KonsolideRapor.Framework.IsContextInitialized)
-                return this.KonsolideRapor.Framework.Globalization.GetGlobalizationKeyValue(systemId,globalizationKey);
+            if (this.Framework.IsContextInitialized)
+                return this.Framework.Globalization.GetGlobalizationKeyValue(systemId, globalizationKey);
             else return globalizationKey;
         }
 
@@ -162,22 +171,22 @@ namespace KonsolideRapor.WebServer.Application
         {
 
             if (HttpContext.Current.Request != null)
-                this.KonsolideRapor.Framework.Context.ApplicationName = HttpContext.Current.Request.ServerVariables["APPL_MD_PATH"];
-            
-            if (string.IsNullOrEmpty(this.KonsolideRapor.Framework.Context.ApplicationName))
-                this.KonsolideRapor.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
+                this.Framework.Context.ApplicationName = HttpContext.Current.Request.ServerVariables["APPL_MD_PATH"];
 
-            this.KonsolideRapor.Framework.Context.CurrentVariables = new HttpRequestView(HttpContext.Current.Request);
-            this.KonsolideRapor.Framework.Context.ApplicationBaseType = "Web";
+            if (string.IsNullOrEmpty(this.Framework.Context.ApplicationName))
+                this.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
+
+            this.Framework.Context.CurrentVariables = new HttpRequestView(HttpContext.Current.Request);
+            this.Framework.Context.ApplicationBaseType = "Web";
 
             UserDetailedView currentUser = null;
-            if (this.KonsolideRapor.Framework.IsContextInitialized)
-            { 
-                if (this.KonsolideRapor.Framework.Context.IsCurrentUserAssigned)
-                    currentUser = this.KonsolideRapor.Framework.Context.CurrentUser;
-              return  this.KonsolideRapor.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
+            if (this.Framework.IsContextInitialized)
+            {
+                if (this.Framework.Context.IsCurrentUserAssigned)
+                    currentUser = this.Framework.Context.CurrentUser;
+                return this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
             }
-            else  return Constants.Message.FrameworkNotInitialized;
+            else return Constants.Message.FrameworkNotInitialized;
             //else ToDo: Framework üzerinden publish edilemez. Başka bir yöntem takip edilmelidir.
         }
 
@@ -186,14 +195,14 @@ namespace KonsolideRapor.WebServer.Application
             try
             {
                 FormsAuthentication.SignOut();
-                this.KonsolideRapor.Framework.CloseUserSession();
+                this.Framework.CloseUserSession();
             }
             catch (Exception exception)
             {
-                this.KonsolideRapor.Framework.Exception.Publish(this.Context.FrameworkContext, exception, null);
+                this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, null);
                 throw exception;
-            }  
-        }       
+            }
+        }
 
         #endregion
 
@@ -202,7 +211,7 @@ namespace KonsolideRapor.WebServer.Application
         public override void Dispose()
         {
             base.Dispose();
-            this.KonsolideRapor.Framework.Dispose();
+            this.Framework.Dispose();
         }
 
         #endregion

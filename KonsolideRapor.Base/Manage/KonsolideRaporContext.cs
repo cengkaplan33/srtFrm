@@ -22,7 +22,7 @@ namespace KonsolideRapor.Base.Manage
         #region Private Members
 
         private KonsolideRaporApplicationContext applicationContext;
-        private IKonsolideRaporApplicationManager applicationManager; 
+        private IKonsolideRaporApplicationManager applicationManager;
 
         #endregion
 
@@ -35,16 +35,19 @@ namespace KonsolideRapor.Base.Manage
                 return applicationManager;
             }
         }
-        
+
         public KonsolideRaporApplicationContext ApplicationContext
         {
             get
             {
                 if (applicationContext == null)
                     applicationContext = (KonsolideRaporApplicationContext)this.ApplicationManager.GetKonsolideRaporApplicationContext();
+
                 return applicationContext;
             }
         }
+
         #endregion
+
     }
 }

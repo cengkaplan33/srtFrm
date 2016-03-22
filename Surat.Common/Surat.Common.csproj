@@ -79,6 +79,7 @@
     <Compile Include="Utilities\TimeUtility.cs" />
     <Compile Include="Utilities\TypeConversionUtility.cs" />
     <Compile Include="ViewModel\AccessibleActionView.cs" />
+    <Compile Include="ViewModel\ExceptionView.cs" />
     <Compile Include="ViewModel\RelationGroupAccessiblePageView.cs" />
     <Compile Include="ViewModel\AccessiblePageView.cs" />
     <Compile Include="ViewModel\ADUserAddResponseView.cs" />

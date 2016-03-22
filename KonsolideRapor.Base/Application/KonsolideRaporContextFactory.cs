@@ -15,9 +15,9 @@ namespace KonsolideRapor.Base.Application
 
         public static KonsolideRaporContext GetNewKonsolideRaporContext(IKonsolideRaporApplicationManager konsolideRaporApplicationManager)
         {
-            KonsolideRaporContext documentContext = new KonsolideRaporContext(konsolideRaporApplicationManager);
+            KonsolideRaporContext konsolideRaporContext = new KonsolideRaporContext(konsolideRaporApplicationManager);
 
-            return documentContext;
+            return konsolideRaporContext;
         }
 
         public static KonsolideRaporConfigurationContext GetNewConfigurationContext(IKonsolideRaporApplicationManager konsolideRaporApplicationManager)
@@ -27,8 +27,6 @@ namespace KonsolideRapor.Base.Application
             return configurationContext;
         }
 
-    
-
-        #endregion       
+        #endregion
     }
 }

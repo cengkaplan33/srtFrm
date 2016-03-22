@@ -48,5 +48,6 @@ namespace KonsolideRapor.Base.Configuration
         }
 
         #endregion
+
     }
 }

@@ -43,11 +43,11 @@
     <Compile Include="Data\KonsolideConstants.cs" />
     <Compile Include="Data\KonsolideEnumeration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\UserList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\" />
     <Folder Include="Utilities\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Surat.Common\Surat.Common.csproj">

@@ -16,7 +16,7 @@ namespace KonsolideRapor.Base.Model
             : base("name=SuratFrameworkConnection")
         {
             Database.SetInitializer<KonsolideRaporDbContext>(null);
-            this.systemName = KonsolideRaporConstants.Application.PlatformSystemName;
+            this.systemName = KonsolideRaporConstants.Application.KonsolideRaporSystemName;
         }
 
         #endregion
@@ -35,6 +35,7 @@ namespace KonsolideRapor.Base.Model
         }
 
         public DbSet<Bank> Bankalar { get; set; }
+        public DbSet<PaymentCollecting> PaymentCollectings { get; set; }
 
         #endregion
 

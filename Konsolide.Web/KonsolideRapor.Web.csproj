@@ -1390,6 +1390,14 @@
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Framework\Scripts\app\datasources\paymentCollectingDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\bankDatasource.js" />
+    <Content Include="Framework\Scripts\app\models\paymentCollectingModel.js" />
+    <Content Include="Framework\Scripts\app\models\bankModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\editViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\indexViewModel.js" />
     <Content Include="Framework\Scripts\jquery-1.10.2.min.map" />
     <Content Include="Framework\Scripts\kendo2015.1.408\js\jquery.min.map" />
     <Content Include="Framework\Scripts\kendo2015.1.408\js\kendo.all.min.js.map" />
@@ -3188,6 +3196,13 @@
     <Content Include="Views\Users\EditTabUsersInfo.cshtml" />
     <Content Include="Views\Users\EditTabWorkgroups.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Bankalar\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Bankalar\Edit.cshtml" />
+    <Content Include="Views\Bankalar\EditTabBankalar.cshtml" />
+    <Content Include="Views\PaymentCollecting\Index.cshtml" />
+    <Content Include="Views\PaymentCollecting\Edit.cshtml" />
+    <Content Include="Views\PaymentCollecting\EditTabPaymentCollectings.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

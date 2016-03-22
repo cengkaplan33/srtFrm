@@ -3,10 +3,12 @@ using KonsolideRapor.Base.Model;
 using KonsolideRapor.Business.Configuration;
 using KonsolideRapor.Business.Manage;
 using KonsolideRapor.Common.Application;
+using Surat.Base.Cache;
 using Surat.Business.Application;
 using Surat.Business.Base;
 using Surat.Common.Application;
 using Surat.Common.Data;
+using Surat.Common.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +18,11 @@ namespace KonsolideRapor.Business.Application
 {
     public class KonsolideRaporApplicationManager : ApplicationManager, IKonsolideRaporApplicationManager
     {
-          #region Constructor
 
-        public KonsolideRaporApplicationManager():this(null)
+        #region Constructor
+
+        public KonsolideRaporApplicationManager()
+            : this(null)
         {
 
         }
@@ -27,7 +31,7 @@ namespace KonsolideRapor.Business.Application
         {
             if (applicationManager != null)
                 this.framework = applicationManager;
-            else this.framework = InitializeFramework();  
+            else this.framework = InitializeFramework();
         }
 
         #endregion
@@ -37,9 +41,8 @@ namespace KonsolideRapor.Business.Application
         private KonsolideRaporApplicationContext context;
         private FrameworkApplicationManager framework;
         private KonsolideRaporManager konsolideRaporManager;
-      
-        private KonsolideRaporConfigurationManager configurationManager;        
- 
+        private KonsolideRaporConfigurationManager configurationManager;
+
         #endregion
 
         #region Public Members
@@ -77,7 +80,7 @@ namespace KonsolideRapor.Business.Application
             }
         }
 
-    
+       
 
         public KonsolideRaporConfigurationManager Configuration
         {
@@ -90,7 +93,8 @@ namespace KonsolideRapor.Business.Application
             }
         }
 
-      
+
+
         #endregion
 
         #region IKonsolideRaporApplicationManager
@@ -106,7 +110,7 @@ namespace KonsolideRapor.Business.Application
         }
 
         #endregion
-        
+
         #region Methods
 
         private FrameworkApplicationManager InitializeFramework()
@@ -132,7 +136,7 @@ namespace KonsolideRapor.Business.Application
         }
 
         private void InitializeKonsolideRaporManager()
-        {            
+        {
             konsolideRaporManager = new KonsolideRaporManager(this);
             this.Framework.Trace.AppendLine(this.Context.SystemName, "KonsolideRaporManager Initialized.", TraceLevel.Basic);
         }
@@ -143,18 +147,18 @@ namespace KonsolideRapor.Business.Application
             this.Framework.Trace.AppendLine(this.Context.SystemName, "ConfigurationManager Initialized.", TraceLevel.Basic);
         }
 
-     
+      
 
-        #endregion              
+        #endregion
 
         #region Dispose
-        
+
         public override void Dispose()
         {
             this.Framework.Trace.WriteTraceToFile();
-            this.Context.Dispose();            
+            this.Context.Dispose();
         }
 
-        #endregion        
+        #endregion
     }
 }

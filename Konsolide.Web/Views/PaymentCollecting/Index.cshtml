@@ -1,0 +1,31 @@
+﻿<div class="col-md-12" id="BaseDiv">
+
+    <div id="payColgrid"
+         data-role="grid"
+         data-sortable="true"
+         data-pageable="true"
+         data-filterable="true"
+         data-editable="inline"
+         data-selectable="true"
+         data-toolbar='[ { template: kendo.template($("#toolbar").html()) } ]'
+         data-columns='[
+                { field: "Id", title: "ID", width: "75px" },
+                { field: "Code", title: "Ödeme Tahsilat Kodu" },
+                { field: "Name", title: "Ödeme Tahsilat Adı"},
+                { field: "IsPayment", title: "Ödeme mi?", "template": "#= IsPayment ? \"Evet\" : \"Hayır\" #"},
+                { field: "IsCollection" , title:" Tahsilat mı?" , "template": "#= IsCollection ? \"Evet\" : \"Hayır\" #"}]'
+         data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
+    </div>
+
+
+    <script type="text/x-kendo-template" id="toolbar">
+        <div>
+            <div>
+                <span data-role="button" id="buttonNew" data-bind="click: add"><span class="k-icon k-i-plus"></span>Yeni</span>
+                <span data-role="button" id="buttonUpdate" data-bind="click: edit"><span class="k-icon k-i-refresh"></span>Düzenle</span>
+                <span data-role="button" id="buttonDelete" data-bind="click: destroy"><span class="k-icon k-i-close"></span>Sil</span>
+            </div>
+        </div>
+    </script>
+
+</div>

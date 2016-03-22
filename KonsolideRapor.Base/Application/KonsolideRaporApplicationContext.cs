@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.Base.Configuration;
 using KonsolideRapor.Base.Manage;
 using KonsolideRapor.Base.Model;
+using KonsolideRapor.Base.Application;
 using KonsolideRapor.Common.Application;
 using KonsolideRapor.Common.Data;
 using Surat.Base;
@@ -15,25 +16,26 @@ using System.Threading.Tasks;
 
 namespace KonsolideRapor.Base.Application
 {
-    public class KonsolideRaporApplicationContext : FrameworkContext
+    public class KonsolideRaporApplicationContext : ApplicationContextBase, IApplicationContext
     {
+
         #region Constructor
 
         public KonsolideRaporApplicationContext(IKonsolideRaporApplicationManager konsolideRaporApplicationManager)
-            : base(konsolideRaporApplicationManager.GetFrameworkManager())
+            : base(konsolideRaporApplicationManager.GetFrameworkManager(),KonsolideRaporConstants.Application.KonsolideRaporSystemName)
         {
             this.konsolideRaporApplicationManager = konsolideRaporApplicationManager;
         }
 
         #endregion
-        
+
         #region Private Members
+
         private IKonsolideRaporApplicationManager konsolideRaporApplicationManager;
         private IFrameworkManager frameworkApplicationManager;
         private FrameworkContext frameworkContext;
-        private KonsolideRaporContext document;
+        private KonsolideRaporContext konsolideRapor;
         private KonsolideRaporConfigurationContext configuration;
-      
 
         #endregion
 
@@ -83,12 +85,12 @@ namespace KonsolideRapor.Base.Application
         {
             get
             {
-                if (document == null)
-                    document =KonsolideRaporContextFactory.GetNewKonsolideRaporContext(this.KonsolideRaporApplicationManager);
+                if (konsolideRapor == null)
+                    konsolideRapor =KonsolideRaporContextFactory.GetNewKonsolideRaporContext(this.KonsolideRaporApplicationManager);
 
-                return document;
+                return konsolideRapor;
             }
-            set { document = value; }
+            set { konsolideRapor = value; }
         }
 
         public KonsolideRaporConfigurationContext Configuration
@@ -103,9 +105,7 @@ namespace KonsolideRapor.Base.Application
             set { configuration = value; }
         }
 
-      
-      
-
+     
         #endregion
 
         #region IApplicationContext
@@ -129,7 +129,6 @@ namespace KonsolideRapor.Base.Application
         }
 
         #endregion
-     
     }
 }
 

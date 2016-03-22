@@ -25,13 +25,14 @@ namespace KonsolideRapor.WebServer
 
             #region MainPage
 
-            var dashboard = new LeftNavigationSection("Home", "Anasayfa", "fa fa-home", "Home", "0");
+            var dashboard = new LeftNavigationSection("Home", "Anasayfa", "fa fa-home", "Spa", "0");
             Sections.Add(dashboard);
 
             #endregion
 
             //ToDo : Recursive yapı ile, sistemler hiyerarşik olarak işlenmeli. Şuan bir seviye alt sistemler işlendi.
-            int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.PlatformSystemName);
+            //int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(KonsolideRaporConstants.Application.PlatformSystemName);
+            int rootSystemId = this.WebApplicationManager.KonsolideRapor.Framework.Configuration.System.GetSystemIdByTypeName(Constants.Application.PlatformSystemName);
 
             List<SystemView> systems = GetSubSystems(rootSystemId, accessiblePagesList);
 

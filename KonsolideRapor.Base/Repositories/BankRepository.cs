@@ -14,7 +14,7 @@ namespace KonsolideRapor.Base.Repositories
     {
 
         #region Constructor
-
+        //Hangi context kullanılacaksa burada(constructor da) belirtiyoruz. 
         public BankRepository(KonsolideRaporContext contextParameter)
             : base(contextParameter.ApplicationContext.DBContext)
         {
