@@ -98,6 +98,7 @@
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ParametersController.cs" />
     <Compile Include="Controllers\RelationGroupsController.cs" />
+    <Compile Include="Controllers\ExceptionsController.cs" />
     <Compile Include="Controllers\RolesController.cs">
       <SubType>
       </SubType>

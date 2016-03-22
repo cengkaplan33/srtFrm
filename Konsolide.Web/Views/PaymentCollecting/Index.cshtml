@@ -12,7 +12,7 @@
                 { field: "Id", title: "ID", width: "75px" },
                 { field: "Code", title: "Ödeme Tahsilat Kodu" },
                 { field: "Name", title: "Ödeme Tahsilat Adı"},
-                 { field: "IsPayment", title: "Ödeme mi?", "template": "#= IsPayment ? \"Evet\" : \"Hayır\" #"},
+                { field: "IsPayment", title: "Ödeme mi?", "template": "#= IsPayment ? \"Evet\" : \"Hayır\" #"},
                 { field: "IsCollection" , title:" Tahsilat mı?" , "template": "#= IsCollection ? \"Evet\" : \"Hayır\" #"}]'
          data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
     </div>

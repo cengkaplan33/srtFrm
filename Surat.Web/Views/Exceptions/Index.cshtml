@@ -1,0 +1,36 @@
+﻿<div class="col-md-12" id="BaseDiv">
+
+    <div id="exceptionsgrid"
+         data-role="grid"
+         data-sortable="true"
+         data-pageable="true"
+         data-resizable="true"
+         data-filterable="true"
+         data-editable="inline"
+         data-selectable="true"
+         data-toolbar='[ { template: kendo.template($("#toolbar").html()) } ]'
+         data-columns='[
+                { field: "Id", title: "ID", width: "75px" },
+                { field: "SystemName", title: "Sistem"},
+                { field: "LogDate", title: "Hata Tarihi",  format: "{0:dd-MMM-yyyy hh:mm:ss tt}", parseFormats: ["MM/dd/yyyy h:mm:ss"]},
+                { field: "ExceptionType", title: "Hata Tipi" },
+                { field: "Data", title: "Data",  width: "400px" },
+                { field: "ApplicationName", title: "Uygulama Adı" },
+                { field: "ApplicationBaseType", title: "Uygulama Temel Tipi" },
+                { field: "HostName", title: "Host Adı" },
+                { field: "Source", title: "Kaynak" },
+                { field: "Message", title: "Mesaj" , width: "200px" },
+                { field: "StatusCode", title:"Durum Kodu" },
+                { field: "InsertUserName", title:"Ekleyen Kullanıcı" }   ]'
+         data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
+    </div>
+
+
+    <script type="text/x-kendo-template" id="toolbar">
+        <div>
+            <div>
+            </div>
+        </div>
+    </script>
+
+</div>

@@ -23,7 +23,7 @@ namespace Surat.WebServer
 
             #region MainPage
 
-            var dashboard = new LeftNavigationSection("Home", "Anasayfa", "fa fa-home", "Home", "0");
+            var dashboard = new LeftNavigationSection("Home", "Anasayfa", "fa fa-home", "Spa", "0");
             Sections.Add(dashboard);
 
             #endregion
