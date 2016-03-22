@@ -75,8 +75,8 @@ namespace Surat.WebServer.Controllers
                 if (this.WebApplicationManager.Framework.Context.IsCurrentUserAssigned)
                     this.WebApplicationManager.Logout();
                 //ToDo : else : Aktif session nasıl kapatılabilir.                       
-                
-                return Json(new { sonuc="Çıkış işleminiz gerçekleştirildi"});
+
+                return Json(new { sonuc = "Çıkış işleminiz gerçekleştirildi" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {

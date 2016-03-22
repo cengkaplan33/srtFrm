@@ -54,6 +54,7 @@ namespace Surat.Base.Model
         public DbSet<ParameterValue> ParameterValues { get; set; } 
         public DbSet<ParameterChange> ParameterChanges { get; set; }
         public DbSet<RelationGroup> RelationGroups { get; set; }
+        public DbSet<SuratRight> SuratRights { get; set; }
         public DbSet<SuratRole> Roles { get; set; }
         public DbSet<SuratSystem> Systems { get; set; }
         public DbSet<SuratUser> Users { get; set; }

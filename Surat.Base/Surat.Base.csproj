@@ -97,7 +97,12 @@
     <Compile Include="Migrations\201512141356331_V14.12.Designer.cs">
       <DependentUpon>201512141356331_V14.12.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603220829355_V15.cs" />
+    <Compile Include="Migrations\201603220829355_V15.Designer.cs">
+      <DependentUpon>201603220829355_V15.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Entities\SuratRight.cs" />
     <Compile Include="Model\Entities\CompanySiteDBPeriod.cs" />
     <Compile Include="Model\Entities\ExternalSystemsUser.cs" />
     <Compile Include="Model\Entities\SuratServiceMethod.cs" />
@@ -176,6 +181,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201512141356331_V14.12.resx">
       <DependentUpon>201512141356331_V14.12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603220829355_V15.resx">
+      <DependentUpon>201603220829355_V15.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
