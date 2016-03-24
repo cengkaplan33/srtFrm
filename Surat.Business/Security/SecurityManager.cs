@@ -273,21 +273,25 @@ namespace Surat.Business.Security
 
         public bool HasActionRight(string actionTypeName)
         {
+            actionTypeName = actionTypeName.Trim();
+
             if (Constants.Web.SharedActions.Any(p => p.Contains(actionTypeName)))
                 return true;
 
             if (this.User.IsAdmin(this.ApplicationContext.CurrentUser.ShortName, this.ApplicationContext.CurrentUser.UserId))
                 return true;
 
-            return this.ApplicationContext.Configuration.UserAccessibleActions.Any(p => p.TypeName == actionTypeName);
+            return this.ApplicationContext.Configuration.UserAccessibleActions.Any(p => (p.TypeName.Trim() == actionTypeName));
         }
 
         public bool HasPageRight(string pageName)
         {
+            pageName = pageName.Trim();
+
             if (this.User.IsAdmin(this.ApplicationContext.CurrentUser.ShortName, this.ApplicationContext.CurrentUser.UserId))
                 return true;
 
-            return this.ApplicationContext.Configuration.UserAccessiblePages.Any(p => (p.ObjectTypePrefix == pageName || p.PageName == pageName));
+            return this.ApplicationContext.Configuration.UserAccessiblePages.Any(p => (p.ObjectTypePrefix.Trim() == pageName || p.PageName.Trim() == pageName));
         }
 
         public bool HasRight(string actionName)
@@ -375,7 +379,7 @@ namespace Surat.Business.Security
             List<AccessibleActionView> accessibleActions;
 
             string query = @"
-select DISTINCT suratActions.Id as ActionId
+select DISTINCT suratActions.Id as ActionId, suratActions.TypeName as TypeName
 from dbo.SuratActions suratActions
 INNER JOIN AccessibleItems accessibleItems ON accessibleItems.DBObjectId  = suratActions.Id  and accessibleItems.DBObjectType = 2 
 where  

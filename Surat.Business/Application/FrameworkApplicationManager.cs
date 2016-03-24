@@ -290,7 +290,8 @@ namespace Surat.Business.Application
             else
             {
                 this.Context.Configuration.UserAccessiblePages = this.Security.GetUserAccessiblePages(this.Context.CurrentUser);
-                this.Context.Configuration.UserAccessibleActions = this.Configuration.Action.GetAllActions();
+                this.Context.Configuration.UserAccessibleActions = this.Security.GetUserAccessibleActions(this.Context.CurrentUser);  
+                //this.Configuration.Action.GetAllActions();
             }
         }
 
