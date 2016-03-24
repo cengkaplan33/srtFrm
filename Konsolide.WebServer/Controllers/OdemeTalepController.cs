@@ -1,5 +1,5 @@
-﻿using KonsolideRapor.WebServer.Base;
-using Surat.Base.Model.Entities;
+﻿using KonsolideRapor.Base.Model.Entities;
+using KonsolideRapor.WebServer.Base;
 using Surat.Common.Data;
 using System;
 using System.Collections.Generic;
@@ -10,11 +10,11 @@ using System.Web.Mvc;
 
 namespace KonsolideRapor.WebServer.Controllers
 {
-    public class PaymentCollectingController : KonsolideControllerBase
+    public class OdemeTalepController : KonsolideControllerBase
     {
-        #region Constructor
+         #region Constructor
 
-        public PaymentCollectingController()
+        public OdemeTalepController()
         {
             
         }
@@ -35,61 +35,28 @@ namespace KonsolideRapor.WebServer.Controllers
             return View();
         }
 
-        public ActionResult Edit()
-        {
-            return View();
-        }
-        public JsonResult GetOdemeTurleri()
+        public JsonResult GetOdemeTalepleri(int pageSize, int skip)
         {
             try
             {
-
-                return Json(this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetOdemeTurleri(), JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception exception)
-            {
-                Response.StatusCode = 500;
-                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
-            }
-        }
-        public JsonResult GetTahsilatTurleri()
-        {
-            try
-            {
-
-                return Json(this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetTahsilatTurleri(), JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception exception)
-            {
-                Response.StatusCode = 500;
-                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
-            }
-        }
-        public JsonResult GetPaymentCollectings(int pageSize, int skip)
-        {
-            try
-            {
-                var paymentCollecting = this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetActivePaymentCollectingList();
-                var total = paymentCollecting.Count();
-                var data = paymentCollecting.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                var odemeTalepleri = this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetAktifOdemeTalepleri();
+                var total = odemeTalepleri.Count();
+                var data = odemeTalepleri.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
                 return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
-              
+
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
-            }  
+            }
         }
-
         [HttpPost]
-        public JsonResult Add(PaymentCollecting paymentCollecting)
+        public JsonResult Add(OdemeTalep odemeTalep)
         {
             try
             {
-                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SavePaymentCollecting(paymentCollecting);
+                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveOdemeTalep(odemeTalep);
                 return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
@@ -100,11 +67,11 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(PaymentCollecting paymentCollecting)
+        public JsonResult Update(OdemeTalep odemeTalep)
         {
             try
             {
-                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SavePaymentCollecting(paymentCollecting);
+                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveOdemeTalep(odemeTalep);
                 return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
@@ -115,11 +82,11 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Delete(PaymentCollecting paymentCollecting)
+        public JsonResult Delete(OdemeTalep odemeTalep)
         {
             try
             {
-                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.DestroyPaymentCollecting(paymentCollecting);
+                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.DestroyOdemeTalep(odemeTalep);
                 return Json(new { Result = "Silme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
@@ -128,8 +95,6 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
-      
         #endregion
     }
-   
 }

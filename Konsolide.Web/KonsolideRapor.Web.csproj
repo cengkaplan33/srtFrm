@@ -1390,15 +1390,30 @@
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Framework\Scripts\app\datasources\odemeDurumuDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\OdemeEkraniDurumTanimiDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\odemeTalepDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\odemeTuruDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\paymentCollectingDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\bankDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\TahsilatEkraniDurumTanimiDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\tahsilatTalepDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\tahsilatTuruDatasource.js" />
+    <Content Include="Framework\Scripts\app\models\odemeDurumuModel.js" />
+    <Content Include="Framework\Scripts\app\models\odemeTalepModel.js" />
+    <Content Include="Framework\Scripts\app\models\odemeTuruModel.js" />
     <Content Include="Framework\Scripts\app\models\paymentCollectingModel.js" />
     <Content Include="Framework\Scripts\app\models\bankModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\editViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\odemeTalep\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\tahsilatTalep\indexViewModel.js" />
     <Content Include="Framework\Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Framework\Scripts\kendo2015.1.408\jszip.min.js" />
     <Content Include="Framework\Scripts\kendo2015.1.408\js\jquery.min.map" />
     <Content Include="Framework\Scripts\kendo2015.1.408\js\kendo.all.min.js.map" />
     <Content Include="Framework\Scripts\kendo2015.1.408\js\kendo.angular.min.js.map" />
@@ -3203,6 +3218,11 @@
     <Content Include="Views\PaymentCollecting\Index.cshtml" />
     <Content Include="Views\PaymentCollecting\Edit.cshtml" />
     <Content Include="Views\PaymentCollecting\EditTabPaymentCollectings.cshtml" />
+    <Content Include="Views\OdemeTalep\Index.cshtml" />
+    <Content Include="Views\DurumTanimlari\Index.cshtml" />
+    <Content Include="Views\DurumTanimlari\Edit.cshtml" />
+    <Content Include="Views\DurumTanimlari\EditTabDurum.cshtml" />
+    <Content Include="Views\TahsilatTalep\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

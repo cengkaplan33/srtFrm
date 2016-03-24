@@ -24,7 +24,7 @@ namespace Surat.Base.Model.Entities
         [Required][MaxLength(50)]
         public string ExceptionType { get; set; }
         
-        [Required][MaxLength(5000)]
+        [Required]
         public string Data { get; set; }
         
         [Required]
