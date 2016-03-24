@@ -53,7 +53,10 @@
                         }
 
                     }
-
+                    else
+                    {
+                        viewModel.set("PayCol", new paymentCollectingModel());
+                    }
                 });
 
                 return viewModel;

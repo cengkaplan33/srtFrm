@@ -61,11 +61,14 @@
       <DependentUpon>201603180936152_V11.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    
+    <Compile Include="Model\Entities\OdemeTalepDurumu.cs" />
+    <Compile Include="Model\Entities\OdemeTalep.cs" />
     <Compile Include="Model\Entities\PaymentCollecting.cs" />
     <Compile Include="Model\KonsolideRaporDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Entities\Bank.cs" />
+    <Compile Include="Repositories\OdemeTalepDurumuRepository.cs" />
+    <Compile Include="Repositories\OdemeTalepRepository.cs" />
     <Compile Include="Repositories\PaymentCollectingRepository.cs" />
     <Compile Include="Repositories\BankRepository.cs" />
   </ItemGroup>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KonsolideRapor.Common.Data;
 using Surat.Base.Model.Entities;
+using KonsolideRapor.Base.Model.Entities;
 namespace KonsolideRapor.Base.Model
 {
     public class KonsolideRaporDbContext:DbContext
@@ -36,7 +37,8 @@ namespace KonsolideRapor.Base.Model
 
         public DbSet<Bank> Bankalar { get; set; }
         public DbSet<PaymentCollecting> PaymentCollectings { get; set; }
-
+        public DbSet<OdemeTalep> OdemeTalep { get; set; }
+        public DbSet<OdemeTalepDurumu> OdemeTalepDurumu { get; set; }
         #endregion
 
         #region Overrides
