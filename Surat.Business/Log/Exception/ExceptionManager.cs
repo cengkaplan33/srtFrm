@@ -135,6 +135,41 @@ namespace Surat.Business.Log
 
         #region Methods
 
+        public List<ExceptionView> GetExceptionsList()
+        {
+            try
+            {
+                List <ExceptionView> exceptions = null;
+
+                exceptions = (from exceptionsLog in this.Context.ApplicationContext.DBContext.ExceptionLogs
+                              join systems in this.Context.ApplicationContext.DBContext.Systems on exceptionsLog.SystemId equals systems.Id
+                              select new ExceptionView()
+                              {
+                                  Id = exceptionsLog.Id,
+                                  LogDate = exceptionsLog.LogDate,
+                                  SystemName = systems.Name,
+                                  ExceptionLevel = exceptionsLog.ExceptionLevel,
+                                  ExceptionType = exceptionsLog.ExceptionType,
+                                  Data = exceptionsLog.Data,
+                                  ApplicationName = exceptionsLog.ApplicationName,
+                                  ApplicationBaseType = exceptionsLog.ApplicationBaseType,
+                                  HostName = exceptionsLog.HostName,
+                                  Source = exceptionsLog.Source,
+                                  Message = exceptionsLog.Message,
+                                  StatusCode = exceptionsLog.StatusCode,
+                                  InsertUserName = exceptionsLog.InsertUserName,
+                                  AllXml = exceptionsLog.AllXml
+                              }).ToList();
+
+                return exceptions;
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "GetExceptionsList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+
         public void SaveException(ExceptionLog exceptionlogItem)
         {
             int initializedDBContextId;

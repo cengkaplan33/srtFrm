@@ -74,6 +74,14 @@ define(['kendo'],
             });
         });
 
+        router.route("/Exceptions/Index", function () {
+            require(['exceptions-indexViewModel', 'text!/Exceptions/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#exceptionsgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {
         //        loadView(null, view);
