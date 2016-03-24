@@ -52,13 +52,9 @@
     <Compile Include="Application\KonsolideRaporApplicationContext.cs" />
     <Compile Include="Configuration\KonsolideRaporConfigurationContext.cs" />
     <Compile Include="Manage\KonsolideRaporContext.cs" />
-    <Compile Include="Migrations\201603151448389_V1.cs" />
-    <Compile Include="Migrations\201603151448389_V1.Designer.cs">
-      <DependentUpon>201603151448389_V1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603180936152_V11.cs" />
-    <Compile Include="Migrations\201603180936152_V11.Designer.cs">
-      <DependentUpon>201603180936152_V11.cs</DependentUpon>
+    <Compile Include="Migrations\201603240814406_V1.cs" />
+    <Compile Include="Migrations\201603240814406_V1.Designer.cs">
+      <DependentUpon>201603240814406_V1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Entities\OdemeTalepDurumu.cs" />
@@ -94,11 +90,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201603151448389_V1.resx">
-      <DependentUpon>201603151448389_V1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603180936152_V11.resx">
-      <DependentUpon>201603180936152_V11.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201603240814406_V1.resx">
+      <DependentUpon>201603240814406_V1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
