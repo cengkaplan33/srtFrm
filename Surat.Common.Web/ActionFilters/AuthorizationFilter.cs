@@ -26,16 +26,40 @@ namespace Surat.WebServer.ActionFilters
             
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)           
             {
-                SuratControllerBase controller = filterContext.Controller as SuratControllerBase;                
+
+                SuratControllerBase controller = filterContext.Controller as SuratControllerBase;
                 try
                 {
-                    //Session timeout kontrolü - CurrentUser bulunamaz.                                  
-                    if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
-                        !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
-                    {
-                        filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
-                        return;
-                    }
+                //Session timeout kontrolü - CurrentUser bulunamaz.                       
+                if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned)
+                {
+
+                    filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
+                    return;
+                }
+                else if (!controller.WebApplicationManager.Framework.Security.HasRight(action))
+                {
+                    filterContext.Result = new System.Web.Mvc.JsonResult() { Data = "weqw ewq qwe " };
+
+                    //filterContext.Controller.TempData.Add("RedirectReason", "Unauthorized");
+
+                    //filterContext.Result = new HttpUnauthorizedResult("yetkin yok") ;
+                    return;
+
+                    //return new ActionResult ( () => 
+                    //     JsonResult()
+                    // MVCUtility.GetControllerName(), controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId,WebConstants.Message.WebSessionTimeout), TraceLevel.Basic);
+                    // );
+
+                }
+
+                    ////Session timeout kontrolü - CurrentUser bulunamaz.                                  
+                    //if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
+                    //    !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
+                    //{
+                    //    filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
+                    //    return;
+                    //}
                 }
                 catch (Exception exception)
                 {

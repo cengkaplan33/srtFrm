@@ -277,12 +277,28 @@ namespace Surat.Business.Security
                 return true;
 
             if (this.User.IsAdmin(this.ApplicationContext.CurrentUser.ShortName, this.ApplicationContext.CurrentUser.UserId))
-                return true;            
+                return true;
 
-            return this.ApplicationContext.Configuration.UserAccessibleActions.Any(p => p.TypeName == actionTypeName);          
+            return this.ApplicationContext.Configuration.UserAccessibleActions.Any(p => p.TypeName == actionTypeName);
+        }
+
+        public bool HasPageRight(string pageName)
+        {
+            if (this.User.IsAdmin(this.ApplicationContext.CurrentUser.ShortName, this.ApplicationContext.CurrentUser.UserId))
+                return true;
+
+            return this.ApplicationContext.Configuration.UserAccessiblePages.Any(p => (p.ObjectTypePrefix == pageName || p.PageName == pageName));
+        }
+
+        public bool HasRight(string actionName)
+        {
+            if (HasActionRight(actionName) || HasPageRight(actionName))
+                return true;
+            return false;
         }
 
         #endregion
+
 
         #region User
 
@@ -358,43 +374,41 @@ namespace Surat.Business.Security
         {
             List<AccessibleActionView> accessibleActions;
 
-            string query = @"	select DISTINCT suratFunctions.Id as ActionId,suratFunctions.ObjectTypeName	
-	from dbo.Functions suratFunctions	
-	LEFT JOIN AccessibleItems accessibleItems
-	ON suratPages.Id = accessibleItems.DBObjectId
-	where 
-	(suratPages.IsAccessControlRequired = 0)
-	OR
-	(suratPages.IsActive = 1)
-	AND
-	(accessibleItems.DBObjectType = 5 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
-	AND
-	(accessibleItems.RelationGroupId IN 
+            string query = @"
+select DISTINCT suratActions.Id as ActionId
+from dbo.SuratActions suratActions
+INNER JOIN AccessibleItems accessibleItems ON accessibleItems.DBObjectId  = suratActions.Id  and accessibleItems.DBObjectType = 2 
+where  
+suratActions .IsActive = 1 and accessibleItems .IsActive = 1
+AND
+accessibleItems.AccessRightTypeId = 1 
+AND
+(accessibleItems.RelationGroupId IN 
+	(
+		Select relationGroups.Id from dbo.RelationGroups relationGroups
+		where (relationGroups.UserId = @UserId)
+		UNION
+		Select relationGroups.Id from dbo.RelationGroups relationGroups
+		where 
+		(		  	
+			UserId = 0  AND  WorkgroupId = 0 AND
+			relationGroups.RoleId IN 
+		(Select Distinct RoleId from dbo.RelationGroups relationGroups
+			where (relationGroups.UserId = @UserId AND RoleId != 0 AND WorkgroupId =0)
+		    )
+		)
+		UNION
+		Select relationGroups.Id from dbo.RelationGroups relationGroups
+		where 
 		(
-		  Select relationGroups.Id from dbo.RelationGroups relationGroups
-		  where (relationGroups.UserId = @UserId)
-		  UNION
-		  Select relationGroups.Id from dbo.RelationGroups relationGroups
-		  where 
-		  (		  	
-			 UserId = 0  AND  WorkgroupId = 0 AND
-			 relationGroups.RoleId IN 
-			(Select Distinct RoleId from dbo.RelationGroups relationGroups
-			 where (relationGroups.UserId = @UserId AND RoleId != 0 AND WorkgroupId =0)
-		     )
-		  )
-		  UNION
-		  Select relationGroups.Id from dbo.RelationGroups relationGroups
-		  where 
-		  (
-			 UserId = 0  AND  RoleId = 0 AND
-			 relationGroups.WorkgroupId IN 
-			(Select Distinct WorkgroupId from dbo.RelationGroups relationGroups
-			 where (relationGroups.UserId = @UserId AND RoleId = 0 AND WorkgroupId !=0)
-			 )
-		  )
-		 )
-	)";
+			UserId = 0  AND  RoleId = 0 AND
+			relationGroups.WorkgroupId IN 
+		(Select Distinct WorkgroupId from dbo.RelationGroups relationGroups
+			where (relationGroups.UserId = @UserId AND RoleId = 0 AND WorkgroupId !=0)
+			)
+		)
+		)
+)";
             accessibleActions = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleActionView>(
                                 query, new SqlParameter("@UserId", currentUser.UserId)).ToList();
 
