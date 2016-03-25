@@ -374,6 +374,84 @@ namespace Surat.Business.Security
             return accessiblePages;
         }
 
+        public List<AccessibleRolePageView> GetUserAccessibleRolePages(int roleId)
+        {
+            List<AccessibleRolePageView> accessibleRolePages;
+
+            string query = @"	
+
+
+ 
+select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=1 from Pages where Id in(
+select DISTINCT suratPages.Id 
+from dbo.Pages suratPages
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
+JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
+where 
+    suratPages.IsActive = 1
+    AND 
+       (
+       
+       (
+       suratPages.IsAccessControlRequired = 1 and 
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
+       AND
+       (accessibleItems.RelationGroupId IN 
+             (
+                 
+            /*** role den gelen erişim hakları ***/
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where 
+               (                 
+                     UserId = 0  AND  WorkgroupId = 0 AND RoleId = @RoleId
+                    
+                  
+               )
+                
+             )
+       )))
+	   ) 
+and pages.IsAccessControlRequired=1
+
+
+union
+
+select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=0 from Pages where Id not in(
+select DISTINCT suratPages.Id 
+from dbo.Pages suratPages
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
+JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
+where 
+    suratPages.IsActive = 1
+    AND 
+       (
+       
+       (
+       suratPages.IsAccessControlRequired = 1 and 
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
+       AND
+       (accessibleItems.RelationGroupId IN 
+             (
+                 
+            /*** role den gelen erişim hakları ***/
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where 
+               (                 
+                     UserId = 0  AND  WorkgroupId = 0 AND RoleId =@RoleId
+                    
+                  
+               )
+                
+             )
+       )))
+	   ) 
+and pages.IsAccessControlRequired=1";
+            accessibleRolePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleRolePageView>(
+                                query, new SqlParameter("@RoleId", roleId)).ToList();
+
+            return accessibleRolePages;
+        }
+
         public List<AccessibleActionView> GetUserAccessibleActions(UserDetailedView currentUser)
         {
             List<AccessibleActionView> accessibleActions;
