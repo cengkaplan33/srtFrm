@@ -410,6 +410,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                     selectedOdemeTalep.PaymentCollectingId = odemeTalep.PaymentCollectingId;
                     selectedOdemeTalep.TalepTuru = "odeme";
                     selectedOdemeTalep.Aciklama = odemeTalep.Aciklama;
+                    selectedOdemeTalep.OdemeTalepDurumuId = odemeTalep.OdemeTalepDurumuId;
                     this.OdemeTalep.Update(selectedOdemeTalep);
                 }
 

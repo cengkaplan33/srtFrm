@@ -114,8 +114,9 @@ function (kendo, odemeTalepModel, odemeTalepDatasource, odemeTuruDatasource, Ode
             reorderable: true,
             selectable: true,
             navigatable: false,
-            toolbar: ["create", "save", "cancel", { name: "excel", text: "Excele Aktar" }],
+            toolbar: ["create", { name: "excel", text: "Excele Aktar" }],
             excelExport: function (e) {
+                var data = e.data;
                 var rows = e.workbook.sheets[0].rows;
 
                 for (var ri = 0; ri < rows.length; ri++) {
@@ -132,10 +133,16 @@ function (kendo, odemeTalepModel, odemeTalepDatasource, odemeTuruDatasource, Ode
                             }
                         }
                     }
+                    if (row.type == "data") {
+                       
+                        row.cells[2].value = data[ri - 1].Name;
+                        row.cells[6].value = data[ri - 1].Durum;
+                        
+                    }
                 }
             },
             excel: {
-                fileName: "Kendo UI Grid Export.xlsx",
+                fileName: "OdemeBilgiFormu.xlsx",
                 filterable: true
             },
             pageable: [{ info: true, pageSizes: true, buttonCount: 5 }],
@@ -331,8 +338,7 @@ function (kendo, odemeTalepModel, odemeTalepDatasource, odemeTuruDatasource, Ode
                 SelectedProjectId = -1;
                 _notification.info("Öncelikle bir proje satırı seçmelisiniz!");
             }
-            toolbar.data("kendoToolBar").enable("#btnIlgiliEkle", SelectedProjectId);
-            toolbar.data("kendoToolBar").enable("#btnProjeDosyasiYukle", SelectedProjectId);
+          
         },
         onRefreshProjectList: function (e) {
             odemeTalepDatasource.read();

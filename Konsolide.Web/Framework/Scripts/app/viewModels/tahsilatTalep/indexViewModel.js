@@ -114,9 +114,35 @@ function (kendo, odemeTalepModel, tahsilatTalepDatasource, tahsilatTuruDatasourc
             reorderable: true,
             selectable: true,
             navigatable: false,
-            toolbar: ["create", "save", "cancel", { name: "excel", text: "Excele Aktar" }],
+            toolbar: ["create", { name: "excel", text: "Excele Aktar" }],
+            excelExport: function (e) {
+                var data = e.data;
+                var rows = e.workbook.sheets[0].rows;
+
+                for (var ri = 0; ri < rows.length; ri++) {
+                    var row = rows[ri];
+
+                    if (row.type == "group-footer" || row.type == "footer") {
+                        for (var ci = 0; ci < row.cells.length; ci++) {
+                            var cell = row.cells[ci];
+                            if (cell.value) {
+                                // Use jQuery.fn.text to remove the HTML and get only the text
+                                cell.value = $(cell.value).text();
+                                // Set the alignment
+                                cell.hAlign = "right";
+                            }
+                        }
+                    }
+                    if (row.type == "data") {
+
+                        row.cells[2].value = data[ri - 1].Name;
+                        row.cells[6].value = data[ri - 1].Durum;
+
+                    }
+                }
+            },
             excel: {
-                fileName: "Kendo UI Grid Export.xlsx",
+                fileName: "TahsilatTalepBilgiFormu.xlsx",
                 filterable: true
             },
             pageable: [{ info: true, pageSizes: true, buttonCount: 5 }],
