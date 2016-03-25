@@ -64,6 +64,7 @@
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Globalization\IGlobalizationManager.cs" />
+    <Compile Include="ViewModel\UserSessionView.cs" />
     <Compile Include="ViewModel\HttpRequest.cs" />
     <Compile Include="Log\ITraceManager.cs" />
     <Compile Include="Mail\IMailManager.cs" />

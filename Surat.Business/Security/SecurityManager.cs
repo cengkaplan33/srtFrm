@@ -303,7 +303,6 @@ namespace Surat.Business.Security
 
         #endregion
 
-
         #region User
 
         public UserDetailedView ValidateUser(string userName, string password)
@@ -477,7 +476,7 @@ AND
 
                 session = this.UserSession.GetById(this.ApplicationContext.CurrentUser.SessionId);
                 session.SessionEnd = TimeUtility.GetCurrentDateTime();
-                this.UserSession.Add(session);
+                this.UserSession.Update(session);
 
                 this.ApplicationContext.CommitDBChanges(initializedDBContextId);
             }
@@ -907,6 +906,35 @@ AND
 
         #endregion
 
-        #endregion        
+        #region UserSession
+
+        public List<UserSessionView> GetUserSessionsList()
+        {
+            try
+            {
+                List<UserSessionView> sessions = null;
+
+                sessions = (from userSessions in this.Context.ApplicationContext.DBContext.UserSessions
+                            join users in this.Context.ApplicationContext.DBContext.Users on userSessions.UserId equals users.Id
+                            select new UserSessionView()
+                              {
+                                  Id = userSessions.Id,
+                                  UserName = users.UserName,
+                                  SessionStart = userSessions.SessionStart,
+                                  SessionEnd = userSessions.SessionEnd,
+                                  IP = userSessions.IP
+                              }).ToList();
+
+                return sessions;
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "GetUserSessionsList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 }
