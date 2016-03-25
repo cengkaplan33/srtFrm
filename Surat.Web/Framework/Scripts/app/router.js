@@ -82,6 +82,14 @@ define(['kendo'],
             });
         });
 
+        router.route("/UserSessions/Index", function () {
+            require(['userSessions-indexViewModel', 'text!/UserSessions/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#sessionsgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {
         //        loadView(null, view);
