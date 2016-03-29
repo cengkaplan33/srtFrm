@@ -444,6 +444,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                     selectedOdemeTalep.USD = odemeTalep.USD;
                     selectedOdemeTalep.EURO = odemeTalep.EURO;
                     selectedOdemeTalep.PaymentCollectingId = odemeTalep.PaymentCollectingId;
+                    selectedOdemeTalep.OdemeTalepDurumuId = odemeTalep.OdemeTalepDurumuId;
                     selectedOdemeTalep.TalepTuru = "tahsilat";
                     selectedOdemeTalep.Aciklama = odemeTalep.Aciklama;
                     this.OdemeTalep.Update(selectedOdemeTalep);
