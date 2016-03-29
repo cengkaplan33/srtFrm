@@ -15,6 +15,7 @@ namespace Surat.Common.ViewModel
         public string ObjectTypeName { get; set; }
         public string BigImagePath { get; set; }
         public string SmallImagePath { get; set; }
-        public bool IsAccess { get; set; }
+        public int IsAccess { get; set; }
+       // public int? AccessibleItemId { get; set; }
     }
 }

@@ -36,7 +36,7 @@ function (kendo, rolesDatasource, router) {
         destroy: function (event) {
             onClick(event, function (grid, row, dataItem) {
 
-                var r = confirm("Seçtiğiniz kullanıcıyı silmek istediğinize emin misiniz?!");
+                var r = confirm("Silinecek olan role bağlı varsa kullanıcı ve sayfa ilişkileri silinecek, emin misiniz?!");
                 if (r == true) {
                     rolesDatasource.remove(dataItem);
                     rolesDatasource.sync();

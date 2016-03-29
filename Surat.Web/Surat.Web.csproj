@@ -1430,6 +1430,7 @@
     <Content Include="Framework\Scripts\app\app.js" />
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\systemsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userDatasource.js" />
@@ -1437,6 +1438,7 @@
     <Content Include="Framework\Scripts\app\main.js" />
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
+    <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
     <Content Include="Framework\Scripts\app\models\rolesModel.js" />
     <Content Include="Framework\Scripts\app\models\systemsModel.js" />
     <Content Include="Framework\Scripts\app\models\userModel.js" />

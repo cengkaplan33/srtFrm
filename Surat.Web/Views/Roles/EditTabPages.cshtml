@@ -1,17 +1,40 @@
-﻿
-@{
-    Layout = null;
-}
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Sayfa Seçimleri</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
 
-<!DOCTYPE html>
+                        <div class="col-md-8">
+                            <div id="rolePagesGrid"
+                                 data-role="grid"
+                                 data-sortable="true"
+                                 data-pageable="true"
+                                 data-filterable="true"
+                                 data-editable="inline"
+                                 data-selectable="multiple"
+                                 data-columns='[
+                                 { field :"IsAccess" , title:"Active" , width:25, template:"<input type=\"checkbox\" # if (IsAccess) {# checked # }# data-bind=\"click:sec\" />"  },
+                                 { field: "Id", title: "ID", width: "75px" },
+                                 { field: "Name", title: "Sayfa", width: "200px" } ]'
+                                 data-bind="source: rolePagesDatasource" style="width:100%">
+                            </div>
+                        </div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>EditTabPages</title>
-</head>
-<body>
-    <div> 
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
     </div>
-</body>
-</html>
+</div>
+

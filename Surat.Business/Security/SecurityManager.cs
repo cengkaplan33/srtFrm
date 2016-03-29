@@ -27,7 +27,7 @@ namespace Surat.Business.Security
 
         public SecurityManager(IFrameworkManager frameworkManager)
         {
-            this.frameworkManager = frameworkManager;  
+            this.frameworkManager = frameworkManager;
         }
 
         #endregion
@@ -43,15 +43,15 @@ namespace Surat.Business.Security
         private UserShortcutRepository userShortcut;
         private RoleRepository role;
         private WorkgroupRepository workgroup;
-        private AccessibleItemRepository accessibleItem;  
+        private AccessibleItemRepository accessibleItem;
         private FailedLoginRepository failedLogin;
         private RelationGroupRepository relationGroup;
         private ExternalSystemsUsersRepository externalSystemsUsers;
-      
+
         #endregion
 
-        #region Public Members    
-   
+        #region Public Members
+
         public IFrameworkManager FrameworkManager
         {
             get
@@ -91,14 +91,14 @@ namespace Surat.Business.Security
                 return authenticationProvider;
             }
         }
-        
+
         public SecurityContext Context
         {
             get
             {
                 return this.ApplicationContext.Security;
             }
-        }            
+        }
 
         #endregion
 
@@ -226,26 +226,26 @@ namespace Surat.Business.Security
         public void PasswordQualityChecker(string password)
         {
             if (password.Length < this.Context.MinPasswordLength)
-                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId, 
-                    string.Format(this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordLenghtRule),this.Context.MinPasswordLength));
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId,
+                    string.Format(this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordLenghtRule), this.Context.MinPasswordLength));
 
             if (password.IndexOfAny(Constants.Parameter.Digits.ToCharArray()) < 0)
-                throw new SecurityException(this.ApplicationContext,"PasswordQualityChecker", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId,Constants.Message.PasswordAtLeastOneDigitRule));
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneDigitRule));
 
             if (password.IndexOfAny(Constants.Parameter.UpperCharacters.ToCharArray()) < 0)
-                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId,Constants.Message.PasswordAtLeastOneUpperCharacterRule));
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneUpperCharacterRule));
 
             if (password.IndexOfAny(Constants.Parameter.SpecialCharacters.ToCharArray()) < 0)
-                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker - Special Characters : " + Constants.Parameter.SpecialCharacters, this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId,Constants.Message.PasswordAtLeastOneSpecialCharacter));
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker - Special Characters : " + Constants.Parameter.SpecialCharacters, this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneSpecialCharacter));
         }
-       
+
         #endregion
 
         #region Authentication
 
         private IAuthenticationProvider InitializeAuthenticationProvider()
         {
-            IAuthenticationProvider  authenticationProvider = null;
+            IAuthenticationProvider authenticationProvider = null;
 
             switch (this.ApplicationContext.Configuration.FrameworkProviderType)
             {
@@ -260,7 +260,7 @@ namespace Surat.Business.Security
                     }
                     break;
                 default:
-                    throw new InvalidTypeException(this.ApplicationContext,"AuthenticationProvider", this.ApplicationContext.SystemId,
+                    throw new InvalidTypeException(this.ApplicationContext, "AuthenticationProvider", this.ApplicationContext.SystemId,
                         string.Format(this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.ExceptionType.InvalidType), this.ApplicationContext.Configuration.FrameworkProviderType));
             }
 
@@ -319,10 +319,10 @@ namespace Surat.Business.Security
                 this.SaveFailedLogin(userName, password);
                 throw exception;
             }
-            
+
 
             return currentUser;
-        }        
+        }
 
         public List<AccessiblePageView> GetUserAccessiblePages(UserDetailedView currentUser)
         {
@@ -369,19 +369,17 @@ namespace Surat.Business.Security
 		 )
 	)";
             accessiblePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessiblePageView>(
-                                query, new SqlParameter("@UserId", currentUser.UserId)).ToList(); 
+                                query, new SqlParameter("@UserId", currentUser.UserId)).ToList();
 
             return accessiblePages;
         }
 
-        public List<AccessibleRolePageView> GetUserAccessibleRolePages(int roleId)
+        public List<AccessibleRolePageView> GetUserAccessibleRolePages(int? roleId)
         {
             List<AccessibleRolePageView> accessibleRolePages;
 
             string query = @"	
 
-
- 
 select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=1 from Pages where Id in(
 select DISTINCT suratPages.Id 
 from dbo.Pages suratPages
@@ -532,15 +530,15 @@ AND
                 session.SessionStart = TimeUtility.GetCurrentDateTime();
                 session.UserId = currentUser.UserId;
 
-                this.UserSession.Add(session);               
+                this.UserSession.Add(session);
                 this.ApplicationContext.CommitDBChanges(initializedDBContextId);
 
                 currentUser.SessionStart = session.SessionStart;
-                currentUser.SessionId = session.Id;     
+                currentUser.SessionId = session.Id;
             }
             catch (Exception exception)
             {
-                throw new SuratBusinessException(this.ApplicationContext, "SaveUserSession", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId,Constants.Message.FrameworkSessionNotStarted), exception);
+                throw new SuratBusinessException(this.ApplicationContext, "SaveUserSession", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.FrameworkSessionNotStarted), exception);
             }
         }
 
@@ -561,7 +559,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new SuratBusinessException(this.ApplicationContext,"SaveUserSession", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId,Constants.Message.FrameworkSessionNotStarted), exception);
+                throw new SuratBusinessException(this.ApplicationContext, "SaveUserSession", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.FrameworkSessionNotStarted), exception);
             }
         }
 
@@ -582,7 +580,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"SaveUsers", this.ApplicationContext.SystemId,exception);
+                throw new EntityProcessException(this.ApplicationContext, "SaveUsers", this.ApplicationContext.SystemId, exception);
             }
         }
 
@@ -592,10 +590,10 @@ AND
             try
             {
                 initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                
+
                 if (user.Id == 0)
                 {
-                   
+
                     this.User.Add(user);
                 }
                 else
@@ -622,8 +620,8 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"SaveUser", this.ApplicationContext.SystemId,exception);
-            }           
+                throw new EntityProcessException(this.ApplicationContext, "SaveUser", this.ApplicationContext.SystemId, exception);
+            }
         }
 
         public void DeleteUsers(IEnumerable<SuratUser> suratUser)
@@ -643,7 +641,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"DeleteUsers", this.ApplicationContext.SystemId,exception);
+                throw new EntityProcessException(this.ApplicationContext, "DeleteUsers", this.ApplicationContext.SystemId, exception);
             }
         }
 
@@ -655,7 +653,7 @@ AND
                 initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
                 SuratUser selectedUser = this.User.GetObjectByParameters(p => p.Id == user.Id);
-                selectedUser.IsActive = false;                
+                selectedUser.IsActive = false;
 
                 this.User.Update(selectedUser);
 
@@ -663,11 +661,11 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"DeleteUser", this.ApplicationContext.SystemId,exception);
-            }            
+                throw new EntityProcessException(this.ApplicationContext, "DeleteUser", this.ApplicationContext.SystemId, exception);
+            }
         }
 
-        public void SaveUserLock(string userName, string password,bool isLocked)
+        public void SaveUserLock(string userName, string password, bool isLocked)
         {
             try
             {
@@ -675,7 +673,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new SuratBusinessException(this.ApplicationContext,"SaveUserLock", this.ApplicationContext.SystemId, exception);
+                throw new SuratBusinessException(this.ApplicationContext, "SaveUserLock", this.ApplicationContext.SystemId, exception);
             }
         }
 
@@ -688,7 +686,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new SuratBusinessException(this.ApplicationContext,"RemindUserPassword", this.ApplicationContext.SystemId, exception);
+                throw new SuratBusinessException(this.ApplicationContext, "RemindUserPassword", this.ApplicationContext.SystemId, exception);
             }
 
             return password;
@@ -715,27 +713,32 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"SaveRoles", this.ApplicationContext.SystemId,exception);
+                throw new EntityProcessException(this.ApplicationContext, "SaveRoles", this.ApplicationContext.SystemId, exception);
             }
         }
 
         public void SaveRole(SuratRole role)
         {
             int initializedDBContextId;
+            initializedDBContextId = this.ApplicationContext.InitializeDBContext();
             if (role.Id == 0)
             {
                 try
                 {
+                     this.Role.Add(role);
+                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                     initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                    role.InsertedDate = DateTime.Now;
-                    role.IsActive = true;
-                    role.ChangedByUser = null;
-                    role.ChangedDate = null;
-                    this.Role.Add(role);
+                    this.RelationGroup.Add(new RelationGroup() { 
+                    UserId=0,
+                    WorkgroupId=0,
+                    RoleId=role.Id
+                    });
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                   
                 }
                 catch (Exception exception)
                 {
-                    throw new EntityProcessException(this.ApplicationContext,"SaveRole", this.ApplicationContext.SystemId,exception);
+                    throw new EntityProcessException(this.ApplicationContext, "SaveRole", this.ApplicationContext.SystemId, exception);
                 }
             }
             else
@@ -743,25 +746,21 @@ AND
                 try
                 {
 
-                    initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                    var roleOfDatabase = this.Role.GetObjectByParameters(m => m.Id == role.Id);
-                    roleOfDatabase.ChangedByUser = 0;
-                    roleOfDatabase.ChangedDate = DateTime.Now;
-                    roleOfDatabase.InsertedByUser = 0;
-                    roleOfDatabase.InsertedDate = DateTime.Now;
-                    roleOfDatabase.IsActive = true;                    
+                    
+                    var roleOfDatabase = this.Role.GetObjectByParameters(m => m.Id == role.Id);                   
                     roleOfDatabase.Name = role.Name;
                     roleOfDatabase.ObjectTypeName = role.ObjectTypeName;
                     this.Role.Update(roleOfDatabase);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                 }
                 catch (Exception exception)
                 {
 
-                    throw new EntityProcessException(this.ApplicationContext,"UpdateRole", this.ApplicationContext.SystemId,exception);
+                    throw new EntityProcessException(this.ApplicationContext, "UpdateRole", this.ApplicationContext.SystemId, exception);
                 }
 
             }
-            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+          
         }
 
         public void DeleteRoles(IEnumerable<SuratRole> suratRoles)
@@ -781,7 +780,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"DeleteRoles", this.ApplicationContext.SystemId,exception);
+                throw new EntityProcessException(this.ApplicationContext, "DeleteRoles", this.ApplicationContext.SystemId, exception);
             }
         }
 
@@ -797,13 +796,72 @@ AND
                 roleOfDatabase.ChangedDate = DateTime.Now;
                 this.Role.Update(roleOfDatabase);
 
+                List<RelationGroup> relationGroups = this.RelationGroup.GetObjectsByParameters(m => m.RoleId == role.Id).ToList();
+
+                foreach (var relationGroup in relationGroups)
+                {
+                    relationGroup.IsActive = false;
+                    this.RelationGroup.Update(relationGroup);
+                }
+                List<int> relationGroupIds = relationGroups.Select(x => x.Id).ToList();
+                List<AccessibleItem> accessibleItems = this.AccessibleItem.GetObjectsByParameters(m => relationGroupIds.Contains(m.RelationGroupId)).ToList();
+
+                foreach (var accessibleItem in accessibleItems)
+                {
+                    accessibleItem.IsActive = false;
+                    this.AccessibleItem.Update(accessibleItem);
+                }
+
                 this.ApplicationContext.CommitDBChanges(initializedDBContextId);
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"DeleteRole", this.ApplicationContext.SystemId, exception);
+                throw new EntityProcessException(this.ApplicationContext, "DeleteRole", this.ApplicationContext.SystemId, exception);
             }
-            
+
+        }
+
+        public void SaveRolePages(int roleId, IList<RolePageView> rolePages)
+        {
+            try
+            {
+                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                int relationGroupId = GetRoleRelationGroupId(roleId);
+                List<AccessibleItem> oldRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectType == (int)AccessibleItemDBObjectType.Page&m.IsActive==true).ToList();
+                foreach (var rolePage in rolePages)
+                {
+                    if (oldRecords.Where(m => m.DBObjectId == rolePage.Id).Count() > 0)
+                    {
+
+                        if (rolePage.IsAccess == false)
+                        {
+                            Surat.Base.Model.Entities.AccessibleItem accesibleItem = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectId == rolePage.Id & m.IsActive == true).First();
+                            accesibleItem.IsActive = false;
+                            this.AccessibleItem.Update(accesibleItem);
+                        }
+                    }
+                    else
+                    {
+                        if (rolePage.IsAccess == true)
+                        {
+                            Surat.Base.Model.Entities.AccessibleItem accesibleItem = new AccessibleItem();
+                            accesibleItem.RelationGroupId = relationGroupId;
+                            accesibleItem.AccessRightTypeId = 1;
+                            accesibleItem.DBObjectId = rolePage.Id;
+                            accesibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Page;
+                            accesibleItem.EndDate = DateTime.Now.AddYears(1);
+                            accesibleItem.StartDate = DateTime.Now;
+                            this.AccessibleItem.Add(accesibleItem);
+                        }
+                    }
+                }
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
+            }
+
         }
 
         #endregion
@@ -814,7 +872,7 @@ AND
         {
             int initializedDBContextId;
             int? workgroupId = relationGroup.WorkgroupId;
-            
+
             try
             {
                 initializedDBContextId = this.ApplicationContext.InitializeDBContext();
@@ -870,15 +928,18 @@ AND
             }
             catch (Exception exception)
             {
-                
-                throw new EntityProcessException(this.ApplicationContext,"SaveRelationGroup",this.ApplicationContext.SystemId,exception);
+
+                throw new EntityProcessException(this.ApplicationContext, "SaveRelationGroup", this.ApplicationContext.SystemId, exception);
             }
             this.ApplicationContext.CommitDBChanges(initializedDBContextId);
         }
-
+        public int GetRoleRelationGroupId(int roleId)
+        {
+            return this.RelationGroup.GetIdByParameters(0, roleId, 0);
+        }
         #endregion
 
-        #region Workgroup      
+        #region Workgroup
 
         public void SaveWorkgroup(Workgroup workgroup)
         {
@@ -906,8 +967,8 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"SaveWorkgroup", this.ApplicationContext.SystemId,exception);
-            } 
+                throw new EntityProcessException(this.ApplicationContext, "SaveWorkgroup", this.ApplicationContext.SystemId, exception);
+            }
         }
 
         public void DeleteWorkgroups(IEnumerable<Workgroup> workgroups)
@@ -927,7 +988,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"DeleteWorkgroups", this.ApplicationContext.SystemId,exception);
+                throw new EntityProcessException(this.ApplicationContext, "DeleteWorkgroups", this.ApplicationContext.SystemId, exception);
             }
         }
 
@@ -946,7 +1007,7 @@ AND
             }
             catch (Exception exception)
             {
-                throw new EntityProcessException(this.ApplicationContext,"DeleteWorkgroup", this.ApplicationContext.SystemId, exception);
+                throw new EntityProcessException(this.ApplicationContext, "DeleteWorkgroup", this.ApplicationContext.SystemId, exception);
             }
 
         }
@@ -955,7 +1016,7 @@ AND
 
         #region FailedLogin
 
-        public void SaveFailedLogin(string userName,string password)
+        public void SaveFailedLogin(string userName, string password)
         {
             int initializedDBContextId;
             FailedLogin failedLogin = new FailedLogin();
@@ -975,7 +1036,7 @@ AND
                 }
 
                 this.FailedLogin.Add(failedLogin);
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);          
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
             }
             catch (Exception exception)
             {
@@ -985,6 +1046,6 @@ AND
 
         #endregion
 
-        #endregion        
+        #endregion
     }
 }

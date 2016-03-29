@@ -54,9 +54,11 @@ namespace Surat.Common.Data
 
     public enum AccessibleItemDBObjectType
     {       
-        Page = 0,
-        Service = 1,
-        ServiceMethod = 2
+        Page = 1,
+        Action=2,
+        Right=3,
+        Service = 4,
+        ServiceMethod = 5
     }
 
     public enum ParameterDBObjectType

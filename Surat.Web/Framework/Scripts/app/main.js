@@ -11,6 +11,7 @@
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
+        'rolePagesModel':'models/rolePagesModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -27,6 +28,7 @@
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
+        'rolePagesDatasource':'datasources/rolePagesDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

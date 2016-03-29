@@ -89,6 +89,7 @@
     <Compile Include="ViewModel\DBConnectionView.cs" />
     <Compile Include="ViewModel\RequestedContextView.cs" />
     <Compile Include="ViewModel\GlobalizationKeyValueView.cs" />
+    <Compile Include="ViewModel\RolePageView.cs" />
     <Compile Include="ViewModel\SystemDetailedView.cs" />
     <Compile Include="ViewModel\RoleShortView.cs" />
     <Compile Include="ViewModel\SystemView.cs" />

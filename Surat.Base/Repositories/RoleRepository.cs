@@ -1,5 +1,6 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Base.Security;
+using Surat.Common.ViewModel;
 using Surat.Entities;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace Surat.Base.Repositories
         {
             return this.GetObjectsByParameters(p => p.IsActive == true).ToList();
         }
+       
         #endregion
     }
 }
