@@ -23,49 +23,54 @@ namespace KonsolideRapor.WebServer.ActionFilters
             if (!MVCUtility.IsUnAuthorizedAction(action))
                 base.OnAuthorization(filterContext);
             else return;
-            
-            if (filterContext.HttpContext.User.Identity.IsAuthenticated)           
+
+            if (filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
-               KonsolideControllerBase controller = filterContext.Controller as KonsolideControllerBase;
-               try
-               {
-                   //Session timeout kontrolü - CurrentUser bulunamaz.                       
-                   if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned)
-                   {
+                KonsolideControllerBase controller = filterContext.Controller as KonsolideControllerBase;
+                try
+                {
+                    if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned)
+                    {
+                        filterContext.HttpContext.Response.StatusCode = 500;
+                        filterContext.Result = new System.Web.Mvc.JsonResult() { Data = new { Status = "RedirectToLogin", Message = controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId, Constants.Message.RedirectToLogin) }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                        return;
+                    }
+                    else if (!controller.WebApplicationManager.Framework.Security.HasRight(action))
+                    {
+                        filterContext.HttpContext.Response.StatusCode = 500;
+                        filterContext.Result = new System.Web.Mvc.JsonResult() { Data = new { Status = "AccessDenied", Message = String.Format(controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId, Constants.Message.UserAccessDenied), action, controller.WebApplicationManager.KonsolideRapor.Context.CurrentUser.Name) }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
-                       filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
-                       return;
-                   }
-                   else if (!controller.WebApplicationManager.Framework.Security.HasRight(action))
-                   {
-                       filterContext.Result = new System.Web.Mvc.JsonResult() { Data = "weqw ewq qwe " };
+                        //filterContext.Controller.TempData.Add("RedirectReason", "Unauthorized");
 
-                       //filterContext.Controller.TempData.Add("RedirectReason", "Unauthorized");
+                        //filterContext.Result = new HttpUnauthorizedResult("yetkin yok") ;
+                        return;
 
-                       //filterContext.Result = new HttpUnauthorizedResult("yetkin yok") ;
-                       return;
+                        //return new ActionResult ( () => 
+                        //     JsonResult()
+                        // MVCUtility.GetControllerName(), controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId,WebConstants.Message.WebSessionTimeout), TraceLevel.Basic);
+                        // );
 
-                       //return new ActionResult ( () => 
-                       //     JsonResult()
-                       // MVCUtility.GetControllerName(), controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId,WebConstants.Message.WebSessionTimeout), TraceLevel.Basic);
-                       // );
+                    }
 
-                   }
-
-                   ////Session timeout kontrolü - CurrentUser bulunamaz.                                  
-                   //if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
-                   //    !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
-                   //{
-                   //    filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
-                   //    return;
-                   //}
-               }
+                    ////Session timeout kontrolü - CurrentUser bulunamaz.                                  
+                    //if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned ||
+                    //    !controller.WebApplicationManager.Framework.Security.HasActionRight(action))
+                    //{
+                    //    filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
+                    //    return;
+                    //}
+                }
                 catch (Exception exception)
                 {
-                    filterContext.Result = new RedirectResult(Constants.Web.RedirectLoginAction); //ToDo : Hata olduğunda, genel bir mesaj vermelidir.
-                    controller.WebApplicationManager.TraceAppendLine(MVCUtility.GetControllerName(), controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId,WebConstants.Message.WebSessionTimeout), TraceLevel.Basic);
-                    controller.WebApplicationManager.PublishException(exception);                        
-                }                                
+                    //  filterContext.Result = new RedirectResult(Constants.Web.RedirectLoginAction); //ToDo : Hata olduğunda, genel bir mesaj vermelidir.
+
+                    filterContext.HttpContext.Response.StatusCode = 500;
+                    filterContext.Result = new System.Web.Mvc.JsonResult() { Data = new { Status = "KonsolideAuthorizationFilterError", Message = exception.Message }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+                    controller.WebApplicationManager.TraceAppendLine(MVCUtility.GetControllerName(), exception.Message, TraceLevel.Basic);
+                    controller.WebApplicationManager.PublishException(exception);
+                    return;
+                }
             }
             else
             {
