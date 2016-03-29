@@ -3216,10 +3216,13 @@
     <Content Include="Views\Users\EditTabUsersInfo.cshtml" />
     <Content Include="Views\Users\EditTabWorkgroups.cshtml" />
     <Content Include="Views\Exceptions\Index.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Roles\Edit.cshtml" />
-    <Content Include="Views\UserSessions\Index.cshtml" />
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\EditTabPages.cshtml" />
+=======
+    <Content Include="Views\UserSessions\Index.cshtml" />
+>>>>>>> d7532af820e1b5042c08d453c5cfc2cce98ea320
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

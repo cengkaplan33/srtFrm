@@ -11,7 +11,11 @@
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
+<<<<<<< HEAD
+        'rolePagesModel':'models/rolePagesModel',
+=======
         'userSessionsModel': 'models/userSessionsModel',
+>>>>>>> d7532af820e1b5042c08d453c5cfc2cce98ea320
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -29,8 +33,11 @@
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
+<<<<<<< HEAD
         'rolePagesDatasource':'datasources/rolePagesDatasource',
+=======
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
+>>>>>>> d7532af820e1b5042c08d453c5cfc2cce98ea320
         // utils
         'util': '/Framework/Scripts/util'
     },

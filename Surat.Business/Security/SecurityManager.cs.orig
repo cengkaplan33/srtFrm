@@ -1045,6 +1045,8 @@ AND
 
         #endregion
 
+<<<<<<< HEAD
+=======
         #region UserSession
 
         public List<UserSessionView> GetUserSessionsList()
@@ -1074,6 +1076,7 @@ AND
 
         #endregion
 
+>>>>>>> d7532af820e1b5042c08d453c5cfc2cce98ea320
         #endregion
     }
 }

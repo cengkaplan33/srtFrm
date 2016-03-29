@@ -11,9 +11,9 @@
          data-columns='[
                 { field: "Id", title: "ID", width: "75px" },
                 { field: "Durum", title: "Durum" },
-                { field: "IsBanka", title: "Banka Ekranı?"},
-                { field: "IsOdeme" , title:"Ödeme Ekranı?"  },
-                { field: "IsTahsilat" , title:"Tahsilat Ekranı?"  }]'
+                { field: "IsBanka", title: "Banka Ekranı?", "template": "#= IsBanka ? \"Evet\" : \"Hayır\" #"},
+                { field: "IsOdeme" , title:"Ödeme Ekranı?", "template": "#= IsOdeme ? \"Evet\" : \"Hayır\" #"  },
+                { field: "IsTahsilat" , title:"Tahsilat Ekranı?", "template": "#= IsTahsilat ? \"Evet\" : \"Hayır\" #"  }]'
          data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
     </div>
 
