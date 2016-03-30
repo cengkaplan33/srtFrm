@@ -1,5 +1,5 @@
-﻿define(['kendo', 'rolePagesModel'],
-function (kendo, rolePagesModel) {
+﻿define(['kendo', 'rolePagesModel','util'],
+function (kendo, rolePagesModel,util) {
 
 
     var rolePagesDatasource = new kendo.data.DataSource({
@@ -18,14 +18,10 @@ function (kendo, rolePagesModel) {
         pageSize: 10,
         cache: false,
         schema: {
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
             model: rolePagesModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

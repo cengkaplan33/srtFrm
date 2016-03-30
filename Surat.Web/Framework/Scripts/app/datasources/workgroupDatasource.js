@@ -1,5 +1,5 @@
-﻿define(['kendo', 'workgroupModel'],
-function (kendo, workgroupModel) {
+﻿define(['kendo', 'workgroupModel','util'],
+function (kendo, workgroupModel,util) {
     var workgroupDatasource = new kendo.data.TreeListDataSource({
         transport: {
 
@@ -46,14 +46,10 @@ function (kendo, workgroupModel) {
         },
         batch: false,
         schema: {
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
             model:workgroupModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
    
