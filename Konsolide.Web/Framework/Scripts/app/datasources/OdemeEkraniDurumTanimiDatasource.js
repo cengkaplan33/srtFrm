@@ -1,5 +1,5 @@
-﻿define(['kendo', 'odemeDurumuModel'],
-function (kendo, odemeDurumuModel) {
+﻿define(['kendo', 'odemeDurumuModel','util'],
+function (kendo, odemeDurumuModel,util) {
 
 
     var OdemeEkraniDurumTanimiDatasource = new kendo.data.DataSource({
@@ -11,15 +11,10 @@ function (kendo, odemeDurumuModel) {
             }
         },
         schema: {
-        
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
             model: odemeDurumuModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

@@ -1,5 +1,5 @@
-﻿define(['kendo', 'odemeDurumuModel'],
-function (kendo, odemeDurumuModel) {
+﻿define(['kendo', 'odemeDurumuModel','util'],
+function (kendo, odemeDurumuModel,util) {
 
 
     var odemeDurumuDatasource = new kendo.data.DataSource({
@@ -53,15 +53,11 @@ function (kendo, odemeDurumuModel) {
         cache: false,
         schema: {
             data: "data", // records are returned in the "data" field of the response
-            total: "total", // total number of records is in the "total" field of the response
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
+            total: "total",
             model: odemeDurumuModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 
