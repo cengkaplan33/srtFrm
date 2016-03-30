@@ -46,6 +46,7 @@ namespace Surat.Document.Business.Application
         private DocumentManager documentManager;
         private DocumentSearchManager searchManager;
         private DocumentIndexManager indexManager;
+        private SuratRights rights ;
         private DocumentConfigurationManager configurationManager;        
  
         #endregion
@@ -116,7 +117,19 @@ namespace Surat.Document.Business.Application
 
                 return indexManager;
             }
-        }       
+        }
+
+        public SuratRights Rights
+        {
+            get
+            {
+                if (rights == null)
+                    InitializeRights();
+
+                return rights;
+            }
+        }
+
 
         #endregion
 
@@ -180,7 +193,21 @@ namespace Surat.Document.Business.Application
         {
             indexManager = new DocumentIndexManager(this);
             this.Framework.Trace.AppendLine(this.Context.SystemName, "IndexManager Initialized.", TraceLevel.Basic);
-        }        
+        }
+
+        private void InitializeRights()
+        {
+            rights = new SuratRights();
+            rights.Auditor = this.framework.Security.RegisterRight("Auditor", "AuditManagement hakkının açıklamasını buraya girelim inş.  :)  ", this.Context.SystemId);
+            rights.AuditManagement = this.framework.Security.RegisterRight("AuditManagement__1", "AuditManagement hakkının açıklamasını buraya girelim inş.  :)  ", this.Context.SystemId);
+        }
+
+        public class SuratRights
+        {
+            public Surat.Business.Security.SuratRight Auditor;
+            public  Surat.Business.Security.SuratRight AuditManagement; 
+        }
+
 
         #endregion              
 

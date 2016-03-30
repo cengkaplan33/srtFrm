@@ -31,6 +31,8 @@ namespace Surat.Base.Configuration
         private List<ParameterValueView> systemParameters;
         private List<AccessiblePageView> userAccessiblePages;
         private List<AccessibleActionView> userAccessibleActions;
+        private List<AccessibleRightView> userAccessibleRights;
+        private HashSet<int> userAccessibleRightIds;
 
         #endregion
 
@@ -124,7 +126,37 @@ namespace Surat.Base.Configuration
             {
                 userAccessibleActions = value;
             }
-        }        
+        }
+
+        public List<AccessibleRightView> UserAccessibleRights
+        {
+            get
+            {
+                if (userAccessibleRights== null)
+                    throw new NullValueException(this.ApplicationContext, "ConfigurationContext.UserAccessibleRights", this.ApplicationContext.SystemId);
+
+                return userAccessibleRights;
+            }
+            set
+            {
+                userAccessibleRights = value;
+            }
+        }
+
+        public HashSet<int> UserAccessibleRightIds
+        {
+            get
+            {
+                if (userAccessibleRightIds == null)
+                    throw new NullValueException(this.ApplicationContext, "ConfigurationContext.UserAccessibleRightIds", this.ApplicationContext.SystemId);
+
+                return userAccessibleRightIds;
+            }
+            set
+            {
+                userAccessibleRightIds = value;
+            }
+        }
 
         #endregion
 

@@ -74,7 +74,12 @@
     <Compile Include="Log\UserEvents\UserEventManager.cs" />
     <Compile Include="Mail\MailManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\LeastRecentlyUsedCache.cs" />
+    <Compile Include="Security\LeastRecentlyUsedCacheNode.cs" />
+    <Compile Include="Security\SuratRightCache.cs" />
+    <Compile Include="Security\SuratRight.cs" />
     <Compile Include="Security\SecurityManager.cs" />
+    <Compile Include="Security\UserRightCache.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

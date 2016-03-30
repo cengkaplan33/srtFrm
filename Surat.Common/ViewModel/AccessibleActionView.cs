@@ -14,4 +14,11 @@ namespace Surat.Common.ViewModel
         public int ActionId { get; set; }
         public string TypeName { get; set; }
     }
+
+
+    public class AccessibleRightView
+    {
+        public int RightId { get; set; }
+        public string TypeName { get; set; }
+    }
 }

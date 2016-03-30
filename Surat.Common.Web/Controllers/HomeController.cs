@@ -1,4 +1,5 @@
-﻿using Surat.WebServer.ActionFilters;
+﻿using Surat.Business.Security;
+using Surat.WebServer.ActionFilters;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
 using System;
@@ -36,6 +37,11 @@ namespace Surat.WebServer.Controllers
 
             try
             {
+                var sss = this.WebApplicationManager.Framework.Security.HasOperationRight(this.WebApplicationManager.Rights.WebAuditor.Id);
+                //var sss = this.WebApplicationManager.Framework.Security.Rigths.AuditManagement1.Id;
+                //this.WebApplicationManager..Framework
+                var ssss = this.WebApplicationManager.Rights.WebAuditor.Id;
+
                 ViewBag.Title = this.WebApplicationManager.Framework.Context.Product.CustomerProductName;
                 ViewBag.SessionStart = this.WebApplicationManager.Framework.Context.CurrentUser.SessionStart;
             }

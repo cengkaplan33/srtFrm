@@ -56,8 +56,9 @@ namespace Surat.Common.Data
     {
         Page = 1,
         Action = 2,
-        Service = 3,
-        ServiceMethod = 4
+        Right = 3,
+        Service = 4,
+        ServiceMethod = 5
     }
 
     public enum ParameterDBObjectType

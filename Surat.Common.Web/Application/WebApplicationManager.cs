@@ -36,7 +36,8 @@ namespace Surat.WebServer.Application
         #region Private Members
 
         private WebApplicationContext context;
-        private FrameworkApplicationManager framework;  
+        private FrameworkApplicationManager framework;
+        private SuratRights rights = null;
  
         #endregion
 
@@ -59,7 +60,18 @@ namespace Surat.WebServer.Application
             {
                 return framework;
             }
-        }        
+        }
+
+        public SuratRights Rights
+        {
+            get
+            {
+                if (rights == null)
+                    InitializeRights();
+
+                return rights;
+            }
+        }
 
         #endregion
 
@@ -109,6 +121,13 @@ namespace Surat.WebServer.Application
             else framework = new FrameworkApplicationManager();            
             
             return framework;
+        }
+
+        private void InitializeRights()
+        {
+            rights = new SuratRights();
+            rights.WebAuditor = this.framework.Security.RegisterRight("WebAuditor", "WebAuditor hakkının açıklamasını buraya girelim inş.  :)  ", this.Context.SystemId);
+            rights.WebAuditManagement = this.framework.Security.RegisterRight("WebAuditManagement", "WebAuditManagement hakkının açıklamasını buraya girelim inş.  :)  ", this.Context.SystemId);
         }
 
         public void Login(string userName, string password)
@@ -197,7 +216,14 @@ namespace Surat.WebServer.Application
                 this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, null);
                 throw exception;
             }  
-        }       
+        }
+
+        public class SuratRights
+        {
+            public Surat.Business.Security.SuratRight WebAuditor;
+            public Surat.Business.Security.SuratRight WebAuditManagement;
+        }
+
 
         #endregion
 

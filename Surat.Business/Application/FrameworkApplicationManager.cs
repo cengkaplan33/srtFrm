@@ -291,6 +291,7 @@ namespace Surat.Business.Application
             {
                 this.Context.Configuration.UserAccessiblePages = this.Security.GetUserAccessiblePages(this.Context.CurrentUser);
                 this.Context.Configuration.UserAccessibleActions = this.Configuration.Action.GetAllActions();
+                this.Context.Configuration.UserAccessibleRightIds = this.Security.GetUserRightIds(this.Context.CurrentUser);
             }
         }
 
