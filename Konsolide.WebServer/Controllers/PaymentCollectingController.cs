@@ -39,7 +39,34 @@ namespace KonsolideRapor.WebServer.Controllers
         {
             return View();
         }
+        public JsonResult GetOdemeTurleri()
+        {
+            try
+            {
 
+                return Json(this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetOdemeTurleri(), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult GetTahsilatTurleri()
+        {
+            try
+            {
+
+                return Json(this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetTahsilatTurleri(), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
+        }
         public JsonResult GetPaymentCollectings(int pageSize, int skip)
         {
             try

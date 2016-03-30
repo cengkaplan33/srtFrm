@@ -1,6 +1,7 @@
 ﻿
-define(['kendo'],
-    function(kendo) {
+define(['kendo', 'kendo_culture_config', 'kendo_culture_messages'],
+    function (kendo, culture_config, culture_messages) {
+        kendo.culture("tr-TR");
         var router = new kendo.Router(),
             layout = new kendo.Layout("<div id='content'></div>");
 
@@ -28,6 +29,7 @@ define(['kendo'],
             });
         });
         router.route("/Bankalar/Index", function () {
+            setBreadCrumb("#/Bankalar/Index", "Banka Tanımları");
             require(['bankalar-indexViewModel', 'text!/Bankalar/Index'], function (viewModel, view) {
                 loadView(viewModel, view, function () {
                     kendo.bind($("#bankgrid").find(".k-grid-toolbar"), viewModel);
@@ -43,7 +45,8 @@ define(['kendo'],
         });
 
         router.route("/PaymentCollecting/Index", function () {
-            require(['paymentCollecting-indexViewModel', 'text!/paymentCollecting/Index'], function (viewModel, view) {
+            setBreadCrumb("#/PaymentCollecting/Index", "Ödeme Türü Tanımları");
+            require(['paymentCollecting-indexViewModel', 'text!/PaymentCollecting/Index'], function (viewModel, view) {
                 loadView(viewModel, view, function () {
                     kendo.bind($("#payColgrid").find(".k-grid-toolbar"), viewModel);
                 });
@@ -51,18 +54,40 @@ define(['kendo'],
         });
 
         router.route("/PaymentCollecting/Edit/:id", function () {
-            require(['paymentCollecting-editViewModel', 'text!/paymentCollecting/Edit'], function (viewModel, view) {
+          
+            require(['paymentCollecting-editViewModel', 'text!/PaymentCollecting/Edit'], function (viewModel, view) {
                 loadView(viewModel.loadData(), view);
                 kendo.bind($("#form"), viewModel);
 
             });
         });
-        //router.route("/home/index", function() {
-        //    require(['text!/home/index'], function(view) {
-        //        loadView(null, view);
-        //    });
-        //});
+        router.route("/OdemeTalep/Index", function () {
+            setBreadCrumb("#/OdemeTalep/Index", "Ödeme Tanımları");
+            require(['odemeTalep-indexViewModel', 'text!/OdemeTalep/Index'], function (viewModel, view) {
+                loadView(viewModel, view);
+            });
+        });
+        router.route("/TahsilatTalep/Index", function () {
+            setBreadCrumb("#/TahsilatTalep/Index", "Tahsilat Tanımları");
+            require(['tahsilatTalep-indexViewModel', 'text!/TahsilatTalep/Index'], function (viewModel, view) {
+                loadView(viewModel, view);
+            });
+        });
+        router.route("/DurumTanimlari/Index", function () {
+            setBreadCrumb("#/DurumTanimlari/Index", "Durum Tanımları");
+            require(['durumtanimlari-indexViewModel', 'text!/DurumTanimlari/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#durumgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+        router.route("/DurumTanimlari/Edit/:id", function () {
+            require(['durumtanimlari-editViewModel', 'text!/DurumTanimlari/Edit'], function (viewModel, view) {
+                loadView(viewModel.loadData(), view);
+                kendo.bind($("#form"), viewModel);
 
+            });
+        });
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {
         //        loadView(null, view);
@@ -101,11 +126,13 @@ define(['kendo'],
         //    });
         //});        
         
-
         var loadView = function (viewModel, view, delegate) {
             var kendoView = new kendo.View(view, { model: viewModel });
             kendo.fx($("#content")).slideInRight().reverse().then(function () {
                 layout.showIn("#content", kendoView);
+
+                if (viewModel.onLoad != undefined)
+                    viewModel.onLoad();
 
                 if (delegate != undefined)
                     delegate();
@@ -113,6 +140,17 @@ define(['kendo'],
                 kendo.fx($("#content")).slideInRight().play();
             });
         };
+        //var loadView = function (viewModel, view, delegate) {
+        //    var kendoView = new kendo.View(view, { model: viewModel });
+        //    kendo.fx($("#content")).slideInRight().reverse().then(function () {
+        //        layout.showIn("#content", kendoView);
+
+        //        if (delegate != undefined)
+        //            delegate();
+
+        //        kendo.fx($("#content")).slideInRight().play();
+        //    });
+        //};
 
         return router;
     });

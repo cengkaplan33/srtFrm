@@ -1429,14 +1429,18 @@
     <Content Include="Framework\Scripts\ace\theme\jquery\minified\jquery.ui.theme.min.css" />
     <Content Include="Framework\Scripts\app\app.js" />
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\systemsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\workgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\main.js" />
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
+    <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
+    <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
     <Content Include="Framework\Scripts\app\models\rolesModel.js" />
     <Content Include="Framework\Scripts\app\models\systemsModel.js" />
     <Content Include="Framework\Scripts\app\models\userModel.js" />
@@ -1451,6 +1455,7 @@
     <Content Include="Framework\Scripts\app\viewModels\roles\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\systems\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\systems\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\userSessions\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\user\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\user\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\workgroup\editViewModel.js" />
@@ -3211,8 +3216,12 @@
     <Content Include="Views\Users\EditTabUsersInfo.cshtml" />
     <Content Include="Views\Users\EditTabWorkgroups.cshtml" />
     <Content Include="Views\Exceptions\Index.cshtml" />
+    <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\UserSessions\Index.cshtml" />
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Roles\EditTabRoles.cshtml" />
+    <Content Include="Views\Roles\EditTabPages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

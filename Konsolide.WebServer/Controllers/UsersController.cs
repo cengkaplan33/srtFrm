@@ -1,15 +1,10 @@
 ﻿using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
-using Surat.Base.Repositories;
 using Surat.Common.Data;
-using KonsolideRapor.WebServer.Application;
-using KonsolideRapor.WebServer.Base;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+
 namespace Surat.WebServer.Controllers
 {
     public class UsersController :KonsolideControllerBase

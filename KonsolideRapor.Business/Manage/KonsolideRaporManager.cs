@@ -1,7 +1,9 @@
 ﻿using KonsolideRapor.Base.Application;
 using KonsolideRapor.Base.Manage;
+using KonsolideRapor.Base.Model.Entities;
 using KonsolideRapor.Base.Repositories;
 using KonsolideRapor.Common.Application;
+using KonsolideRapor.Web.Common.ViewModel;
 using Surat.Base.Application;
 using Surat.Base.Exceptions;
 using Surat.Base.Model.Entities;
@@ -35,6 +37,8 @@ namespace KonsolideRapor.Business.Manage
         private ISecurityManager securityManager;
         private BankRepository bank;
         private PaymentCollectingRepository paymentCollecting;
+        private OdemeTalepRepository odemeTalep;
+        private OdemeTalepDurumuRepository odemeTalepDurumu;
         #endregion
 
         #region Public Members
@@ -115,7 +119,6 @@ namespace KonsolideRapor.Business.Manage
             }
         }
 
-
         public PaymentCollectingRepository PaymentCollecting
         {
             get
@@ -124,6 +127,28 @@ namespace KonsolideRapor.Business.Manage
                     paymentCollecting = new PaymentCollectingRepository(this.ApplicationContext.KonsolideRapor);
 
                 return paymentCollecting;
+            }
+        }
+
+        public OdemeTalepRepository OdemeTalep
+        {
+            get
+            {
+                if (odemeTalep == null)
+                    odemeTalep = new OdemeTalepRepository(this.ApplicationContext.KonsolideRapor);
+
+                return odemeTalep;
+            }
+        }
+
+        public OdemeTalepDurumuRepository OdemeTalepDurumu
+        {
+            get
+            {
+                if (odemeTalepDurumu == null)
+                    odemeTalepDurumu = new OdemeTalepDurumuRepository(this.ApplicationContext.KonsolideRapor);
+
+                return odemeTalepDurumu;
             }
         }
 
@@ -224,12 +249,35 @@ namespace KonsolideRapor.Business.Manage
             }
         }
 
-
         public List<PaymentCollecting> GetActivePaymentCollectingList()
         {
             try
             {
                 return this.PaymentCollecting.GetObjectsByParameters(m => m.IsActive == true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetActivePaymentCollectingList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public List<PaymentCollecting> GetOdemeTurleri()
+        {
+            try
+            {
+                return this.PaymentCollecting.GetObjectsByParameters(m => m.IsActive == true&m.IsPayment==true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetActivePaymentCollectingList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public List<PaymentCollecting> GetTahsilatTurleri()
+        {
+            try
+            {
+                return this.PaymentCollecting.GetObjectsByParameters(m => m.IsActive == true & m.IsCollection == true).ToList();
             }
             catch (Exception exception)
             {
@@ -292,6 +340,237 @@ namespace KonsolideRapor.Business.Manage
 
         #endregion
 
+        #region ÖdemeTalep Methods
+        public List<OdemeTalepView> GetAktifOdemeTalepleri()
+        {
+            List<OdemeTalepView> odemeTalepleri;
+            string query = @"select talep.Id,talep.Tarih,talep.PaymentCollectingId,payment.Name,talep.TL,talep.USD,talep.EURO,talep.WorkgroupId,talep.OdemeTalepDurumuId,durum.Durum,talep.Aciklama,talep.IsActive,talep.TalepTuru from
+OdemeTaleps talep
+join PaymentCollectings payment
+on talep.PaymentCollectingId=payment.Id 
+join OdemeTalepDurumus durum
+on talep.OdemeTalepDurumuId=durum.Id
+where talep.IsActive=1 and talep.TalepTuru='odeme'
+";
+            try
+            {
+                odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
+                                query).ToList(); 
+                return odemeTalepleri;
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetAktifOdemeTalepleri", this.ApplicationContext.SystemId, exception);
+            }
+        }
+        public List<OdemeTalepView> GetAktifTahsilatTalepleri()
+        {
+            List<OdemeTalepView> odemeTalepleri;
+            string query = @"select talep.Id,talep.Tarih,talep.PaymentCollectingId,payment.Name,talep.TL,talep.USD,talep.EURO,talep.WorkgroupId,talep.OdemeTalepDurumuId,durum.Durum,talep.Aciklama,talep.IsActive,talep.TalepTuru from
+OdemeTaleps talep
+join PaymentCollectings payment
+on talep.PaymentCollectingId=payment.Id 
+join OdemeTalepDurumus durum
+on talep.OdemeTalepDurumuId=durum.Id
+where talep.IsActive=1 and talep.TalepTuru='tahsilat'
+";
+            try
+            {
+                odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
+                                query).ToList();
+                return odemeTalepleri;
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetAktifOdemeTalepleri", this.ApplicationContext.SystemId, exception);
+            }
+        }
+        public void SaveOdemeTalep(OdemeTalep odemeTalep)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                if (odemeTalep.Id == 0)
+                {
+                    odemeTalep.WorkgroupId = 1;
+                    odemeTalep.TalepTuru = "odeme";
+                    this.OdemeTalep.Add(odemeTalep);
+                }
+                else
+                {
+                    OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
+
+                    selectedOdemeTalep.WorkgroupId = 1;
+                    selectedOdemeTalep.Tarih = odemeTalep.Tarih;
+                    selectedOdemeTalep.TL = odemeTalep.TL;
+                    selectedOdemeTalep.USD = odemeTalep.USD;
+                    selectedOdemeTalep.EURO = odemeTalep.EURO;
+                    selectedOdemeTalep.PaymentCollectingId = odemeTalep.PaymentCollectingId;
+                    selectedOdemeTalep.TalepTuru = "odeme";
+                    selectedOdemeTalep.Aciklama = odemeTalep.Aciklama;
+                    selectedOdemeTalep.OdemeTalepDurumuId = odemeTalep.OdemeTalepDurumuId;
+                    this.OdemeTalep.Update(selectedOdemeTalep);
+                }
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "SaveOdemeTalep", this.ApplicationContext.SystemId, exception);
+            }
+        }
+        public void SaveTahsilatTalep(OdemeTalep odemeTalep)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                if (odemeTalep.Id == 0)
+                {
+                    odemeTalep.WorkgroupId = 1;
+                    odemeTalep.TalepTuru = "tahsilat";
+                    this.OdemeTalep.Add(odemeTalep);
+                }
+                else
+                {
+                    OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
+
+                    selectedOdemeTalep.WorkgroupId = 1;
+                    selectedOdemeTalep.Tarih = odemeTalep.Tarih;
+                    selectedOdemeTalep.TL = odemeTalep.TL;
+                    selectedOdemeTalep.USD = odemeTalep.USD;
+                    selectedOdemeTalep.EURO = odemeTalep.EURO;
+                    selectedOdemeTalep.PaymentCollectingId = odemeTalep.PaymentCollectingId;
+                    selectedOdemeTalep.OdemeTalepDurumuId = odemeTalep.OdemeTalepDurumuId;
+                    selectedOdemeTalep.TalepTuru = "tahsilat";
+                    selectedOdemeTalep.Aciklama = odemeTalep.Aciklama;
+                    this.OdemeTalep.Update(selectedOdemeTalep);
+                }
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "SaveTahsilatTalep", this.ApplicationContext.SystemId, exception);
+            }
+        }
+        public void DestroyOdemeTalep(OdemeTalep odemeTalep)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+
+                OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
+
+                selectedOdemeTalep.IsActive = false;
+                this.OdemeTalep.Update(selectedOdemeTalep);
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "DestroyOdemeTalep", this.ApplicationContext.SystemId, exception);
+            }
+        }
+        #endregion
+
+        #region Ödeme Talep Durumu Method
+
+        public List<OdemeTalepDurumu> GetActiveDurumTanimlari()
+        {
+            try
+            {
+                return this.OdemeTalepDurumu.GetObjectsByParameters(m => m.IsActive == true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetActivePaymentCollectingList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public List<OdemeTalepDurumu> GetActiveOdemeDurumTanimlari()
+        {
+            try
+            {
+                return this.OdemeTalepDurumu.GetObjectsByParameters(m => m.IsActive == true &m.IsOdeme==true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetActiveOdemeDurumTanimlari", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public List<OdemeTalepDurumu> GetActiveTahsilatDurumTanimlari()
+        {
+            try
+            {
+                return this.OdemeTalepDurumu.GetObjectsByParameters(m => m.IsActive == true & m.IsTahsilat == true).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetActiveOdemeDurumTanimlari", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void SaveDurumTanimi(OdemeTalepDurumu odemeTalepDurumu)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                if (odemeTalepDurumu.Id == 0)
+                {
+
+                    this.OdemeTalepDurumu.Add(odemeTalepDurumu);
+                }
+                else
+                {
+                    OdemeTalepDurumu selectedKonsolideState = this.OdemeTalepDurumu.GetObjectByParameters(p => p.Id == odemeTalepDurumu.Id);
+
+                    selectedKonsolideState.IsActive = true;
+                    selectedKonsolideState.Durum = odemeTalepDurumu.Durum;
+                    selectedKonsolideState.IsBanka = odemeTalepDurumu.IsBanka;
+                    selectedKonsolideState.IsOdeme = odemeTalepDurumu.IsOdeme;
+                    selectedKonsolideState.IsTahsilat = odemeTalepDurumu.IsTahsilat;
+                    this.OdemeTalepDurumu.Update(selectedKonsolideState);
+                }
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "saveDurumTanimi", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void DestroyDurumTanimi(OdemeTalepDurumu odemeTalepDurumu)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+
+                OdemeTalepDurumu selectedKonsolideState = this.OdemeTalepDurumu.GetObjectByParameters(p => p.Id == odemeTalepDurumu.Id);
+
+                selectedKonsolideState.IsActive = false;
+                this.OdemeTalepDurumu.Update(selectedKonsolideState);
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "saveKonsolideState", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        #endregion
         #endregion
 
     }

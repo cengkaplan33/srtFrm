@@ -53,7 +53,9 @@
                         }
 
                     }
-
+                    else {
+                        viewModel.set("Bank", new bankModel());
+                    }
                 });
 
                 return viewModel;

@@ -11,6 +11,7 @@
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
+        'userSessionsModel': 'models/userSessionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -21,12 +22,15 @@
         'systems-indexViewModel': 'viewModels/systems/indexViewModel',
         'systems-editViewModel': 'viewModels/systems/editViewModel',
         'exceptions-indexViewModel': 'viewModels/exceptions/indexViewModel',
+        'userSessions-indexViewModel': 'viewModels/userSessions/indexViewModel',
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
+        'rolePagesDatasource':'datasources/rolePagesDatasource',
+        'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         // utils
         'util': '/Framework/Scripts/util'
     },

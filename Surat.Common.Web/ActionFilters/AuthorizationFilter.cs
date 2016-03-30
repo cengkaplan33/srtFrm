@@ -64,7 +64,9 @@ namespace Surat.WebServer.ActionFilters
                     if (!controller.WebApplicationManager.Framework.Security.ApplicationContext.IsCurrentUserAssigned)
                     {
 
-                        filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
+                        //filterContext.Result = new RedirectResult(Constants.Web.RedirectLogoutAction); //ToDo : Client tarafından sunucuya istek yapılmıyor. Yapılırsa, burası tekrar ele alınmalıdır.
+                        filterContext.HttpContext.Response.StatusCode = 500;
+                        filterContext.Result = new System.Web.Mvc.JsonResult() { Data = new { Status = "RedirectToLogin", Message = controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId, Constants.Message.RedirectToLogin) }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                         return;
                     }
                     else
@@ -80,7 +82,8 @@ namespace Surat.WebServer.ActionFilters
 
                         if (!isAuthorized)
                         {
-                            filterContext.Result = new System.Web.Mvc.JsonResult() { Data = "weqw ewq qwe " };
+                            filterContext.HttpContext.Response.StatusCode = 500;
+                            filterContext.Result = new System.Web.Mvc.JsonResult() { Data = new { Status = "AccessDenied", Message = String.Format(controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId, Constants.Message.UserAccessDenied), action, controller.WebApplicationManager.Context.CurrentUser.Name) }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
                             //filterContext.Controller.TempData.Add("RedirectReason", "Unauthorized");
 
@@ -97,9 +100,16 @@ namespace Surat.WebServer.ActionFilters
                 }
                 catch (Exception exception)
                 {
-                    filterContext.Result = new RedirectResult(Constants.Web.RedirectLoginAction); //ToDo : Hata olduğunda, genel bir mesaj vermelidir.
-                    controller.WebApplicationManager.TraceAppendLine(MVCUtility.GetControllerName(), controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId, WebConstants.Message.WebSessionTimeout), TraceLevel.Basic);
+                    //filterContext.Result = new RedirectResult(Constants.Web.RedirectLoginAction); //ToDo : Hata olduğunda, genel bir mesaj vermelidir.
+                    //controller.WebApplicationManager.TraceAppendLine(MVCUtility.GetControllerName(), controller.WebApplicationManager.GetGlobalizationKeyValue(controller.WebApplicationManager.Context.SystemId, WebConstants.Message.WebSessionTimeout), TraceLevel.Basic);
+                    //controller.WebApplicationManager.PublishException(exception);
+
+                    filterContext.HttpContext.Response.StatusCode = 500;
+                    filterContext.Result = new System.Web.Mvc.JsonResult() { Data = new { Status = "KonsolideAuthorizationFilterError", Message = exception.Message }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+                    controller.WebApplicationManager.TraceAppendLine(MVCUtility.GetControllerName(), exception.Message, TraceLevel.Basic);
                     controller.WebApplicationManager.PublishException(exception);
+                    return;
                 }
             }
             else

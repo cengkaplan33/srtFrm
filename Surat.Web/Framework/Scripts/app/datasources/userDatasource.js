@@ -1,5 +1,5 @@
-﻿define(['kendo', 'userModel'],
-function (kendo, userModel) {
+﻿define(['kendo', 'userModel','util'],
+function (kendo, userModel,util) {
 
 
     var userDatasource = new kendo.data.DataSource({
@@ -55,15 +55,11 @@ function (kendo, userModel) {
         cache: false,
         schema: {
             data: "data", // records are returned in the "data" field of the response
-            total: "total", // total number of records is in the "total" field of the response
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
+            total: "total",
             model: userModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

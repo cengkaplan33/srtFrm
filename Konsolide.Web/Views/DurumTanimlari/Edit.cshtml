@@ -1,0 +1,39 @@
+﻿<style type="text/css">
+    /* fix for kendo tab to use with bootstrap */
+    .boxFix *,
+    .boxFix *::before,
+    .boxFix *::after {
+        -moz-box-sizing: border-box !important;
+        -webkit-box-sizing: border-box !important;
+        box-sizing: border-box !important;
+    }
+</style>
+<div class="col-xs-12" id="BaseDiv">
+    <div data-role="toolbar">
+
+        <div class="k-toolbar-first-visible" style="visibility: visible;">
+            <button data-bind="click: cancel" class="k-button k-button-icontext k-toolbar-last-visible"><span class="k-icon k-i-cancel"></span>İptal Et</button>
+            <button data-bind="click: saveDurumTanimi" class="k-button k-button-icontext k-toolbar-last-visible"><span class="k-icon k-i-tick"></span>Kaydet</button>
+        </div>
+
+    </div>
+    <form class="form-horizontal" id="form" role="form">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div data-role="tabstrip" data-toolbar="">
+                    <!-- tab list -->
+                    <ul>
+                        <li class="k-state-active">Durum Tanımları</li>
+                    </ul>
+
+                    <div>
+                        @Html.Partial("EditTabDurum")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+

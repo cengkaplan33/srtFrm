@@ -95,9 +95,12 @@
     <Compile Include="Configuration\FilterConfiguration.cs" />
     <Compile Include="Configuration\RouteConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DurumTanimlariController.cs" />
+    <Compile Include="Controllers\OdemeTalepController.cs" />
     <Compile Include="Controllers\PaymentCollectingController.cs" />
     <Compile Include="Controllers\BankalarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TahsilatTalepController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Helpers\KendoHelper.cs" />
     <Compile Include="Helpers\MVCUtility.cs" />

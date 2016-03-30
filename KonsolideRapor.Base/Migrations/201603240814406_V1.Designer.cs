@@ -7,13 +7,13 @@ namespace KonsolideRapor.Base.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class V11 : IMigrationMetadata
+    public sealed partial class V1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(V11));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(V1));
         
         string IMigrationMetadata.Id
         {
-            get { return "201603180936152_V11"; }
+            get { return "201603240814406_V1"; }
         }
         
         string IMigrationMetadata.Source

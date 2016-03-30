@@ -64,6 +64,7 @@
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Globalization\IGlobalizationManager.cs" />
+    <Compile Include="ViewModel\AccessibleRolePageView.cs" />
     <Compile Include="Helper\InvariantHelper.cs" />
     <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="ViewModel\HttpRequest.cs" />
@@ -90,12 +91,14 @@
     <Compile Include="ViewModel\DBConnectionView.cs" />
     <Compile Include="ViewModel\RequestedContextView.cs" />
     <Compile Include="ViewModel\GlobalizationKeyValueView.cs" />
+    <Compile Include="ViewModel\RolePageView.cs" />
     <Compile Include="ViewModel\SystemDetailedView.cs" />
     <Compile Include="ViewModel\RoleShortView.cs" />
     <Compile Include="ViewModel\SystemView.cs" />
     <Compile Include="ViewModel\ADUserView.cs" />
     <Compile Include="ViewModel\ADUserDetailView.cs" />
     <Compile Include="ViewModel\LoginView.cs" />
+    <Compile Include="ViewModel\UserSessionView.cs" />
     <Compile Include="ViewModel\WorkgroupView.cs" />
     <Compile Include="ViewModel\GlobalizationKeyView.cs" />
     <Compile Include="ViewModel\ParameterValueView.cs" />
