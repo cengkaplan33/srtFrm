@@ -212,7 +212,7 @@ function (kendo, odemeTalepModel, odemeTalepDatasource, odemeTuruDatasource, Ode
                  {
                      command:
                      [
-                     { name: "edit" },
+                     { name: "edit" ,text:{edit:"Düzenle",update:"Kaydet",cancel:"İptal"}},
                      { name: "destroy" }
                      ],
                      title: "İşlemler", width: "170px"
