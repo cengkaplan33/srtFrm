@@ -12,6 +12,8 @@
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
         'userSessionsModel': 'models/userSessionsModel',
+        'pagesModel': 'models/pagesModel',
+        'actionsModel': 'models/actionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -23,6 +25,9 @@
         'systems-editViewModel': 'viewModels/systems/editViewModel',
         'exceptions-indexViewModel': 'viewModels/exceptions/indexViewModel',
         'userSessions-indexViewModel': 'viewModels/userSessions/indexViewModel',
+        'pages-indexViewModel': 'viewModels/pages/indexViewModel',
+        'pages-editViewModel': 'viewModels/pages/editViewModel',
+        'actions-indexViewModel': 'viewModels/actions/indexViewModel',
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
@@ -30,6 +35,8 @@
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
+        'pagesDatasource': 'datasources/pagesDatasource',
+        'actionsDatasource': 'datasources/actionsDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

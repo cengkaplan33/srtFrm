@@ -90,6 +90,7 @@
     <Compile Include="Configuration\RouteConfiguration.cs" />
     <Compile Include="Base\SuratControllerBase.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActionsController.cs" />
     <Compile Include="Controllers\UserSessionsController.cs" />
     <Compile Include="Controllers\HomeController.cs">
       <SubType>

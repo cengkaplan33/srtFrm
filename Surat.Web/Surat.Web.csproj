@@ -1429,6 +1429,8 @@
     <Content Include="Framework\Scripts\ace\theme\jquery\minified\jquery.ui.theme.min.css" />
     <Content Include="Framework\Scripts\app\app.js" />
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolesDatasource.js" />
@@ -1437,6 +1439,8 @@
     <Content Include="Framework\Scripts\app\datasources\workgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\main.js" />
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
+    <Content Include="Framework\Scripts\app\models\actionsModel.js" />
+    <Content Include="Framework\Scripts\app\models\pagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
     <Content Include="Framework\Scripts\app\models\rolesModel.js" />
@@ -1444,11 +1448,13 @@
     <Content Include="Framework\Scripts\app\models\userModel.js" />
     <Content Include="Framework\Scripts\app\models\workgroupModel.js" />
     <Content Include="Framework\Scripts\app\router.js" />
+    <Content Include="Framework\Scripts\app\viewModels\actions\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\exceptions\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\home\aboutViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\home\contactViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\home\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\home\loginViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\pages\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\roles\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\roles\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\systems\editViewModel.js" />
@@ -3201,7 +3207,6 @@
     <Content Include="Views\Home\Spa.cshtml" />
     <Content Include="Views\Shared\_MasterLeftNavigation.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\Pages\Index.cshtml" />
     <Content Include="Views\Parameters\Index.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Systems\Index.cshtml" />
@@ -3215,6 +3220,8 @@
     <Content Include="Views\Users\EditTabWorkgroups.cshtml" />
     <Content Include="Views\Exceptions\Index.cshtml" />
     <Content Include="Views\UserSessions\Index.cshtml" />
+    <Content Include="Views\Pages\Index.cshtml" />
+    <Content Include="Views\Actions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

@@ -297,6 +297,41 @@ namespace Surat.Business.Configuration
 
         #region Page
 
+        public List<PagesListView> GetActivePageList()
+        {
+            try
+            {
+                List<PagesListView> Pages;
+                Pages = (from pages in this.Context.ApplicationContext.DBContext.Pages
+                                   join systems in this.Context.ApplicationContext.DBContext.Systems on pages.SystemId equals systems.Id
+                                   join InUser in this.Context.ApplicationContext.DBContext.Users on pages.InsertedByUser equals InUser.Id
+                                   from ChUser in this.Context.ApplicationContext.DBContext.Users.Where(u => u.Id == pages.ChangedByUser).DefaultIfEmpty()
+                         select new PagesListView
+                                   {
+                                       Id = pages.Id,
+                                       SystemParentId = systems.ParentId,
+                                       SystemName = systems.ObjectTypeName, 
+                                       SystemId = pages.SystemId,
+                                       PageName = pages.Name,
+                                       ObjectTypePrefix = pages.ObjectTypePrefix,
+                                       IsAccessControlRequired = pages.IsAccessControlRequired,
+                                       IsVisibleInMenu = pages.IsVisibleInMenu,
+                                       InsertedByUser = pages.InsertedByUser,
+                                       InsertedByUserName = InUser.UserName,
+                                       InsertedDate = pages.InsertedDate,
+                                       ChangedByUser = pages.ChangedByUser,
+                                       ChangedByUserName = ChUser.UserName,
+                                       ChangedDate = pages.ChangedDate
+                                   }).ToList();
+
+                return Pages;
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "GetActivePageList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
         public void SavePage(Page page)
         {
             int initializedDBContextId;
@@ -330,9 +365,11 @@ namespace Surat.Business.Configuration
                     pageOfDatabase.InsertedDate = DateTime.Now;
                     pageOfDatabase.IsActive = true;
                     pageOfDatabase.SystemId = page.SystemId;
+                    pageOfDatabase.Name = page.Name;
                     pageOfDatabase.ObjectTypeName = page.ObjectTypeName;
                     pageOfDatabase.ObjectTypePrefix = page.ObjectTypePrefix;
                     pageOfDatabase.IsAccessControlRequired = page.IsAccessControlRequired;
+                    pageOfDatabase.IsVisibleInMenu = page.IsVisibleInMenu;
                     pageOfDatabase.BigImagePath = page.BigImagePath;
                     page.SmallImagePath = page.SmallImagePath;
                     this.Page.Update(pageOfDatabase);
@@ -366,6 +403,42 @@ namespace Surat.Business.Configuration
                 throw new EntityProcessException(this.ApplicationContext,"DeletePage", this.ApplicationContext.SystemId,exception);
             }
             
+        }
+
+        #endregion
+
+        #region Action
+
+        public List<ActionsListView> GetActiveActionList()
+        {
+            try
+            {
+                List<ActionsListView> Actions;
+                Actions = (from actions in this.Context.ApplicationContext.DBContext.Actions
+                           join systems in this.Context.ApplicationContext.DBContext.Systems on actions.SystemId equals systems.Id
+                           join InUser in this.Context.ApplicationContext.DBContext.Users on actions.InsertedByUser equals InUser.Id
+                           from ChUser in this.Context.ApplicationContext.DBContext.Users.Where(u => u.Id == actions.ChangedByUser).DefaultIfEmpty()
+                           select new ActionsListView
+                         {
+                             Id = actions.Id,
+                             SystemParentId = systems.ParentId,
+                             SystemName = systems.ObjectTypeName,
+                             SystemId = actions.SystemId,
+                             TypeName = actions.TypeName,
+                             InsertedByUser = actions.InsertedByUser,
+                             InsertedByUserName = InUser.UserName,
+                             InsertedDate = actions.InsertedDate,
+                             ChangedByUser = actions.ChangedByUser,
+                             ChangedByUserName = ChUser.UserName,
+                             ChangedDate = actions.ChangedDate
+                         }).ToList();
+
+                return Actions;
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "GetActiveActionList", this.ApplicationContext.SystemId, exception);
+            }
         }
 
         #endregion

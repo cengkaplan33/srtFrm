@@ -29,8 +29,7 @@ namespace Surat.WebServer.Controllers
         #region Public Members
 
         #endregion
-
-       
+      
         #region Methods
 
         public ActionResult Index()
@@ -45,7 +44,7 @@ namespace Surat.WebServer.Controllers
             {
                 var exceptions = this.WebApplicationManager.Framework.Exception.GetExceptionsList();
                 var total = exceptions.Count();
-                var data = exceptions.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                var data = exceptions.OrderByDescending(m => m.Id).Skip(skip).Take(pageSize).ToList();
                 return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
                
             }

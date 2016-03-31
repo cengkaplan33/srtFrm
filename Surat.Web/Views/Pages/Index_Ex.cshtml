@@ -1,0 +1,303 @@
+﻿<div class="col-xs-12" id="BaseDiv">
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+        <script id="pages_popup_template" type="text/x-kendo-tmpl">
+            <div id="pages_window">
+                <ul>
+                    <li>
+                        <label for="ObjectTypeName">Sayfa Adı</label>
+                        <input type="text" class="k-textbox" name="ObjectTypeName" required validationmessage="Sayfa Adı boş bırakılamaz" data-bind="value:ObjectTypeName" />
+
+                    </li>
+                    <li>
+                        <label for="ObjectTypePrefix">Url</label>
+                        <input type="text" class="k-textbox" name="ObjectTypePrefix" required validationmessage="Url alanı boş bırakılamaz" data-bind="value:ObjectTypePrefix" />
+                    </li>
+                    <li>
+                        <label for="IsAccessControlRequired"></label>
+                        <input type="checkbox" name="IsAccessControlRequired" data-bind="checked:IsAccessControlRequired" />
+                        <span>Erişim İzni Gerekiyor mu?</span>
+                    </li>
+                    <li>
+                        <label for="BigImagePath">Büyük Resim Yolu</label>
+                        <input type="text" class="k-textbox" name="BigImagePath"  data-bind="value:ParameterValue" />
+                    </li>
+                    <li>
+                        <label for="SmallImagePath">Küçük Resim Yolu</label>
+                        <input type="text" class="k-textbox" name="SmallImagePath"  data-bind="value:ParameterValue" />
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <script id="pages_delete_window_template" type="text/x-kendo-tmpl">
+            <strong>#=ObjectTypeName#</strong>  Sayfa silinsin mi? </p>
+
+            <button class="k-button" id="yesButton">Evet</button>
+            <button class="k-button" id="noButton"> Hayır</button>
+        </script>
+        <div id="pagesdeletewindow"></div>
+        <div class="col-xs-12">
+            <div id="pagestoolbar"></div>
+        </div>
+        <div class="col-xs-4">
+            <br />
+            <input type="hidden" class="k-textbox" name="txtParent" id="txtParent" value="" />
+
+            <div id="pagesSystemTree"></div>
+        </div>
+        <div class="col-xs-8">
+            <br />
+            <div id="pagesGrid"></div>
+        </div>
+        <script>
+            var parent;
+            var systemPagesSource = new kendo.data.TreeListDataSource({
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetSystems", "Systems")",
+                        type: "POST"
+                    },
+                    parameterMap: function (data, operation) {
+                        if (operation != "read") {
+
+
+                            var result = {};
+
+                            for (var i = 0; i < data.models.length; i++) {
+                                var perm = data.models[i];
+
+                                for (var member in perm) {
+                                    result["systems[" + i + "]." + member] = perm[member];
+                                }
+                            }
+
+                            return result;
+                        }
+                    }
+                },
+                batch: true,
+                schema: {
+                    model: {
+                        id: "Id",
+                        fields: {
+                            Id: { type: "number", editable: false, nullable: true },
+                            parentId: { field: "ParentId", nullable: true },
+                            ObjectTypeName: { validation: { required: true } }
+                        }
+                    }
+                }
+            });
+            var pagesSource = new kendo.data.DataSource({
+                transport: {
+                    create: {
+                        url: createUrl,
+                        type: "POST"                        
+                    },
+                    read: {
+                        url: readUrl,
+                        type: "POST"
+                    },
+                    update: {
+                        url: updateUrl,
+                        type: "POST"
+                    },
+                    destroy: {
+                        url: "@Url.Action("Delete","Pages")",
+                        type: "POST"
+                    },
+                    parameterMap: function (data, operation) {
+                        if (operation != "read") {
+
+
+                            var result = {};
+
+                            for (var i = 0; i < data.models.length; i++) {
+                                var perm = data.models[i];
+
+                                for (var member in perm) {
+                                    result["pages[" + i + "]." + member] = perm[member];
+                                }
+                            }
+
+                            return result;
+                        }
+                    }
+                },
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    total: "total",
+                    data: "data",
+                    model: {
+                        id: "Id",
+                        fields: {
+                            ObjectTypeName: { type: "string", validation: { required: true } },
+                            ObjectTypePrefix: { type: "string", validation: { required: true } },
+                            IsAccessControlRequired: { type: "boolean"}
+
+                        }
+                    }
+                }
+            });
+            $(document).ready(function () {
+
+                $("#pagestoolbar").kendoToolBar({
+                    items: [
+                        { type: "button", text: "Yeni Ekle", icon: "plus", click: newRow },
+                        { type: "button", text: "Güncelle", icon: "refresh", click: updateRow },
+                        { type: "button", text: "Sil", icon: "cancel", click: deleteRow }
+                    ]
+                });
+
+                $("#pagesSystemTree").kendoTreeList({
+                    dataSource: systemPagesSource,
+                    selectable: true,
+                    columns: [
+                        { field: "ObjectTypeName", expandable: true, title: "Nesne Tipi", width: 250 }
+                    ],
+                    change: function (e) {
+                        var systemTree = $("#pagesSystemTree").data("kendoTreeList");
+                        var selectedItem = systemTree.dataItem(systemTree.select());
+                        if (selectedItem != "undefined") {
+                            parent = selectedItem.Id;
+                        }
+                        else {
+                            parent = null;
+                        }
+                        var treelist = $("#pagesSystemTree").data("kendoTreeList"),
+                           selected = treelist.select();
+                        if (selected.length) {
+                            $("#txtParent").attr("value", parent);
+                        }
+                        else {
+                            parent = null;
+                            $("#txtParent").attr("value", parent);
+                        }
+                        fillParameters();
+
+                    }
+                });
+
+                $("#pagesGrid").kendoGrid({
+
+                    pageable: {
+                        messages: {
+                            display: "Toplam {2} kaydın  {0} - {1} gösteriliyor", //{0} is the index of the first record on the page, {1} - index of the last record on the page, {2} is the total amount of records
+                            empty: "Hiç veri yok",
+                            page: "Sayfa",
+                            of: "toplam {0}", //{0} is total amount of pages
+                            itemsPerPage: "Sayfa içerisinde gösterilecek kayıt sayısı",
+                            first: "İlk sayfaya gidin",
+                            previous: "Önceki sayfaya gidin",
+                            next: "Sonraki sayfaya gidin",
+                            last: "Son sayfaya gidin",
+                            refresh: "Yenileyin"
+                        }
+                    },
+                    height: 430,
+                    selectable: "row",
+                    columns: [
+                        { field: "ObjectTypeName", title: "Sayfa" },
+                        { field: "ObjectTypePrefix", title: "Url" },
+                      {
+                          field: "IsAccessControlRequired",
+                          title: "Erişim İzni Gerekli mi?",
+                          filterable: false,
+                          template: "<input type='checkbox' disabled='disabled' name='IsAccessControlRequired' data-bind='checked: IsAccessControlRequired' #= IsAccessControlRequired ? checked='checked' : '' #/>"
+                      }
+                    ],
+                    editable: {
+                        mode: "popup",
+                        template: kendo.template($("#pages_popup_template").html())
+                    },
+                    edit: function (e) {
+                        if (e.model.isNew()) {
+                            $(".k-window-title").text("Yeni Kayıt");
+                            $(".k-grid-update").html('<span class="k-icon k-update"></span>Kaydet');
+                            $(".k-grid-cancel").html('<span class="k-icon k-cancel"></span>İptal');
+
+                        } else {
+                            $(".k-window-title").text("Güncelle");
+                            $(".k-grid-update").html('<span class="k-icon k-update"></span>Güncelle');
+                            $(".k-grid-cancel").html('<span class="k-icon k-cancel"></span>İptal');
+                        }
+                    },
+                    serverPaging: true
+                });
+
+            });
+
+            function createUrl(e) {
+                return '@Url.Action("Add","Pages")?parent=' + parent;
+            }
+
+            function readUrl(e) {
+                return '@Url.Action("GetPagesBySystem","Pages")?parent=' + parent;
+            }
+            function updateUrl(e) {
+                return '@Url.Action("Update","Pages")?parent=' + parent;
+            }
+            function fillParameters() {
+                var gridPagesParameter = $("#pagesGrid").data("kendoGrid");
+                gridPagesParameter.dataSource.read();
+                gridPagesParameter.refresh();
+                gridPagesParameter.setDataSource(pagesSource);
+            }
+            function updateRow(e) {
+
+                var gridPagesList = $("#pagesGrid").data("kendoGrid"),
+                          selected = gridPagesList.select();
+                if (selected.length) {
+                    gridPagesList.editRow(selected);
+                }
+            }
+            function newRow(e) {
+                var treelist = $("#pagesSystemTree").data("kendoTreeList"),
+                               selected = treelist.select();
+                if (selected.length) {
+                    var grid = $("#pagesGrid").data("kendoGrid");
+                    var dataSource = grid.dataSource;
+                    var total = dataSource.data().length;
+                    dataSource.insert(total, {});
+                    dataSource.page(dataSource.totalPages());
+                    grid.editRow(grid.tbody.children().last());
+                }
+                else {
+                    alert("Lütfen sistem seçiniz");
+                }
+            }
+            function deleteRow(e) {
+                var entityGrid = $("#pagesGrid").data("kendoGrid");
+                var dataSource = entityGrid.dataSource;
+                var rows = entityGrid.select();
+                rows.each(function (index, row) {
+                    var selectedItem = entityGrid.dataItem(row);
+                    var window = $("#pagesdeletewindow").kendoWindow({
+                        title: "Nesne Tipi silme onayı?",
+                        visible: false,
+                        width: "400px",
+                        height: "200px",
+                    }).data("kendoWindow");
+
+                    pageswindowTemplate = kendo.template($("#pages_delete_window_template").html());
+                    window.content(pageswindowTemplate(selectedItem));
+                    window.open().center();
+
+                    $("#yesButton").click(function () {
+                        entityGrid.dataSource.remove(selectedItem)
+                        entityGrid.dataSource.sync()
+                        window.close();
+                        $("#txtParent").attr("value", "");
+                        var systemPagesTree = $("#pagesSystemTree").data("kendoTreeList");
+                        systemPagesTree.dataSource.read();
+                        systemPagesTree.refresh();
+                    })
+                    $("#noButton").click(function () {
+                        window.close();
+                    })
+
+                });
+            }
+
+        </script>
+    </div>
+</div>
