@@ -14,7 +14,8 @@
         'odemeTalepModel': 'models/odemeTalepModel',
         'odemeTuruModel': 'models/odemeTuruModel',
         'odemeTuruModel': 'models/odemeTuruModel',
-        'odemeDurumuModel':'models/odemeDurumuModel',
+        'odemeDurumuModel': 'models/odemeDurumuModel',
+        'hazirDegerlerTablosuModel': 'models/hazirDegerlerTablosuModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -26,6 +27,8 @@
         'tahsilatTalep-indexViewModel': 'viewModels/tahsilattalep/indexViewModel',
         'durumtanimlari-indexViewModel': 'viewModels/durumtanimlari/indexViewModel',
         'durumtanimlari-editViewModel': 'viewModels/durumtanimlari/editViewModel',
+        'hazirdegerlertablosu-indexViewModel': 'viewModels/hazirdegerlertablosu/indexViewModel',
+        'hazirdegerlertablosu-tanimViewModel': 'viewModels/hazirdegerlertablosu/tanimViewModel',
         //datasources       
         'userDatasource': 'datasources/userDatasource',
         'bankDatasource': 'datasources/bankDatasource',
@@ -37,6 +40,8 @@
         'odemeDurumuDatasource': 'datasources/odemeDurumuDatasource',
         'OdemeEkraniDurumTanimiDatasource': 'datasources/OdemeEkraniDurumTanimiDatasource',
         'TahsilatEkraniDurumTanimiDatasource': 'datasources/TahsilatEkraniDurumTanimiDatasource',
+        'hazirDegerlerTablosuDatasource': 'datasources/hazirDegerlerTablosuDatasource',
+        'hazirDegerlerTablosuTanimDatasource':'datasources/hazirDegerlerTablosuTanimDatasource',
         // utils
         util: '/Framework/Scripts/util'
     },

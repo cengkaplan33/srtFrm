@@ -2,7 +2,7 @@
 function (kendo, hazirDegerlerTablosuModel, util) {
 
 
-    var hazirDegerlerTablosuDatasource = new kendo.data.TreeListDataSource({
+    var hazirDegerlerTablosuTanimDatasource = new kendo.data.TreeListDataSource({
         transport: {
 
             read: {
@@ -16,13 +16,9 @@ function (kendo, hazirDegerlerTablosuModel, util) {
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
-                        try {
-                            var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
-                            tree.dataSource.read();
-                        } catch (e) {
-                            var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
-                            tree.dataSource.read();
-                        }
+                        var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
+                        tree.dataSource.read();
+                        $("#hazirDegerlerTanimGrid").data("kendoTreeList").dataSource = tree.dataSource;
                         _notification.info(result.Result);
                     }
                 }
@@ -35,13 +31,8 @@ function (kendo, hazirDegerlerTablosuModel, util) {
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
-                        try {
-                            var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
-                            tree.dataSource.read();
-                        } catch (e) {
-                            var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
-                            tree.dataSource.read();
-                        }
+                        var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
+                        tree.dataSource.read();
                         _notification.warning(result.Result);
                     }
                 }
@@ -55,22 +46,16 @@ function (kendo, hazirDegerlerTablosuModel, util) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
                         _notification.info(result.Result);
-                        try {
-                            var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
-                            tree.dataSource.read();
-                        } catch (e) {
-                            var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
-                            tree.dataSource.read();
-                        }
-                       
+                        var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
+                        tree.dataSource.read();
                     }
                 }
             }
 
         },
         batch: false,
-       paging:false,
         cache: false,
+        paging:false,
         schema: {
             model: hazirDegerlerTablosuModel
         },
@@ -79,6 +64,6 @@ function (kendo, hazirDegerlerTablosuModel, util) {
         }
     });
 
-    return hazirDegerlerTablosuDatasource;
+    return hazirDegerlerTablosuTanimDatasource;
 
 });

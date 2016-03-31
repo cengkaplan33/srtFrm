@@ -6,7 +6,7 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
     var grid;
     var toolbar;
     function LoadGrid() {
-        grid = $("#hazirDegerlerGrid").kendoTreeList({
+        grid = $("#hazirDegerlerTanimGrid").kendoTreeList({
             dataSource: hazirDegerlerTablosuDatasource,
             groupable: false,
             sortable: true,
@@ -16,39 +16,33 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
             autoSync: true,
             selectable: true,
             navigatable: false,
-            pageSize: 1500,
+            width:"400px",
+            toolbar: [{ name: "create", text: "Yeni Kayıt" }],
             columns: [
-               
+
+                {
+                    field: "Kod",
+                    title: "Kodu",
+                    width: "160"
+                },
                  {
                      field: "HazirDeger",
                      title: "Hazır Değerler",
-                     width: "120px"
-                 },
-                 {
-                     field: "TL",
-                     title: "TL",
-                     format: "{0:n2}"
-                 },
-                 {
-                     field: "USD",
-                     title: "USD",
-                     format: "{0:n2}"
-                 },
-                 {
-                     field: "EURO",
-                     title: "EURO",
-                     format: "{0:n2}",
+                     width: "240"
                  },
                   {
                       field: "Tur",
-                      title: "Tür"
+                      title: "Tür",
+                      width: "240"
                   },
                  {
                      command:
                      [
-                     { name: "edit", text: "Düzenle"}                  
+                     { name: "edit", text: "Düzenle" },
+                     { name: "destroy", text: "Sil" },
+                     { name: "createChild", text: "Alt Değer" }
                      ],
-                     title: "İşlemler", width: "170px"
+                     title: "İşlemler"
                  }
             ],
             change: pageModel.onSelectedRowChanged
@@ -58,13 +52,13 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
                 grid.addRow();
             }
         });
-        $("#hazirDegerlerGrid").on("click", "td", function (e) {
+        $("#hazirDegerlerTanimGrid").on("click", "td", function (e) {
 
             var rowIndex = $(this).parent().index();
             var cellIndex = $(this).index();
             $("input").on("keydown", function (event) {
                 if (event.keyCode == 13) {
-                    $("#hazirDegerlerGrid").data("kendoGrid").editCell($(".k-grid-content").find("table").find("tbody").find("tr:eq(" + rowIndex + ")").find("td:eq(" + cellIndex + ")").next().focusin($("#batchgrid").data("kendoGrid").closeCell($(".k-grid-content").find("table").find("tbody").find("tr:eq(" + rowIndex + ")").find("td:eq(" + cellIndex + ")").parent())));
+                    $("#hazirDegerlerTanimGrid").data("kendoGrid").editCell($(".k-grid-content").find("table").find("tbody").find("tr:eq(" + rowIndex + ")").find("td:eq(" + cellIndex + ")").next().focusin($("#batchgrid").data("kendoGrid").closeCell($(".k-grid-content").find("table").find("tbody").find("tr:eq(" + rowIndex + ")").find("td:eq(" + cellIndex + ")").parent())));
                     return false;
                 }
             });
@@ -90,11 +84,11 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
             ]
         });
     }
-  
+
     function GetSelectedGridRow() {
         return grid.data("kendoTreeList").select().eq(0);
     }
-    
+
     function FilterProjectsByStatus(e) {
         alert("//TO DO Filter Projects By Status")
         //ProjectCardDataSource.read();
@@ -134,10 +128,10 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
         onSelectedRowChanged: function (e) {
             SelectedRow = grid.data("kendoTreeList").dataItem(GetSelectedGridRow());
             if (SelectedRow) {
-                
+
                 SelectedRowId = SelectedRow.Id;
                 SelectedRowParentId = SelectedRow.parentId;
-             
+
             } else {
                 SelectedRowId = -1;
                 _notification.info("Öncelikle bir proje satırı seçmelisiniz!");
@@ -145,7 +139,7 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
 
         },
         onRefreshProjectList: function (e) {
-           // hazirDegerlerTablosuDatasource.read();
+            // hazirDegerlerTablosuDatasource.read();
             grid.data("kendoTreeList").refresh();
         }
 
