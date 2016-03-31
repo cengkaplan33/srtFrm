@@ -39,6 +39,7 @@ namespace KonsolideRapor.Base.Model
         public DbSet<PaymentCollecting> PaymentCollectings { get; set; }
         public DbSet<OdemeTalep> OdemeTalep { get; set; }
         public DbSet<OdemeTalepDurumu> OdemeTalepDurumu { get; set; }
+        public DbSet<HazirDegerTablosu> HazirDeger { get; set; }
         #endregion
 
         #region Overrides

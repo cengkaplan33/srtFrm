@@ -1,5 +1,5 @@
-﻿define(['kendo', 'odemeTalepModel'],
-function (kendo, odemeTalepModel) {
+﻿define(['kendo', 'odemeTalepModel','util'],
+function (kendo, odemeTalepModel,util) {
 
 
     var tahsilatTalepDatasource = new kendo.data.DataSource({
@@ -77,15 +77,11 @@ function (kendo, odemeTalepModel) {
 
         schema: {
             data: "data", // records are returned in the "data" field of the response
-            total: "total", // total number of records is in the "total" field of the response
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
+            total: "total",
             model: odemeTalepModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

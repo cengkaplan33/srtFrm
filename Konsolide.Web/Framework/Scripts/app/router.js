@@ -88,6 +88,19 @@ define(['kendo', 'kendo_culture_config', 'kendo_culture_messages'],
 
             });
         });
+        router.route("/HazirDegerlerTablosu/Index", function () {
+            setBreadCrumb("#/HazirDegerlerTablosu/Index", "Hazır Değer Girişleri");
+            require(['hazirdegerlertablosu-indexViewModel', 'text!/HazirDegerlerTablosu/Index'], function (viewModel, view) {
+                loadView(viewModel, view);
+            });
+        });
+        router.route("/HazirDegerlerTablosu/Tanim", function (e) {
+         
+            setBreadCrumb("#/HazirDegerlerTablosu/Tanim", "Hazır Değer Tanımları");
+            require(['hazirdegerlertablosu-tanimViewModel', 'text!/HazirDegerlerTablosu/Tanim'], function (viewModel, view) {
+                loadView(viewModel, view);
+            });
+        });
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {
         //        loadView(null, view);

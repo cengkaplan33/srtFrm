@@ -1,5 +1,5 @@
-﻿define(['kendo', 'systemsModel'],
-function (kendo, systemsModel) {
+﻿define(['kendo', 'systemsModel','util'],
+function (kendo, systemsModel,util) {
     var systemsDatasource = new kendo.data.TreeListDataSource({
         async:false,
         transport: {
@@ -47,14 +47,10 @@ function (kendo, systemsModel) {
         },
         batch: false,
         schema: {
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
             model: systemsModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

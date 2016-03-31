@@ -1390,6 +1390,8 @@
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Framework\Scripts\app\datasources\hazirDegerlerTablosuDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\hazirDegerlerTablosuTanimDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\odemeDurumuDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\OdemeEkraniDurumTanimiDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\odemeTalepDatasource.js" />
@@ -1399,6 +1401,7 @@
     <Content Include="Framework\Scripts\app\datasources\TahsilatEkraniDurumTanimiDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTalepDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTuruDatasource.js" />
+    <Content Include="Framework\Scripts\app\models\hazirDegerlerTablosuModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeDurumuModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTalepModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTuruModel.js" />
@@ -1408,6 +1411,8 @@
     <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\hazirdegerlertablosu\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\hazirdegerlertablosu\tanimViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\odemeTalep\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\indexViewModel.js" />
@@ -3223,6 +3228,8 @@
     <Content Include="Views\DurumTanimlari\Edit.cshtml" />
     <Content Include="Views\DurumTanimlari\EditTabDurum.cshtml" />
     <Content Include="Views\TahsilatTalep\Index.cshtml" />
+    <Content Include="Views\HazirDegerlerTablosu\Index.cshtml" />
+    <Content Include="Views\HazirDegerlerTablosu\Tanim.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

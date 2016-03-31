@@ -1,33 +1,24 @@
-﻿define(['kendo', 'odemeDurumuModel','util'],
-function (kendo, odemeDurumuModel,util) {
+﻿define(['kendo', 'hazirDegerlerTablosuModel', 'util'],
+function (kendo, hazirDegerlerTablosuModel, util) {
 
 
-    var odemeDurumuDatasource = new kendo.data.DataSource({
+    var hazirDegerlerTablosuTanimDatasource = new kendo.data.TreeListDataSource({
         transport: {
+
             read: {
-                async: false,
-                url: "/DurumTanimlari/GetDurumTanimlari",
-                dataType: "json"
+                url: "/HazirDegerlerTablosu/GetHazirDegerler",
+                type: "POST"
             },
             create: {
                 type: "POST",
-                url: "/DurumTanimlari/Add",
+                url: "/HazirDegerlerTablosu/Add",
                 dataType: "json",
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
-                        _notification.info(result.Result);
-                    }
-                }
-            },
-            update: {
-
-                type: "POST",
-                url: "/DurumTanimlari/Update",
-                dataType: "Json",
-                complete: function (jqXhr, textStatus) {
-                    if (textStatus = "success") {
-                        var result = jQuery.parseJSON(jqXhr.responseText);
+                        var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
+                        tree.dataSource.read();
+                        $("#hazirDegerlerTanimGrid").data("kendoTreeList").dataSource = tree.dataSource;
                         _notification.info(result.Result);
                     }
                 }
@@ -35,32 +26,44 @@ function (kendo, odemeDurumuModel,util) {
             destroy: {
 
                 type: "POST",
-                url: "/DurumTanimlari/Delete",
+                url: "/HazirDegerlerTablosu/Delete",
                 dataType: "Json",
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
+                        tree.dataSource.read();
                         _notification.warning(result.Result);
                     }
                 }
+            },
+            update: {
+
+                type: "POST",
+                url: "/HazirDegerlerTablosu/Update",
+                dataType: "Json",
+                complete: function (jqXhr, textStatus) {
+                    if (textStatus = "success") {
+                        var result = jQuery.parseJSON(jqXhr.responseText);
+                        _notification.info(result.Result);
+                        var tree = $("#hazirDegerlerTanimGrid").data("kendoTreeList");
+                        tree.dataSource.read();
+                    }
+                }
             }
+
         },
         batch: false,
-        serverPaging: true,
-        serverSorting: true,
-        serverFiltering: false,
-        pageSize: 10,
         cache: false,
+        paging:false,
         schema: {
-            data: "data", // records are returned in the "data" field of the response
-            total: "total",
-            model: odemeDurumuModel
+            model: hazirDegerlerTablosuModel
         },
         error: function (e) {
             util.errorHandler(e);
         }
     });
 
-    return odemeDurumuDatasource;
+    return hazirDegerlerTablosuTanimDatasource;
 
 });

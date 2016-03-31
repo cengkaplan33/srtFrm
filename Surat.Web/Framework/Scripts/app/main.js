@@ -8,6 +8,7 @@
         //models
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
+        'rolePagesModel': 'models/rolePagesModel',
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',

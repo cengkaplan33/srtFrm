@@ -1,5 +1,5 @@
-﻿define(['kendo', 'bankModel'],
-function (kendo, bankModel) {
+﻿define(['kendo', 'bankModel','util'],
+function (kendo, bankModel,util) {
 
 
     var bankDatasource = new kendo.data.DataSource({
@@ -53,15 +53,11 @@ function (kendo, bankModel) {
         cache: false,
         schema: {
             data: "data", // records are returned in the "data" field of the response
-            total: "total", // total number of records is in the "total" field of the response
-            errors: function (response) {
-                return response.error; // twitter's response is { "error": "Invalid query" }
-            },
+            total: "total",
             model: bankModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

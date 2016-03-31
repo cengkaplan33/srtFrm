@@ -57,12 +57,14 @@
       <DependentUpon>201603240814406_V1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Entities\HazirDegerTablosu.cs" />
     <Compile Include="Model\Entities\OdemeTalepDurumu.cs" />
     <Compile Include="Model\Entities\OdemeTalep.cs" />
     <Compile Include="Model\Entities\PaymentCollecting.cs" />
     <Compile Include="Model\KonsolideRaporDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Entities\Bank.cs" />
+    <Compile Include="Repositories\HazirDegerlerTablosuRepository.cs" />
     <Compile Include="Repositories\OdemeTalepDurumuRepository.cs" />
     <Compile Include="Repositories\OdemeTalepRepository.cs" />
     <Compile Include="Repositories\PaymentCollectingRepository.cs" />

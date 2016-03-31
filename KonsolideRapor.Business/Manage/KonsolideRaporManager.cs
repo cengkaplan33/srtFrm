@@ -39,6 +39,7 @@ namespace KonsolideRapor.Business.Manage
         private PaymentCollectingRepository paymentCollecting;
         private OdemeTalepRepository odemeTalep;
         private OdemeTalepDurumuRepository odemeTalepDurumu;
+        private HazirDegerlerTablosuRepository hazirDegerTablosu;
         #endregion
 
         #region Public Members
@@ -150,6 +151,17 @@ namespace KonsolideRapor.Business.Manage
 
                 return odemeTalepDurumu;
             }
+        }
+        public HazirDegerlerTablosuRepository HazirDegerlerTablosu
+        {
+            get
+            {
+                if (hazirDegerTablosu == null)
+                    hazirDegerTablosu = new HazirDegerlerTablosuRepository(this.ApplicationContext.KonsolideRapor);
+
+                return hazirDegerTablosu;
+            }
+
         }
 
         #endregion
@@ -265,7 +277,7 @@ namespace KonsolideRapor.Business.Manage
         {
             try
             {
-                return this.PaymentCollecting.GetObjectsByParameters(m => m.IsActive == true&m.IsPayment==true).ToList();
+                return this.PaymentCollecting.GetObjectsByParameters(m => m.IsActive == true & m.IsPayment == true).ToList();
             }
             catch (Exception exception)
             {
@@ -355,7 +367,7 @@ where talep.IsActive=1 and talep.TalepTuru='odeme'
             try
             {
                 odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
-                                query).ToList(); 
+                                query).ToList();
                 return odemeTalepleri;
             }
             catch (Exception exception)
@@ -497,7 +509,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
         {
             try
             {
-                return this.OdemeTalepDurumu.GetObjectsByParameters(m => m.IsActive == true &m.IsOdeme==true).ToList();
+                return this.OdemeTalepDurumu.GetObjectsByParameters(m => m.IsActive == true & m.IsOdeme == true).ToList();
             }
             catch (Exception exception)
             {
@@ -571,6 +583,78 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
         }
 
         #endregion
+        #region Hazır Değerler Tablosu Methods
+        public List<HazirDegerTablosu> GetHazirDegerlerList()
+        {
+            try
+            {
+                return this.HazirDegerlerTablosu.GetAll().Where(m=>m.IsActive==true).OrderBy(m=>m.Kod).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "GetHazirDegerlerList", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void SaveHazirDegerTablosu(HazirDegerTablosu hazirDegerTablosu)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                if (hazirDegerTablosu.Id == 0)
+                {
+                    hazirDegerTablosu.Tarih = DateTime.Now.Date;
+                    hazirDegerTablosu.WorkGroupId = 1;
+                    this.HazirDegerlerTablosu.Add(hazirDegerTablosu);
+                }
+                else
+                {
+                    HazirDegerTablosu selectedHazirDegerTablosu = this.HazirDegerlerTablosu.GetObjectByParameters(p => p.Id == hazirDegerTablosu.Id);
+
+                   
+                    selectedHazirDegerTablosu.HazirDeger =hazirDegerTablosu.HazirDeger;
+                    selectedHazirDegerTablosu.EURO = hazirDegerTablosu.EURO;
+                    selectedHazirDegerTablosu.OdemeTahsilat = hazirDegerTablosu.OdemeTahsilat;
+                    selectedHazirDegerTablosu.TL = hazirDegerTablosu.TL;
+                    selectedHazirDegerTablosu.USD = hazirDegerTablosu.USD;
+                    selectedHazirDegerTablosu.Tarih = DateTime.Now.Date;
+                    selectedHazirDegerTablosu.Tur= hazirDegerTablosu.Tur;
+                    selectedHazirDegerTablosu.Kod = hazirDegerTablosu.Kod;
+                    this.HazirDegerlerTablosu.Update(selectedHazirDegerTablosu);
+                }
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "SaveHazirDegerTablosu", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void DestroyHazirDegerTablosu(HazirDegerTablosu hazirDegerTablosu)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+
+                HazirDegerTablosu selectedHazirDegerTablosu = this.HazirDegerlerTablosu.GetObjectByParameters(p => p.Id == hazirDegerTablosu.Id);
+
+                selectedHazirDegerTablosu.IsActive = false;
+                this.HazirDegerlerTablosu.Update(selectedHazirDegerTablosu);
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.FrameworkContext, "DestroyBank", this.ApplicationContext.SystemId, exception);
+            }
+        }
+        #endregion
+
         #endregion
 
     }
