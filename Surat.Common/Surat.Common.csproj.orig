@@ -65,11 +65,14 @@
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Globalization\IGlobalizationManager.cs" />
 <<<<<<< HEAD
+    <Compile Include="ViewModel\AccessibleRolePageView.cs" />
     <Compile Include="Helper\InvariantHelper.cs" />
     <Compile Include="Helper\StringHelper.cs" />
 =======
-    <Compile Include="ViewModel\AccessibleRolePageView.cs" />
->>>>>>> 4472d494d77c7d8402eb9e56a630878c702f1d8d
+    <Compile Include="ViewModel\ActionsListView.cs" />
+    <Compile Include="ViewModel\PagesListView.cs" />
+    <Compile Include="ViewModel\UserSessionView.cs" />
+>>>>>>> imp-sayfalar-ve-aksiyonlar-ekranı
     <Compile Include="ViewModel\HttpRequest.cs" />
     <Compile Include="Log\ITraceManager.cs" />
     <Compile Include="Mail\IMailManager.cs" />

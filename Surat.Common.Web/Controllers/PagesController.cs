@@ -38,6 +38,11 @@ namespace Surat.WebServer.Controllers
         {
             return View();
         }
+
+        public ActionResult Edit()
+        {
+            return View();
+        }
         public JsonResult GetPagesBySystem(object[] parent)
         {
             int systemId;
@@ -84,61 +89,71 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [HttpPost]
-        public JsonResult Add([Bind(Prefix = "pages")]IEnumerable<Page> pages, object[] parent)
+        public JsonResult GetPages(int pageSize, int skip)
         {
             try
             {
-                pages.Last().SystemId = int.Parse(parent[0].ToString());
-            }
-            catch
-            {
-                pages.Last().SystemId = 0;
-            }
+                var Pages = this.WebApplicationManager.Framework.Configuration.GetActivePageList();
+                var total = Pages.Count();
+                var data = Pages.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
 
-            try
-            {
-                this.WebApplicationManager.Framework.Configuration.SavePage(pages.Last());
-                return Json("", JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {                
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
-            }            
+                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
         }
 
+
         [HttpPost]
-        public JsonResult Update([Bind(Prefix = "pages")]IEnumerable<Page> pages, object[] parent)
+        public JsonResult Add(Page page)
         {
             try
             {
-                this.WebApplicationManager.Framework.Configuration.SavePage(pages.Last());
-                return Json("", JsonRequestBehavior.AllowGet);
+                this.WebApplicationManager.Framework.Configuration.SavePage(page);
+                return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {                
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
         [HttpPost]
-        public JsonResult Delete([Bind(Prefix = "pages")]IEnumerable<Page> pages)
+        public JsonResult Update(Page page)
         {
-
             try
             {
-                this.WebApplicationManager.Framework.Configuration.DeletePage(pages.Last());
-                return Json("", JsonRequestBehavior.AllowGet);
+                this.WebApplicationManager.Framework.Configuration.SavePage(page);
+                return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {                
                 Response.StatusCode = 500;
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
+        }
+
+        [HttpPost]
+        public JsonResult Delete(Page page)
+        {
+
+            try
+            {
+                this.WebApplicationManager.Framework.Configuration.DeletePage(page);
+                return Json(new { Result = "Silme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {                
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
 
         }
+      
         #endregion
     }
 }

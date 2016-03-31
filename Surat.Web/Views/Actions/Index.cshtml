@@ -1,7 +1,7 @@
 ﻿
 <div class="col-md-12" id="BaseDiv">
 
-    <div id="pagesgrid"
+    <div id="actionsgrid"
          data-role="grid"
          data-sortable="true"
          data-pageable="true"
@@ -12,11 +12,8 @@
          data-toolbar='[ { template: kendo.template($("#toolbar").html()) } ]'
          data-columns='[
                 { field: "Id", title: "ID", width: "75px" },
-                { field: "PageName", title: "Sayfa Adı"},
+                { field: "TypeName", title: "Aksiyon"},
                 { field: "SystemName", title: "Sistem" },
-                { field: "ObjectTypePrefix", title: "Sayfa URL" },
-                { field: "IsAccessControlRequired", title: "Erişim İzni Gerekiyor mu?" , "template": "#= IsAccessControlRequired ? \"Evet\" : \"Hayır\" #"},
-                { field: "IsVisibleInMenu", title: "Menüde Görünsün mü?" , "template": "#= IsVisibleInMenu ? \"Evet\" : \"Hayır\" #" },
                 { field: "InsertedByUserName", title: "Ekleyen Kullanıcı" },
                 { field: "InsertedDate", title: "Eklenme Tarihi" ,  format: "{0:dd-MMM-yyyy hh:mm:ss tt}", parseFormats: ["MM/dd/yyyy h:mm:ss"]},
                 { field: "ChangedByUserName", title: "Değiştiren Kullanıcı" },

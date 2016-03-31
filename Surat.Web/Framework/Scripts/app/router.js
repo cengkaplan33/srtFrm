@@ -90,6 +90,30 @@ define(['kendo'],
             });
         });
 
+        router.route("/Pages/Index", function () {
+            require(['pages-indexViewModel', 'text!/Pages/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#pagesgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+        router.route("/Actions/Index", function () {
+            require(['actions-indexViewModel', 'text!/Actions/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#actionsgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+        //router.route("/Pages/Edit/:id", function () {
+        //    require(['pages-editViewModel', 'text!/Pages/Edit'], function (viewModel, view) {
+        //        loadView(viewModel.loadData(), view);
+        //        kendo.bind($("#form"), viewModel);
+
+        //    });
+        //});
+
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {
         //        loadView(null, view);

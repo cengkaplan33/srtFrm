@@ -66,6 +66,8 @@
     <Compile Include="Globalization\IGlobalizationManager.cs" />
     <Compile Include="ViewModel\AccessibleRolePageView.cs" />
     <Compile Include="Helper\InvariantHelper.cs" />
+    <Compile Include="ViewModel\ActionsListView.cs" />
+    <Compile Include="ViewModel\PagesListView.cs" />
     <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="ViewModel\HttpRequest.cs" />
     <Compile Include="Log\ITraceManager.cs" />
