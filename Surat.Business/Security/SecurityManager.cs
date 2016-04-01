@@ -548,51 +548,20 @@ AND
         {
             List<AccessibleUserRoleView> accessibleUserRoles;
 
-            string query = @"	select Id,Name,ObjectTypeName,IsAccess=1 from SuratRoles where Id in(
-select DISTINCT suratRoles.Id 
-from dbo.SuratRoles suratRoles  
-JOIN RelationGroups relation ON  relation.RoleId = suratRoles.Id
-where 
-    suratRoles.IsActive = 1
-    AND      
-       (
-		 relation.IsActive = 1) 
-       AND
-       (relation.Id IN 
-             (
-               Select relationGroups.Id from dbo.RelationGroups relationGroups
-               where 
-               (                 
-                     UserId = @UserId  AND  WorkgroupId = 0 AND RoleId is not null
-                                    
-               )
-                
-             )
-       ))
+            string query = @"	
+select Id,Name,ObjectTypeName,IsAccess=1 
+from SuratRoles  suratRoles
+where suratRoles.IsActive = 1 and suratRoles.Id in(
+Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
+where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
+union 
+select Id,Name,ObjectTypeName,IsAccess=0 
+from SuratRoles  suratRoles
+where suratRoles.IsActive = 1 and suratRoles.Id not in(
+Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
+where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
 
-union
-
-select Id,Name,ObjectTypeName,IsAccess=0 from SuratRoles where Id not in(
-select DISTINCT suratRoles.Id 
-from dbo.SuratRoles suratRoles  
-JOIN RelationGroups relation ON  relation.RoleId = suratRoles.Id
-where 
-    suratRoles.IsActive = 1
-    AND      
-       (
-		 relation.IsActive = 1) 
-       AND
-       (relation.Id IN 
-             (
-               Select relationGroups.Id from dbo.RelationGroups relationGroups
-               where 
-               (                 
-                     UserId = @UserId  AND  WorkgroupId = 0 AND RoleId is not null
-                                    
-               )
-                
-             )
-       ))  order by Id  ";
+";
             accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleUserRoleView>(
                                 query, new SqlParameter("@UserId", userId)).ToList();
 
@@ -709,53 +678,54 @@ where
         {
             try
             {
-                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                
                 //int relationGroupId = GetRoleRelationGroupId(roleId);
-                List<RelationGroup> oldRecords = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId &  m.IsActive == true).ToList();
+                List<RelationGroup> oldRecords = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId &  m.IsActive == true & m.WorkgroupId == 0 & m.RoleId != 0).ToList();
                 foreach (var userRole in userRoles)
                 {
-                    if (oldRecords.Where(m => m.RoleId == userRole.Id & m.UserId == userId).Count() > 0)
+                    var currentRole= oldRecords.Where(m => m.RoleId == userRole.Id).ToList();
+
+                    if (currentRole.Count() > 1)
+                        throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId);
+
+                    if (currentRole.Count() > 0)
                     {
+                        int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                        Surat.Base.Model.Entities.RelationGroup relation = currentRole[0];
 
                         if (userRole.IsAccess == false)
                         {
-                            Surat.Base.Model.Entities.RelationGroup relation = this.RelationGroup.GetObjectsByParameters(m => m.RoleId == userRole.Id & m.UserId == userId & m.IsActive == true).First();
+                            
                             relation.IsActive = false;
-                            relation.ChangedDate = DateTime.Now;
-                            relation.ChangedByUser = this.ApplicationContext.CurrentUser.UserId;
                             this.RelationGroup.Update(relation);
                         }
                         else
                         {
-                            Surat.Base.Model.Entities.RelationGroup relation = this.RelationGroup.GetObjectsByParameters(m => m.RoleId == userRole.Id & m.UserId == userId & m.IsActive == false).First();
                             relation.IsActive = true;
-                            relation.ChangedDate = DateTime.Now;
-                            relation.ChangedByUser = this.ApplicationContext.CurrentUser.UserId;
                             this.RelationGroup.Update(relation);
-
                         }
+                        this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                     }
                     else
                     {
                         if (userRole.IsAccess == true)
                         {
+                            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                             Surat.Base.Model.Entities.RelationGroup relation = new RelationGroup();
                             relation.UserId = userId;
                             relation.RoleId = userRole.Id;
                             relation.WorkgroupId = 0;
-                            relation.InsertedDate = DateTime.Now;
-                            relation.InsertedByUser = this.ApplicationContext.CurrentUser.UserId;
                             this.RelationGroup.Add(relation);
+                            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                         }
                     }
                 }
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                
             }
             catch (Exception exception)
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
             }
-
         }
 
         public void DeleteUsers(IEnumerable<SuratUser> suratUser)

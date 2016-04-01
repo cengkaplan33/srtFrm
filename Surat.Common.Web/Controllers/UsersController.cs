@@ -65,7 +65,9 @@ namespace Surat.WebServer.Controllers
         {
             try
             {
-                return Json(this.WebApplicationManager.Framework.Security.GetUserRoles(userId), JsonRequestBehavior.AllowGet);
+
+                var asd = this.WebApplicationManager.Framework.Security.GetUserRoles(userId);
+                return Json(asd, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
