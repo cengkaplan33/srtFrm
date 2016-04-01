@@ -544,6 +544,61 @@ AND
             return UserRightCache.GetUserRights(currentUser.UserId);
         }
 
+        public List<AccessibleUserRoleView> GetUserRoles(int? userId)
+        {
+            List<AccessibleUserRoleView> accessibleUserRoles;
+
+            string query = @"	select Id,Name,ObjectTypeName,IsAccess=1 from SuratRoles where Id in(
+select DISTINCT suratRoles.Id 
+from dbo.SuratRoles suratRoles  
+JOIN RelationGroups relation ON  relation.RoleId = suratRoles.Id
+where 
+    suratRoles.IsActive = 1
+    AND      
+       (
+		 relation.IsActive = 1) 
+       AND
+       (relation.Id IN 
+             (
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where 
+               (                 
+                     UserId = @UserId  AND  WorkgroupId = 0 AND RoleId is not null
+                                    
+               )
+                
+             )
+       ))
+
+union
+
+select Id,Name,ObjectTypeName,IsAccess=0 from SuratRoles where Id not in(
+select DISTINCT suratRoles.Id 
+from dbo.SuratRoles suratRoles  
+JOIN RelationGroups relation ON  relation.RoleId = suratRoles.Id
+where 
+    suratRoles.IsActive = 1
+    AND      
+       (
+		 relation.IsActive = 1) 
+       AND
+       (relation.Id IN 
+             (
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where 
+               (                 
+                     UserId = @UserId  AND  WorkgroupId = 0 AND RoleId is not null
+                                    
+               )
+                
+             )
+       ))  order by Id  ";
+            accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleUserRoleView>(
+                                query, new SqlParameter("@UserId", userId)).ToList();
+
+            return accessibleUserRoles;
+        }
+
         public void SaveUserSession(UserDetailedView currentUser)
         {
             int initializedDBContextId;
@@ -648,6 +703,59 @@ AND
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveUser", this.ApplicationContext.SystemId, exception);
             }
+        }
+
+        public void SaveUserRoles(int userId, IList<UserRoleView> userRoles)
+        {
+            try
+            {
+                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                //int relationGroupId = GetRoleRelationGroupId(roleId);
+                List<RelationGroup> oldRecords = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId &  m.IsActive == true).ToList();
+                foreach (var userRole in userRoles)
+                {
+                    if (oldRecords.Where(m => m.RoleId == userRole.Id & m.UserId == userId).Count() > 0)
+                    {
+
+                        if (userRole.IsAccess == false)
+                        {
+                            Surat.Base.Model.Entities.RelationGroup relation = this.RelationGroup.GetObjectsByParameters(m => m.RoleId == userRole.Id & m.UserId == userId & m.IsActive == true).First();
+                            relation.IsActive = false;
+                            relation.ChangedDate = DateTime.Now;
+                            relation.ChangedByUser = this.ApplicationContext.CurrentUser.UserId;
+                            this.RelationGroup.Update(relation);
+                        }
+                        else
+                        {
+                            Surat.Base.Model.Entities.RelationGroup relation = this.RelationGroup.GetObjectsByParameters(m => m.RoleId == userRole.Id & m.UserId == userId & m.IsActive == false).First();
+                            relation.IsActive = true;
+                            relation.ChangedDate = DateTime.Now;
+                            relation.ChangedByUser = this.ApplicationContext.CurrentUser.UserId;
+                            this.RelationGroup.Update(relation);
+
+                        }
+                    }
+                    else
+                    {
+                        if (userRole.IsAccess == true)
+                        {
+                            Surat.Base.Model.Entities.RelationGroup relation = new RelationGroup();
+                            relation.UserId = userId;
+                            relation.RoleId = userRole.Id;
+                            relation.WorkgroupId = 0;
+                            relation.InsertedDate = DateTime.Now;
+                            relation.InsertedByUser = this.ApplicationContext.CurrentUser.UserId;
+                            this.RelationGroup.Add(relation);
+                        }
+                    }
+                }
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
+            }
+
         }
 
         public void DeleteUsers(IEnumerable<SuratUser> suratUser)

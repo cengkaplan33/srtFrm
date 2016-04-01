@@ -1,25 +1,61 @@
 ﻿
-define(['userDatasource', 'userModel','util', 'router', 'rolesDatasource','workgroupDatasource'],
-    function (userDatasource, userModel, util, router, rolesDatasource,workgroupDatasource) {
+define(['userDatasource', 'userModel', 'userRolesModel', 'util', 'router', 'userRolesDatasource', 'workgroupDatasource'],
+    function (userDatasource, userModel, userRolesModel, util, router, userRolesDatasource, workgroupDatasource) {
         var lastSelectedDataItem = null;
         var lastRolSelectedDataItem = null;
         var lastWorkgroupSelectedDataItem = null;
+        var checkedRoles = [];
         var editViewModel = new kendo.data.ObservableObject({
             loadData: function () {
                 var viewModel = new kendo.data.ObservableObject({
+                    sec: function (e) {
+                        if (e.currentTarget.checked == true) {
+                            for (var i = 0; i < checkedRoles.length; i++) {
+                                if (checkedRoles[i].Id == e.data.Id)
+                                {
+                                    checkedRoles[i].IsAccess = true;
+                                }
+
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < checkedRoles.length; i++) {
+                                if (checkedRoles[i].Id == e.data.Id) {
+                                    checkedRoles[i].IsAccess = false;
+                                }
+
+                            }
+
+                        }
+
+                    },
+                    //sec: function(e){
+
+                    //    for(var i=0; i<checkedRoles.length; i++)
+                    //    {
+                    //        if(checkedRoles[i].Id == e.data.Id)
+                    //        {
+                    //            checkedRoles[i].IsAccess = e.currentTarget.checked;
+                    //        }
+
+                    //    }
+                    //},
+                    User:new userModel(),
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
                         if (validator.validate()) {
                             if (viewModel.User.Id > 0) {
-                             viewModel.set("User.DefaultRole", $("#DefaultRole").val());
-                                viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                               // viewModel.set("User.DefaultRole", $("#DefaultRole").val());
+                               // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                                viewModel.User.set("Roles", JSON.stringify(checkedRoles));
                                 userDatasource.sync();                                
                                 userDatasource.filter({});
                                 router.navigate('/Users/index');
                             }
                             else {
-                                viewModel.set("User.DefaultRole", $("#DefaultRole").val());
-                                viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                              //  viewModel.set("User.DefaultRole", $("#DefaultRole").val());
+                               // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                                viewModel.User.set("Roles", JSON.stringify(checkedRoles));
                                 userDatasource.add(viewModel.User);
                                 userDatasource.sync();
                                 userDatasource.filter({});
@@ -31,43 +67,64 @@ define(['userDatasource', 'userModel','util', 'router', 'rolesDatasource','workg
                         userDatasource.filter({});
                         router.navigate('/Users/index');
                     },
-                    onRolesChange:function(arg)
-                    {
-                        var grid = arg.sender;
-                        lastRolSelectedDataItem = grid.dataItem(grid.select());
+                    //onRolesChange:function(arg)
+                    //{
+                    //    var grid = arg.sender;
+                    //    lastRolSelectedDataItem = grid.dataItem(grid.select());
                        
-                        $("#DefaultRole").val(lastRolSelectedDataItem.Id);
+                    //    //$("#DefaultRole").val(lastRolSelectedDataItem.Id);
                       
-                    },
-                    onWorkgroupChange: function (arg) {
-                        var grid = arg.sender;
-                        lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
+                    //},
+                    //onWorkgroupChange: function (arg) {
+                    //    var grid = arg.sender;
+                    //    lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
                        
-                        $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
-                    },
-                    mysource:workgroupDatasource ,
-                    rolesDatasource: rolesDatasource,
-                });
+                    //  //  $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
+                    //},
+                    //mysource:workgroupDatasource ,
+                    userRolesDatasource: userRolesDatasource,
+                });                                                   
 
-                userDatasource.fetch(function () {
-                    if (userDatasource.view().length > 0) {
+            userDatasource.fetch(function () {
+                if (userDatasource.view().length > 0) {
 
-                        var data = userDatasource.data();
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].Id == util.getId()) {
-                                viewModel.set("User", userDatasource.at(i));
- 
-                                setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
-                                break;
-                            }
-                            viewModel.set("User", new userModel());
+                    var data = userDatasource.data();
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Id == util.getId()) {
+                            viewModel.set("User", userDatasource.at(i));
+
+                            setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
+                            userRolesDatasource.options.transport.read.url = "/Users/GetUserRoles?userId=" + data[i].Id;
+                            userRolesDatasource.read();
+                            break;
                         }
-
+                        viewModel.set("User", new userModel());
                     }
 
-                });
+                }
+                else {
+                    viewModel.set("User", new userModel());
+                }
 
-                return viewModel;
+            });
+            checkedRoles = [];
+            userRolesDatasource.fetch(function () {
+                if (userRolesDatasource.view().length > 0) {
+                    var userRoleData = userRolesDatasource.data();
+                    for (var k = 0; k < userRoleData.length; k++) {
+                        if (userRoleData[k].IsAccess == true) {
+
+                            checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": true });
+                        }
+                        else {
+                            checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": false });
+                        }
+                    }
+                }
+            });
+
+            viewModel.User.Roles = checkedRoles;                               
+            return viewModel;
             },
         });
 
