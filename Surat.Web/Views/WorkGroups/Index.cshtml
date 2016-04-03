@@ -1,21 +1,4 @@
 ﻿<div class="col-md-12" id="BaseDiv">
-    <div data-role="toolbar">
-        <div class="k-toolbar-first-visible" style="visibility: visible;">
-            <button data-bind="click: add" class="k-button k-button-icontext k-toolbar-last-visible"><span class="k-icon k-i-plus"></span>Yeni</button>
-            <button data-bind="click: edit" class="k-button k-button-icontext k-toolbar-last-visible"><span class="k-icon k-i-refresh"></span>Düzenle</button>
-            <button data-bind="click: destroy" class="k-button k-button-icontext k-toolbar-last-visible"><span class="k-icon k-i-close"></span>Sil</button>
-            </div>
-        </div>
-    <div id="workgroupTree" style="width:100%"
-         data-role="treelist"
-         data-columns="[
-                                 { 'field': 'Name',title:'Çalışma Grubu' }
-
-                              ]"
-         data-selectable="true"
-         data-bind="source:dataSource,events: { change: onChange, dataBound: onDataBound }"></div>
-
-
-   
-
+    <div id="FunctionsToolBar"></div>
+    <div id="workGroupGrid"></div>
 </div>

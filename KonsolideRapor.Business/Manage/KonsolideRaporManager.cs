@@ -11,6 +11,7 @@ using Surat.Common.Application;
 using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -362,12 +363,11 @@ join PaymentCollectings payment
 on talep.PaymentCollectingId=payment.Id 
 join OdemeTalepDurumus durum
 on talep.OdemeTalepDurumuId=durum.Id
-where talep.IsActive=1 and talep.TalepTuru='odeme'
+where talep.IsActive=1 and talep.TalepTuru='odeme' and talep.WorkgroupId=@WorkgroupId
 ";
             try
             {
-                odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
-                                query).ToList();
+                odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(query,new SqlParameter("@WorkgroupId",this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup)).ToList();
                 return odemeTalepleri;
             }
             catch (Exception exception)
@@ -384,12 +384,11 @@ join PaymentCollectings payment
 on talep.PaymentCollectingId=payment.Id 
 join OdemeTalepDurumus durum
 on talep.OdemeTalepDurumuId=durum.Id
-where talep.IsActive=1 and talep.TalepTuru='tahsilat'
+where talep.IsActive=1 and talep.TalepTuru='tahsilat'  and talep.WorkgroupId=@WorkgroupId
 ";
             try
             {
-                odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
-                                query).ToList();
+                odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(query, new SqlParameter("@WorkgroupId", this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup)).ToList();
                 return odemeTalepleri;
             }
             catch (Exception exception)
@@ -406,7 +405,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
 
                 if (odemeTalep.Id == 0)
                 {
-                    odemeTalep.WorkgroupId = 1;
+                    odemeTalep.WorkgroupId =(int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
                     odemeTalep.TalepTuru = "odeme";
                     this.OdemeTalep.Add(odemeTalep);
                 }
@@ -414,7 +413,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                 {
                     OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
 
-                    selectedOdemeTalep.WorkgroupId = 1;
+                    selectedOdemeTalep.WorkgroupId = (int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
                     selectedOdemeTalep.Tarih = odemeTalep.Tarih;
                     selectedOdemeTalep.TL = odemeTalep.TL;
                     selectedOdemeTalep.USD = odemeTalep.USD;
@@ -442,7 +441,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
 
                 if (odemeTalep.Id == 0)
                 {
-                    odemeTalep.WorkgroupId = 1;
+                    odemeTalep.WorkgroupId = (int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
                     odemeTalep.TalepTuru = "tahsilat";
                     this.OdemeTalep.Add(odemeTalep);
                 }
@@ -450,7 +449,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                 {
                     OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
 
-                    selectedOdemeTalep.WorkgroupId = 1;
+                    selectedOdemeTalep.WorkgroupId = (int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
                     selectedOdemeTalep.Tarih = odemeTalep.Tarih;
                     selectedOdemeTalep.TL = odemeTalep.TL;
                     selectedOdemeTalep.USD = odemeTalep.USD;
@@ -583,12 +582,13 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
         }
 
         #endregion
+
         #region Hazır Değerler Tablosu Methods
         public List<HazirDegerTablosu> GetHazirDegerlerList()
         {
             try
             {
-                return this.HazirDegerlerTablosu.GetAll().Where(m=>m.IsActive==true).OrderBy(m=>m.Kod).ToList();
+                return this.HazirDegerlerTablosu.GetAll().Where(m=>m.IsActive==true&m.WorkGroupId==this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup).OrderBy(m=>m.Kod).ToList();
             }
             catch (Exception exception)
             {
@@ -606,7 +606,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                 if (hazirDegerTablosu.Id == 0)
                 {
                     hazirDegerTablosu.Tarih = DateTime.Now.Date;
-                    hazirDegerTablosu.WorkGroupId = 1;
+                    hazirDegerTablosu.WorkGroupId = (int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
                     this.HazirDegerlerTablosu.Add(hazirDegerTablosu);
                 }
                 else
@@ -622,6 +622,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                     selectedHazirDegerTablosu.Tarih = DateTime.Now.Date;
                     selectedHazirDegerTablosu.Tur= hazirDegerTablosu.Tur;
                     selectedHazirDegerTablosu.Kod = hazirDegerTablosu.Kod;
+                    selectedHazirDegerTablosu.WorkGroupId =(int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
                     this.HazirDegerlerTablosu.Update(selectedHazirDegerTablosu);
                 }
 
