@@ -10,17 +10,15 @@ namespace KonsolideRapor.Base.Model.Entities
 {
     public class HazirDegerTablosu : AuditableEntityBase<int>
     {
-        public int? ParentId { get; set; }
-        
-        [Required(ErrorMessage="Hazır Değer Kodu alanı gereklidir")]
-        [Range(1,999999999999,ErrorMessage="Değer 0 veya 0 dan küçük olamaz")]
-        public long Kod { get; set; }
+        [Required(ErrorMessage = "Hazır Değer Kodu alanı gereklidir")]
+        [Range(1, 999999999999, ErrorMessage = "Değer 0 veya 0 dan küçük olamaz")]
+        public string Kod { get; set; }
 
         [Required(ErrorMessage = "Değer Alanı Gereklidir.")]
         [MaxLength(100)]
         public string HazirDeger { get; set; }
-
-        public decimal OdemeTahsilat { get; set; }
+        public int OdemeTalepDurumuId { get; set; }
+        public int BankId { get; set; }
 
         [Required(ErrorMessage = "Tür Alanı Gereklidir.")]
         [MaxLength(40)]

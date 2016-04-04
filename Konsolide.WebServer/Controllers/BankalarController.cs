@@ -1,4 +1,5 @@
-﻿using KonsolideRapor.WebServer.Base;
+﻿using KonsolideRapor.Base.Model.Entities;
+using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Common.Data;
 using System;

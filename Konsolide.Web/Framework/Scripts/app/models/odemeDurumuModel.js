@@ -8,6 +8,8 @@
                 IsOdeme: { type: "boolean", title: "Ödeme Ekranı?" },
                 IsTahsilat: { type: "boolean", title: "Tahsilat Ekranı?" },
                 IsBanka: { type: "boolean", title: "Banka Ekranı?" },
+                IsKasa: { type: "boolean", title: "Kasa Ekranı" },
+                IsCek: { type: "boolean", title: "Çek Ekranı" },
                 IsActive: { type: "boolean", title: "Aktif?" }
             }
         });

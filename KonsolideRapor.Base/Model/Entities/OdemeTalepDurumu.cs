@@ -12,9 +12,11 @@ namespace KonsolideRapor.Base.Model.Entities
     {
         [Required(ErrorMessage = "Durum Alanı Gereklidir.")]
         [MaxLength(50)]
-        public string  Durum { get; set; }
+        public string Durum { get; set; }
         public bool IsBanka { get; set; }
         public bool IsOdeme { get; set; }
         public bool IsTahsilat { get; set; }
+        public bool IsKasa { get; set; }
+        public bool IsCek { get; set; }
     }
 }
