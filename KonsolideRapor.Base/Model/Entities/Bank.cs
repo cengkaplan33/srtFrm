@@ -2,7 +2,7 @@
 using Surat.Common.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace Surat.Base.Model.Entities
+namespace KonsolideRapor.Base.Model.Entities
 {
 	public class Bank : AuditableEntityBase<int>
 	{
@@ -13,6 +13,8 @@ namespace Surat.Base.Model.Entities
 		[Required(ErrorMessage="Name Alanı Gereklidir.")]
 		[MaxLength(40)]
 		public string Name {get;set;}
-
+        [Required(ErrorMessage = "ObjectType Alanı Gereklidir.")]
+        [MaxLength(40)]
+        public string ObjectType { get; set; }
 	}
 }

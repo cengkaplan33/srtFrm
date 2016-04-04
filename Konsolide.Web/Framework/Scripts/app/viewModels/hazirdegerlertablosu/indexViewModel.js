@@ -17,12 +17,15 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
             selectable: true,
             navigatable: false,
             pageSize: 1500,
+            cache: false,
+
             columns: [
-               
+
                  {
                      field: "HazirDeger",
                      title: "Hazır Değerler",
-                     width: "120px"
+                     width: "120px",
+                     editable: false
                  },
                  {
                      field: "TL",
@@ -39,18 +42,21 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
                      title: "EURO",
                      format: "{0:n2}",
                  },
-                  {
-                      field: "Tur",
-                      title: "Tür"
-                  },
-                 {
-                     command:
-                     [
-                     { name: "edit", text: "Düzenle"}                  
-                     ],
-                     title: "İşlemler", width: "170px"
-                 }
+              { command: [{ name: "edit", text: "Düzenle" }], title: "İşlemler" }
             ],
+            dataBound: function onDataBound(e) {
+                var grid = this;
+                var gridData = grid.dataSource.view();
+
+                for (var i = 0; i < gridData.length; i++) {
+                    var currentUid = gridData[i].uid;
+                    if (gridData[i].parentId == null) {
+                        var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.hide();
+                    }
+                }
+            },
             change: pageModel.onSelectedRowChanged
         });
         $(grid.tbody).on('keydown', function (e) {
@@ -90,11 +96,11 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
             ]
         });
     }
-  
+
     function GetSelectedGridRow() {
         return grid.data("kendoTreeList").select().eq(0);
     }
-    
+
     function FilterProjectsByStatus(e) {
         alert("//TO DO Filter Projects By Status")
         //ProjectCardDataSource.read();
@@ -134,10 +140,10 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
         onSelectedRowChanged: function (e) {
             SelectedRow = grid.data("kendoTreeList").dataItem(GetSelectedGridRow());
             if (SelectedRow) {
-                
+
                 SelectedRowId = SelectedRow.Id;
                 SelectedRowParentId = SelectedRow.parentId;
-             
+
             } else {
                 SelectedRowId = -1;
                 _notification.info("Öncelikle bir proje satırı seçmelisiniz!");
@@ -145,7 +151,7 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
 
         },
         onRefreshProjectList: function (e) {
-           // hazirDegerlerTablosuDatasource.read();
+            // hazirDegerlerTablosuDatasource.read();
             grid.data("kendoTreeList").refresh();
         }
 

@@ -12,8 +12,11 @@
                 { field: "Id", title: "ID", width: "75px" },
                 { field: "Durum", title: "Durum" },
                 { field: "IsBanka", title: "Banka Ekranı?", "template": "#= IsBanka ? \"Evet\" : \"Hayır\" #"},
+                { field: "IsKasa", title: "Kasa Ekranı?", "template": "#= IsKasa ? \"Evet\" : \"Hayır\" #"},
+                { field: "IsCek", title: "Çek Ekranı?", "template": "#= IsCek ? \"Evet\" : \"Hayır\" #"},
                 { field: "IsOdeme" , title:"Ödeme Ekranı?", "template": "#= IsOdeme ? \"Evet\" : \"Hayır\" #"  },
-                { field: "IsTahsilat" , title:"Tahsilat Ekranı?", "template": "#= IsTahsilat ? \"Evet\" : \"Hayır\" #"  }]'
+                { field: "IsTahsilat" , title:"Tahsilat Ekranı?", "template": "#= IsTahsilat ? \"Evet\" : \"Hayır\" #"  }
+         ]'
          data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
     </div>
 

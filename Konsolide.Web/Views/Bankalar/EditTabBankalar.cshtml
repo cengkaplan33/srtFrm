@@ -24,13 +24,14 @@
                                     <input type="text" id="Name" name="Name" style="width:100%" data-bind="value:Bank.Name" required validationmessage="Banka Adı alanı boş bırakılamaz" class="k-textbox" />
                                 </div>
                             </div>
-
                             <div class="form-group">
-
-                                <div class="col-md-12" style="text-align:left; padding-left:130px">
-                                    <input type="checkbox" id="IsActive" name="IsActive" data-bind="checked: Bank.IsActive" />&nbsp; Aktif mi?
+                                <label class="col-md-4 control-label" for="ObjectType">Banka Türü</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="ObjectType" name="ObjectType" style="width:100%" data-bind="value:Bank.ObjectType" required validationmessage="Banka Türü alanı boş bırakılamaz" class="k-textbox" />
                                 </div>
                             </div>
+
+
 
 
                         </div>

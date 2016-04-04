@@ -1,4 +1,5 @@
 ﻿using KonsolideRapor.Base.Model.Entities;
+using KonsolideRapor.Common.ViewModel;
 using KonsolideRapor.WebServer.Base;
 using Surat.Common.Data;
 using System;
@@ -54,7 +55,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
         [HttpPost]
-        public JsonResult Add(HazirDegerTablosu hazirDegerTablosu)
+        public JsonResult Add(HazirOdemeTablosuView hazirDegerTablosu)
         {
             try
             {
@@ -69,13 +70,14 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(HazirDegerTablosu hazirDegerTablosu)
+        public JsonResult Update(HazirOdemeTablosuView hazirDegerTablosu)
         {
             try
             {
                 this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveHazirDegerTablosu(hazirDegerTablosu);
                 return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
+
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
@@ -83,20 +85,6 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [HttpPost]
-        public JsonResult Delete(HazirDegerTablosu hazirDegerTablosu)
-        {
-            try
-            {
-                this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.DestroyHazirDegerTablosu(hazirDegerTablosu);
-                return Json(new { Result = "Silme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception exception)
-            {
-                Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
-            }
-        }
       
         #endregion
 

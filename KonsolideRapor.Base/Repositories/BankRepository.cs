@@ -8,6 +8,7 @@ using Surat.Entities;
 using KonsolideRapor.Base.Manage;
 using KonsolideRapor.Base.Model;
 using System.Data.Entity;
+using KonsolideRapor.Base.Model.Entities;
 namespace KonsolideRapor.Base.Repositories
 {
     public class BankRepository:GenericRepository<Bank>
