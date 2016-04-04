@@ -1,14 +1,13 @@
 ﻿using Surat.Base.Model.Entities;
-using Surat.Base.Repositories;
 using Surat.Common.Data;
-using Surat.WebServer.Application;
+using Surat.Common.ViewModel;
 using Surat.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
 namespace Surat.WebServer.Controllers
 {
     public class UsersController : SuratControllerBase
@@ -36,16 +35,17 @@ namespace Surat.WebServer.Controllers
         {
             return View();
         }
+
         public ActionResult Edit()
         {
             return View();
         }
+
         public ActionResult GetUsers(int pageSize,int skip)
-        {
-            
+        {            
             try
             {
-                var users = this.WebApplicationManager.Framework.Security.User.GetUsersActive();
+               var users = this.WebApplicationManager.Framework.Security.User.GetUsersActive();
                var total = users.Count();
                var data =users.OrderBy(m=>m.Id).Skip(skip).Take(pageSize).ToList();
                return Json(new { total = total, data = data },JsonRequestBehavior.AllowGet);
@@ -57,14 +57,28 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult Add(SuratUser user)
+        public JsonResult GetUserRoles(int? userId = -1)
         {
             try
             {
-             
-                    this.WebApplicationManager.Framework.Security.SaveUser(user);
+                return Json(this.WebApplicationManager.Framework.Security.GetUserRoles(userId), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+        [HttpPost]
+        public ActionResult Add(SuratUser user, string Roles)
+        {
+            try
+            {
 
+                IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+
+                    this.WebApplicationManager.Framework.Security.SaveUser(user);
+                    this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
                     return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
@@ -75,13 +89,14 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(SuratUser user)
+        public JsonResult Update(SuratUser user, string Roles)
         {
             try
             {
+                IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
 
+                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
-
                 return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)

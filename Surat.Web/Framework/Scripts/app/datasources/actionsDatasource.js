@@ -27,8 +27,7 @@ function (kendo, actionsModel) {
             model: actionsModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); // displays "Invalid query"
+            util.errorHandler(e);
         }
     });
 

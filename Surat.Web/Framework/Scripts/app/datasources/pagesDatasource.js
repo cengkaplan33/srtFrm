@@ -62,8 +62,7 @@ function (kendo, pagesModel) {
             model: pagesModel
         },
         error: function (e) {
-
-            _notification.error(e.xhr.responseJSON.Result); 
+            util.errorHandler(e);
         }
     });
 

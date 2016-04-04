@@ -544,6 +544,30 @@ AND
             return UserRightCache.GetUserRights(currentUser.UserId);
         }
 
+        public List<AccessibleUserRoleView> GetUserRoles(int? userId)
+        {
+            List<AccessibleUserRoleView> accessibleUserRoles;
+
+            string query = @"	
+                        select Id,Name,ObjectTypeName,IsAccess=1 
+                        from SuratRoles  suratRoles
+                        where suratRoles.IsActive = 1 and suratRoles.Id in(
+                        Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
+                        where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
+                        union 
+                        select Id,Name,ObjectTypeName,IsAccess=0 
+                        from SuratRoles  suratRoles
+                        where suratRoles.IsActive = 1 and suratRoles.Id not in(
+                        Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
+                        where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
+                        order by Name 
+                        ";
+            accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleUserRoleView>(
+                                query, new SqlParameter("@UserId", userId)).ToList();
+
+            return accessibleUserRoles;
+        }
+
         public void SaveUserSession(UserDetailedView currentUser)
         {
             int initializedDBContextId;
@@ -650,6 +674,66 @@ AND
             }
         }
 
+        public void SaveUserRoles(int userId, IList<UserRoleView> userRoles)
+        {
+            try
+            {               
+                List<RelationGroup> oldRecords = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId  & m.WorkgroupId == 0 & m.RoleId != 0).ToList();
+                foreach (var userRole in userRoles)
+                {
+                    var currentRole= oldRecords.Where(m => m.RoleId == userRole.Id).ToList();
+
+                    if (currentRole.Count() > 1)
+                        //NK::04/04/16 :: Bir kullanıcı için relationgrupta aynı rol için çoklu kayıt tutulmaz; hataya sebep olur.
+                        throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId);
+
+                    if (currentRole.Count() > 0)
+                    {
+                        // NK::04/04/16 :: Pasifken aktif olan veya aktifken pasif olan var olan kayıtları setliyoruz.
+                        int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                        Surat.Base.Model.Entities.RelationGroup relation = currentRole[0];
+
+                        if (userRole.IsAccess == false )
+                        {
+                            if (relation.IsActive == true)
+                            {
+                                relation.IsActive = false;
+                                this.RelationGroup.Update(relation);
+                            }
+                        }
+                        else 
+                        {
+                            if(relation.IsActive == false)
+                            {
+                                relation.IsActive = true;
+                                this.RelationGroup.Update(relation);
+                            }
+                        }
+                        this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                    }
+                    else
+                    {
+                        // NK:: 04/04/16 :: Relationgrupa yeni kayıt ekleniyor.
+                        if (userRole.IsAccess == true)
+                        {
+                            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                            Surat.Base.Model.Entities.RelationGroup relation = new RelationGroup();
+                            relation.UserId = userId;
+                            relation.RoleId = userRole.Id;
+                            relation.WorkgroupId = 0;
+                            this.RelationGroup.Add(relation);
+                            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                        }
+                    }
+                }
+                
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
         public void DeleteUsers(IEnumerable<SuratUser> suratUser)
         {
             int initializedDBContextId;
@@ -676,6 +760,9 @@ AND
             int initializedDBContextId;
             try
             {
+
+                DeleteUserRelationAndAccessible(user.Id);
+
                 initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
                 SuratUser selectedUser = this.User.GetObjectByParameters(p => p.Id == user.Id);
@@ -684,11 +771,46 @@ AND
                 this.User.Update(selectedUser);
 
                 this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
             }
             catch (Exception exception)
             {
                 throw new EntityProcessException(this.ApplicationContext, "DeleteUser", this.ApplicationContext.SystemId, exception);
             }
+        }
+
+        /// <summary>
+        /// NK:: 04/0406 Kullanıcı silindiğinde ona bağlı olan hakları ve rolleri
+        /// RelationGrups ve AccessibleItem tablosundan pasife çeken methoddur.
+        /// </summary>
+        /// <param name="userId"></param>
+        public void DeleteUserRelationAndAccessible (int userId)
+        {
+            try
+            {
+                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                List<RelationGroup> Records = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId).ToList();
+
+                foreach (var record in Records)
+                {
+                    List<AccessibleItem> AccesRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == record.Id).ToList();
+                    foreach(var accessRecord in AccesRecords)
+                    {
+                        accessRecord.IsActive = false;
+                        this.AccessibleItem.Update(accessRecord);
+                    }
+
+                    record.IsActive = false;
+                    this.RelationGroup.Update(record);
+                }
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "DeleteUserRelationAndAccessible", this.ApplicationContext.SystemId, exception);
+            }
+
         }
 
         public void SaveUserLock(string userName, string password, bool isLocked)

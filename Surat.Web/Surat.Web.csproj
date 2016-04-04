@@ -1431,6 +1431,7 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
@@ -1442,6 +1443,7 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
