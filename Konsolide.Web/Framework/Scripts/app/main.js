@@ -16,9 +16,13 @@
         'odemeTuruModel': 'models/odemeTuruModel',
         'odemeDurumuModel': 'models/odemeDurumuModel',
         'hazirDegerlerTablosuModel': 'models/hazirDegerlerTablosuModel',
+        'rolesModel': 'models/rolesModel',
+        'rolePagesModel': 'models/rolePagesModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
+        'roles-indexViewModel': 'viewModels/roles/indexViewModel',
+        'roles-editViewModel': 'viewModels/roles/editViewModel',
         'bankalar-indexViewModel': 'viewModels/bankalar/indexViewModel',
         'bankalar-editViewModel': 'viewModels/bankalar/editViewModel',
         'paymentCollecting-indexViewModel': 'viewModels/paymentCollecting/indexViewModel',
@@ -31,6 +35,8 @@
         'hazirdegerlertablosu-tanimViewModel': 'viewModels/hazirdegerlertablosu/tanimViewModel',
         //datasources       
         'userDatasource': 'datasources/userDatasource',
+        'rolesDatasource': 'datasources/rolesDatasource',
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'bankDatasource': 'datasources/bankDatasource',
         'paymentCollectingDatasource': 'datasources/paymentCollectingDatasource',
         'odemeTalepDatasource': 'datasources/odemeTalepDatasource',

@@ -1,5 +1,5 @@
-﻿define(['kendo', 'rolesModel','util'],
-function (kendo, rolesModel,util) {
+﻿define(['kendo', 'rolesModel', 'util'],
+function (kendo, rolesModel, util) {
 
 
     var rolesDatasource = new kendo.data.DataSource({

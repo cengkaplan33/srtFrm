@@ -15,7 +15,7 @@
         'userSessionsModel': 'models/userSessionsModel',
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
-        'rolePagesModel': 'models/rolePagesModel',
+       
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -33,6 +33,7 @@
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
@@ -40,7 +41,7 @@
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
-        'rolePagesDatasource' : 'datasources/rolePagesDatasource',
+       
         // utils
         'util': '/Framework/Scripts/util'
     },
