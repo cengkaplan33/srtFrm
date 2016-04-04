@@ -1,6 +1,6 @@
 ﻿
-define(['userDatasource', 'userModel', 'userRolesModel', 'util', 'router', 'userRolesDatasource', 'workgroupDatasource'],
-    function (userDatasource, userModel, userRolesModel, util, router, userRolesDatasource, workgroupDatasource) {
+define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 'workgroupDatasource', 'util', 'router'],
+    function (userDatasource, userModel, userRolesModel, userRolesDatasource, workgroupDatasource, util, router) {
         var lastSelectedDataItem = null;
         var lastRolSelectedDataItem = null;
         var lastWorkgroupSelectedDataItem = null;
@@ -29,18 +29,6 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'util', 'router', 'user
                         }
 
                     },
-                    //sec: function(e){
-
-                    //    for(var i=0; i<checkedRoles.length; i++)
-                    //    {
-                    //        if(checkedRoles[i].Id == e.data.Id)
-                    //        {
-                    //            checkedRoles[i].IsAccess = e.currentTarget.checked;
-                    //        }
-
-                    //    }
-                    //},
-                    User:new userModel(),
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
                         if (validator.validate()) {

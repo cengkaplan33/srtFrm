@@ -1,15 +1,11 @@
 ﻿using Surat.Base.Model.Entities;
-using Surat.Base.Repositories;
 using Surat.Common.Data;
-using Surat.WebServer.Application;
+using Surat.Common.ViewModel;
 using Surat.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using Surat.Common.ViewModel;
 using System.Web.Script.Serialization;
 
 namespace Surat.WebServer.Controllers
@@ -61,13 +57,11 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        public JsonResult GetUserRoles(int userId)
+        public JsonResult GetUserRoles(int? userId = -1)
         {
             try
             {
-
-                var asd = this.WebApplicationManager.Framework.Security.GetUserRoles(userId);
-                return Json(asd, JsonRequestBehavior.AllowGet);
+                return Json(this.WebApplicationManager.Framework.Security.GetUserRoles(userId), JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {

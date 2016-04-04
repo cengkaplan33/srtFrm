@@ -14,7 +14,9 @@
         'odemeTalepModel': 'models/odemeTalepModel',
         'odemeTuruModel': 'models/odemeTuruModel',
         'odemeTuruModel': 'models/odemeTuruModel',
-        'odemeDurumuModel':'models/odemeDurumuModel',
+        'odemeDurumuModel': 'models/odemeDurumuModel',
+        'userRolesModel': 'models/userRolesModel',
+        'workgroupModel': 'models/workgroupModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -26,6 +28,8 @@
         'tahsilatTalep-indexViewModel': 'viewModels/tahsilattalep/indexViewModel',
         'durumtanimlari-indexViewModel': 'viewModels/durumtanimlari/indexViewModel',
         'durumtanimlari-editViewModel': 'viewModels/durumtanimlari/editViewModel',
+        'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
+        'workgroup-editViewModel': 'viewModels/workgroup/editViewModel',
         //datasources       
         'userDatasource': 'datasources/userDatasource',
         'bankDatasource': 'datasources/bankDatasource',
@@ -37,6 +41,8 @@
         'odemeDurumuDatasource': 'datasources/odemeDurumuDatasource',
         'OdemeEkraniDurumTanimiDatasource': 'datasources/OdemeEkraniDurumTanimiDatasource',
         'TahsilatEkraniDurumTanimiDatasource': 'datasources/TahsilatEkraniDurumTanimiDatasource',
+        'userRolesDatasource': 'datasources/userRolesDatasource',
+        'workgroupDatasource': 'datasources/workgroupDatasource',
         // utils
         util: '/Framework/Scripts/util'
     },

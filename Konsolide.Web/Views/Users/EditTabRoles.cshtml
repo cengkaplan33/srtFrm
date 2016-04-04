@@ -8,19 +8,19 @@
                 <div class="widget-body" style="text-align: center;">
                     <div class="space"></div>
                     <div class="row">
-
-                        <div class="col-md-6">
-                            <div id="rolesgrid"
+                        <div class="col-md-8">
+                            <div id="userRolesGrid"
                                  data-role="grid"
                                  data-sortable="true"
                                  data-pageable="true"
                                  data-filterable="true"
                                  data-editable="inline"
-                                 data-selectable="true"
+                                 data-selectable="multiple"
                                  data-columns='[
-                { field: "Id", title: "Id", width: "75px" },
-                { field: "Name", title: "Rol"} ]'
-                                 data-bind="source: rolesDatasource, events: { change: onRolesChange }" style="width:100%">
+                                 { field:"IsAccess" , title:"active" , width:25, template:"<input type=\"checkbox\" # if (IsAccess) {# checked # }# data-bind=\"click:sec\" />"  },
+                                 { field: "Id", title: "ID", width: "75px" },
+                                 { field: "Name", title: "Sayfa", width: "200px" } ]'
+                                 data-bind="source: userRolesDatasource" style="width:100%">
                             </div>
                         </div>
 

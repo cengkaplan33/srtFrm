@@ -3,10 +3,10 @@ function (kendo, userModel,util) {
 
 
     var userDatasource = new kendo.data.DataSource({
-        autoSync:false,
+      //  autoSync:false,
         transport: {
             read: {
-               
+                async: false,
                 url: "/Users/GetUsers",
                 dataType: "json"
             },

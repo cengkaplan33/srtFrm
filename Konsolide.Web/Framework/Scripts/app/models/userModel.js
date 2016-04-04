@@ -18,7 +18,8 @@
                 InsertedDate: { type: "date" },
                 ChangedByUser: { type: "number" },
                 ChangedDate: { type: "date" },
-                IsActive: { type: "boolean", title: "Aktif mi?" }
+                IsActive: { type: "boolean", title: "Aktif mi?" },
+                Roles: { type: "string" }
             }
         });
         return userModel;

@@ -1399,11 +1399,13 @@
     <Content Include="Framework\Scripts\app\datasources\TahsilatEkraniDurumTanimiDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTalepDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTuruDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\models\odemeDurumuModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTalepModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTuruModel.js" />
     <Content Include="Framework\Scripts\app\models\paymentCollectingModel.js" />
     <Content Include="Framework\Scripts\app\models\bankModel.js" />
+    <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\editViewModel.js" />
