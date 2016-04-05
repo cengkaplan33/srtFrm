@@ -1,19 +1,19 @@
-﻿using System;
+﻿using KonsolideRapor.Base.Model.Entities;
+using KonsolideRapor.WebServer.Base;
+using Surat.Base.Model.Entities;
+using Surat.Common.Data;
+using Surat.Common.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Surat.Base.Model.Entities;
-using Surat.Base.Repositories;
-using Surat.WebServer.Application;
-using Surat.WebServer.Base;
-using Surat.Common.Data;
-using Surat.Common.ViewModel;
 using System.Web.Script.Serialization;
-namespace Surat.WebServer.Controllers
+
+namespace KonsolideRapor.WebServer.Controllers
 {
-    public class RolesController: SuratControllerBase
+    public class RolesController : KonsolideControllerBase
     {
         #region Constructor
 
@@ -78,13 +78,13 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        public JsonResult GetRolePages(int? roleId=-1)
+        public JsonResult GetRolePages(int? roleId = -1)
         {
 
             try
             {
-               
-                return Json( this.WebApplicationManager.Framework.Security.GetUserAccessibleRolePages(roleId), JsonRequestBehavior.AllowGet);
+
+                return Json(this.WebApplicationManager.Framework.Security.GetUserAccessibleRolePages(roleId), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception exception)
@@ -111,29 +111,29 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Add(SuratRole suratrole,string Pages,string Actions)
+        public JsonResult Add(SuratRole suratrole, string Pages, string Actions)
         {
             try
             {
 
                 IList<RolePageView> rolePages = new JavaScriptSerializer().Deserialize<IList<RolePageView>>(Pages);
                 IList<RoleActionView> roleActions = new JavaScriptSerializer().Deserialize<IList<RoleActionView>>(Actions);
-                this.WebApplicationManager.Framework.Security.SaveRole(suratrole);               
+                this.WebApplicationManager.Framework.Security.SaveRole(suratrole);
 
                 this.WebApplicationManager.Framework.Security.SaveRolePages(suratrole.Id, rolePages);
                 this.WebApplicationManager.Framework.Security.SaveRoleActions(suratrole.Id, roleActions);
-            
-                return Json(new{Result="Kayıt işlemi gerçekleştirildi."}, JsonRequestBehavior.AllowGet);
+
+                return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {    
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
         [HttpPost]
-        public JsonResult Update(SuratRole suratrole,string Pages,string Actions)
+        public JsonResult Update(SuratRole suratrole, string Pages, string Actions)
         {
             try
             {
@@ -147,10 +147,9 @@ namespace Surat.WebServer.Controllers
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
-
         [HttpPost]
         public JsonResult Delete(SuratRole suratrole)
         {

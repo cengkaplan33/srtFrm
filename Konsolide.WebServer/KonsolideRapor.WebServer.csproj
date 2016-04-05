@@ -102,6 +102,7 @@
     <Compile Include="Controllers\PaymentCollectingController.cs" />
     <Compile Include="Controllers\BankalarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\TahsilatTalepController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Helpers\KendoHelper.cs" />

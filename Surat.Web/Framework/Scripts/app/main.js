@@ -9,14 +9,15 @@
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
+        'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
         'userSessionsModel': 'models/userSessionsModel',
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
-        'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
+       
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -34,14 +35,15 @@
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
-        'rolePagesDatasource':'datasources/rolePagesDatasource',
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
+        'roleActionsDatasource':'datasources/roleActionsDatasource',
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
-        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
         // utils
         'util': '/Framework/Scripts/util'

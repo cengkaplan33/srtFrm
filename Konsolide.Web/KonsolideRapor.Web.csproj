@@ -1398,6 +1398,8 @@
     <Content Include="Framework\Scripts\app\datasources\odemeTuruDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\paymentCollectingDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\bankDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\TahsilatEkraniDurumTanimiDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTalepDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTuruDatasource.js" />
@@ -1406,9 +1408,12 @@
     <Content Include="Framework\Scripts\app\models\odemeDurumuModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTalepModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTuruModel.js" />
+    <Content Include="Framework\Scripts\app\models\pagesModel.js" />
     <Content Include="Framework\Scripts\app\models\paymentCollectingModel.js" />
     <Content Include="Framework\Scripts\app\models\bankModel.js" />
+    <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
+    <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\editViewModel.js" />
@@ -3232,6 +3237,11 @@
     <Content Include="Views\TahsilatTalep\Index.cshtml" />
     <Content Include="Views\HazirDegerlerTablosu\Index.cshtml" />
     <Content Include="Views\HazirDegerlerTablosu\Tanim.cshtml" />
+    <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Roles\EditTabPages.cshtml" />
+    <Content Include="Views\Roles\EditTabRoles.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Roles\EditTabActions.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

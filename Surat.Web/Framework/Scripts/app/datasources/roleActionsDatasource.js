@@ -1,13 +1,13 @@
-﻿define(['kendo', 'rolePagesModel','util'],
-function (kendo, rolePagesModel,util) {
+﻿define(['kendo', 'roleActionsModel', 'util'],
+function (kendo, roleActionsModel, util) {
 
 
-    var rolePagesDatasource = new kendo.data.DataSource({
+    var roleActionsDatasource = new kendo.data.DataSource({
 
         transport: {
             read: {
                 async: false,
-                url: "/Roles/GetRolePages",
+                url: "/Roles/GetRoleActions",
                 dataType: "json"
             }
         },
@@ -15,16 +15,16 @@ function (kendo, rolePagesModel,util) {
         serverPaging: false,
         serverSorting: false,
         serverFiltering: false,
-        pageSize: 15,
+        pageSize: 25,
         cache: false,
         schema: {
-            model: rolePagesModel
+            model: roleActionsModel
         },
         error: function (e) {
             util.errorHandler(e);
         }
     });
 
-    return rolePagesDatasource;
+    return roleActionsDatasource;
 
 });

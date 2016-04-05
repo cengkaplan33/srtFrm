@@ -28,6 +28,20 @@ define(['kendo', 'kendo_culture_config', 'kendo_culture_messages'],
 
             });
         });
+        router.route("/Roles/Index", function () {
+            require(['roles-indexViewModel', 'text!/Roles/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#rolesgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+        router.route("/Roles/Edit/:id", function () {
+            require(['roles-editViewModel', 'text!/Roles/Edit'], function (viewModel, view) {
+                loadView(viewModel.loadData(), view);
+                kendo.bind($("#form"), viewModel);
+
+            });
+        });
         router.route("/Bankalar/Index", function () {
             setBreadCrumb("#/Bankalar/Index", "Banka Tanımları");
             require(['bankalar-indexViewModel', 'text!/Bankalar/Index'], function (viewModel, view) {

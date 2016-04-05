@@ -15,7 +15,7 @@ function (kendo, rolePagesModel,util) {
         serverPaging: false,
         serverSorting: false,
         serverFiltering: false,
-        pageSize: 15,
+        pageSize: 10,
         cache: false,
         schema: {
             model: rolePagesModel
