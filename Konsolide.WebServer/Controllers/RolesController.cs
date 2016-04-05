@@ -94,6 +94,22 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        public JsonResult GetRoleActions(int? roleId = -1)
+        {
+
+            try
+            {
+
+                return Json(this.WebApplicationManager.Framework.Security.GetRoleAccessibleActions(roleId), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
         [HttpPost]
         public JsonResult Add(SuratRole suratrole,string Pages)
         {

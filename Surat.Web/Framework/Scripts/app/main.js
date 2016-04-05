@@ -9,12 +9,14 @@
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
+        'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
         'userSessionsModel': 'models/userSessionsModel',
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
+
        
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
@@ -37,7 +39,8 @@
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
-        'rolePagesDatasource':'datasources/rolePagesDatasource',
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
+        'roleActionsDatasource':'datasources/roleActionsDatasource',
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',

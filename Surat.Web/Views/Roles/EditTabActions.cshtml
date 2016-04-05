@@ -1,0 +1,40 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Sayfa Seçimleri</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div id="rolePagesGrid"
+                                 data-role="grid"
+                                 data-sortable="true"
+                                 data-pageable="true"
+                                 data-filterable="true"
+                                 data-editable="inline"
+                                 data-selectable="multiple"
+                                 data-columns='[
+                               
+                                 { field: "ActionId", title: "Action ID", width: "75px" },
+                                 { field: "ActionName", title: "Sayfa", width: "200px" } ]'
+                                 data-bind="source: roleActionsDatasource" style="width:100%">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>
+

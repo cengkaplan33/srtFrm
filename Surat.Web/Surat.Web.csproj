@@ -1431,6 +1431,7 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
@@ -1442,6 +1443,7 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
@@ -3229,6 +3231,7 @@
     <Content Include="Views\Actions\Index.cshtml" />
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\EditTabPages.cshtml" />
+    <Content Include="Views\Roles\EditTabActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

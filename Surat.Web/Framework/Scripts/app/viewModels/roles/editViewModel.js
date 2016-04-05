@@ -1,5 +1,7 @@
-﻿define(['rolesDatasource', 'rolesModel','rolePagesModel','rolePagesDatasource', 'util', 'router'],
-    function (rolesDatasource, rolesModel,rolePagesModel,rolePagesDatasource, util, router) {
+﻿define(['rolesDatasource', 'rolesModel','rolePagesModel','rolePagesDatasource','roleActionsDatasource','roleActionsModel', 'util', 'router'],
+    function (rolesDatasource, rolesModel, rolePagesModel, rolePagesDatasource, roleActionsDatasource, roleActionsModel, util, router) {
+        roleActionsDatasource.options.transport.read.url = "/Roles/GetRoleActions?roleId=" + util.getId();
+      
         var lastRolSelectedDataItem = null;
         var checkedIds = [];
         var pageObject = {};
@@ -60,7 +62,8 @@
                         //$("#DefaultRole").val(lastRolSelectedDataItem.Id);
 
                     },
-                    rolePagesDatasource: rolePagesDatasource
+                    rolePagesDatasource: rolePagesDatasource,
+                    roleActionsDatasource: roleActionsDatasource
                 });
 
                 rolesDatasource.fetch(function () {
@@ -99,6 +102,7 @@
                         }
                     }
                 });
+
                 viewModel.Role.Pages = checkedIds;
                 return viewModel;
             },
