@@ -111,15 +111,17 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Add(SuratRole suratrole,string Pages)
+        public JsonResult Add(SuratRole suratrole,string Pages,string Actions)
         {
             try
             {
 
                 IList<RolePageView> rolePages = new JavaScriptSerializer().Deserialize<IList<RolePageView>>(Pages);
+                IList<RoleActionView> roleActions = new JavaScriptSerializer().Deserialize<IList<RoleActionView>>(Actions);
                 this.WebApplicationManager.Framework.Security.SaveRole(suratrole);               
 
                 this.WebApplicationManager.Framework.Security.SaveRolePages(suratrole.Id, rolePages);
+                this.WebApplicationManager.Framework.Security.SaveRoleActions(suratrole.Id, roleActions);
             
                 return Json(new{Result="Kayıt işlemi gerçekleştirildi."}, JsonRequestBehavior.AllowGet);
             }
@@ -131,13 +133,14 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(SuratRole suratrole,string Pages)
+        public JsonResult Update(SuratRole suratrole,string Pages,string Actions)
         {
             try
             {
                 IList<RolePageView> rolePages = new JavaScriptSerializer().Deserialize<IList<RolePageView>>(Pages);
-
+                IList<RoleActionView> roleActions = new JavaScriptSerializer().Deserialize<IList<RoleActionView>>(Actions);
                 this.WebApplicationManager.Framework.Security.SaveRolePages(suratrole.Id, rolePages);
+                this.WebApplicationManager.Framework.Security.SaveRoleActions(suratrole.Id, roleActions);
                 this.WebApplicationManager.Framework.Security.SaveRole(suratrole);
                 return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }

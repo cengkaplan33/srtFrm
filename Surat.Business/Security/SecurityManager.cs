@@ -878,6 +878,7 @@ AND
                 int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                 int relationGroupId = GetRoleRelationGroupId(roleId);
                 List<AccessibleItem> oldRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectType == (int)AccessibleItemDBObjectType.Page&m.IsActive==true).ToList();
+
                 foreach (var rolePage in rolePages)
                 {
                     if (oldRecords.Where(m => m.DBObjectId == rolePage.Id).Count() > 0)
@@ -914,6 +915,49 @@ AND
 
         }
 
+        public void SaveRoleActions(int roleId, IList<RoleActionView> roleActions)
+        {
+            try
+            {
+                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                int relationGroupId = GetRoleRelationGroupId(roleId);
+                List<AccessibleItem> oldRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectType == (int)AccessibleItemDBObjectType.Action & m.IsActive == true).ToList();
+
+                foreach (var roleAction in roleActions)
+                {
+                    if (oldRecords.Where(m => m.DBObjectId == roleAction.ActionId).Count() > 0)
+                    {
+
+                        if (roleAction.IsAccessible == 0)
+                        {
+                            Surat.Base.Model.Entities.AccessibleItem accesibleItem = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectId == roleAction.ActionId & m.IsActive == true).First();
+                            accesibleItem.IsActive = false;
+                            this.AccessibleItem.Update(accesibleItem);
+                        }
+                    }
+                    else
+                    {
+                        if (roleAction.IsAccessible == 1)
+                        {
+                            Surat.Base.Model.Entities.AccessibleItem accesibleItem = new AccessibleItem();
+                            accesibleItem.RelationGroupId = relationGroupId;
+                            accesibleItem.AccessRightTypeId = 1;
+                            accesibleItem.DBObjectId = roleAction.ActionId;
+                            accesibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Action;
+                            accesibleItem.EndDate = DateTime.Now.AddYears(1);
+                            accesibleItem.StartDate = DateTime.Now;
+                            this.AccessibleItem.Add(accesibleItem);
+                        }
+                    }
+                }
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveRoleActions", this.ApplicationContext.SystemId, exception);
+            }
+
+        }
         #endregion
 
         #region Right

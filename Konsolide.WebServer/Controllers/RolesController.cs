@@ -78,13 +78,13 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        public JsonResult GetRolePages(int? roleId=-1)
+        public JsonResult GetRolePages(int? roleId = -1)
         {
 
             try
             {
-               
-                return Json( this.WebApplicationManager.Framework.Security.GetUserAccessibleRolePages(roleId), JsonRequestBehavior.AllowGet);
+
+                return Json(this.WebApplicationManager.Framework.Security.GetUserAccessibleRolePages(roleId), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception exception)
@@ -111,43 +111,45 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Add(SuratRole suratrole,string Pages)
+        public JsonResult Add(SuratRole suratrole, string Pages, string Actions)
         {
             try
             {
 
                 IList<RolePageView> rolePages = new JavaScriptSerializer().Deserialize<IList<RolePageView>>(Pages);
-                this.WebApplicationManager.Framework.Security.SaveRole(suratrole);               
+                IList<RoleActionView> roleActions = new JavaScriptSerializer().Deserialize<IList<RoleActionView>>(Actions);
+                this.WebApplicationManager.Framework.Security.SaveRole(suratrole);
 
                 this.WebApplicationManager.Framework.Security.SaveRolePages(suratrole.Id, rolePages);
-            
-                return Json(new{Result="Kayıt işlemi gerçekleştirildi."}, JsonRequestBehavior.AllowGet);
+                this.WebApplicationManager.Framework.Security.SaveRoleActions(suratrole.Id, roleActions);
+
+                return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {    
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
         [HttpPost]
-        public JsonResult Update(SuratRole suratrole,string Pages)
+        public JsonResult Update(SuratRole suratrole, string Pages, string Actions)
         {
             try
             {
                 IList<RolePageView> rolePages = new JavaScriptSerializer().Deserialize<IList<RolePageView>>(Pages);
-
+                IList<RoleActionView> roleActions = new JavaScriptSerializer().Deserialize<IList<RoleActionView>>(Actions);
                 this.WebApplicationManager.Framework.Security.SaveRolePages(suratrole.Id, rolePages);
+                this.WebApplicationManager.Framework.Security.SaveRoleActions(suratrole.Id, roleActions);
                 this.WebApplicationManager.Framework.Security.SaveRole(suratrole);
                 return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
-
         [HttpPost]
         public JsonResult Delete(SuratRole suratrole)
         {

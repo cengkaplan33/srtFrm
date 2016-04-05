@@ -7,7 +7,8 @@
                 Name: { type: "string", validation: { required: true } },
                 ObjectTypeName: { type: "string", validation: { required: true } },
                 IsActive: { type: "boolean", title: "Aktif mi?" },
-                Pages:{type:"string"}
+                Pages: { type: "string" },
+                Actions:{type:"string"}
             }
         });
         return rolesModel;

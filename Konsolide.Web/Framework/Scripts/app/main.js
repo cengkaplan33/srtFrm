@@ -18,6 +18,7 @@
         'hazirDegerlerTablosuModel': 'models/hazirDegerlerTablosuModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
+        'roleActionsModel':'models/roleActionsModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -37,6 +38,7 @@
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
         'rolePagesDatasource': 'datasources/rolePagesDatasource',
+        'roleActionsDatasource':'datasources/roleActionsDatasource',
         'bankDatasource': 'datasources/bankDatasource',
         'paymentCollectingDatasource': 'datasources/paymentCollectingDatasource',
         'odemeTalepDatasource': 'datasources/odemeTalepDatasource',
