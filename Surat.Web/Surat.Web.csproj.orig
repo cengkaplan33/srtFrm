@@ -1431,6 +1431,11 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+<<<<<<< HEAD
+    <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
+=======
+    <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
+>>>>>>> rolaksiyonyetkilendirmesi
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
@@ -1442,6 +1447,11 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+<<<<<<< HEAD
+    <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
+=======
+    <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
+>>>>>>> rolaksiyonyetkilendirmesi
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
@@ -3223,15 +3233,13 @@
     <Content Include="Views\Exceptions\Index.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\UserSessions\Index.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
-    <Content Include="Views\Roles\EditTabRoles.cshtml" />
-    <Content Include="Views\Roles\EditTabPages.cshtml" />
-=======
     <Content Include="Views\Pages\Index.cshtml" />
     <Content Include="Views\Actions\Index.cshtml" />
->>>>>>> imp-sayfalar-ve-aksiyonlar-ekranı
+    <Content Include="Views\Roles\EditTabRoles.cshtml" />
+    <Content Include="Views\Roles\EditTabPages.cshtml" />
+    <Content Include="Views\Roles\EditTabActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

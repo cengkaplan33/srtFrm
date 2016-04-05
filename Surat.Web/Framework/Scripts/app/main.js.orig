@@ -8,14 +8,21 @@
         //models
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
+        'rolePagesModel': 'models/rolePagesModel',
+        'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
-<<<<<<< HEAD
-        'rolePagesModel':'models/rolePagesModel',
-=======
         'userSessionsModel': 'models/userSessionsModel',
->>>>>>> d7532af820e1b5042c08d453c5cfc2cce98ea320
+        'pagesModel': 'models/pagesModel',
+        'actionsModel': 'models/actionsModel',
+<<<<<<< HEAD
+        'rolePagesModel': 'models/rolePagesModel',
+        'userRolesModel': 'models/userRolesModel',
+=======
+
+       
+>>>>>>> rolaksiyonyetkilendirmesi
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -27,17 +34,27 @@
         'systems-editViewModel': 'viewModels/systems/editViewModel',
         'exceptions-indexViewModel': 'viewModels/exceptions/indexViewModel',
         'userSessions-indexViewModel': 'viewModels/userSessions/indexViewModel',
+        'pages-indexViewModel': 'viewModels/pages/indexViewModel',
+        'pages-editViewModel': 'viewModels/pages/editViewModel',
+        'actions-indexViewModel': 'viewModels/actions/indexViewModel',
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
-<<<<<<< HEAD
-        'rolePagesDatasource':'datasources/rolePagesDatasource',
-=======
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
+        'roleActionsDatasource':'datasources/roleActionsDatasource',
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
->>>>>>> d7532af820e1b5042c08d453c5cfc2cce98ea320
+        'pagesDatasource': 'datasources/pagesDatasource',
+        'actionsDatasource': 'datasources/actionsDatasource',
+<<<<<<< HEAD
+        'rolePagesDatasource': 'datasources/rolePagesDatasource',
+        'userRolesDatasource': 'datasources/userRolesDatasource',
+=======
+       
+>>>>>>> rolaksiyonyetkilendirmesi
         // utils
         'util': '/Framework/Scripts/util'
     },
