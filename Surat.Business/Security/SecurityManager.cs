@@ -395,9 +395,9 @@ where
             return accessiblePages;
         }
 
-        public List<AccessibleRolePageView> GetUserAccessibleRolePages(int? roleId)
+        public List<RoleAccessiblePageView> GetUserAccessibleRolePages(int? roleId)
         {
-            List<AccessibleRolePageView> accessibleRolePages;
+            List<RoleAccessiblePageView> accessibleRolePages;
 
             string query = @"	
 
@@ -465,7 +465,7 @@ where
        )))
 	   ) 
 and pages.IsAccessControlRequired=1";
-            accessibleRolePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleRolePageView>(
+            accessibleRolePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<RoleAccessiblePageView>(
                                 query, new SqlParameter("@RoleId", roleId)).ToList();
 
             return accessibleRolePages;
@@ -544,9 +544,9 @@ AND
             return UserRightCache.GetUserRights(currentUser.UserId);
         }
 
-        public List<AccessibleUserRoleView> GetUserRoles(int? userId)
+        public List<UserAccessibleRoleView> GetUserRoles(int? userId)
         {
-            List<AccessibleUserRoleView> accessibleUserRoles;
+            List<UserAccessibleRoleView> accessibleUserRoles;
 
             string query = @"	
                         select Id,Name,ObjectTypeName,IsAccess=1 
@@ -562,10 +562,84 @@ AND
                         where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
                         order by Name 
                         ";
-            accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleUserRoleView>(
+            accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserAccessibleRoleView>(
                                 query, new SqlParameter("@UserId", userId)).ToList();
 
             return accessibleUserRoles;
+        }
+
+        public List<UserAccessiblePageView> GetUserPages(int? userId)
+        {
+            List<UserPageBaseView> baseUserPages;
+
+            string query = @"	
+                            SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId , userRoleRelations.RoleId,userRoleRelations.Id , p.Id as PageId
+                            FROM Pages p 
+                            JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
+                            JOIN RelationGroups userRoleRelations ON userRoleRelations.Id = a.RelationGroupId and userRoleRelations.UserId =0 and userRoleRelations.RoleId !=0 and userRoleRelations.WorkgroupId = 0 and userRoleRelations.IsActive = 1
+                            JOIN RelationGroups roleRelations ON userRoleRelations.RoleId = roleRelations.RoleId and  roleRelations.UserId = @UserId and roleRelations.WorkgroupId = 0 and roleRelations.IsActive = 1
+                            UNION
+                            SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId, userRelations.RoleId,userRelations.Id  ,p.Id as PageId
+                            FROM Pages p 
+                            JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
+                            JOIN RelationGroups userRelations ON userRelations.Id = a.RelationGroupId and userRelations .UserId = @UserId and userRelations .RoleId =0 and userRelations .WorkgroupId = 0 and userRelations .IsActive = 1
+                            ORDER BY p.Id ASC
+                        ";
+            baseUserPages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserPageBaseView>(
+                                query, new SqlParameter("@UserId", userId)).ToList();
+
+            List<UserAccessiblePageView> userAccessiblePage;
+            string queryPage = @"
+                                    SELECT distinct p.Id as PageId , p.Name as PageName from Pages p where IsActive = 1 order by p.Name
+                               ";
+            userAccessiblePage = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserAccessiblePageView>(queryPage).ToList();
+
+            foreach (var page in userAccessiblePage)
+            {
+                var PageIdList = baseUserPages.Where(m => m.PageId == page.PageId).ToList();
+                if(PageIdList.Count == 0 )
+                {
+                    page.IsPageAccess = "Pasif";
+                    page.IsRoleEffect = false;
+                }
+                else
+                {
+                    var AccessibleItem = PageIdList.Where(m => m.RoleId == 0).ToList();
+
+                    if(AccessibleItem.Count == 0)
+                    {
+                        page.IsRoleEffect = true;
+
+                        page.IsPageAccess = "Etkin";
+                    }
+                    else
+                    {
+                        if(AccessibleItem.Count > 1)
+                            throw new EntityProcessException(this.ApplicationContext, "GetUserPages", this.ApplicationContext.SystemId,"Kullanıcıya  sayfa özel yetkisi verilirken her sayfa için  veritabanında yalnızca bir kayıt tutulabilir.");
+
+                        if (AccessibleItem[0].AccessRightTypeId == 1)
+                        {
+                            page.IsPageAccess = "Etkin";
+                            page.IzinVer = true;
+                        }
+                        else
+                        {
+                            page.IsPageAccess = "Engelli";
+                            page.Yasakla = true;
+                        }
+
+                        var RoleList = PageIdList.Where(m => m.RoleId != 0).ToList();
+
+                        if (RoleList.Count > 0)
+                            page.IsRoleEffect = true;
+                        else
+                            page.IsRoleEffect = false;
+                    }
+
+                }
+            }
+
+            return userAccessiblePage;
         }
 
         public void SaveUserSession(UserDetailedView currentUser)
@@ -732,6 +806,52 @@ AND
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
             }
+        }
+
+        public void SaveUserPages(int userId, IList<UserAccessiblePageView> userPages)
+        {
+            try
+            {
+                foreach(var Page in userPages)
+                {
+                    RelationGroup userRelation = this.RelationGroup.GetObjectByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId == 0);
+                    AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelation.Id & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.DBObjectId == Page.PageId);
+
+                    if (userAccess != null)
+                    {
+                        //NK::06/04/16:: AccessbileItem Tablosunda kayıt güncellenecek
+                        if (Page.IzinVer == true && Page.Yasakla == false)
+                        {
+                            if (userAccess.IsActive)
+                                userAccess.AccessRightTypeId = 1;
+                            else
+                            {
+                                userAccess.AccessRightTypeId = 0;
+                                userAccess.IsActive = true;
+                            }
+                        }
+
+                        if(Page.Yasakla == true && Page.IzinVer == true)
+                        {
+                            if (userAccess.IsActive)
+                                userAccess.AccessRightTypeId = 0;
+                            else
+                            {
+                           
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveUserPages", this.ApplicationContext.SystemId, exception);
+            }
+
         }
 
         public void DeleteUsers(IEnumerable<SuratUser> suratUser)

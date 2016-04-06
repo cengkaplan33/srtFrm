@@ -17,6 +17,7 @@
         'actionsModel': 'models/actionsModel',
         'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
+        'userPagesModel': 'models/userPagesModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -43,6 +44,7 @@
         'actionsDatasource': 'datasources/actionsDatasource',
         'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
+        'userPagesDatasource': 'datasources/userPagesDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

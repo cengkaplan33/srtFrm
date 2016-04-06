@@ -1431,6 +1431,7 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
@@ -1443,6 +1444,7 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
@@ -3189,6 +3191,8 @@
     <Content Include="Framework\Scripts\kendo2015.1.408\styles\images\kendoui.ttf" />
     <Content Include="Framework\Scripts\kendo2015.1.408\styles\images\kendoui.woff" />
     <None Include="Properties\PublishProfiles\SerendipWEB.pubxml" />
+    <Content Include="Views\Users\check.png" />
+    <Content Include="Views\Users\cross.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -3231,6 +3235,7 @@
     <Content Include="Views\Actions\Index.cshtml" />
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\EditTabPages.cshtml" />
+    <Content Include="Views\Users\EditTabPages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

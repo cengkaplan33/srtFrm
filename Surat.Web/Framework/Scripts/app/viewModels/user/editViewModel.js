@@ -1,14 +1,15 @@
 ﻿
-define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 'workgroupDatasource', 'util', 'router'],
-    function (userDatasource, userModel, userRolesModel, userRolesDatasource, workgroupDatasource, util, router) {
+define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'workgroupDatasource', 'util', 'router'],
+    function (userDatasource, userModel, userRolesDatasource, userRolesModel,userPagesDatasource,userPagesModel, workgroupDatasource, util, router) {
         var lastSelectedDataItem = null;
-        var lastRolSelectedDataItem = null;
-        var lastWorkgroupSelectedDataItem = null;
+       // var lastRolSelectedDataItem = null;
+        //var lastWorkgroupSelectedDataItem = null;
         var checkedRoles = [];
+        var checkedPages = [];
         var editViewModel = new kendo.data.ObservableObject({
             loadData: function () {
                 var viewModel = new kendo.data.ObservableObject({
-                    sec: function (e) {
+                    RoleSec: function (e) {
                         if (e.currentTarget.checked == true) {
                             for (var i = 0; i < checkedRoles.length; i++) {
                                 if (checkedRoles[i].Id == e.data.Id)
@@ -29,6 +30,52 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                         }
 
                     },
+                    IzinVerSec: function (e) {
+                        if (e.currentTarget.checked == true) {
+                            
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].IzinVer = true;
+                                    checkedPages[i].Yasakla = false;
+                                    //Buraya Yasakla False edilme gelecek.
+                                }
+
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].IzinVer = false;
+                                }
+
+                            }
+
+                        }
+
+                    },
+                    YasaklaSec: function (e) {
+                        if (e.currentTarget.checked == true) {
+
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].Yasakla = true;
+                                    checkedPages[i].IzinVer = false;
+                                    //Buraya Izinver False edilme gelecek.
+                                }
+
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].Yasakla = false;
+                                }
+
+                            }
+
+                        }
+
+                    },
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
                         if (validator.validate()) {
@@ -36,6 +83,7 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                                // viewModel.set("User.DefaultRole", $("#DefaultRole").val());
                                // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
                                 viewModel.User.set("Roles", JSON.stringify(checkedRoles));
+                                viewModel.User.set("Pages", JSON.stringify(checkedPages));
                                 userDatasource.sync();                                
                                 userDatasource.filter({});
                                 router.navigate('/Users/index');
@@ -44,6 +92,7 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                               //  viewModel.set("User.DefaultRole", $("#DefaultRole").val());
                                // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
                                 viewModel.User.set("Roles", JSON.stringify(checkedRoles));
+                                viewModel.User.set("Pages", JSON.stringify(checkedPages));
                                 userDatasource.add(viewModel.User);
                                 userDatasource.sync();
                                 userDatasource.filter({});
@@ -71,6 +120,7 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                     //},
                     //mysource:workgroupDatasource ,
                     userRolesDatasource: userRolesDatasource,
+                    userPagesDatasource: userPagesDatasource,
                 });                                                   
 
             userDatasource.fetch(function () {
@@ -84,6 +134,9 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                             setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
                             userRolesDatasource.options.transport.read.url = "/Users/GetUserRoles?userId=" + data[i].Id;
                             userRolesDatasource.read();
+
+                            userPagesDatasource.options.transport.read.url = "/Users/GetUserPages?userId=" + data[i].Id;
+                            userPagesDatasource.read();
                             break;
                         }
                         viewModel.set("User", new userModel());
@@ -111,6 +164,18 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                 }
             });
 
+            checkedPages = [];
+            userPagesDatasource.fetch(function () {
+                if (userPagesDatasource.view().length > 0) {
+                    var userPageData = userPagesDatasource.data();
+                    for (var k = 0; k < userPageData.length; k++) {
+
+                            checkedPages.push({ "PageId": userPageData[k].PageId, "IzinVer": userPageData[k].IzinVer, "Yasakla": userPageData[k].Yasakla});
+                    }
+                }
+            });
+
+            viewModel.User.Pages = checkedPages;
             viewModel.User.Roles = checkedRoles;                               
             return viewModel;
             },
