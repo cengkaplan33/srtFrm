@@ -19,7 +19,7 @@ namespace KonsolideRapor.Base.Model.Entities
         public string HazirDeger { get; set; }
         public int OdemeTalepDurumuId { get; set; }
         public int BankId { get; set; }
-
+        public int? ParentId { get; set; }
         [Required(ErrorMessage = "Tür Alanı Gereklidir.")]
         [MaxLength(40)]
         public string Tur { get; set; }
