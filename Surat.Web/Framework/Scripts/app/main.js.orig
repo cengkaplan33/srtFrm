@@ -16,13 +16,12 @@
         'userSessionsModel': 'models/userSessionsModel',
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
-<<<<<<< HEAD
-        'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
-=======
-
+<<<<<<< HEAD
        
->>>>>>> rolaksiyonyetkilendirmesi
+=======
+        'userPagesModel': 'models/userPagesModel',
+>>>>>>> imp-kullanıcı-sayfa-eklenmesi
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -49,12 +48,8 @@
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
-<<<<<<< HEAD
-        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
-=======
-       
->>>>>>> rolaksiyonyetkilendirmesi
+        'userPagesDatasource': 'datasources/userPagesDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

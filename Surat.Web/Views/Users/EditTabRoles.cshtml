@@ -8,7 +8,7 @@
                 <div class="widget-body" style="text-align: center;">
                     <div class="space"></div>
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div id="userRolesGrid"
                                  data-role="grid"
                                  data-sortable="true"
@@ -17,9 +17,9 @@
                                  data-editable="inline"
                                  data-selectable="multiple"
                                  data-columns='[
-                                 { field :"IsAccess" , title:"Active" , width:25, template:"<input type=\"checkbox\" # if (IsAccess) {# checked # }# data-bind=\"click:sec\" />"  },
+                                 { field :"IsAccess" , title:"Active" , width:25, template:"<input type=\"checkbox\" # if (IsAccess) {# checked # }# data-bind=\"click:RoleSec\" />"  },
                                  { field: "Id", title: "ID", width: "75px" },
-                                 { field: "Name", title: "Sayfa", width: "200px" } ]'
+                                 { field: "Name", title: "Rol", width: "200px" } ]'
                                  data-bind="source: userRolesDatasource" style="width:100%">
                             </div>
                         </div>

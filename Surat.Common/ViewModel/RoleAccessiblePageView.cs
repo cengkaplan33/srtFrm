@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Surat.Common.ViewModel
 {
-    public  class AccessibleRolePageView
+    public  class RoleAccessiblePageView
     {
         public int Id { get; set; }
         public int SystemId { get; set; }     

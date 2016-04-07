@@ -9,7 +9,6 @@
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
-        'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
@@ -17,7 +16,8 @@
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
         'userRolesModel': 'models/userRolesModel',
-       
+        'userPagesModel': 'models/userPagesModel',
+        'roleActionsModel': 'models/roleActionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -35,7 +35,6 @@
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
-        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
@@ -45,6 +44,7 @@
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
+        'userPagesDatasource': 'datasources/userPagesDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },
