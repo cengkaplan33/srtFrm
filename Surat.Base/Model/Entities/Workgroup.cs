@@ -16,6 +16,7 @@ namespace Surat.Base.Model.Entities
         [MaxLength(30)]
         public string ObjectTypeName { get; set; }
         public int? ParentId { get; set; }
+        public int CompanyId { get; set; }
         public bool isCompanySite { get; set; }
     }
 }

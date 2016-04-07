@@ -10,6 +10,7 @@ namespace Surat.Common.ViewModel
         public int WorkgroupId { get; set; }
         public int? ParentWorkgroupId { get; set; }
         public string WorkgroupName { get; set; }
+        public int CompanyId { get; set; }
         public bool IsCompanySite { get; set; }
     }
 }

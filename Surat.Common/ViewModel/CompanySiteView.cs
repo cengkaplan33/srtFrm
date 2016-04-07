@@ -9,6 +9,7 @@ namespace Surat.Common.ViewModel
     {
         public int Id { get; set; }
         public int WorkgroupId { get; set; }
+        public int CompanyId { get; set; }
         public string WorkgroupName { get; set; }
         public int? CompanyCode { get; set; }
         public DBConnectionView SelectedDBConnection { get; set; }

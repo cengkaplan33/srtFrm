@@ -22,7 +22,6 @@
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
         'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
-        'workgroup-editViewModel': 'viewModels/workgroup/editViewModel',
         'roles-indexViewModel':'viewModels/roles/indexViewModel',
         'roles-editViewModel': 'viewModels/roles/editViewModel',
         'systems-indexViewModel': 'viewModels/systems/indexViewModel',

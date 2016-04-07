@@ -13,6 +13,24 @@ function (kendo, workgroupModel,util) {
                 dataType:"json",
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
+                        var tree = $("#workGroupGrid").data("kendoTreeList");
+                        tree.dataSource.read();
+                        tree.dataSource._destroyed = [];
+                        var result = jQuery.parseJSON(jqXhr.responseText);
+                        _notification.info(result.Result);
+                    }
+                }
+            },
+            update: {
+
+                type: "POST",
+                url: "/Workgroups/Update",
+                dataType: "Json",
+                complete: function (jqXhr, textStatus) {
+                    if (textStatus = "success") {
+                        var tree = $("#workGroupGrid").data("kendoTreeList");
+                        tree.dataSource.read();
+                        tree.dataSource._destroyed = [];                   
                         var result = jQuery.parseJSON(jqXhr.responseText);
                         _notification.info(result.Result);
                     }
@@ -25,23 +43,15 @@ function (kendo, workgroupModel,util) {
                 dataType: "Json",
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
+                        var tree = $("#workGroupGrid").data("kendoTreeList");
+                        tree.dataSource.read();
+                        tree.dataSource._destroyed = [];
                         var result = jQuery.parseJSON(jqXhr.responseText);
                         _notification.warning(result.Result);
                     }
                 }
-            },
-            update: {
-
-                type: "POST",
-                url: "/Workgroups/Update",
-                dataType: "Json",
-                complete: function (jqXhr, textStatus) {
-                    if (textStatus = "success") {
-                        var result = jQuery.parseJSON(jqXhr.responseText);
-                        _notification.info(result.Result);
-                    }
-                }
             }
+            
 
         },
         batch: false,

@@ -64,15 +64,12 @@
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Globalization\IGlobalizationManager.cs" />
-<<<<<<< HEAD
+    <Compile Include="ViewModel\AccessibleUserRoleView.cs" />
     <Compile Include="ViewModel\AccessibleRolePageView.cs" />
     <Compile Include="Helper\InvariantHelper.cs" />
-    <Compile Include="Helper\StringHelper.cs" />
-=======
     <Compile Include="ViewModel\ActionsListView.cs" />
     <Compile Include="ViewModel\PagesListView.cs" />
-    <Compile Include="ViewModel\UserSessionView.cs" />
->>>>>>> imp-sayfalar-ve-aksiyonlar-ekranı
+    <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="ViewModel\HttpRequest.cs" />
     <Compile Include="Log\ITraceManager.cs" />
     <Compile Include="Mail\IMailManager.cs" />
@@ -97,6 +94,7 @@
     <Compile Include="ViewModel\DBConnectionView.cs" />
     <Compile Include="ViewModel\RequestedContextView.cs" />
     <Compile Include="ViewModel\GlobalizationKeyValueView.cs" />
+    <Compile Include="ViewModel\UserRoleView.cs" />
     <Compile Include="ViewModel\RolePageView.cs" />
     <Compile Include="ViewModel\SystemDetailedView.cs" />
     <Compile Include="ViewModel\RoleShortView.cs" />
@@ -104,6 +102,11 @@
     <Compile Include="ViewModel\ADUserView.cs" />
     <Compile Include="ViewModel\ADUserDetailView.cs" />
     <Compile Include="ViewModel\LoginView.cs" />
+<<<<<<< HEAD
+    <Compile Include="ViewModel\RoleActionView.cs" />
+=======
+    <Compile Include="ViewModel\UserDefaultWorkGroupView.cs" />
+>>>>>>> userworkgroupcalismasi
     <Compile Include="ViewModel\UserSessionView.cs" />
     <Compile Include="ViewModel\WorkgroupView.cs" />
     <Compile Include="ViewModel\GlobalizationKeyView.cs" />

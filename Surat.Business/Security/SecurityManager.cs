@@ -1189,7 +1189,7 @@ AND
                     selectedWorkgroup.Name = workgroup.Name;
                     selectedWorkgroup.ObjectTypeName = workgroup.ObjectTypeName;
                     selectedWorkgroup.ParentId = workgroup.ParentId;
-
+                    selectedWorkgroup.isCompanySite = workgroup.isCompanySite;
                     this.Workgroup.Update(selectedWorkgroup);
                 }
 

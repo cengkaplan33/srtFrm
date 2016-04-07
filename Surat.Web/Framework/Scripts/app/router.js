@@ -25,19 +25,12 @@ define(['kendo'],
                 kendo.bind($("#form"), viewModel);
 
             });
+
         });
         router.route("/Workgroups/Index", function () {
+           
             require(['workgroup-indexViewModel', 'text!/Workgroups/Index'], function (viewModel, view) {
-                loadView(viewModel, view, function () {
-                    kendo.bind($("#workgroupTree"), viewModel);
-                });
-            });
-        });
-        router.route("/Workgroups/Edit/:status/:id", function () {
-            require(['workgroup-editViewModel', 'text!/Workgroups/Edit'], function (viewModel, view) {
-                loadView(viewModel.loadData(), view);
-                kendo.bind($("#form"), viewModel);
-
+                loadView(viewModel, view);
             });
         });
         router.route("/Roles/Index", function () {
@@ -157,7 +150,8 @@ define(['kendo'],
             var kendoView = new kendo.View(view, { model: viewModel });
             kendo.fx($("#content")).slideInRight().reverse().then(function () {
                 layout.showIn("#content", kendoView);
-
+                if (viewModel.onLoad != undefined)
+                    viewModel.onLoad();
                 if (delegate != undefined)
                     delegate();
 
