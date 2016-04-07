@@ -2477,6 +2477,8 @@
     <Content Include="Framework\theme\images\browser_msie.gif" />
     <Content Include="Framework\theme\images\browser_opera.gif" />
     <Content Include="Framework\theme\images\browser_safari.gif" />
+    <Content Include="Framework\theme\images\check.png" />
+    <Content Include="Framework\theme\images\cross.png" />
     <Content Include="Framework\theme\images\email1.png" />
     <Content Include="Framework\theme\images\email2.png" />
     <Content Include="Framework\theme\images\email3.png" />
@@ -2497,6 +2499,7 @@
     <Content Include="Framework\theme\images\gallery\thumb-4.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-5.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-6.jpg" />
+    <Content Include="Framework\theme\images\plus-circle.png" />
     <Content Include="Framework\theme\images\sort_asc.png" />
     <Content Include="Framework\theme\images\sort_asc_disabled.png" />
     <Content Include="Framework\theme\images\sort_both.png" />
@@ -3191,8 +3194,6 @@
     <Content Include="Framework\Scripts\kendo2015.1.408\styles\images\kendoui.ttf" />
     <Content Include="Framework\Scripts\kendo2015.1.408\styles\images\kendoui.woff" />
     <None Include="Properties\PublishProfiles\SerendipWEB.pubxml" />
-    <Content Include="Views\Users\check.png" />
-    <Content Include="Views\Users\cross.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

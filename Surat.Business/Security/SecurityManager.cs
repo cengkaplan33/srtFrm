@@ -43,6 +43,7 @@ namespace Surat.Business.Security
         private UserRepository user;
         private UserShortcutRepository userShortcut;
         private RoleRepository role;
+        private PageRepository page;
         private WorkgroupRepository workgroup;
         private AccessibleItemRepository accessibleItem;
         private FailedLoginRepository failedLogin;
@@ -146,6 +147,17 @@ namespace Surat.Business.Security
                     role = new RoleRepository(this.ApplicationContext.Security);
 
                 return role;
+            }
+        }
+
+        public PageRepository Page
+        {
+            get
+            {
+                if (page == null)
+                    page = new PageRepository(this.ApplicationContext.Configuration);
+
+                return page;
             }
         }
 
@@ -395,82 +407,6 @@ where
             return accessiblePages;
         }
 
-        public List<RoleAccessiblePageView> GetUserAccessibleRolePages(int? roleId)
-        {
-            List<RoleAccessiblePageView> accessibleRolePages;
-
-            string query = @"	
-
-select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=1 from Pages where Id in(
-select DISTINCT suratPages.Id 
-from dbo.Pages suratPages
-INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
-JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
-where 
-    suratPages.IsActive = 1
-    AND 
-       (
-       
-       (
-       suratPages.IsAccessControlRequired = 1 and 
-       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
-       AND
-       (accessibleItems.RelationGroupId IN 
-             (
-                 
-            /*** role den gelen erişim hakları ***/
-               Select relationGroups.Id from dbo.RelationGroups relationGroups
-               where 
-               (                 
-                     UserId = 0  AND  WorkgroupId = 0 AND RoleId = @RoleId
-                    
-                  
-               )
-                
-             )
-       )))
-	   ) 
-and pages.IsAccessControlRequired=1
-
-
-union
-
-select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=0 from Pages where Id not in(
-select DISTINCT suratPages.Id 
-from dbo.Pages suratPages
-INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
-JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
-where 
-    suratPages.IsActive = 1
-    AND 
-       (
-       
-       (
-       suratPages.IsAccessControlRequired = 1 and 
-       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
-       AND
-       (accessibleItems.RelationGroupId IN 
-             (
-                 
-            /*** role den gelen erişim hakları ***/
-               Select relationGroups.Id from dbo.RelationGroups relationGroups
-               where 
-               (                 
-                     UserId = 0  AND  WorkgroupId = 0 AND RoleId =@RoleId
-                    
-                  
-               )
-                
-             )
-       )))
-	   ) 
-and pages.IsAccessControlRequired=1";
-            accessibleRolePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<RoleAccessiblePageView>(
-                                query, new SqlParameter("@RoleId", roleId)).ToList();
-
-            return accessibleRolePages;
-        }
-
         public List<AccessibleActionView> GetUserAccessibleActions(UserDetailedView currentUser)
         {
             List<AccessibleActionView> accessibleActions;
@@ -544,104 +480,6 @@ AND
             return UserRightCache.GetUserRights(currentUser.UserId);
         }
 
-        public List<UserAccessibleRoleView> GetUserRoles(int? userId)
-        {
-            List<UserAccessibleRoleView> accessibleUserRoles;
-
-            string query = @"	
-                        select Id,Name,ObjectTypeName,IsAccess=1 
-                        from SuratRoles  suratRoles
-                        where suratRoles.IsActive = 1 and suratRoles.Id in(
-                        Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
-                        where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
-                        union 
-                        select Id,Name,ObjectTypeName,IsAccess=0 
-                        from SuratRoles  suratRoles
-                        where suratRoles.IsActive = 1 and suratRoles.Id not in(
-                        Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
-                        where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
-                        order by Name 
-                        ";
-            accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserAccessibleRoleView>(
-                                query, new SqlParameter("@UserId", userId)).ToList();
-
-            return accessibleUserRoles;
-        }
-
-        public List<UserAccessiblePageView> GetUserPages(int? userId)
-        {
-            List<UserPageBaseView> baseUserPages;
-
-            string query = @"	
-                            SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId , userRoleRelations.RoleId,userRoleRelations.Id , p.Id as PageId
-                            FROM Pages p 
-                            JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
-                            JOIN RelationGroups userRoleRelations ON userRoleRelations.Id = a.RelationGroupId and userRoleRelations.UserId =0 and userRoleRelations.RoleId !=0 and userRoleRelations.WorkgroupId = 0 and userRoleRelations.IsActive = 1
-                            JOIN RelationGroups roleRelations ON userRoleRelations.RoleId = roleRelations.RoleId and  roleRelations.UserId = @UserId and roleRelations.WorkgroupId = 0 and roleRelations.IsActive = 1
-                            UNION
-                            SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId, userRelations.RoleId,userRelations.Id  ,p.Id as PageId
-                            FROM Pages p 
-                            JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
-                            JOIN RelationGroups userRelations ON userRelations.Id = a.RelationGroupId and userRelations .UserId = @UserId and userRelations .RoleId =0 and userRelations .WorkgroupId = 0 and userRelations .IsActive = 1
-                            ORDER BY p.Id ASC
-                        ";
-            baseUserPages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserPageBaseView>(
-                                query, new SqlParameter("@UserId", userId)).ToList();
-
-            List<UserAccessiblePageView> userAccessiblePage;
-            string queryPage = @"
-                                    SELECT distinct p.Id as PageId , p.Name as PageName from Pages p where IsActive = 1 order by p.Name
-                               ";
-            userAccessiblePage = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserAccessiblePageView>(queryPage).ToList();
-
-            foreach (var page in userAccessiblePage)
-            {
-                var PageIdList = baseUserPages.Where(m => m.PageId == page.PageId).ToList();
-                if (PageIdList.Count == 0)
-                {
-                    page.IsPageAccess = "Pasif";
-                    page.IsRoleEffect = false;
-                }
-                else
-                {
-                    var AccessibleItem = PageIdList.Where(m => m.RoleId == 0).ToList();
-
-                    if (AccessibleItem.Count == 0)
-                    {
-                        page.IsRoleEffect = true;
-
-                        page.IsPageAccess = "Etkin";
-                    }
-                    else
-                    {
-                        if (AccessibleItem.Count > 1)
-                            throw new EntityProcessException(this.ApplicationContext, "GetUserPages", this.ApplicationContext.SystemId, "Kullanıcıya  sayfa özel yetkisi verilirken her sayfa için  veritabanında yalnızca bir kayıt tutulabilir.");
-
-                        if (AccessibleItem[0].AccessRightTypeId == 1)
-                        {
-                            page.IsPageAccess = "Etkin";
-                            page.IzinVer = 1;
-                        }
-                        else
-                        {
-                            page.IsPageAccess = "Engelli";
-                            page.Yasakla = 1;
-                        }
-
-                        var RoleList = PageIdList.Where(m => m.RoleId != 0).ToList();
-
-                        if (RoleList.Count > 0)
-                            page.IsRoleEffect = true;
-                        else
-                            page.IsRoleEffect = false;
-                    }
-
-                }
-            }
-
-            return userAccessiblePage;
-        }
-
         public void SaveUserSession(UserDetailedView currentUser)
         {
             int initializedDBContextId;
@@ -708,6 +546,158 @@ AND
             }
         }
 
+        public void DeleteUsers(IEnumerable<SuratUser> suratUser)
+        {
+            int initializedDBContextId;
+            try
+            {
+                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                foreach (SuratUser user in suratUser)
+                {
+                    this.DeleteUser(user);
+                }
+
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "DeleteUsers", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public void SaveUserLock(string userName, string password, bool isLocked)
+        {
+            try
+            {
+                this.AuthenticationProvider.LockUser(this.ApplicationContext, userName, password, isLocked);
+            }
+            catch (Exception exception)
+            {
+                throw new SuratBusinessException(this.ApplicationContext, "SaveUserLock", this.ApplicationContext.SystemId, exception);
+            }
+        }
+
+        public string RemindUserPassword(int userId)
+        {
+            string password;
+            try
+            {
+                password = this.AuthenticationProvider.GetUserPassword(this.ApplicationContext, userId);
+            }
+            catch (Exception exception)
+            {
+                throw new SuratBusinessException(this.ApplicationContext, "RemindUserPassword", this.ApplicationContext.SystemId, exception);
+            }
+
+            return password;
+        }
+
+        #region User Controller Methods
+
+        public List<UserAccessibleRoleView> GetUserRoles(int? userId)
+        {
+            List<UserAccessibleRoleView> accessibleUserRoles;
+
+            string query = @"	
+                        select Id,Name,ObjectTypeName,IsAccess=1 
+                        from SuratRoles  suratRoles
+                        where suratRoles.IsActive = 1 and suratRoles.Id in(
+                        Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
+                        where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
+                        union 
+                        select Id,Name,ObjectTypeName,IsAccess=0 
+                        from SuratRoles  suratRoles
+                        where suratRoles.IsActive = 1 and suratRoles.Id not in(
+                        Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
+                        where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
+                        order by Name 
+                        ";
+            accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserAccessibleRoleView>(
+                                query, new SqlParameter("@UserId", userId)).ToList();
+
+            return accessibleUserRoles;
+        }
+
+        public List<UserAccessiblePageView> GetUserPages(int? userId)
+        {
+            List<UserPageBaseView> baseUserPages = GetUserBaseAccessiblePage(userId);
+
+            List<UserAccessiblePageView> userAccessiblePage = this.Page.GetAllPageForUser();
+
+            #region Bütün Sayfaların hakları kararlaştırılıyor
+            foreach (var page in userAccessiblePage)
+            {
+                var PageIdList = baseUserPages.Where(m => m.PageId == page.PageId).ToList();
+                if (PageIdList.Count == 0)
+                {
+                    page.IsPageAccess = false;
+                    page.IsRoleEffect = false;
+                }
+                else
+                {
+                    var AccessibleItem = PageIdList.Where(m => m.RoleId == 0).ToList();
+
+                    if (AccessibleItem.Count == 0)
+                    {
+                        page.IsRoleEffect = true;
+
+                        page.IsPageAccess = true;
+                    }
+                    else
+                    {
+                        if (AccessibleItem.Count > 1)
+                            throw new EntityProcessException(this.ApplicationContext, "GetUserPages", this.ApplicationContext.SystemId, "Kullanıcıya  sayfa özel yetkisi verilirken her sayfa için  veritabanında yalnızca bir kayıt tutulabilir.");
+
+                        if (AccessibleItem[0].AccessRightTypeId == 1)
+                        {
+                            page.IsPageAccess = true;
+                            page.IzinVer = 1;
+                        }
+                        else
+                        {
+                            page.IsPageAccess = false;
+                            page.Yasakla = 1;
+                        }
+
+                        var RoleList = PageIdList.Where(m => m.RoleId != 0).ToList();
+
+                        if (RoleList.Count > 0)
+                            page.IsRoleEffect = true;
+                        else
+                            page.IsRoleEffect = false;
+                    }
+                }
+            }
+            #endregion
+
+            return userAccessiblePage;
+        }
+
+        public List<UserPageBaseView> GetUserBaseAccessiblePage(int? userId)
+        {
+            List<UserPageBaseView> baseUserPages;
+
+            string query = @"	
+                            SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId , userRoleRelations.RoleId,userRoleRelations.Id , p.Id as PageId
+                            FROM Pages p 
+                            JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
+                            JOIN RelationGroups userRoleRelations ON userRoleRelations.Id = a.RelationGroupId and userRoleRelations.UserId =0 and userRoleRelations.RoleId !=0 and userRoleRelations.WorkgroupId = 0 and userRoleRelations.IsActive = 1
+                            JOIN RelationGroups roleRelations ON userRoleRelations.RoleId = roleRelations.RoleId and  roleRelations.UserId = @UserId and roleRelations.WorkgroupId = 0 and roleRelations.IsActive = 1
+                            UNION
+                            SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId, userRelations.RoleId,userRelations.Id  ,p.Id as PageId
+                            FROM Pages p 
+                            JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
+                            JOIN RelationGroups userRelations ON userRelations.Id = a.RelationGroupId and userRelations .UserId = @UserId and userRelations .RoleId =0 and userRelations .WorkgroupId = 0 and userRelations .IsActive = 1
+                            ORDER BY p.Id ASC
+                        ";
+            baseUserPages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserPageBaseView>(
+                                query, new SqlParameter("@UserId", userId)).ToList();
+
+            return baseUserPages;
+        }
+
         public void SaveUser(SuratUser user)
         {
             int initializedDBContextId;
@@ -717,7 +707,6 @@ AND
 
                 if (user.Id == 0)
                 {
-
                     this.User.Add(user);
                 }
                 else
@@ -762,50 +751,58 @@ AND
                         throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId);
 
                     if (currentRole.Count() > 0)
-                    {
-                        // NK::04/04/16 :: Pasifken aktif olan veya aktifken pasif olan var olan kayıtları setliyoruz.
-                        int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                    {                       
                         Surat.Base.Model.Entities.RelationGroup relation = currentRole[0];
-
-                        if (userRole.IsAccess == false)
-                        {
-                            if (relation.IsActive == true)
-                            {
-                                relation.IsActive = false;
-                                this.RelationGroup.Update(relation);
-                            }
-                        }
-                        else
-                        {
-                            if (relation.IsActive == false)
-                            {
-                                relation.IsActive = true;
-                                this.RelationGroup.Update(relation);
-                            }
-                        }
-                        this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                        UpdateRelationForUserRole(userRole, relation);                      
                     }
                     else
                     {
                         // NK:: 04/04/16 :: Relationgrupa yeni kayıt ekleniyor.
                         if (userRole.IsAccess == true)
                         {
-                            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                            Surat.Base.Model.Entities.RelationGroup relation = new RelationGroup();
-                            relation.UserId = userId;
-                            relation.RoleId = userRole.Id;
-                            relation.WorkgroupId = 0;
-                            this.RelationGroup.Add(relation);
-                            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                            AddRelationForUserRole(userId, userRole);
                         }
                     }
                 }
-
             }
             catch (Exception exception)
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
             }
+        }
+
+        public void UpdateRelationForUserRole(UserRoleView userRole, RelationGroup relation)
+        {
+            // NK::04/04/16 :: Pasifken aktif olan veya aktifken pasif olan var olan kayıtları setliyoruz.
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+            if (userRole.IsAccess == false)
+            {
+                if (relation.IsActive == true)
+                {
+                    relation.IsActive = false;                  
+                }
+            }
+            else
+            {
+                if (relation.IsActive == false)
+                {
+                    relation.IsActive = true;
+                }
+            }
+            this.RelationGroup.Update(relation);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+        }
+
+        public void AddRelationForUserRole(int userId, UserRoleView userRole)
+        {
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+            Surat.Base.Model.Entities.RelationGroup relation = new RelationGroup();
+            relation.UserId = userId;
+            relation.RoleId = userRole.Id;
+            relation.WorkgroupId = 0;
+            this.RelationGroup.Add(relation);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
         }
 
         public void SaveUserPages(int userId, IList<UserAccessiblePageView> userPages)
@@ -815,78 +812,26 @@ AND
                 foreach (var Page in userPages)
                 {
                     //NK::07/04/2016:: Sayfayla ilgili bir işlemde bulunulmamışsa koşula girilmiyor.
-                    if (Page.IzinVer == null && Page.Yasakla == null)
-                    {
-                        continue;
-                    }
+                    if (Page.IzinVer == null && Page.Yasakla == null) { continue; }
                     else
-                    {                        
+                    {
                         RelationGroup userRelation = this.RelationGroup.GetObjectByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId == 0);
                         AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelation.Id & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.DBObjectId == Page.PageId);
-                        
+
                         if (userAccess != null)
                         {
                             #region AccesssibleItem tablosunda var olan kayıttta güncelleştirme yapılıyor
-
-                            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                             Surat.Base.Model.Entities.AccessibleItem AccessibleItem = userAccess;
-
-                            if (Page.IzinVer == 1 && (Page.Yasakla == 0 || Page.Yasakla == null))
-                            {
-                                AccessibleItem.AccessRightTypeId = 1;
-                                AccessibleItem.IsActive = true;
-                               
-                            }
-
-                            if (Page.Yasakla == 1 && (Page.IzinVer == 0 || Page.IzinVer == null))
-                            {
-                                AccessibleItem.AccessRightTypeId = 0;
-                                AccessibleItem.IsActive = true;
-                            }
-
-                            if ((Page.IzinVer == 0  || Page.IzinVer == null) && (Page.Yasakla == 0 || Page.Yasakla == null))
-                            {
-                                AccessibleItem.IsActive = false;
-                            }
-
-                            this.AccessibleItem.Update(AccessibleItem);
-                            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-
+                            UpdateAccessibleForUserPage(AccessibleItem, Page);
                             #endregion
                         }
 
                         else
                         {
                             #region AccessibleItem tablosuna kullanıcı için yeni kayıt atılıyor.
-
-                            if (Page.IzinVer == Page.Yasakla)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                                Surat.Base.Model.Entities.AccessibleItem AccessibleItem = new AccessibleItem();
-
-                                AccessibleItem.RelationGroupId = userRelation.Id;
-                                AccessibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Page;
-                                AccessibleItem.DBObjectId = Page.PageId;
-                                AccessibleItem.StartDate = DateTime.Now;
-
-                                if (Page.IzinVer == 1)
-                                {
-                                    AccessibleItem.AccessRightTypeId = 1;
-                                }
-                                if (Page.Yasakla == 1 )
-                                {
-                                    AccessibleItem.AccessRightTypeId = 0;
-                                }
-
-                                this.AccessibleItem.Add(AccessibleItem);
-                                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-                            }
-
-                            #endregion
+                            if (Page.IzinVer == Page.Yasakla) { continue; }
+                            else { AddAccessibleForUserPage(Page, userRelation); }
+                           #endregion
                         }
                     }
                 }
@@ -898,25 +843,53 @@ AND
 
         }
 
-        public void DeleteUsers(IEnumerable<SuratUser> suratUser)
+        public void UpdateAccessibleForUserPage(AccessibleItem AccessibleItem,UserAccessiblePageView Page )
         {
-            int initializedDBContextId;
-            try
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+            if (Page.IzinVer == 1 && (Page.Yasakla == 0 || Page.Yasakla == null))
             {
-                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-
-                foreach (SuratUser user in suratUser)
-                {
-                    this.DeleteUser(user);
-                }
-
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-
+                AccessibleItem.AccessRightTypeId = 1;
+                AccessibleItem.IsActive = true;
             }
-            catch (Exception exception)
+
+            if (Page.Yasakla == 1 && (Page.IzinVer == 0 || Page.IzinVer == null))
             {
-                throw new EntityProcessException(this.ApplicationContext, "DeleteUsers", this.ApplicationContext.SystemId, exception);
+                AccessibleItem.AccessRightTypeId = 0;
+                AccessibleItem.IsActive = true;
             }
+
+            if ((Page.IzinVer == 0 || Page.IzinVer == null) && (Page.Yasakla == 0 || Page.Yasakla == null))
+            {
+                AccessibleItem.IsActive = false;
+            }
+
+            this.AccessibleItem.Update(AccessibleItem);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+        }
+
+        public void AddAccessibleForUserPage(UserAccessiblePageView Page , RelationGroup userRelation)
+        {
+
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+            Surat.Base.Model.Entities.AccessibleItem AccessibleItem = new AccessibleItem();
+
+            AccessibleItem.RelationGroupId = userRelation.Id;
+            AccessibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Page;
+            AccessibleItem.DBObjectId = Page.PageId;
+            AccessibleItem.StartDate = DateTime.Now;
+
+            if (Page.IzinVer == 1)
+            {
+                AccessibleItem.AccessRightTypeId = 1;
+            }
+            if (Page.Yasakla == 1)
+            {
+                AccessibleItem.AccessRightTypeId = 0;
+            }
+
+            this.AccessibleItem.Add(AccessibleItem);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
         }
 
         public void DeleteUser(SuratUser user)
@@ -943,11 +916,6 @@ AND
             }
         }
 
-        /// <summary>
-        /// NK:: 04/0406 Kullanıcı silindiğinde ona bağlı olan hakları ve rolleri
-        /// RelationGrups ve AccessibleItem tablosundan pasife çeken methoddur.
-        /// </summary>
-        /// <param name="userId"></param>
         public void DeleteUserRelationAndAccessible(int userId)
         {
             try
@@ -976,33 +944,7 @@ AND
             }
 
         }
-
-        public void SaveUserLock(string userName, string password, bool isLocked)
-        {
-            try
-            {
-                this.AuthenticationProvider.LockUser(this.ApplicationContext, userName, password, isLocked);
-            }
-            catch (Exception exception)
-            {
-                throw new SuratBusinessException(this.ApplicationContext, "SaveUserLock", this.ApplicationContext.SystemId, exception);
-            }
-        }
-
-        public string RemindUserPassword(int userId)
-        {
-            string password;
-            try
-            {
-                password = this.AuthenticationProvider.GetUserPassword(this.ApplicationContext, userId);
-            }
-            catch (Exception exception)
-            {
-                throw new SuratBusinessException(this.ApplicationContext, "RemindUserPassword", this.ApplicationContext.SystemId, exception);
-            }
-
-            return password;
-        }
+        #endregion
 
         #endregion
 
@@ -1175,6 +1117,82 @@ AND
                 throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId, exception);
             }
 
+        }
+
+        public List<RoleAccessiblePageView> GetUserAccessibleRolePages(int? roleId)
+        {
+            List<RoleAccessiblePageView> accessibleRolePages;
+
+            string query = @"	
+
+select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=1 from Pages where Id in(
+select DISTINCT suratPages.Id 
+from dbo.Pages suratPages
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
+JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
+where 
+    suratPages.IsActive = 1
+    AND 
+       (
+       
+       (
+       suratPages.IsAccessControlRequired = 1 and 
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
+       AND
+       (accessibleItems.RelationGroupId IN 
+             (
+                 
+            /*** role den gelen erişim hakları ***/
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where 
+               (                 
+                     UserId = 0  AND  WorkgroupId = 0 AND RoleId = @RoleId
+                    
+                  
+               )
+                
+             )
+       )))
+	   ) 
+and pages.IsAccessControlRequired=1
+
+
+union
+
+select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=0 from Pages where Id not in(
+select DISTINCT suratPages.Id 
+from dbo.Pages suratPages
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
+JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
+where 
+    suratPages.IsActive = 1
+    AND 
+       (
+       
+       (
+       suratPages.IsAccessControlRequired = 1 and 
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
+       AND
+       (accessibleItems.RelationGroupId IN 
+             (
+                 
+            /*** role den gelen erişim hakları ***/
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where 
+               (                 
+                     UserId = 0  AND  WorkgroupId = 0 AND RoleId =@RoleId
+                    
+                  
+               )
+                
+             )
+       )))
+	   ) 
+and pages.IsAccessControlRequired=1";
+            accessibleRolePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<RoleAccessiblePageView>(
+                                query, new SqlParameter("@RoleId", roleId)).ToList();
+
+            return accessibleRolePages;
         }
 
         #endregion

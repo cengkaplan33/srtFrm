@@ -69,6 +69,21 @@ namespace Surat.Base.Repositories
             return accessiblePages;
         }
 
+        public List<UserAccessiblePageView> GetAllPageForUser()
+        {
+            List<UserAccessiblePageView> pages;
+            pages = (from page in this.Context.ApplicationContext.DBContext.Pages
+                     where (page.IsActive == true)
+                     orderby (page.Name)
+                     select new UserAccessiblePageView
+                     {
+                         PageId = page.Id,
+                         PageName = page.Name
+                     }).ToList();
+
+            return pages;
+        }
+
         #endregion
     }
 }

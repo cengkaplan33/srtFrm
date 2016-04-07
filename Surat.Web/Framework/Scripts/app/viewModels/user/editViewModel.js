@@ -28,7 +28,15 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                         }
                     },
                     IzinVerSec: function (e) {
+
+                        var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                        var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+
                         if (e.currentTarget.checked == true) {
+
+                            AccessViewChanged(imgIsPageAccess, true);
+                            chboxSibling.checked = false;
+                            chboxSibling.prop("checked", false);
 
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
@@ -38,17 +46,31 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                             }
                         }
                         else {
+
+                            AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
+
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
                                     checkedPages[i].IzinVer = 0;
                                 }
                             }
                         }
+
+                        var etkinlik = $(".pageaccess").siblings();
+                        etkinlik.data = "test";
                     },
                     YasaklaSec: function (e) {
+                        var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                        var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+                        
                         if (e.currentTarget.checked == true) {
 
+                            AccessViewChanged(imgIsPageAccess, false);
+                            chboxSibling.checked = false;
+                            chboxSibling.prop("checked", false);
+
                             for (var i = 0; i < checkedPages.length; i++) {
+
                                 if (checkedPages[i].PageId == e.data.PageId) {
                                     checkedPages[i].Yasakla = 1;
                                     checkedPages[i].IzinVer = 0;
@@ -56,6 +78,8 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                             }
                         }
                         else {
+
+                            AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
                                     checkedPages[i].Yasakla = 0;
@@ -63,6 +87,7 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                             }
                         }
                     },
+             
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
                         if (validator.validate()) {
@@ -172,3 +197,22 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
         return editViewModel;
 
     });
+
+function AccessViewChanged(imgContainer, state) {
+
+    if (state) { imgContainer.prop("src", "https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png"); }
+    else { imgContainer.prop("src", "https://cdn3.iconfinder.com/data/icons/vista-general/16/delete.png"); }
+}
+
+function setAcccesIcon(model) {
+
+    if (model.IsPageAccess) { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png' / title='İzinli'>"; }
+    else { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/delete.png' / title='Yasaklı'>"; }
+}
+
+function setRoleIcon(model) {
+
+    if (model.IsRoleEffect) { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png' / title='İzinli'>"; }
+    else
+        return "";
+}

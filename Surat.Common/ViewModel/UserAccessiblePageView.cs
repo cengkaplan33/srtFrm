@@ -13,7 +13,7 @@ namespace Surat.Common.ViewModel
         public bool IsRoleEffect { get; set; }
         public int? IzinVer { get; set; }
         public int? Yasakla { get; set; }
-        public string IsPageAccess { get; set; }
+        public Boolean IsPageAccess { get; set; }
         
     }
 }
