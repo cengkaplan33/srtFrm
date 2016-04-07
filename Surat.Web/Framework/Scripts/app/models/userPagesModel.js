@@ -7,8 +7,8 @@
                 PageName: { type: "string", validation: { required: true } },
                 IsRoleEffect: { type: "boolean", editable: false },
                 IsPageAccess: { type: "string" },
-                IzinVer: { type: "boolean", title: "İzin Ver" },
-                Yasakla: {type: "boolean", title: "Yasakla"}
+                IzinVer: { type: "number", title: "İzin Ver" },
+                Yasakla: {type: "number", title: "Yasakla"}
             }
         });
         return userPagesModel;

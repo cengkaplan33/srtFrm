@@ -20,8 +20,8 @@
                                         { field: "PageId", title: "ID", width: "75px" },
                                         { field: "PageName", title: "Sayfa", width: "200px" },
                                         { field: "IsRoleEffect", title: "Rol var mı?", "template": "#= IsRoleEffect ? \"Var\" : \" \" #"},
-                                        { field: "IzinVer", title: "İzin Ver", template:"<input type=\"checkbox\" # if (IzinVer) {# checked # }# data-bind=\"click:IzinVerSec\" />",},
-                                        { field: "Yasakla", title: "Yasakla", template:"<input type=\"checkbox\" # if (Yasakla) {# checked # }# data-bind=\"click:YasaklaSec\" />"},
+                                        { field: "IzinVer", title: "İzin Ver", template:"<input type=\"checkbox\"  # if (IzinVer) {# checked # }# data-bind=\"click:IzinVerSec\" />",},
+                                        { field: "Yasakla", title: "Yasakla", template:"<input type=\"checkbox\"  # if (Yasakla) {# checked # }# data-bind=\"click:YasaklaSec\" />"},
                                         { field: "IsPageAccess", title: "Etkinlik" } ]'
                                  data-bind="source: userPagesDatasource" style="width:100%">
                             </div>

@@ -597,7 +597,7 @@ AND
             foreach (var page in userAccessiblePage)
             {
                 var PageIdList = baseUserPages.Where(m => m.PageId == page.PageId).ToList();
-                if(PageIdList.Count == 0 )
+                if (PageIdList.Count == 0)
                 {
                     page.IsPageAccess = "Pasif";
                     page.IsRoleEffect = false;
@@ -606,7 +606,7 @@ AND
                 {
                     var AccessibleItem = PageIdList.Where(m => m.RoleId == 0).ToList();
 
-                    if(AccessibleItem.Count == 0)
+                    if (AccessibleItem.Count == 0)
                     {
                         page.IsRoleEffect = true;
 
@@ -614,18 +614,18 @@ AND
                     }
                     else
                     {
-                        if(AccessibleItem.Count > 1)
-                            throw new EntityProcessException(this.ApplicationContext, "GetUserPages", this.ApplicationContext.SystemId,"Kullanıcıya  sayfa özel yetkisi verilirken her sayfa için  veritabanında yalnızca bir kayıt tutulabilir.");
+                        if (AccessibleItem.Count > 1)
+                            throw new EntityProcessException(this.ApplicationContext, "GetUserPages", this.ApplicationContext.SystemId, "Kullanıcıya  sayfa özel yetkisi verilirken her sayfa için  veritabanında yalnızca bir kayıt tutulabilir.");
 
                         if (AccessibleItem[0].AccessRightTypeId == 1)
                         {
                             page.IsPageAccess = "Etkin";
-                            page.IzinVer = true;
+                            page.IzinVer = 1;
                         }
                         else
                         {
                             page.IsPageAccess = "Engelli";
-                            page.Yasakla = true;
+                            page.Yasakla = 1;
                         }
 
                         var RoleList = PageIdList.Where(m => m.RoleId != 0).ToList();
@@ -751,11 +751,11 @@ AND
         public void SaveUserRoles(int userId, IList<UserRoleView> userRoles)
         {
             try
-            {               
-                List<RelationGroup> oldRecords = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId  & m.WorkgroupId == 0 & m.RoleId != 0).ToList();
+            {
+                List<RelationGroup> oldRecords = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId & m.WorkgroupId == 0 & m.RoleId != 0).ToList();
                 foreach (var userRole in userRoles)
                 {
-                    var currentRole= oldRecords.Where(m => m.RoleId == userRole.Id).ToList();
+                    var currentRole = oldRecords.Where(m => m.RoleId == userRole.Id).ToList();
 
                     if (currentRole.Count() > 1)
                         //NK::04/04/16 :: Bir kullanıcı için relationgrupta aynı rol için çoklu kayıt tutulmaz; hataya sebep olur.
@@ -767,7 +767,7 @@ AND
                         int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                         Surat.Base.Model.Entities.RelationGroup relation = currentRole[0];
 
-                        if (userRole.IsAccess == false )
+                        if (userRole.IsAccess == false)
                         {
                             if (relation.IsActive == true)
                             {
@@ -775,9 +775,9 @@ AND
                                 this.RelationGroup.Update(relation);
                             }
                         }
-                        else 
+                        else
                         {
-                            if(relation.IsActive == false)
+                            if (relation.IsActive == false)
                             {
                                 relation.IsActive = true;
                                 this.RelationGroup.Update(relation);
@@ -800,7 +800,7 @@ AND
                         }
                     }
                 }
-                
+
             }
             catch (Exception exception)
             {
@@ -812,38 +812,82 @@ AND
         {
             try
             {
-                foreach(var Page in userPages)
+                foreach (var Page in userPages)
                 {
-                    RelationGroup userRelation = this.RelationGroup.GetObjectByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId == 0);
-                    AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelation.Id & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.DBObjectId == Page.PageId);
-
-                    if (userAccess != null)
+                    //NK::07/04/2016:: Sayfayla ilgili bir işlemde bulunulmamışsa koşula girilmiyor.
+                    if (Page.IzinVer == null && Page.Yasakla == null)
                     {
-                        //NK::06/04/16:: AccessbileItem Tablosunda kayıt güncellenecek
-                        if (Page.IzinVer == true && Page.Yasakla == false)
-                        {
-                            if (userAccess.IsActive)
-                                userAccess.AccessRightTypeId = 1;
-                            else
-                            {
-                                userAccess.AccessRightTypeId = 0;
-                                userAccess.IsActive = true;
-                            }
-                        }
-
-                        if(Page.Yasakla == true && Page.IzinVer == true)
-                        {
-                            if (userAccess.IsActive)
-                                userAccess.AccessRightTypeId = 0;
-                            else
-                            {
-                           
-                            }
-                        }
+                        continue;
                     }
                     else
-                    {
+                    {                        
+                        RelationGroup userRelation = this.RelationGroup.GetObjectByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId == 0);
+                        AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelation.Id & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.DBObjectId == Page.PageId);
+                        
+                        if (userAccess != null)
+                        {
+                            #region AccesssibleItem tablosunda var olan kayıttta güncelleştirme yapılıyor
 
+                            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                            Surat.Base.Model.Entities.AccessibleItem AccessibleItem = userAccess;
+
+                            if (Page.IzinVer == 1 && (Page.Yasakla == 0 || Page.Yasakla == null))
+                            {
+                                AccessibleItem.AccessRightTypeId = 1;
+                                AccessibleItem.IsActive = true;
+                               
+                            }
+
+                            if (Page.Yasakla == 1 && (Page.IzinVer == 0 || Page.IzinVer == null))
+                            {
+                                AccessibleItem.AccessRightTypeId = 0;
+                                AccessibleItem.IsActive = true;
+                            }
+
+                            if ((Page.IzinVer == 0  || Page.IzinVer == null) && (Page.Yasakla == 0 || Page.Yasakla == null))
+                            {
+                                AccessibleItem.IsActive = false;
+                            }
+
+                            this.AccessibleItem.Update(AccessibleItem);
+                            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
+                            #endregion
+                        }
+
+                        else
+                        {
+                            #region AccessibleItem tablosuna kullanıcı için yeni kayıt atılıyor.
+
+                            if (Page.IzinVer == Page.Yasakla)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                                Surat.Base.Model.Entities.AccessibleItem AccessibleItem = new AccessibleItem();
+
+                                AccessibleItem.RelationGroupId = userRelation.Id;
+                                AccessibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Page;
+                                AccessibleItem.DBObjectId = Page.PageId;
+                                AccessibleItem.StartDate = DateTime.Now;
+
+                                if (Page.IzinVer == 1)
+                                {
+                                    AccessibleItem.AccessRightTypeId = 1;
+                                }
+                                if (Page.Yasakla == 1 )
+                                {
+                                    AccessibleItem.AccessRightTypeId = 0;
+                                }
+
+                                this.AccessibleItem.Add(AccessibleItem);
+                                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                            }
+
+                            #endregion
+                        }
                     }
                 }
             }
@@ -904,7 +948,7 @@ AND
         /// RelationGrups ve AccessibleItem tablosundan pasife çeken methoddur.
         /// </summary>
         /// <param name="userId"></param>
-        public void DeleteUserRelationAndAccessible (int userId)
+        public void DeleteUserRelationAndAccessible(int userId)
         {
             try
             {
@@ -914,7 +958,7 @@ AND
                 foreach (var record in Records)
                 {
                     List<AccessibleItem> AccesRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == record.Id).ToList();
-                    foreach(var accessRecord in AccesRecords)
+                    foreach (var accessRecord in AccesRecords)
                     {
                         accessRecord.IsActive = false;
                         this.AccessibleItem.Update(accessRecord);
@@ -993,16 +1037,17 @@ AND
             {
                 try
                 {
-                     this.Role.Add(role);
-                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                    this.Role.Add(role);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                     initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                    this.RelationGroup.Add(new RelationGroup() { 
-                    UserId=0,
-                    WorkgroupId=0,
-                    RoleId=role.Id
+                    this.RelationGroup.Add(new RelationGroup()
+                    {
+                        UserId = 0,
+                        WorkgroupId = 0,
+                        RoleId = role.Id
                     });
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-                   
+
                 }
                 catch (Exception exception)
                 {
@@ -1014,8 +1059,8 @@ AND
                 try
                 {
 
-                    
-                    var roleOfDatabase = this.Role.GetObjectByParameters(m => m.Id == role.Id);                   
+
+                    var roleOfDatabase = this.Role.GetObjectByParameters(m => m.Id == role.Id);
                     roleOfDatabase.Name = role.Name;
                     roleOfDatabase.ObjectTypeName = role.ObjectTypeName;
                     this.Role.Update(roleOfDatabase);
@@ -1028,7 +1073,7 @@ AND
                 }
 
             }
-          
+
         }
 
         public void DeleteRoles(IEnumerable<SuratRole> suratRoles)
@@ -1095,7 +1140,7 @@ AND
             {
                 int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                 int relationGroupId = GetRoleRelationGroupId(roleId);
-                List<AccessibleItem> oldRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectType == (int)AccessibleItemDBObjectType.Page&m.IsActive==true).ToList();
+                List<AccessibleItem> oldRecords = this.AccessibleItem.GetObjectsByParameters(m => m.RelationGroupId == relationGroupId & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.IsActive == true).ToList();
                 foreach (var rolePage in rolePages)
                 {
                     if (oldRecords.Where(m => m.DBObjectId == rolePage.Id).Count() > 0)

@@ -88,11 +88,14 @@ namespace Surat.WebServer.Controllers
         {
             try
             {
+                this.WebApplicationManager.Framework.Security.SaveUser(user);
 
-                IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+                IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);                  
+                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
 
-                    this.WebApplicationManager.Framework.Security.SaveUser(user);
-                    this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
+                IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
+                this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
+
                     return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
@@ -111,6 +114,7 @@ namespace Surat.WebServer.Controllers
                 this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
 
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
+                this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
 
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
                 return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);

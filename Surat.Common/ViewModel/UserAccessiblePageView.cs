@@ -11,8 +11,8 @@ namespace Surat.Common.ViewModel
         public int PageId { get; set; }     
         public string PageName { get; set; }
         public bool IsRoleEffect { get; set; }
-        public bool IzinVer { get; set; }
-        public bool Yasakla { get; set; }
+        public int? IzinVer { get; set; }
+        public int? Yasakla { get; set; }
         public string IsPageAccess { get; set; }
         
     }

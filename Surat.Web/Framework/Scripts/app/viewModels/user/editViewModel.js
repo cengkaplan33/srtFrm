@@ -24,57 +24,44 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                                 if (checkedRoles[i].Id == e.data.Id) {
                                     checkedRoles[i].IsAccess = false;
                                 }
-
                             }
-
                         }
-
                     },
                     IzinVerSec: function (e) {
                         if (e.currentTarget.checked == true) {
-                            
+
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].IzinVer = true;
-                                    checkedPages[i].Yasakla = false;
-                                    //Buraya Yasakla False edilme gelecek.
+                                    checkedPages[i].IzinVer = 1;
+                                    checkedPages[i].Yasakla = 0;                        
                                 }
-
                             }
                         }
                         else {
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].IzinVer = false;
+                                    checkedPages[i].IzinVer = 0;
                                 }
-
                             }
-
                         }
-
                     },
                     YasaklaSec: function (e) {
                         if (e.currentTarget.checked == true) {
 
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].Yasakla = true;
-                                    checkedPages[i].IzinVer = false;
-                                    //Buraya Izinver False edilme gelecek.
+                                    checkedPages[i].Yasakla = 1;
+                                    checkedPages[i].IzinVer = 0;
                                 }
-
                             }
                         }
                         else {
                             for (var i = 0; i < checkedPages.length; i++) {
                                 if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].Yasakla = false;
+                                    checkedPages[i].Yasakla = 0;
                                 }
-
                             }
-
                         }
-
                     },
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
@@ -141,7 +128,6 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                         }
                         viewModel.set("User", new userModel());
                     }
-
                 }
                 else {
                     viewModel.set("User", new userModel());
@@ -169,8 +155,10 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                 if (userPagesDatasource.view().length > 0) {
                     var userPageData = userPagesDatasource.data();
                     for (var k = 0; k < userPageData.length; k++) {
-
-                            checkedPages.push({ "PageId": userPageData[k].PageId, "IzinVer": userPageData[k].IzinVer, "Yasakla": userPageData[k].Yasakla});
+                        if (userPageData[k].IzinVer == 1 || userPageData[k].Yasakla == 1)
+                            checkedPages.push({ "PageId": userPageData[k].PageId, "IzinVer": userPageData[k].IzinVer, "Yasakla": userPageData[k].Yasakla });
+                        else
+                            checkedPages.push({ "PageId": userPageData[k].PageId, "IzinVer": null, "Yasakla": null });
                     }
                 }
             });
