@@ -121,6 +121,7 @@
                             ObjectTypeName = Constants.Application.RootWorkgroup,
                             Name = Constants.Application.RootWorkgroup,
                             IsActive = true,
+                            CompanyId = 1,
                             isCompanySite = true,   
                             InsertedByUser = 1,
                             InsertedDate = TimeUtility.GetCurrentDateTime()

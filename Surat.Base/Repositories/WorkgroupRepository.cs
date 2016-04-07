@@ -35,12 +35,12 @@ namespace Surat.Base.Repositories
         #endregion
 
         #region Private Members
-  
+
         private SecurityContext context;
 
         #endregion
 
-        #region Public Members       
+        #region Public Members
 
         public SecurityContext Context
         {
@@ -53,7 +53,7 @@ namespace Surat.Base.Repositories
             {
                 return (FrameworkDbContext)(this.GenericDBContext);
             }
-        }    
+        }
 
         #endregion
 
@@ -76,6 +76,7 @@ namespace Surat.Base.Repositories
                                  WorkgroupId = workgroups.Id,
                                  ParentWorkgroupId = workgroups.ParentId,
                                  WorkgroupName = workgroups.Name,
+                                 CompanyId = workgroups.CompanyId,
                                  IsCompanySite = workgroups.isCompanySite
                              }).ToList();
 
@@ -89,12 +90,23 @@ namespace Surat.Base.Repositories
             selectedWorkgroup = this.GetById(workgroupId);
 
             if (selectedWorkgroup == null)
-                throw new RecordNotFoundException(this.Context.ApplicationContext,"Workgroup", this.Context.ApplicationContext.SystemId,
+                throw new RecordNotFoundException(this.Context.ApplicationContext, "Workgroup", this.Context.ApplicationContext.SystemId,
                     string.Format(this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId, Constants.ExceptionType.RecordNotFound), workgroupId));
 
             return selectedWorkgroup.ParentId;
-        }       
-
-        #endregion        
+        }
+        //public List<UserDefaultWorkGroupView> GetUserWorkgroups()
+        //{
+        //    List<UserDefaultWorkGroupView> userWorkgroupTreeList = null;
+        //    int? userDefaultWorkgroup = this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
+        //    int? workgroupId = 0;
+        //    Workgroup userWorkGroupRow = this.GetActiveWorkGroups().Where(m => m.Id == userDefaultWorkgroup).First();
+        //    foreach (var item in this.GetActiveWorkGroups())
+        //    {
+                
+        //    }
+           
+        //}
+        #endregion
     }
 }

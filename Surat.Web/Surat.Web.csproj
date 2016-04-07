@@ -1437,6 +1437,7 @@
     <Content Include="Framework\Scripts\app\datasources\rolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\systemsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userWorkGroupDataSource.js" />
     <Content Include="Framework\Scripts\app\datasources\workgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\main.js" />
     <Content Include="Framework\Scripts\app\models\companyModel.js" />

@@ -125,6 +125,7 @@ namespace Surat.Base.Repositories
                              where (relationGroups.UserId == userId) && (relationGroups.WorkgroupId != 0) && (relationGroups.RoleId == 0) && (relationGroups.IsActive == true)
                              select new WorkgroupView()
                              { 
+                                 CompanyId = workgroups.CompanyId,
                                  IsCompanySite = workgroups.isCompanySite,
                                  WorkgroupId = workgroups.Id,
                                  ParentWorkgroupId = workgroups.ParentId,
@@ -172,7 +173,7 @@ namespace Surat.Base.Repositories
         {
             CompanySiteView companySite = null;
 
-            if (workgroup.IsCompanySite)
+            if (workgroup.IsCompanySite || workgroup.CompanyId == workgroup.WorkgroupId)
             {
                 companySite = new CompanySiteView();                
                 companySite.WorkgroupId = workgroup.WorkgroupId;
