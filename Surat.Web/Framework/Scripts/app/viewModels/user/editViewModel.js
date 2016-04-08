@@ -96,7 +96,7 @@ function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPa
                 },
                 ActionIzinVerSec: function (e) {
 
-                    var chboxSibling = $(e.currentTarget).parent().siblings(".actionaccess").children();
+                    var chboxSibling = $(e.currentTarget).parent().siblings(".useraction").children();
                     var imgIsAccess = $(e.currentTarget).parent().siblings(".isactionaccess").children();
 
                     if (e.currentTarget.checked == true) {
@@ -124,7 +124,7 @@ function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPa
                     }
                 },
                 ActionYasaklaSec: function (e) {
-                    var chboxSibling = $(e.currentTarget).parent().siblings(".actionaccess").children();
+                    var chboxSibling = $(e.currentTarget).parent().siblings(".useraction").children();
                     var imgIsAccess = $(e.currentTarget).parent().siblings(".isactionaccess").children();
 
                     if (e.currentTarget.checked == true) {
