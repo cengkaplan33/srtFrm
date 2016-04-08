@@ -9,25 +9,20 @@
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
-        'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
+        'choosedWorkgroupModel': 'models/choosedWorkgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
         'userSessionsModel': 'models/userSessionsModel',
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
-<<<<<<< HEAD
-        'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
-=======
-
-       
->>>>>>> rolaksiyonyetkilendirmesi
+        'userPagesModel': 'models/userPagesModel',
+        'roleActionsModel': 'models/roleActionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
         'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
-        'workgroup-editViewModel': 'viewModels/workgroup/editViewModel',
         'roles-indexViewModel':'viewModels/roles/indexViewModel',
         'roles-editViewModel': 'viewModels/roles/editViewModel',
         'systems-indexViewModel': 'viewModels/systems/indexViewModel',
@@ -40,7 +35,6 @@
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
-        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
@@ -49,12 +43,13 @@
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
-<<<<<<< HEAD
-        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
+<<<<<<< HEAD
+        'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
+        'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
 =======
-       
->>>>>>> rolaksiyonyetkilendirmesi
+        'userPagesDatasource': 'datasources/userPagesDatasource',
+>>>>>>> 9d02fe480bd235ef7e51114fda327455c05d9f5d
         // utils
         'util': '/Framework/Scripts/util'
     },

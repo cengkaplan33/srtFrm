@@ -64,8 +64,10 @@
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Globalization\IGlobalizationManager.cs" />
-    <Compile Include="ViewModel\AccessibleUserRoleView.cs" />
-    <Compile Include="ViewModel\AccessibleRolePageView.cs" />
+    <Compile Include="ViewModel\UserPageBaseView.cs" />
+    <Compile Include="ViewModel\UserAccessiblePageView.cs" />
+    <Compile Include="ViewModel\UserAccessibleRoleView.cs" />
+    <Compile Include="ViewModel\RoleAccessiblePageView.cs" />
     <Compile Include="Helper\InvariantHelper.cs" />
     <Compile Include="ViewModel\ActionsListView.cs" />
     <Compile Include="ViewModel\PagesListView.cs" />

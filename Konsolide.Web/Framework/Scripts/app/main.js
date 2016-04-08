@@ -20,7 +20,8 @@
         'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
         'workgroupModel': 'models/workgroupModel',
-        'roleActionsModel':'models/roleActionsModel',
+        'roleActionsModel': 'models/roleActionsModel',
+        'userPagesModel': 'models/userPagesModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -56,6 +57,7 @@
         'hazirDegerlerTablosuTanimDatasource':'datasources/hazirDegerlerTablosuTanimDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
+        'userPagesDatasource': 'datasources/userPagesDatasource',
         // utils
         util: '/Framework/Scripts/util'
     },

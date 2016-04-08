@@ -20,8 +20,11 @@
                 ChangedDate: { type: "date" },
                 IsActive: { type: "boolean", title: "Aktif mi?" },
                 Roles: { type: "string" },
-                WorkGroupId:{type:"string"},
+<<<<<<< HEAD
+                WorkGroupId:{type:"string"}
+=======
                 Pages: { type: "string" }
+>>>>>>> 9d02fe480bd235ef7e51114fda327455c05d9f5d
             }
         });
         return userModel;

@@ -69,43 +69,62 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
-        [HttpPost]
-        public ActionResult Add(SuratUser user, string Roles)
+
+        public JsonResult GetUserPages(int? userId = -1)
         {
             try
             {
-
-                IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
-
-                    this.WebApplicationManager.Framework.Security.SaveUser(user);
-                    this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
-                    return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
+                return Json(this.WebApplicationManager.Framework.Security.GetUserPages(userId), JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {           
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
         [HttpPost]
-        public JsonResult Update(SuratUser user, string Roles)
+        public ActionResult Add(SuratUser user, string Roles, string Pages)
         {
             try
             {
-                IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+                this.WebApplicationManager.Framework.Security.SaveUser(user);
 
-                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
+                IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
+
+                IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
+                this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
+
+                return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Update(SuratUser user, string Roles, string Pages)
+        {
+            try
+            {
+                IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
+
+                IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
+                this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
+
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
                 return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
-
         [HttpPost]
         public JsonResult Delete(SuratUser users)
         {

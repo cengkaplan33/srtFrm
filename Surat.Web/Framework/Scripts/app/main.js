@@ -9,7 +9,6 @@
         'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
-        'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
         'choosedWorkgroupModel': 'models/choosedWorkgroupModel',
         'systemsModel': 'models/systemsModel',
@@ -18,7 +17,8 @@
         'pagesModel': 'models/pagesModel',
         'actionsModel': 'models/actionsModel',
         'userRolesModel': 'models/userRolesModel',
-       
+        'userPagesModel': 'models/userPagesModel',
+        'roleActionsModel': 'models/roleActionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -35,7 +35,6 @@
         //datasources
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
-        'rolePagesDatasource': 'datasources/rolePagesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
@@ -46,6 +45,7 @@
         'actionsDatasource': 'datasources/actionsDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
         'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
+        'userPagesDatasource': 'datasources/userPagesDatasource',
         'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
         // utils
         'util': '/Framework/Scripts/util'

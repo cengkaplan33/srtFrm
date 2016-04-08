@@ -1432,32 +1432,35 @@
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
 <<<<<<< HEAD
-    <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userChoosenWorkgroupDatasource.js" />
 =======
-    <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
->>>>>>> rolaksiyonyetkilendirmesi
+    <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
+>>>>>>> 9d02fe480bd235ef7e51114fda327455c05d9f5d
+    <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolePagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\rolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\systemsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userWorkGroupDataSource.js" />
     <Content Include="Framework\Scripts\app\datasources\workgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\main.js" />
+    <Content Include="Framework\Scripts\app\models\choosedWorkgroupModel.js" />
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
-<<<<<<< HEAD
+    <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
-=======
     <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
->>>>>>> rolaksiyonyetkilendirmesi
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
     <Content Include="Framework\Scripts\app\models\rolesModel.js" />
     <Content Include="Framework\Scripts\app\models\systemsModel.js" />
     <Content Include="Framework\Scripts\app\models\userModel.js" />
+    <Content Include="Framework\Scripts\app\models\userWorkgroupModel.js" />
     <Content Include="Framework\Scripts\app\models\workgroupModel.js" />
     <Content Include="Framework\Scripts\app\router.js" />
     <Content Include="Framework\Scripts\app\viewModels\actions\indexViewModel.js" />
@@ -2483,6 +2486,8 @@
     <Content Include="Framework\theme\images\browser_msie.gif" />
     <Content Include="Framework\theme\images\browser_opera.gif" />
     <Content Include="Framework\theme\images\browser_safari.gif" />
+    <Content Include="Framework\theme\images\check.png" />
+    <Content Include="Framework\theme\images\cross.png" />
     <Content Include="Framework\theme\images\email1.png" />
     <Content Include="Framework\theme\images\email2.png" />
     <Content Include="Framework\theme\images\email3.png" />
@@ -2503,6 +2508,7 @@
     <Content Include="Framework\theme\images\gallery\thumb-4.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-5.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-6.jpg" />
+    <Content Include="Framework\theme\images\plus-circle.png" />
     <Content Include="Framework\theme\images\sort_asc.png" />
     <Content Include="Framework\theme\images\sort_asc_disabled.png" />
     <Content Include="Framework\theme\images\sort_both.png" />
@@ -3240,6 +3246,7 @@
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\EditTabPages.cshtml" />
     <Content Include="Views\Roles\EditTabActions.cshtml" />
+    <Content Include="Views\Users\EditTabPages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

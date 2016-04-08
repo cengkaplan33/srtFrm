@@ -1432,6 +1432,7 @@
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userChoosenWorkgroupDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
@@ -1447,6 +1448,7 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
     <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
@@ -2481,6 +2483,8 @@
     <Content Include="Framework\theme\images\browser_msie.gif" />
     <Content Include="Framework\theme\images\browser_opera.gif" />
     <Content Include="Framework\theme\images\browser_safari.gif" />
+    <Content Include="Framework\theme\images\check.png" />
+    <Content Include="Framework\theme\images\cross.png" />
     <Content Include="Framework\theme\images\email1.png" />
     <Content Include="Framework\theme\images\email2.png" />
     <Content Include="Framework\theme\images\email3.png" />
@@ -2501,6 +2505,7 @@
     <Content Include="Framework\theme\images\gallery\thumb-4.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-5.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-6.jpg" />
+    <Content Include="Framework\theme\images\plus-circle.png" />
     <Content Include="Framework\theme\images\sort_asc.png" />
     <Content Include="Framework\theme\images\sort_asc_disabled.png" />
     <Content Include="Framework\theme\images\sort_both.png" />
@@ -3238,6 +3243,7 @@
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\EditTabPages.cshtml" />
     <Content Include="Views\Roles\EditTabActions.cshtml" />
+    <Content Include="Views\Users\EditTabPages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
