@@ -20,6 +20,7 @@
                 ChangedDate: { type: "date" },
                 IsActive: { type: "boolean", title: "Aktif mi?" },
                 Roles: { type: "string" },
+                WorkGroupId:{type:"string"},
                 Pages: { type: "string" },
                 Actions: { type: "string" }
             }

@@ -1,9 +1,9 @@
-﻿define(['kendo', 'userModel', 'util'],
-function (kendo, userModel, util) {
+﻿define(['kendo', 'userModel','userChoosenWorkgroupDatasource','util'],
+function (kendo, userModel, userChoosenWorkgroupDatasource, util) {
 
 
     var userDatasource = new kendo.data.DataSource({
-        //  autoSync:false,
+      //  autoSync:false,
         transport: {
             read: {
                 async: false,
@@ -17,30 +17,33 @@ function (kendo, userModel, util) {
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        userChoosenWorkgroupDatasource.read();
                         _notification.info(result.Result);
                     }
                 }
             },
             destroy: {
-
+               
                 type: "POST",
                 url: "/Users/Delete",
                 dataType: "Json",
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        userChoosenWorkgroupDatasource.read();
                         _notification.warning(result.Result);
                     }
                 }
             },
             update: {
-
+               
                 type: "POST",
                 url: "/Users/Update",
                 dataType: "Json",
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        userChoosenWorkgroupDatasource.read();
                         _notification.info(result.Result);
                     }
                 }

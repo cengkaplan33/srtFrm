@@ -20,9 +20,11 @@
         'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
         'workgroupModel': 'models/workgroupModel',
+        'choosedWorkgroupModel': 'models/choosedWorkgroupModel',
         'roleActionsModel': 'models/roleActionsModel',
         'userPagesModel': 'models/userPagesModel',
         'userActionsModel': 'models/userActionsModel',
+        'pagesModel': 'models/pagesModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -57,8 +59,10 @@
         'hazirDegerlerTablosuDatasource': 'datasources/hazirDegerlerTablosuDatasource',
         'hazirDegerlerTablosuTanimDatasource':'datasources/hazirDegerlerTablosuTanimDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
+        'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'userPagesDatasource': 'datasources/userPagesDatasource',
+        'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
         'userActionsDatasource': 'datasources/userActionsDatasource',
         // utils
         util: '/Framework/Scripts/util'
