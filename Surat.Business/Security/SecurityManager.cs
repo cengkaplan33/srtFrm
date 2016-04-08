@@ -44,6 +44,7 @@ namespace Surat.Business.Security
         private UserShortcutRepository userShortcut;
         private RoleRepository role;
         private PageRepository page;
+        public ActionRepository action;
         private WorkgroupRepository workgroup;
         private AccessibleItemRepository accessibleItem;
         private FailedLoginRepository failedLogin;
@@ -158,6 +159,17 @@ namespace Surat.Business.Security
                     page = new PageRepository(this.ApplicationContext.Configuration);
 
                 return page;
+            }
+        }
+
+        public ActionRepository Action
+        {
+            get
+            {
+                if (action == null)
+                    action = new ActionRepository(this.ApplicationContext.Security);
+
+                return action;
             }
         }
 
@@ -511,9 +523,10 @@ AND
 
         public int? GetUserWorkgroup(int? userId = -1)
         {
-
-
-            return this.RelationGroup.GetObjectsByParameters(m => m.IsActive == true & m.RoleId == 0 & m.UserId == userId & m.WorkgroupId != 0).FirstOrDefault().WorkgroupId;
+            var item  = this.RelationGroup.GetObjectsByParameters(m => m.IsActive == true & m.RoleId == 0 & m.UserId == userId & m.WorkgroupId != 0).FirstOrDefault();
+            if (item  == null)
+                return 0;
+            else return item.WorkgroupId;
         }
 
         public List<UserDefaultWorkGroupView> GetUserWorkgroupsWithCurentUsers()
@@ -728,7 +741,7 @@ AND
                 var PageIdList = baseUserPages.Where(m => m.PageId == page.PageId).ToList();
                 if (PageIdList.Count == 0)
                 {
-                    page.IsPageAccess = false;
+                    page.IsAccess = false;
                     page.IsRoleEffect = false;
                 }
                 else
@@ -739,7 +752,7 @@ AND
                     {
                         page.IsRoleEffect = true;
 
-                        page.IsPageAccess = true;
+                        page.IsAccess = true;
                     }
                     else
                     {
@@ -748,12 +761,12 @@ AND
 
                         if (AccessibleItem[0].AccessRightTypeId == 1)
                         {
-                            page.IsPageAccess = true;
+                            page.IsAccess = true;
                             page.IzinVer = 1;
                         }
                         else
                         {
-                            page.IsPageAccess = false;
+                            page.IsAccess = false;
                             page.Yasakla = 1;
                         }
 
@@ -792,6 +805,84 @@ AND
                                 query, new SqlParameter("@UserId", userId)).ToList();
 
             return baseUserPages;
+        }
+
+        public List<UserAccessibleActionView> GetUserActions(int? userId)
+        {
+            List<UserActionBaseView> baseUserActions = GetUserBaseAccessibleAction(userId);
+
+            List<UserAccessibleActionView> userAccessibleAction = this.Action.GetAllActionForUser();
+
+            #region Bütün Aksiyonların hakları kararlaştırılıyor
+            foreach (var action in userAccessibleAction)
+            {
+                var ActionIdList = baseUserActions.Where(m => m.ActionId == action.ActionId).ToList();
+                if (ActionIdList.Count == 0)
+                {
+                    action.IsAccess = false;
+                    action.IsRoleEffect = false;
+                }
+                else
+                {
+                    var AccessibleItem = ActionIdList.Where(m => m.RoleId == 0).ToList();
+
+                    if (AccessibleItem.Count == 0)
+                    {
+                        action.IsRoleEffect = true;
+
+                        action.IsAccess = true;
+                    }
+                    else
+                    {
+                        if (AccessibleItem.Count > 1)
+                            throw new EntityProcessException(this.ApplicationContext, "GetUserActions", this.ApplicationContext.SystemId, "Kullanıcıya  aksiyon özel yetkisi verilirken her sayfa için  veritabanında yalnızca bir kayıt tutulabilir.");
+
+                        if (AccessibleItem[0].AccessRightTypeId == 1)
+                        {
+                            action.IsAccess = true;
+                            action.IzinVer = 1;
+                        }
+                        else
+                        {
+                            action.IsAccess = false;
+                            action.Yasakla = 1;
+                        }
+
+                        var RoleList = ActionIdList.Where(m => m.RoleId != 0).ToList();
+
+                        if (RoleList.Count > 0)
+                            action.IsRoleEffect = true;
+                        else
+                            action.IsRoleEffect = false;
+                    }
+                }
+            }
+            #endregion
+
+            return userAccessibleAction;
+        }
+
+        public List<UserActionBaseView> GetUserBaseAccessibleAction(int? userId)
+        {
+            List<UserActionBaseView> baseUserActions;
+
+            string query = @"	
+                          SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId , userRoleRelations.RoleId,userRoleRelations.Id , act.Id as ActionId
+                            FROM SuratActions act
+                            JOIN AccessibleItems a ON a.DBObjectType= 2 and a.IsActive = 1 and a.DBObjectId = act.Id
+                            JOIN RelationGroups userRoleRelations ON userRoleRelations.Id = a.RelationGroupId and userRoleRelations.UserId =0 and userRoleRelations.RoleId !=0 and userRoleRelations.WorkgroupId = 0 and userRoleRelations.IsActive = 1
+                            JOIN RelationGroups roleRelations ON userRoleRelations.RoleId = roleRelations.RoleId and  roleRelations.UserId = @UserId and roleRelations.WorkgroupId = 0 and roleRelations.IsActive = 1
+                            UNION
+                          SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId, userRelations.RoleId,userRelations.Id  ,act.Id as ActionId
+                            FROM SuratActions act
+                            JOIN AccessibleItems a ON a.DBObjectType= 2 and a.IsActive = 1 and a.DBObjectId = act.Id
+                            JOIN RelationGroups userRelations ON userRelations.Id = a.RelationGroupId and userRelations .UserId = @UserId and userRelations .RoleId =0 and userRelations .WorkgroupId = 0 and userRelations .IsActive = 1
+                            ORDER BY act.Id ASC
+                        ";
+            baseUserActions = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserActionBaseView>(
+                                query, new SqlParameter("@UserId", userId)).ToList();
+
+            return baseUserActions;
         }
 
         public void SaveUser(SuratUser user)
@@ -931,8 +1022,8 @@ AND
                     if (Page.IzinVer == null && Page.Yasakla == null) { continue; }
                     else
                     {
-                        RelationGroup userRelation = this.RelationGroup.GetObjectByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId == 0);
-                        AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelation.Id & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.DBObjectId == Page.PageId);
+                        int userRelationId = GetUserRelationGroupId(userId);
+                        AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelationId & m.DBObjectType == (int)AccessibleItemDBObjectType.Page & m.DBObjectId == Page.PageId);
 
                         if (userAccess != null)
                         {
@@ -946,7 +1037,7 @@ AND
                         {
                             #region AccessibleItem tablosuna kullanıcı için yeni kayıt atılıyor.
                             if (Page.IzinVer == Page.Yasakla) { continue; }
-                            else { AddAccessibleForUserPage(Page, userRelation); }
+                            else { AddAccessibleForUserPage(Page, userRelationId); }
                            #endregion
                         }
                     }
@@ -984,13 +1075,13 @@ AND
             this.ApplicationContext.CommitDBChanges(initializedDBContextId);
         }
 
-        public void AddAccessibleForUserPage(UserAccessiblePageView Page , RelationGroup userRelation)
+        public void AddAccessibleForUserPage(UserAccessiblePageView Page , int userRelationId)
         {
 
             int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
             Surat.Base.Model.Entities.AccessibleItem AccessibleItem = new AccessibleItem();
 
-            AccessibleItem.RelationGroupId = userRelation.Id;
+            AccessibleItem.RelationGroupId = userRelationId;
             AccessibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Page;
             AccessibleItem.DBObjectId = Page.PageId;
             AccessibleItem.StartDate = DateTime.Now;
@@ -1000,6 +1091,93 @@ AND
                 AccessibleItem.AccessRightTypeId = 1;
             }
             if (Page.Yasakla == 1)
+            {
+                AccessibleItem.AccessRightTypeId = 0;
+            }
+
+            this.AccessibleItem.Add(AccessibleItem);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+        }
+
+        public void SaveUserActions(int userId, IList<UserAccessibleActionView> userActions)
+        {
+            try
+            {
+                foreach (var Action in userActions)
+                {
+                    //NK::08/04/2016:: Aksiyonla ilgili bir işlemde bulunulmamışsa koşula girilmiyor.
+                    if (Action.IzinVer == null && Action.Yasakla == null) { continue; }
+                    else
+                    {
+                        int userRelationId = GetUserRelationGroupId(userId);
+                        AccessibleItem userAccess = this.AccessibleItem.GetObjectByParameters(m => m.RelationGroupId == userRelationId & m.DBObjectType == (int)AccessibleItemDBObjectType.Action & m.DBObjectId == Action.ActionId);
+
+                        if (userAccess != null)
+                        {
+                            #region AccesssibleItem tablosunda var olan kayıttta güncelleştirme yapılıyor
+                            Surat.Base.Model.Entities.AccessibleItem AccessibleItem = userAccess;
+                            UpdateAccessibleForUserAction(AccessibleItem, Action);
+                            #endregion
+                        }
+
+                        else
+                        {
+                            #region AccessibleItem tablosuna kullanıcı için yeni kayıt atılıyor.
+                            if (Action.IzinVer == Action.Yasakla) { continue; }
+                            else { AddAccessibleForUserAction(Action, userRelationId); }
+                            #endregion
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveUserPages", this.ApplicationContext.SystemId, exception);
+            }
+
+        }
+
+        public void UpdateAccessibleForUserAction(AccessibleItem AccessibleItem, UserAccessibleActionView Action)
+        {
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+            if (Action.IzinVer == 1 && (Action.Yasakla == 0 || Action.Yasakla == null))
+            {
+                AccessibleItem.AccessRightTypeId = 1;
+                AccessibleItem.IsActive = true;
+            }
+
+            if (Action.Yasakla == 1 && (Action.IzinVer == 0 || Action.IzinVer == null))
+            {
+                AccessibleItem.AccessRightTypeId = 0;
+                AccessibleItem.IsActive = true;
+            }
+
+            if ((Action.IzinVer == 0 || Action.IzinVer == null) && (Action.Yasakla == 0 || Action.Yasakla == null))
+            {
+                AccessibleItem.IsActive = false;
+            }
+
+            this.AccessibleItem.Update(AccessibleItem);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+        }
+
+        public void AddAccessibleForUserAction(UserAccessibleActionView Action, int userRelationId)
+        {
+
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+            Surat.Base.Model.Entities.AccessibleItem AccessibleItem = new AccessibleItem();
+
+            AccessibleItem.RelationGroupId = userRelationId;
+            AccessibleItem.DBObjectType = (int)AccessibleItemDBObjectType.Action;
+            AccessibleItem.DBObjectId = Action.ActionId;
+            AccessibleItem.StartDate = DateTime.Now;
+
+            if (Action.IzinVer == 1)
+            {
+                AccessibleItem.AccessRightTypeId = 1;
+            }
+            if (Action.Yasakla == 1)
             {
                 AccessibleItem.AccessRightTypeId = 0;
             }
@@ -1483,9 +1661,15 @@ and pages.IsAccessControlRequired=1";
             }
             this.ApplicationContext.CommitDBChanges(initializedDBContextId);
         }
+
         public int GetRoleRelationGroupId(int roleId)
         {
             return this.RelationGroup.GetIdByParameters(0, roleId, 0);
+        }
+
+        public int GetUserRelationGroupId(int userId)
+        {
+            return this.RelationGroup.GetIdByParameters(userId, 0, 0);
         }
         public int GetRelationGroupId(int? userId,int? roleId,int? workgroupId)
         {

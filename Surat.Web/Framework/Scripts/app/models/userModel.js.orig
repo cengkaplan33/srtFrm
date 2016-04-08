@@ -21,10 +21,12 @@
                 IsActive: { type: "boolean", title: "Aktif mi?" },
                 Roles: { type: "string" },
 <<<<<<< HEAD
-                WorkGroupId:{type:"string"}
-=======
+                WorkGroupId:{type:"string"},
                 Pages: { type: "string" }
->>>>>>> 9d02fe480bd235ef7e51114fda327455c05d9f5d
+=======
+                Pages: { type: "string" },
+                Actions: { type: "string" }
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
             }
         });
         return userModel;

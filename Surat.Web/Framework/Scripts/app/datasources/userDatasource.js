@@ -8,14 +8,7 @@ function (kendo, userModel, userChoosenWorkgroupDatasource, util) {
             read: {
                 async: false,
                 url: "/Users/GetUsers",
-                dataType: "json",
-                complete: function (jqXhr, textStatus) {
-                    if (textStatus = "success") {
-                     
-                        userChoosenWorkgroupDatasource.read();
-                      
-                    }
-                }
+                dataType: "json"
             },
             create: {
                 type: "POST",

@@ -1,126 +1,315 @@
+<<<<<<< HEAD
+﻿define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'workgroupDatasource', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
+function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPagesDatasource, userPagesModel, workgroupDatasource, userWorkGroupDataSource, userChoosenWorkgroupDatasource, util, router) {
+    if (util.getId() != 0) {
+        userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroups?userId=" + util.getId();
+        userChoosenWorkgroupDatasource.options.transport.read.url = "/Users/GetChoosedWorkgroupId?userId=" + util.getId();
+    }
+    else {
+        userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
+
+    }
+
+=======
 ﻿
-define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
-    function (userDatasource, userModel, userRolesModel, userRolesDatasource, userWorkGroupDataSource,userChoosenWorkgroupDatasource, util, router) {
-define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'workgroupDatasource', 'util', 'router'],
-    function (userDatasource, userModel, userRolesDatasource, userRolesModel,userPagesDatasource,userPagesModel, workgroupDatasource, util, router) {
-        if (util.getId() != 0) {
-            userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroups?userId=" + util.getId();
-            userChoosenWorkgroupDatasource.options.transport.read.url = "/Users/GetChoosedWorkgroupId?userId=" + util.getId();
-        }
-        else {
-            userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
-
-        }
-
-       
+define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'userActionsDatasource', 'userActionsModel', 'workgroupDatasource', 'util', 'router'],
+    function (userDatasource, userModel, userRolesDatasource, userRolesModel,userPagesDatasource,userPagesModel,userActionsDatasource,userActionsModel, workgroupDatasource, util, router) {
         var lastSelectedDataItem = null;
        // var lastRolSelectedDataItem = null;
         //var lastWorkgroupSelectedDataItem = null;
         var checkedRoles = [];
-        var checkedWorkgroups = [];
         var checkedPages = [];
+        var checkedActions = [];
         var editViewModel = new kendo.data.ObservableObject({
             loadData: function () {
                 var viewModel = new kendo.data.ObservableObject({
                     RoleSec: function (e) {
                         if (e.currentTarget.checked == true) {
                             for (var i = 0; i < checkedRoles.length; i++) {
-                                if (checkedRoles[i].Id == e.data.Id) {
+                                if (checkedRoles[i].Id == e.data.Id)
+                                {
                                     checkedRoles[i].IsAccess = true;
                                 }
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
 
+    var lastSelectedDataItem = null;
+    // var lastRolSelectedDataItem = null;
+    //var lastWorkgroupSelectedDataItem = null;
+    var checkedRoles = [];
+    var checkedWorkgroups = [];
+    var checkedPages = [];
+    var editViewModel = new kendo.data.ObservableObject({
+        loadData: function () {
+            var viewModel = new kendo.data.ObservableObject({
+                RoleSec: function (e) {
+                    if (e.currentTarget.checked == true) {
+                        for (var i = 0; i < checkedRoles.length; i++) {
+                            if (checkedRoles[i].Id == e.data.Id) {
+                                checkedRoles[i].IsAccess = true;
+                            }
+
+                        }
+                    }
+                    else {
+                        for (var i = 0; i < checkedRoles.length; i++) {
+                            if (checkedRoles[i].Id == e.data.Id) {
+                                checkedRoles[i].IsAccess = false;
                             }
                         }
-                        else {
-                            for (var i = 0; i < checkedRoles.length; i++) {
-                                if (checkedRoles[i].Id == e.data.Id) {
-                                    checkedRoles[i].IsAccess = false;
-                                }
-                            }
-                        }
+<<<<<<< HEAD
+                    }
+                },
+                IzinVerSec: function (e) {
+
+                    var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                    var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+=======
                     },
-                    IzinVerSec: function (e) {
+                    PageIzinVerSec: function (e) {
 
-                        var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
-                        var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+                            var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                            var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
 
-                        if (e.currentTarget.checked == true) {
+                    if (e.currentTarget.checked == true) {
 
-                            AccessViewChanged(imgIsPageAccess, true);
-                            chboxSibling.checked = false;
-                            chboxSibling.prop("checked", false);
+                        AccessViewChanged(imgIsPageAccess, true);
+                        chboxSibling.checked = false;
+                        chboxSibling.prop("checked", false);
 
-                            for (var i = 0; i < checkedPages.length; i++) {
-                                if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].IzinVer = 1;
-                                    checkedPages[i].Yasakla = 0;                        
-                                }
+                        for (var i = 0; i < checkedPages.length; i++) {
+                            if (checkedPages[i].PageId == e.data.PageId) {
+                                checkedPages[i].IzinVer = 1;
+                                checkedPages[i].Yasakla = 0;
                             }
                         }
-                        else {
+                    }
+                    else {
 
-                            AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
+                        AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
 
-                            for (var i = 0; i < checkedPages.length; i++) {
-                                if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].IzinVer = 0;
-                                }
+                        for (var i = 0; i < checkedPages.length; i++) {
+                            if (checkedPages[i].PageId == e.data.PageId) {
+                                checkedPages[i].IzinVer = 0;
                             }
                         }
+<<<<<<< HEAD
+                    }
 
-                        var etkinlik = $(".pageaccess").siblings();
-                        etkinlik.data = "test";
+                    var etkinlik = $(".pageaccess").siblings();
+                    etkinlik.data = "test";
+                },
+                YasaklaSec: function (e) {
+                    var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                    var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+=======
                     },
-                    YasaklaSec: function (e) {
+                    PageYasaklaSec: function (e) {
                         var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
                         var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
                         
                         if (e.currentTarget.checked == true) {
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
 
-                            AccessViewChanged(imgIsPageAccess, false);
+                    if (e.currentTarget.checked == true) {
+
+                        AccessViewChanged(imgIsPageAccess, false);
+                        chboxSibling.checked = false;
+                        chboxSibling.prop("checked", false);
+
+                        for (var i = 0; i < checkedPages.length; i++) {
+
+                            if (checkedPages[i].PageId == e.data.PageId) {
+                                checkedPages[i].Yasakla = 1;
+                                checkedPages[i].IzinVer = 0;
+                            }
+                        }
+                    }
+                    else {
+
+                        AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
+                        for (var i = 0; i < checkedPages.length; i++) {
+                            if (checkedPages[i].PageId == e.data.PageId) {
+                                checkedPages[i].Yasakla = 0;
+                            }
+                        }
+<<<<<<< HEAD
+                    }
+                },
+
+                saveUser: function (s) {
+                    var validator = $("#form").kendoValidator().data("kendoValidator")
+                    if (validator.validate()) {
+                        try {
+                            viewModel.User.set("Pages", JSON.stringify(checkedPages));
+                            viewModel.User.set("Roles", JSON.stringify(checkedRoles));
+                            viewModel.User.set("WorkGroupId", JSON.stringify(checkedWorkgroups));
+                            viewModel.User.set("Pages", JSON.stringify(checkedPages));
+                            if (!(viewModel.User.Id > 0)) {
+=======
+                    },
+                    ActionIzinVerSec: function (e) {
+
+                        var chboxSibling = $(e.currentTarget).parent().siblings(".actionaccess").children();
+                        var imgIsAccess = $(e.currentTarget).parent().siblings(".isactionaccess").children();
+
+                        if (e.currentTarget.checked == true) {
+
+                            AccessViewChanged(imgIsAccess, true);
                             chboxSibling.checked = false;
                             chboxSibling.prop("checked", false);
 
-                            for (var i = 0; i < checkedPages.length; i++) {
-
-                                if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].Yasakla = 1;
-                                    checkedPages[i].IzinVer = 0;
+                            for (var i = 0; i < checkedActions.length; i++) {
+                                if (checkedActions[i].ActionId == e.data.ActionId) {
+                                    checkedActions[i].IzinVer = 1;
+                                    checkedActions[i].Yasakla = 0;
                                 }
                             }
                         }
                         else {
 
-                            AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
-                            for (var i = 0; i < checkedPages.length; i++) {
-                                if (checkedPages[i].PageId == e.data.PageId) {
-                                    checkedPages[i].Yasakla = 0;
+                            AccessViewChanged(imgIsAccess, e.data.IsRoleEffect);
+
+                            for (var i = 0; i < checkedActions.length; i++) {
+                                if (checkedActions[i].ActionId == e.data.ActionId) {
+                                    checkedActions[i].IzinVer = 0;
                                 }
                             }
                         }
                     },
-             
+                    ActionYasaklaSec: function (e) {
+                        var chboxSibling = $(e.currentTarget).parent().siblings(".actionaccess").children();
+                        var imgIsAccess = $(e.currentTarget).parent().siblings(".isactionaccess").children();
+
+                        if (e.currentTarget.checked == true) {
+
+                            AccessViewChanged(imgIsAccess, false);
+                            chboxSibling.checked = false;
+                            chboxSibling.prop("checked", false);
+
+                            for (var i = 0; i < checkedActions.length; i++) {
+
+                                if (checkedActions[i].ActionId == e.data.ActionId) {
+                                    checkedActions[i].Yasakla = 1;
+                                    checkedActions[i].IzinVer = 0;
+                                }
+                            }
+                        }
+                        else {
+
+                            AccessViewChanged(imgIsAccess, e.data.IsRoleEffect);
+                            for (var i = 0; i < checkedActions.length; i++) {
+                                if (checkedActions[i].ActionId == e.data.ActionId) {
+                                    checkedActions[i].Yasakla = 0;
+                                }
+                            }
+                        }
+                    },
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
                         if (validator.validate()) {
-                            try {
-                                viewModel.User.set("Pages", JSON.stringify(checkedPages));
+                            if (viewModel.User.Id > 0) {
+                               // viewModel.set("User.DefaultRole", $("#DefaultRole").val());
+                               // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
                                 viewModel.User.set("Roles", JSON.stringify(checkedRoles));
-                                viewModel.User.set("WorkGroupId", JSON.stringify(checkedWorkgroups));
                                 viewModel.User.set("Pages", JSON.stringify(checkedPages));
-                                if (!(viewModel.User.Id > 0)) {
-                                    userDatasource.add(viewModel.User);
-                                }
-                               
-                                userDatasource.sync();
-                            } catch (e) {
-
-                            }
-                            finally {
-                                userDatasource.read();                                
+                                viewModel.User.set("Actions", JSON.stringify(checkedActions));
+                                userDatasource.sync();                                
+                                userDatasource.filter({});
                                 router.navigate('/Users/index');
                             }
+                            else {
+                              //  viewModel.set("User.DefaultRole", $("#DefaultRole").val());
+                               // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                                viewModel.User.set("Roles", JSON.stringify(checkedRoles));
+                                viewModel.User.set("Pages", JSON.stringify(checkedPages));
+                                viewModel.User.set("Actions", JSON.stringify(checkedActions));
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
+                                userDatasource.add(viewModel.User);
+                            }
+
+                            userDatasource.sync();
+                        } catch (e) {
+
                         }
+<<<<<<< HEAD
+                        finally {
+                            userDatasource.read();
+                            router.navigate('/Users/index');
+                        }
+                    }
+                },
+                cancel: function (s) {
+                    userDatasource.filter({});
+                    router.navigate('/Users/index');
+                },
+                //onRolesChange:function(arg)
+                //{
+                //    var grid = arg.sender;
+                //    lastRolSelectedDataItem = grid.dataItem(grid.select());
+
+                //    //$("#DefaultRole").val(lastRolSelectedDataItem.Id);
+
+                //},
+                //onWorkgroupChange: function (arg) {
+                //    var grid = arg.sender;
+                //    lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
+
+                //  //  $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
+                //},
+                //mysource:workgroupDatasource ,
+                userWorkGroupDataSource: userWorkGroupDataSource,
+                userRolesDatasource: userRolesDatasource,
+                userPagesDatasource: userPagesDatasource,
+                onChange: function (arg) {
+                    var grid = arg.sender;
+                    lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
+                    checkedWorkgroups = [];
+                    checkedWorkgroups.push({ "WorkGroupId": lastWorkgroupSelectedDataItem.Id });
+                    //  $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
+                },
+                onDataBound: function (arg) {
+
+                    var treeList = $("div[data-role='treelist']").data("kendoTreeList");
+                    var rows = $("tr.k-treelist-group", treeList.tbody);
+                    $.each(rows, function (idx, row) {
+                        treeList.expand(row);
+                        var view = userWorkGroupDataSource.view();
+                        // Iterate through rows
+                        for (var i = 0; i < view.length; i++) {
+                            for (var k = 0; k < checkedWorkgroups.length; k++) {
+                                if (view[i].Id == checkedWorkgroups[k].WorkGroupId) {
+                                    // Get the grid
+
+                                    // Set the selected row
+                                    treeList.select(treeList.table.find("tr[data-uid='" + view[i].uid + "']"));
+                                    break;
+                                }
+                            }
+                            // Find row with the lastSelectedProduct
+
+                        }
+                    });
+
+                    // Check if a row was selected
+                    //if (lastSelectedDataItem == null) return;
+                    //// Get all the rows     
+                    //var view = this.dataSource.view();
+                    //// Iterate through rows
+                    //for (var i = 0; i < view.length; i++) {
+                    //    // Find row with the lastSelectedProduct
+                    //    if (view[i].Id == lastSelectedDataItem.Id) {
+                    //        // Get the grid
+                    //        var grid = arg.sender;
+                    //        // Set the selected row
+                    //        grid.select(grid.table.find("tr[data-uid='" + view[i].uid + "']"));
+                    //        break;
+                    //    }
+                    //}
+                },
+            });
+
+=======
                     },
                     cancel: function (s) {
                         userDatasource.filter({});
@@ -130,123 +319,80 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                     //{
                     //    var grid = arg.sender;
                     //    lastRolSelectedDataItem = grid.dataItem(grid.select());
-
+                       
                     //    //$("#DefaultRole").val(lastRolSelectedDataItem.Id);
-
+                      
                     //},
                     //onWorkgroupChange: function (arg) {
                     //    var grid = arg.sender;
                     //    lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
-
+                       
                     //  //  $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
                     //},
                     //mysource:workgroupDatasource ,
-                    userWorkGroupDataSource: userWorkGroupDataSource,
                     userRolesDatasource: userRolesDatasource,
                     userPagesDatasource: userPagesDatasource,
-                    onChange: function (arg) {
-                            var grid = arg.sender;
-                            lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
-                            checkedWorkgroups = [];
-                            checkedWorkgroups.push({ "WorkGroupId": lastWorkgroupSelectedDataItem.Id });
-                          //  $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
-                    },
-                    onDataBound: function (arg) {
-                       
-                        var treeList = $("div[data-role='treelist']").data("kendoTreeList");
-                        var rows = $("tr.k-treelist-group", treeList.tbody);
-                        $.each(rows, function (idx, row) {
-                            treeList.expand(row);
-                            var view =userWorkGroupDataSource.view();
-                            // Iterate through rows
-                            for (var i = 0; i < view.length; i++) {
-                                for (var k = 0; k < checkedWorkgroups.length; k++) {
-                                    if (view[i].Id == checkedWorkgroups[k].WorkGroupId) {
-                                        // Get the grid
+                    userActionsDatasource: userActionsDatasource,
+                });                                                   
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
 
-                                        // Set the selected row
-                                        treeList.select(treeList.table.find("tr[data-uid='" + view[i].uid + "']"));
-                                        break;
-                                    }
-                                }
-                                // Find row with the lastSelectedProduct
-                                
-                            }
-                        });
-               
-                        // Check if a row was selected
-                        //if (lastSelectedDataItem == null) return;
-                        //// Get all the rows     
-                        //var view = this.dataSource.view();
-                        //// Iterate through rows
-                        //for (var i = 0; i < view.length; i++) {
-                        //    // Find row with the lastSelectedProduct
-                        //    if (view[i].Id == lastSelectedDataItem.Id) {
-                        //        // Get the grid
-                        //        var grid = arg.sender;
-                        //        // Set the selected row
-                        //        grid.select(grid.table.find("tr[data-uid='" + view[i].uid + "']"));
-                        //        break;
-                        //    }
-                        //}
-                    },
-                });
-               
+            userDatasource.fetch(function () {
+                if (userDatasource.view().length > 0) {
 
-                userDatasource.fetch(function () {
-                    if (userDatasource.view().length > 0) {
+                    var data = userDatasource.data();
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Id == util.getId()) {
+                            viewModel.set("User", userDatasource.at(i));
 
-                        var data = userDatasource.data();
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].Id == util.getId()) {
-                                viewModel.set("User", userDatasource.at(i));
-
-                                setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
-                                userRolesDatasource.options.transport.read.url = "/Users/GetUserRoles?userId=" + data[i].Id;
-                                userRolesDatasource.read();
+                            setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
+                            userRolesDatasource.options.transport.read.url = "/Users/GetUserRoles?userId=" + data[i].Id;
+                            userRolesDatasource.read();
 
                             userPagesDatasource.options.transport.read.url = "/Users/GetUserPages?userId=" + data[i].Id;
                             userPagesDatasource.read();
-                                break;
-                            }
-                            viewModel.set("User", new userModel());
+
+                            userActionsDatasource.options.transport.read.url = "/Users/GetUserActions?userId=" + data[i].Id;
+                            userActionsDatasource.read();
+                            break;
                         }
-                    }
-                    else {
                         viewModel.set("User", new userModel());
                     }
+                }
+                else {
+                    viewModel.set("User", new userModel());
+                }
 
-                });
-                checkedRoles = [];
-                userRolesDatasource.fetch(function () {
-                    if (userRolesDatasource.view().length > 0) {
-                        var userRoleData = userRolesDatasource.data();
-                        for (var k = 0; k < userRoleData.length; k++) {
-                            if (userRoleData[k].IsAccess == true) {
+            });
+            checkedRoles = [];
+            userRolesDatasource.fetch(function () {
+                if (userRolesDatasource.view().length > 0) {
+                    var userRoleData = userRolesDatasource.data();
+                    for (var k = 0; k < userRoleData.length; k++) {
+                        if (userRoleData[k].IsAccess == true) {
 
-                                checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": true });
-                            }
-                            else {
-                                checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": false });
-                            }
+                            checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": true });
+                        }
+                        else {
+                            checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": false });
                         }
                     }
-                });
+                }
+            });
+            viewModel.User.Roles = checkedRoles;
 
-              
-             
-                userChoosenWorkgroupDatasource.fetch(function () {
-                    if (userChoosenWorkgroupDatasource.view().length > 0) {
-                        var userWorkgroupId = userChoosenWorkgroupDatasource.data();
 
-                        for (var k = 0; k < userWorkgroupId.length; k++) {
-                            checkedWorkgroups = [];
-                            checkedWorkgroups.push({ "WorkGroupId": userWorkgroupId[k] });
-                        }
+            userChoosenWorkgroupDatasource.fetch(function () {
+                if (userChoosenWorkgroupDatasource.view().length > 0) {
+                    var userWorkgroupId = userChoosenWorkgroupDatasource.data();
+
+                    for (var k = 0; k < userWorkgroupId.length; k++) {
+                        checkedWorkgroups = [];
+                        checkedWorkgroups.push({ "WorkGroupId": userWorkgroupId[k] });
                     }
-                });
-                viewModel.User.WorkGroup = checkedWorkgroups;
-               
+                }
+            });
+            viewModel.User.WorkGroup = checkedWorkgroups;
+
             checkedPages = [];
             userPagesDatasource.fetch(function () {
                 if (userPagesDatasource.view().length > 0) {
@@ -260,14 +406,32 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
                 }
             });
 
+            checkedActions = [];
+            userActionsDatasource.fetch(function () {
+                if (userActionsDatasource.view().length > 0) {
+                    var userActionData = userActionsDatasource.data();
+                    for (var k = 0; k < userActionData.length; k++) {
+                        if (userActionData[k].IzinVer == 1 || userActionData[k].Yasakla == 1)
+                            checkedActions.push({ "ActionId": userActionData[k].ActionId, "IzinVer": userActionData[k].IzinVer, "Yasakla": userActionData[k].Yasakla });
+                        else
+                            checkedActions.push({ "ActionId": userActionData[k].ActionId, "IzinVer": null, "Yasakla": null });
+                    }
+                }
+            });
+
             viewModel.User.Pages = checkedPages;
-                return viewModel;
-            },
-        });
-
-        return editViewModel;
-
+<<<<<<< HEAD
+=======
+            viewModel.User.Roles = checkedRoles;
+            viewModel.User.Actions = checkedActions;
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
+            return viewModel;
+        },
     });
+
+    return editViewModel;
+
+});
 
 function AccessViewChanged(imgContainer, state) {
 
@@ -277,7 +441,7 @@ function AccessViewChanged(imgContainer, state) {
 
 function setAcccesIcon(model) {
 
-    if (model.IsPageAccess) { return "<image src='/Framework/theme/images/check.png' / title='İzinli'>"; }
+    if (model.IsAccess) { return "<image src='/Framework/theme/images/check.png' / title='İzinli'>"; }
     else { return "<image src='/Framework/theme/images/cross.png' / title='Yasaklı'>"; }
 }
 

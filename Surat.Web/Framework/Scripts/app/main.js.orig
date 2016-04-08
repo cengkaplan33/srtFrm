@@ -19,6 +19,7 @@
         'userRolesModel': 'models/userRolesModel',
         'userPagesModel': 'models/userPagesModel',
         'roleActionsModel': 'models/roleActionsModel',
+        'userActionsModel': 'models/userActionsModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -44,12 +45,13 @@
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
-<<<<<<< HEAD
         'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
+        'userPagesDatasource': 'datasources/userPagesDatasource',
+<<<<<<< HEAD
         'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
 =======
-        'userPagesDatasource': 'datasources/userPagesDatasource',
->>>>>>> 9d02fe480bd235ef7e51114fda327455c05d9f5d
+        'userActionsDatasource': 'datasources/userActionsDatasource',
+>>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
         // utils
         'util': '/Framework/Scripts/util'
     },

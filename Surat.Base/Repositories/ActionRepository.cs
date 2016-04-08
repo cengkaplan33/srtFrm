@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Surat.Common.Data;
 
 namespace Surat.Base.Repositories
 {
@@ -53,6 +54,21 @@ namespace Surat.Base.Repositories
                                  }).ToList();
 
             return accessibleActions;
+        }
+
+        public List<UserAccessibleActionView> GetAllActionForUser()
+        {
+            List<UserAccessibleActionView> actions;
+            actions = (from action in this.Context.ApplicationContext.DBContext.Actions
+                       where (action.IsActive == true )
+                       orderby (action.TypeName)
+                     select new UserAccessibleActionView
+                     {
+                         ActionId = action.Id,
+                         ActionName = action.TypeName,
+                     }).ToList();
+
+            return actions;
         }
 
         #endregion

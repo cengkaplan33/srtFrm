@@ -20,7 +20,8 @@
                 ChangedDate: { type: "date" },
                 IsActive: { type: "boolean", title: "Aktif mi?" },
                 Roles: { type: "string" },
-                Pages: { type: "string" }
+                Pages: { type: "string" },
+                Actions: { type: "string" }
             }
         });
         return userModel;

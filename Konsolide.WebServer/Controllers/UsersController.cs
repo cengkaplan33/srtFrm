@@ -83,8 +83,20 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        public JsonResult GetUserActions(int? userId = -1)
+        {
+            try
+            {
+                return Json(this.WebApplicationManager.Framework.Security.GetUserActions(userId), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
         [HttpPost]
-        public ActionResult Add(SuratUser user, string Roles, string Pages)
+        public ActionResult Add(SuratUser user, string Roles, string Pages, string Actions)
         {
             try
             {
@@ -96,6 +108,9 @@ namespace Surat.WebServer.Controllers
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
                 this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
 
+                IList<UserAccessibleActionView> userActions = new JavaScriptSerializer().Deserialize<IList<UserAccessibleActionView>>(Actions);
+                this.WebApplicationManager.Framework.Security.SaveUserActions(user.Id, userActions);
+
                 return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
@@ -106,7 +121,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(SuratUser user, string Roles, string Pages)
+        public JsonResult Update(SuratUser user, string Roles, string Pages, string Actions)
         {
             try
             {
@@ -115,6 +130,9 @@ namespace Surat.WebServer.Controllers
 
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
                 this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
+
+                IList<UserAccessibleActionView> userActions = new JavaScriptSerializer().Deserialize<IList<UserAccessibleActionView>>(Actions);
+                this.WebApplicationManager.Framework.Security.SaveUserActions(user.Id, userActions);
 
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
                 return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);

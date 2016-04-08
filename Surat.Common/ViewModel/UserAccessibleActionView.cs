@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Surat.Common.ViewModel
 {
-    public class UserAccessiblePageView
+    public class UserAccessibleActionView
     {
-        public int PageId { get; set; }     
-        public string PageName { get; set; }
+        public int ActionId { get; set; }
+        public string ActionName { get; set; }
         public bool IsRoleEffect { get; set; }
         public int? IzinVer { get; set; }
         public int? Yasakla { get; set; }
         public Boolean IsAccess { get; set; }
-        
+
     }
 }

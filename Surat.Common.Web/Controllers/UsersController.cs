@@ -83,7 +83,20 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        public JsonResult GetChoosedWorkgroupId(int? userId=-1)
+        public JsonResult GetUserActions(int? userId = -1)
+        {
+            try
+            {
+                return Json(this.WebApplicationManager.Framework.Security.GetUserActions(userId), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
+        public JsonResult GetChoosedWorkgroupId(int? userId = -1)
         {
             try
             {
@@ -119,8 +132,8 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
-        [HttpPost]        
-        public ActionResult Add(SuratUser user, string Roles, string Pages,string WorkGroupId)
+        [HttpPost]
+        public ActionResult Add(SuratUser user, string Roles, string Pages, string Actions, string WorkGroupId)
         {
             try
             {
@@ -128,14 +141,18 @@ namespace Surat.WebServer.Controllers
 
                 IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
                 IList<UserWorkGroupView> userWorkgroup = new JavaScriptSerializer().Deserialize<IList<UserWorkGroupView>>(WorkGroupId);
+
                 if (userWorkgroup.Count() <= 0)
-                    throw new Exception("Lütfen çalışma grubu seçiniz"); 
+                    throw new Exception("Lütfen çalışma grubu seçiniz");
 
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
                 this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
                 this.WebApplicationManager.Framework.Security.SaveUserRelationGroupByWorkgroupId(user.Id, userWorkgroup.First().WorkGroupId);
                 this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
+                IList<UserAccessibleActionView> userActions = new JavaScriptSerializer().Deserialize<IList<UserAccessibleActionView>>(Actions);
+                this.WebApplicationManager.Framework.Security.SaveUserActions(user.Id, userActions);
+
                 return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
 
             }
@@ -147,7 +164,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(SuratUser user, string Roles, string Pages, string WorkGroupId)
+        public JsonResult Update(SuratUser user, string Roles, string Pages, string Actions, string WorkGroupId)
         {
             try
             {
@@ -155,8 +172,12 @@ namespace Surat.WebServer.Controllers
                 IList<UserWorkGroupView> userWorkgroup = new JavaScriptSerializer().Deserialize<IList<UserWorkGroupView>>(WorkGroupId);
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
 
+                IList<UserAccessibleActionView> userActions = new JavaScriptSerializer().Deserialize<IList<UserAccessibleActionView>>(Actions);
+                this.WebApplicationManager.Framework.Security.SaveUserActions(user.Id, userActions);
+
                 if (userWorkgroup.Count() <= 0)
                     throw new Exception("Lütfen çalışma grubu seçiniz");
+
                 this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
                 this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
