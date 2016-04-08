@@ -200,19 +200,19 @@ define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 
 
 function AccessViewChanged(imgContainer, state) {
 
-    if (state) { imgContainer.prop("src", "https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png"); }
-    else { imgContainer.prop("src", "https://cdn3.iconfinder.com/data/icons/vista-general/16/delete.png"); }
+    if (state) { imgContainer.prop("src", "/Framework/theme/images/check.png"); }
+    else { imgContainer.prop("src", "/Framework/theme/images/cross.png"); }
 }
 
 function setAcccesIcon(model) {
 
-    if (model.IsPageAccess) { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png' / title='İzinli'>"; }
-    else { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/delete.png' / title='Yasaklı'>"; }
+    if (model.IsPageAccess) { return "<image src='/Framework/theme/images/check.png' / title='İzinli'>"; }
+    else { return "<image src='/Framework/theme/images/cross.png' / title='Yasaklı'>"; }
 }
 
 function setRoleIcon(model) {
 
-    if (model.IsRoleEffect) { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png' / title='İzinli'>"; }
+    if (model.IsRoleEffect) { return "<image src='/Framework/theme/images/plus-circle.png' / title='İzinli'>"; }
     else
         return "";
 }
