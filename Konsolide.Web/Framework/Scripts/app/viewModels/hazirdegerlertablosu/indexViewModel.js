@@ -1,24 +1,111 @@
-﻿define(['kendo', 'hazirDegerlerTablosuModel', 'hazirDegerlerTablosuDatasource', 'router'],
-function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, router) {
+﻿define(['kendo', 'hazirDegerlerTablosuModel', 'router','util'],
+function (kendo, hazirDegerlerTablosuModel, router,util) {
     var SelectedRow;
     var SelectedRowId;
     var SelectedRowParentId;
     var grid;
     var toolbar;
+    var expandedId = "";
     function LoadGrid() {
         grid = $("#hazirDegerlerGrid").kendoTreeList({
-            dataSource: hazirDegerlerTablosuDatasource,
-            groupable: false,
-            sortable: true,
-            scrollable: false,
-            editable: "inline",
+           
+            dataSource: new kendo.data.TreeListDataSource({
+                transport: {
+
+                    read: {
+                        url: "/HazirDegerlerTablosu/GetHazirDegerler",
+                        type: "POST",
+                        complete: function (jqXhr, textStatus) {
+                            //var items = localStorage["toExpand"];
+                            //if (items) {
+                            //    items = JSON.parse(items);
+                            //    var tl = $("#hazirDegerlerGrid").data("kendoTreeList");
+                              
+                            //        var row = $("#hazirDegerlerGrid").data("kendoTreeList").tbody.find("tr[data-uid='" +expandedId + "']");
+                            //       // var tr = tl.content.find("tr[data-uid='"+expandedId+"']").eq(val);
+
+                            //       tl.expand(row);
+                              
+                            //}
+                            var items = localStorage["toExpand"];
+                            if (items) {
+                                items = JSON.parse(items);
+                                var tl = $("#hazirDegerlerGrid").data("kendoTreeList");
+                                $.each(items, function (idx, val) {
+                                    var tr = tl.content.find("tr").eq(val);
+                                    tl.collapse(tr);
+                                })
+                            }
+                        }
+                    },
+                    create: {
+                        type: "POST",
+                        url: "/HazirDegerlerTablosu/Add",
+                        dataType: "json",
+                        complete: function (jqXhr, textStatus) {
+                            if (textStatus = "success") {
+                                var result = jQuery.parseJSON(jqXhr.responseText);
+                                
+                                try {
+                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
+                                    var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
+                                    tree.dataSource.read();
+                                } catch (e) {
+                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
+                                    var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
+                                    tree.dataSource.read();
+                                }
+                                _notification.info(result.Result);
+                            }
+                        }
+                    },
+                    destroy: {
+
+                        type: "POST",
+                        url: "/HazirDegerlerTablosu/Delete",
+                        dataType: "Json",
+
+                    },
+                    update: {
+
+                        type: "POST",
+                        url: "/HazirDegerlerTablosu/Update",
+                        dataType: "Json",
+                        complete: function (jqXhr, textStatus) {
+                            if (textStatus = "success") {
+                                var result = jQuery.parseJSON(jqXhr.responseText);
+                              
+                                try {
+                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
+                                    var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
+                                    tree.dataSource.read();
+                                } catch (e) {
+                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
+                                    var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
+                                    tree.dataSource.read();
+                                }
+                                _notification.info(result.Result);
+                            }
+                        }
+                    }
+
+                },
+                paging: false,
+                cache: false,
+                schema: {
+                    model: hazirDegerlerTablosuModel
+                },
+                error: function (e) {
+                    util.errorHandler(e);
+                }
+            }),
+            autosync: false,
             filterable: true,
-            autoSync: true,
-            selectable: true,
+            selectable: false,
             navigatable: false,
             pageSize: 1500,
             cache: false,
-
+            batch: false,
             columns: [
 
                  {
@@ -44,6 +131,13 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
                  },
               { command: [{ name: "edit", text: "Düzenle" }], title: "İşlemler" }
             ],
+            expand:function(e)
+            {
+                expandedId = e.model.uid;
+                localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
+             
+               
+            },
             dataBound: function onDataBound(e) {
                 var grid = this;
                 var gridData = grid.dataSource.view();
@@ -52,31 +146,25 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
                     var currentUid = gridData[i].uid;
                     if (gridData[i].parentId == null) {
                         var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                        currenRow[0].style.fontWeight = "bold";
                         var editButton = $(currenRow).find(".k-grid-edit");
                         editButton.hide();
                     }
+                    else {
+                        var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                        currenRow[0].style.fontWeight = "normal";
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.show();
+                    }
                 }
             },
-            change: pageModel.onSelectedRowChanged
+            editable: true,
+           
         });
-        $(grid.tbody).on('keydown', function (e) {
-            if ($(e.target).closest('td').is(':last-child') && $(e.target).closest('tr').is(':last-child')) {
-                grid.addRow();
-            }
-        });
-        $("#hazirDegerlerGrid").on("click", "td", function (e) {
 
-            var rowIndex = $(this).parent().index();
-            var cellIndex = $(this).index();
-            $("input").on("keydown", function (event) {
-                if (event.keyCode == 13) {
-                    $("#hazirDegerlerGrid").data("kendoGrid").editCell($(".k-grid-content").find("table").find("tbody").find("tr:eq(" + rowIndex + ")").find("td:eq(" + cellIndex + ")").next().focusin($("#batchgrid").data("kendoGrid").closeCell($(".k-grid-content").find("table").find("tbody").find("tr:eq(" + rowIndex + ")").find("td:eq(" + cellIndex + ")").parent())));
-                    return false;
-                }
-            });
 
-        });
     }
+  
     function LoadToolBar() {
         toolbar = $("#FunctionsToolBar").kendoToolBar({
             items: [
@@ -97,64 +185,13 @@ function (kendo, hazirDegerlerTablosuModel, hazirDegerlerTablosuDatasource, rout
         });
     }
 
-    function GetSelectedGridRow() {
-        return grid.data("kendoTreeList").select().eq(0);
-    }
-
-    function FilterProjectsByStatus(e) {
-        alert("//TO DO Filter Projects By Status")
-        //ProjectCardDataSource.read();
-        //grid.data("kendoGrid").refresh();
-    }
-    function LoadToolBar() {
-        toolbar = $("#FunctionsToolBar").kendoToolBar({
-            items: [
-                { type: "button", id: "btnAddProject", text: "Yeni Ödeme Talebi", click: pageModel.onAddProjectCard },
-                //{ type: "button", id: "btnEditProject", text: "Düzenle", click: pageModel.onEditProjectCard },
-                //{ type: "button", id: "btnDeleteProject", text: "Sil", click: pageModel.onRemoveProjectCard },
-                 { type: "separator" },
-                { type: "button", id: "btnYenile", text: "Yenile", click: pageModel.onRefreshProjectList, enable: true, icon: "refresh" },
-
-
-                { type: "separator" }
-
-            ]
-        });
-    }
 
     var pageModel = new kendo.data.ObservableObject({
 
         onLoad: function () {
             //LoadToolBar();
             LoadGrid();
-        },
-        onAddProjectCard: function (e) {
-            grid.data("kendoTreeList").addRow();
-        },
-        onEditProjectCard: function (e) {
-            grid.data("kendoGrid").editRow(GetSelectedGridRow());
-        },
-        onRemoveProjectCard: function (e) {
-            grid.data("kendoGrid").removeRow(GetSelectedGridRow());
-        },
-        onSelectedRowChanged: function (e) {
-            SelectedRow = grid.data("kendoTreeList").dataItem(GetSelectedGridRow());
-            if (SelectedRow) {
-
-                SelectedRowId = SelectedRow.Id;
-                SelectedRowParentId = SelectedRow.parentId;
-
-            } else {
-                SelectedRowId = -1;
-                _notification.info("Öncelikle bir proje satırı seçmelisiniz!");
-            }
-
-        },
-        onRefreshProjectList: function (e) {
-            // hazirDegerlerTablosuDatasource.read();
-            grid.data("kendoTreeList").refresh();
         }
-
     });
     return pageModel;
 });

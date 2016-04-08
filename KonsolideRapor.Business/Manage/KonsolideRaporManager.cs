@@ -660,9 +660,9 @@ where b.IsActive=1 and h.WorkGroupId is null or ( h.WorkGroupId is not null and 
                         ParentId = parentId,
                         Tur = item.BObjectType,
                         Tarih = DateTime.Now,
-                        EURO = item.HEURO,
-                        USD = item.HUSD,
-                        TL = item.HTL,
+                        EURO = item.HEURO ?? 0,
+                        USD = item.HUSD ?? 0,
+                        TL = item.HTL ?? 0,
                         Kod=item.Kod
                     });
 
@@ -690,6 +690,7 @@ where b.IsActive=1 and h.WorkGroupId is null or ( h.WorkGroupId is not null and 
                     hdt.EURO = (decimal)hazirDegerTablosu.EURO;
                     hdt.HazirDeger = hazirDegerTablosu.HazirDeger;
                     hdt.Kod = hazirDegerTablosu.Kod;
+                    hdt.ParentId = hazirDegerTablosu.ParentId;
                     hdt.OdemeTalepDurumuId = hazirDegerTablosu.OdemeTalepDurumuId;
                     hdt.Tarih = DateTime.Now.Date;
                     hdt.TL = (decimal)hazirDegerTablosu.TL;
