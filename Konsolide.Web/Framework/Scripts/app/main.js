@@ -22,6 +22,7 @@
         'workgroupModel': 'models/workgroupModel',
         'roleActionsModel': 'models/roleActionsModel',
         'userPagesModel': 'models/userPagesModel',
+        'userActionsModel': 'models/userActionsModel',
         //viewModels        
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -58,6 +59,7 @@
         'userRolesDatasource': 'datasources/userRolesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'userPagesDatasource': 'datasources/userPagesDatasource',
+        'userActionsDatasource': 'datasources/userActionsDatasource',
         // utils
         util: '/Framework/Scripts/util'
     },

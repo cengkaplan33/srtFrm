@@ -1,0 +1,41 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Aksiyon Seçimi</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div id="userActionsGrid"
+                                 data-role="grid"
+                                 data-sortable="true"
+                                 data-pageable="true"
+                                 data-filterable="false"
+                                 data-editable="inline"
+                                 data-selectable="multiple"
+                                 data-columns='[
+                                        { field: "ActionId", title: "ID", width: "75px" },
+                                        { field: "ActionName", title: "Aksiyon", width: "200px" },
+                                        { field: "IsRoleEffect", title: "Rol Hakkı",  attributes: { "class": "actionaccess" }, "template": "#= setRoleIcon(data) #"},
+                                        { field: "IzinVer", title: "İzin Ver" , attributes: { "class": "useraction forGrant" }, template:"<input type=\"checkbox\"   # if (IzinVer) {# checked # }# data-bind=\"click:ActionIzinVerSec\" />",},
+                                        { field: "Yasakla", title: "Yasakla", attributes: { "class": "useraction forDeny" }, template:"<input type=\"checkbox\"  # if (Yasakla) {# checked # }# data-bind=\"click:ActionYasaklaSec\" />"},
+                                        { field: "IsAccess", title: "Etkinlik", attributes: { "class": "isactionaccess" }, "template" : "#= setAcccesIcon(data) #" } ]'
+                                 data-bind="source: userActionsDatasource" style="width:100%">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>
