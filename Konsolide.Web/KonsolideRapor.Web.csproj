@@ -1403,6 +1403,7 @@
     <Content Include="Framework\Scripts\app\datasources\TahsilatEkraniDurumTanimiDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTalepDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\tahsilatTuruDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
     <Content Include="Framework\Scripts\app\models\hazirDegerlerTablosuModel.js" />
     <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\models\odemeDurumuModel.js" />
@@ -1412,6 +1413,7 @@
     <Content Include="Framework\Scripts\app\models\paymentCollectingModel.js" />
     <Content Include="Framework\Scripts\app\models\bankModel.js" />
     <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
+    <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
@@ -3242,6 +3244,7 @@
     <Content Include="Views\Roles\EditTabRoles.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\EditTabActions.cshtml" />
+    <Content Include="Views\Users\EditTabPages.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

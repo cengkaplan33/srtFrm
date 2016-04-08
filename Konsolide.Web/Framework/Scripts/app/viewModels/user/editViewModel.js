@@ -1,17 +1,19 @@
 ﻿
-define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 'util', 'router'],
-    function (userDatasource, userModel, userRolesModel, userRolesDatasource, util, router) {
+define(['userDatasource', 'userModel', 'userRolesDatasource' ,'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'workgroupDatasource', 'util', 'router'],
+    function (userDatasource, userModel, userRolesDatasource, userRolesModel,userPagesDatasource,userPagesModel, workgroupDatasource, util, router) {
         var lastSelectedDataItem = null;
-        var lastRolSelectedDataItem = null;
-        var lastWorkgroupSelectedDataItem = null;
+       // var lastRolSelectedDataItem = null;
+        //var lastWorkgroupSelectedDataItem = null;
         var checkedRoles = [];
+        var checkedPages = [];
         var editViewModel = new kendo.data.ObservableObject({
             loadData: function () {
                 var viewModel = new kendo.data.ObservableObject({
-                    sec: function (e) {
+                    RoleSec: function (e) {
                         if (e.currentTarget.checked == true) {
                             for (var i = 0; i < checkedRoles.length; i++) {
-                                if (checkedRoles[i].Id == e.data.Id) {
+                                if (checkedRoles[i].Id == e.data.Id)
+                                {
                                     checkedRoles[i].IsAccess = true;
                                 }
 
@@ -22,27 +24,87 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                                 if (checkedRoles[i].Id == e.data.Id) {
                                     checkedRoles[i].IsAccess = false;
                                 }
-
                             }
+                        }
+                    },
+                    IzinVerSec: function (e) {
 
+                        var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                        var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+
+                        if (e.currentTarget.checked == true) {
+
+                            AccessViewChanged(imgIsPageAccess, true);
+                            chboxSibling.checked = false;
+                            chboxSibling.prop("checked", false);
+
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].IzinVer = 1;
+                                    checkedPages[i].Yasakla = 0;                        
+                                }
+                            }
+                        }
+                        else {
+
+                            AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
+
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].IzinVer = 0;
+                                }
+                            }
                         }
 
+                        var etkinlik = $(".pageaccess").siblings();
+                        etkinlik.data = "test";
                     },
+                    YasaklaSec: function (e) {
+                        var chboxSibling = $(e.currentTarget).parent().siblings(".useraccess").children();
+                        var imgIsPageAccess = $(e.currentTarget).parent().siblings(".ispageaccess").children();
+                        
+                        if (e.currentTarget.checked == true) {
+
+                            AccessViewChanged(imgIsPageAccess, false);
+                            chboxSibling.checked = false;
+                            chboxSibling.prop("checked", false);
+
+                            for (var i = 0; i < checkedPages.length; i++) {
+
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].Yasakla = 1;
+                                    checkedPages[i].IzinVer = 0;
+                                }
+                            }
+                        }
+                        else {
+
+                            AccessViewChanged(imgIsPageAccess, e.data.IsRoleEffect);
+                            for (var i = 0; i < checkedPages.length; i++) {
+                                if (checkedPages[i].PageId == e.data.PageId) {
+                                    checkedPages[i].Yasakla = 0;
+                                }
+                            }
+                        }
+                    },
+             
                     saveUser: function (s) {
                         var validator = $("#form").kendoValidator().data("kendoValidator")
                         if (validator.validate()) {
                             if (viewModel.User.Id > 0) {
-                                // viewModel.set("User.DefaultRole", $("#DefaultRole").val());
-                                // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                               // viewModel.set("User.DefaultRole", $("#DefaultRole").val());
+                               // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
                                 viewModel.User.set("Roles", JSON.stringify(checkedRoles));
-                                userDatasource.sync();
+                                viewModel.User.set("Pages", JSON.stringify(checkedPages));
+                                userDatasource.sync();                                
                                 userDatasource.filter({});
                                 router.navigate('/Users/index');
                             }
                             else {
-                                //  viewModel.set("User.DefaultRole", $("#DefaultRole").val());
-                                // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
+                              //  viewModel.set("User.DefaultRole", $("#DefaultRole").val());
+                               // viewModel.set("User.DefaultWorkgroup", $("#DefaultWorkgroup").val());
                                 viewModel.User.set("Roles", JSON.stringify(checkedRoles));
+                                viewModel.User.set("Pages", JSON.stringify(checkedPages));
                                 userDatasource.add(viewModel.User);
                                 userDatasource.sync();
                                 userDatasource.filter({});
@@ -58,63 +120,99 @@ define(['userDatasource', 'userModel', 'userRolesModel', 'userRolesDatasource', 
                     //{
                     //    var grid = arg.sender;
                     //    lastRolSelectedDataItem = grid.dataItem(grid.select());
-
+                       
                     //    //$("#DefaultRole").val(lastRolSelectedDataItem.Id);
-
+                      
                     //},
                     //onWorkgroupChange: function (arg) {
                     //    var grid = arg.sender;
                     //    lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
-
+                       
                     //  //  $("#DefaultWorkgroup").val(lastWorkgroupSelectedDataItem.Id);
                     //},
                     //mysource:workgroupDatasource ,
                     userRolesDatasource: userRolesDatasource,
-                });
+                    userPagesDatasource: userPagesDatasource,
+                });                                                   
 
-                userDatasource.fetch(function () {
-                    if (userDatasource.view().length > 0) {
+            userDatasource.fetch(function () {
+                if (userDatasource.view().length > 0) {
 
-                        var data = userDatasource.data();
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].Id == util.getId()) {
-                                viewModel.set("User", userDatasource.at(i));
+                    var data = userDatasource.data();
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Id == util.getId()) {
+                            viewModel.set("User", userDatasource.at(i));
 
-                                setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
-                                userRolesDatasource.options.transport.read.url = "/Users/GetUserRoles?userId=" + data[i].Id;
-                                userRolesDatasource.read();
-                                break;
-                            }
-                            viewModel.set("User", new userModel());
+                            setBreadCrumb("#/Users/Index", "Kullanıcı Listesi");
+                            userRolesDatasource.options.transport.read.url = "/Users/GetUserRoles?userId=" + data[i].Id;
+                            userRolesDatasource.read();
+
+                            userPagesDatasource.options.transport.read.url = "/Users/GetUserPages?userId=" + data[i].Id;
+                            userPagesDatasource.read();
+                            break;
                         }
-
-                    }
-                    else {
                         viewModel.set("User", new userModel());
                     }
+                }
+                else {
+                    viewModel.set("User", new userModel());
+                }
 
-                });
-                checkedRoles = [];
-                userRolesDatasource.fetch(function () {
-                    if (userRolesDatasource.view().length > 0) {
-                        var userRoleData = userRolesDatasource.data();
-                        for (var k = 0; k < userRoleData.length; k++) {
-                            if (userRoleData[k].IsAccess == true) {
+            });
+            checkedRoles = [];
+            userRolesDatasource.fetch(function () {
+                if (userRolesDatasource.view().length > 0) {
+                    var userRoleData = userRolesDatasource.data();
+                    for (var k = 0; k < userRoleData.length; k++) {
+                        if (userRoleData[k].IsAccess == true) {
 
-                                checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": true });
-                            }
-                            else {
-                                checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": false });
-                            }
+                            checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": true });
+                        }
+                        else {
+                            checkedRoles.push({ "Id": userRoleData[k].Id, "IsAccess": false });
                         }
                     }
-                });
+                }
+            });
 
-                viewModel.User.Roles = checkedRoles;
-                return viewModel;
+            checkedPages = [];
+            userPagesDatasource.fetch(function () {
+                if (userPagesDatasource.view().length > 0) {
+                    var userPageData = userPagesDatasource.data();
+                    for (var k = 0; k < userPageData.length; k++) {
+                        if (userPageData[k].IzinVer == 1 || userPageData[k].Yasakla == 1)
+                            checkedPages.push({ "PageId": userPageData[k].PageId, "IzinVer": userPageData[k].IzinVer, "Yasakla": userPageData[k].Yasakla });
+                        else
+                            checkedPages.push({ "PageId": userPageData[k].PageId, "IzinVer": null, "Yasakla": null });
+                    }
+                }
+            });
+
+            viewModel.User.Pages = checkedPages;
+            viewModel.User.Roles = checkedRoles;                               
+            return viewModel;
             },
         });
 
         return editViewModel;
 
     });
+
+function AccessViewChanged(imgContainer, state) {
+
+    if (state) { imgContainer.prop("src", "https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png"); }
+    else { imgContainer.prop("src", "https://cdn3.iconfinder.com/data/icons/vista-general/16/delete.png"); }
+}
+
+function setAcccesIcon(model) {
+
+    if (model.IsPageAccess) { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png' / title='İzinli'>"; }
+    else { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/delete.png' / title='Yasaklı'>"; }
+}
+
+function setRoleIcon(model) {
+
+    if (model.IsRoleEffect) { return "<image src='https://cdn3.iconfinder.com/data/icons/vista-general/16/add.png' / title='İzinli'>"; }
+    else
+        return "";
+}
