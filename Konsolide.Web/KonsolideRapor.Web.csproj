@@ -3255,6 +3255,7 @@
     <Content Include="Views\Roles\EditTabActions.cshtml" />
     <Content Include="Views\Users\EditTabPages.cshtml" />
     <Content Include="Views\Users\EditTabActions.cshtml" />
+    <Content Include="Views\WorkGroups\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,85 +1,69 @@
-﻿define(['kendo', 'workgroupDatasource', 'router'],
-    function (kendo, workgroupDatasource, router) {
-        var lastSelectedDataItem = null;
-        var onClick = function (event, delegate) {
-            event.preventDefault();
-            var treeList = $("#workgroupTree").data("kendoTreeList"),
-                selectedRow = treeList.select();
-
-            var dataItem = treeList.dataItem(selectedRow);
-
-            if (selectedRow.length > 0)
-            { delegate(treeList, selectedRow, dataItem); }
-            else
-            {
-                router.navigate('/Workgroups/Edit/new/null');
-            }
-        };
-        
-        var indexViewModel = new kendo.data.ObservableObject({
-            add: function (event) {
-                onClick(event, function (treeList, row, dataItem) {
-                    router.navigate('/Workgroups/Edit/new/' + dataItem.Id);
-                });
-            },
-            cancel: function (event) {
-                onClick(event, function (grid) {
-                   treeList.cancelRow();
-                    $(".toolbar").toggle();
-                });
-            },
-            details: function (event) {
-                onClick(event, function (treeList, row, dataItem) {
-                    router.navigate('/Workgroups/Edit/' + dataItem.Id);
-                });
-            },
-            edit: function (event) {
-                onClick(event, function (treeList, row, dataItem) {
-                    router.navigate('/Workgroups/Edit/update/' + dataItem.Id);
-                });
-            },
-            destroy: function (event) {
-                onClick(event, function (treeList, row, dataItem) {
-
-                    var r = confirm("Seçtiğiniz Çalışma grubunu silmek istediğinize emin misiniz?!");
-                    if (r == true) {
-
-                        workgroupDatasource.remove(dataItem);
-
-                        workgroupDatasource.sync();
-
-
-
-                    }
-
-
-                });
-            },
-            onChange: function (arg) {
-                var treeList = arg.sender;
-                lastSelectedDataItem = treeList.dataItem(treeList.select());
-            },
+﻿define(['kendo', 'workgroupModel', 'workgroupDatasource', 'router'],
+function (kendo, workgroupModel, workgroupDatasource, router) {
+    var SelectedRow;
+    var SelectedRowId;
+    var SelectedRowParentId;
+    var grid;
+    var toolbar;
+    function LoadGrid() {
+        grid = $("#workGroupGrid").kendoTreeList({
             dataSource: workgroupDatasource,
-            onDataBound: function (arg) {
-                // Check if a row was selected
-                if (lastSelectedDataItem == null) return;
-                // Get all the rows     
-               var view = this.dataSource.view();
-                // Iterate through rows
-                for (var i = 0; i < view.length; i++) {
-                    // Find row with the lastSelectedProduct
-                    if (view[i].Id == lastSelectedDataItem.Id) {
-                        // Get the grid
-                        var treeList = arg.sender;
-                        // Set the selected row
-                        treeList.select(treeList.table.find("tr[data-uid='" + view[i].uid + "']"));
-                        lastSelectedDataItem.loaded(false);
-                        lastSelectedDataItem.load();
-                        break;
-                    }
-                }
-               
-            },
+            groupable: false,
+            sortable: true,
+            scrollable: false,
+            editable: "inline",
+            filterable: true,
+            autoSync: false,
+            batch: false,
+            selectable: true,
+            navigatable: false,
+            toolbar: [{ name: "create", text: "Yeni Kayıt" }],
+            columns: [
+
+                 {
+                     field: "Name",
+                     title: "Workgroup",
+                     width: "120"
+                 },
+                 {
+                     field: "ObjectTypeName",
+                     title: "Nesne Tipi"
+                 },
+                 {
+
+                     template: "<input name='isCompanySite'  type='checkbox' class='.ob-paid' data-bind='checked: isCompanySite' #= isCompanySite ? checked='checked' : '' #/>",
+                     width: 110,
+                     title: "Şirket mi?"
+                 },
+                 {
+                     command:
+                     [
+                      { name: "edit", text: "Düzenle" },
+                     { name: "destroy", text: "Sil" },
+                     { name: "createChild", text: "Alt Değer" }
+                     ],
+                     title: "İşlemler"
+                 }
+            ]
         });
-        return indexViewModel;
+        grid.on('click', '.ob-paid', function (e) {
+
+            var row = $(e.target).closest("tr");
+            var item = grid.dataItem(row);
+            item.set("isCompanySite", $(e.target).is(":checked") ? 1 : 0);
+        });
+
+    }
+
+    var pageModel = new kendo.data.ObservableObject({
+
+        onLoad: function () {
+
+            //LoadToolBar();
+            LoadGrid();
+
+        }
+
     });
+    return pageModel;
+});

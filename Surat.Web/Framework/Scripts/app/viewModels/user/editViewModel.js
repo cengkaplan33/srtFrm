@@ -2,11 +2,12 @@
 function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPagesDatasource, userPagesModel, workgroupDatasource, userActionsDatasource, userActionsModel, userWorkGroupDataSource, userChoosenWorkgroupDatasource, util, router) {
 
     if (util.getId() != 0) {
-        userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroups?userId=" + util.getId();
+        userWorkGroupDataSource.options.transport.read.url = "/Workgroups/GetWorkgroups";
+
         userChoosenWorkgroupDatasource.options.transport.read.url = "/Users/GetChoosedWorkgroupId?userId=" + util.getId();
     }
     else {
-        userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
+        userWorkGroupDataSource.options.transport.read.url = "/Workgroups/GetWorkgroups";
 
     }
 

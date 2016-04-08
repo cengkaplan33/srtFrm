@@ -4,7 +4,7 @@ function (kendo, workgroupModel, util) {
         transport: {
 
             read: {
-                url: "/Users/GetUserWorkgroupsWithCurentUsers",
+                url: "/Workgroups/GetWorkgroups",
                 type: "POST"
             }
         },

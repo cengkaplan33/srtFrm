@@ -105,6 +105,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\TahsilatTalepController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WorkgroupsController.cs" />
     <Compile Include="Helpers\KendoHelper.cs" />
     <Compile Include="Helpers\MVCUtility.cs" />
     <Compile Include="MainContainer\LeftNavigationLink.cs" />

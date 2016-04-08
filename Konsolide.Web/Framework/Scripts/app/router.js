@@ -28,6 +28,12 @@ define(['kendo', 'kendo_culture_config', 'kendo_culture_messages'],
 
             });
         });
+        router.route("/Workgroups/Index", function () {
+
+            require(['workgroup-indexViewModel', 'text!/Workgroups/Index'], function (viewModel, view) {
+                loadView(viewModel, view);
+            });
+        });
         router.route("/Roles/Index", function () {
             require(['roles-indexViewModel', 'text!/Roles/Index'], function (viewModel, view) {
                 loadView(viewModel, view, function () {

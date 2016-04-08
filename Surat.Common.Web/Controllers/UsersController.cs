@@ -96,6 +96,8 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+
+
         public JsonResult GetChoosedWorkgroupId(int? userId = -1)
         {
             try

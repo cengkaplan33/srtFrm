@@ -46,6 +46,7 @@ namespace Surat.Business.Security
         private PageRepository page;
         public ActionRepository action;
         private WorkgroupRepository workgroup;
+        private CompanySiteRepository companySite;
         private AccessibleItemRepository accessibleItem;
         private FailedLoginRepository failedLogin;
         private RelationGroupRepository relationGroup;
@@ -181,6 +182,17 @@ namespace Surat.Business.Security
                     workgroup = new WorkgroupRepository(this.ApplicationContext.Security);
 
                 return workgroup;
+            }
+        }
+
+        public CompanySiteRepository CompanySite
+        {
+            get
+            {
+                if (companySite == null)
+                    companySite = new CompanySiteRepository(this.ApplicationContext.Security);
+
+                return companySite;
             }
         }
 
@@ -368,51 +380,51 @@ namespace Surat.Business.Security
         {
             List<AccessiblePageView> accessiblePages;
 
-            string query = @"	
+            string query = @"    
 select DISTINCT suratPages.Id as PageId,suratPages.SystemId,suratPages.Name as PageName,suratPages.ObjectTypePrefix,suratPages.ObjectTypeName,
 suratSystems.Name as SystemName,suratSystems.ParentId as SystemParentId,suratPages.SmallImagePath,suratPages.BigImagePath
 from dbo.Pages suratPages
-INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id	
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id   
 LEFT JOIN AccessibleItems accessibleItems ON suratPages.Id = accessibleItems.DBObjectId
-where 
+where
     suratPages.IsActive = 1
-    AND 
-	(
-	suratPages.IsAccessControlRequired = 0
-	OR
-	(
-	suratPages.IsAccessControlRequired = 1 and 
-	(accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
-	AND
-	(accessibleItems.RelationGroupId IN 
-		(
-		  Select relationGroups.Id from dbo.RelationGroups relationGroups
-		  where (relationGroups.UserId = @UserId)
-		  UNION
-
+    AND
+       (
+       suratPages.IsAccessControlRequired = 0
+       OR
+       (
+       suratPages.IsAccessControlRequired = 1 and
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1)
+       AND
+       (accessibleItems.RelationGroupId IN
+             (
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where (relationGroups.UserId = @UserId)
+               UNION
+ 
             /*** role den gelen erişim hakları ***/
-		  Select relationGroups.Id from dbo.RelationGroups relationGroups
-		  where 
-		  (		  	
-			 UserId = 0  AND  WorkgroupId = 0 AND
-			 relationGroups.RoleId IN 
-			(Select Distinct RoleId from dbo.RelationGroups relationGroups
-			 where (relationGroups.UserId = @UserId AND RoleId != 0 AND WorkgroupId =0)
-		     )
-		  )
-		  UNION
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where
+               (                
+                     UserId = 0  AND  WorkgroupId = 0 AND
+                    relationGroups.RoleId IN
+                    (Select Distinct RoleId from dbo.RelationGroups relationGroups
+                    where (relationGroups.UserId = @UserId AND RoleId != 0 AND WorkgroupId =0)
+                  )
+               )
+               UNION
             /*** workgroup tan gelen erişim hakları ***/
-		  Select relationGroups.Id from dbo.RelationGroups relationGroups
-		  where 
-		  (
-			 UserId = 0  AND  RoleId = 0 AND
-			 relationGroups.WorkgroupId IN 
-			(Select Distinct WorkgroupId from dbo.RelationGroups relationGroups
-			 where (relationGroups.UserId = @UserId AND RoleId = 0 AND WorkgroupId !=0)
-			 )
-		  )
-		 )
-	)))";
+               Select relationGroups.Id from dbo.RelationGroups relationGroups
+               where
+               (
+                    UserId = 0  AND  RoleId = 0 AND
+                    relationGroups.WorkgroupId IN
+                    (Select Distinct WorkgroupId from dbo.RelationGroups relationGroups
+                    where (relationGroups.UserId = @UserId AND RoleId = 0 AND WorkgroupId !=0)
+                    )
+               )
+             )
+       )))";
             accessiblePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessiblePageView>(
                                 query, new SqlParameter("@UserId", currentUser.UserId)).ToList();
 
@@ -426,37 +438,37 @@ where
             string query = @"
 select DISTINCT suratActions.Id as ActionId, suratActions.TypeName as TypeName
 from dbo.SuratActions suratActions
-INNER JOIN AccessibleItems accessibleItems ON accessibleItems.DBObjectId  = suratActions.Id  and accessibleItems.DBObjectType = 2 
-where  
+INNER JOIN AccessibleItems accessibleItems ON accessibleItems.DBObjectId  = suratActions.Id  and accessibleItems.DBObjectType = 2
+where 
 suratActions .IsActive = 1 and accessibleItems .IsActive = 1
 AND
-accessibleItems.AccessRightTypeId = 1 
+accessibleItems.AccessRightTypeId = 1
 AND
-(accessibleItems.RelationGroupId IN 
-	(
-		Select relationGroups.Id from dbo.RelationGroups relationGroups
-		where (relationGroups.UserId = @UserId)
-		UNION
-		Select relationGroups.Id from dbo.RelationGroups relationGroups
-		where 
-		(		  	
-			UserId = 0  AND  WorkgroupId = 0 AND
-			relationGroups.RoleId IN 
-		(Select Distinct RoleId from dbo.RelationGroups relationGroups
-			where (relationGroups.UserId = @UserId AND RoleId != 0 AND WorkgroupId =0)
-		    )
-		)
-		UNION
-		Select relationGroups.Id from dbo.RelationGroups relationGroups
-		where 
-		(
-			UserId = 0  AND  RoleId = 0 AND
-			relationGroups.WorkgroupId IN 
-		(Select Distinct WorkgroupId from dbo.RelationGroups relationGroups
-			where (relationGroups.UserId = @UserId AND RoleId = 0 AND WorkgroupId !=0)
-			)
-		)
-		)
+(accessibleItems.RelationGroupId IN
+       (
+             Select relationGroups.Id from dbo.RelationGroups relationGroups
+             where (relationGroups.UserId = @UserId)
+             UNION
+             Select relationGroups.Id from dbo.RelationGroups relationGroups
+             where
+             (                  
+                    UserId = 0  AND  WorkgroupId = 0 AND
+                    relationGroups.RoleId IN
+             (Select Distinct RoleId from dbo.RelationGroups relationGroups
+                    where (relationGroups.UserId = @UserId AND RoleId != 0 AND WorkgroupId =0)
+                 )
+             )
+             UNION
+             Select relationGroups.Id from dbo.RelationGroups relationGroups
+             where
+             (
+                    UserId = 0  AND  RoleId = 0 AND
+                    relationGroups.WorkgroupId IN
+             (Select Distinct WorkgroupId from dbo.RelationGroups relationGroups
+                    where (relationGroups.UserId = @UserId AND RoleId = 0 AND WorkgroupId !=0)
+                    )
+             )
+             )
 )";
             accessibleActions = this.Context.ApplicationContext.DBContext.Database.SqlQuery<AccessibleActionView>(
                                 query, new SqlParameter("@UserId", currentUser.UserId)).ToList();
@@ -470,31 +482,31 @@ AND
             List<RelationGroupAccessiblePageView> accessiblePages;
 
             string query = @"select DISTINCT suratPages.Id as PageId,suratPages.SystemId,suratPages.Name as PageName,suratPages.ObjectTypeName,
-	                            suratSystems.Name as SystemName,suratSystems.ParentId as SystemParentId
-	                            ,case when exists (select 1 from accessibleItems a
-	                            where a.DBObjectId=suratPages.Id and 
-	                            a.DBObjectType = 1 AND a.AccessRightTypeId = 1 AND a.IsActive = 1 and a.RelationGroupId = @RelationGroupId) then 1 else 0 end as HasAccess	
-	                            from dbo.Pages suratPages
-	                            INNER JOIN SuratSystems suratSystems
-	                            ON suratPages.SystemId = suratSystems.Id
-	                            where 
-	                            (suratPages.IsAccessControlRequired = 0)
-	                            OR
-	                            (suratPages.IsActive = 1)";
+                                   suratSystems.Name as SystemName,suratSystems.ParentId as SystemParentId
+                                   ,case when exists (select 1 from accessibleItems a
+                                   where a.DBObjectId=suratPages.Id and
+                                   a.DBObjectType = 1 AND a.AccessRightTypeId = 1 AND a.IsActive = 1 and a.RelationGroupId = @RelationGroupId) then 1 else 0 end as HasAccess     
+                                   from dbo.Pages suratPages
+                                   INNER JOIN SuratSystems suratSystems
+                                   ON suratPages.SystemId = suratSystems.Id
+                                   where
+                                   (suratPages.IsAccessControlRequired = 0)
+                                   OR
+                                   (suratPages.IsActive = 1)";
             accessiblePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<RelationGroupAccessiblePageView>(
                                 query, new SqlParameter("@RelationGroupId", relationGroupId)).ToList();
 
             return accessiblePages;
         }
 
-        public List<UserDefaultWorkGroupView> GetUserWorkgroups(int? userId=-1)
+        public List<UserDefaultWorkGroupView> GetUserWorkgroups(int? userId = -1)
         {
             List<UserDefaultWorkGroupView> defaultWorkgroups = new List<UserDefaultWorkGroupView>();
-           
-            int? workgroupId = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId &m.RoleId==0& m.IsActive == true).OrderByDescending(m=>m.Id).First().WorkgroupId;
-            int? companyId = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId&m.IsActive==true).First().CompanyId;
-            
-            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m=>m.IsActive==true&m.CompanyId==companyId))
+
+            int? workgroupId = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId & m.RoleId == 0 & m.IsActive == true).OrderByDescending(m => m.Id).First().WorkgroupId;
+            int? companyId = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId & m.IsActive == true).First().CompanyId;
+
+            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m => m.IsActive == true & m.CompanyId == companyId))
             {
                 defaultWorkgroups.Add(new UserDefaultWorkGroupView()
                 {
@@ -506,9 +518,9 @@ AND
                     ParentId = workgroup.ParentId
                 });
             }
-            
-            int? parentId =this.Workgroup.GetParentWorkgroupId(defaultWorkgroups.OrderBy(m => m.Id).First().Id);
-            Workgroup userWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.Id==parentId & m.IsActive == true).First();
+
+            int? parentId = this.Workgroup.GetParentWorkgroupId(defaultWorkgroups.OrderBy(m => m.Id).First().Id);
+            Workgroup userWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.Id == parentId & m.IsActive == true).First();
             defaultWorkgroups.Add(new UserDefaultWorkGroupView()
             {
                 CompanyId = userWorkGroup.CompanyId,
@@ -523,8 +535,8 @@ AND
 
         public int? GetUserWorkgroup(int? userId = -1)
         {
-            var item  = this.RelationGroup.GetObjectsByParameters(m => m.IsActive == true & m.RoleId == 0 & m.UserId == userId & m.WorkgroupId != 0).FirstOrDefault();
-            if (item  == null)
+            var item = this.RelationGroup.GetObjectsByParameters(m => m.IsActive == true & m.RoleId == 0 & m.UserId == userId & m.WorkgroupId != 0).FirstOrDefault();
+            if (item == null)
                 return 0;
             else return item.WorkgroupId;
         }
@@ -546,8 +558,8 @@ AND
                 Name = rootWorkGroup.Name,
                 ObjectTypeName = rootWorkGroup.ObjectTypeName,
                 ParentId = rootWorkGroup.ParentId
-                });
-            Workgroup firmWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.ParentId == rootWorkGroup.Id&m.IsActive==true&m.isCompanySite==true).OrderBy(m => m.Id).FirstOrDefault();
+            });
+            Workgroup firmWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.ParentId == rootWorkGroup.Id & m.IsActive == true & m.isCompanySite == true).OrderBy(m => m.Id).FirstOrDefault();
             defaultWorkgroups.Add(new UserDefaultWorkGroupView()
             {
                 CompanyId = firmWorkGroup.CompanyId,
@@ -557,7 +569,7 @@ AND
                 ObjectTypeName = firmWorkGroup.ObjectTypeName,
                 ParentId = firmWorkGroup.ParentId
             });
-            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m => m.IsActive == true & m.CompanyId == firmWorkGroup.CompanyId&m.Id!=firmWorkGroup.Id))
+            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m => m.IsActive == true & m.CompanyId == firmWorkGroup.CompanyId & m.Id != firmWorkGroup.Id))
             {
                 defaultWorkgroups.Add(new UserDefaultWorkGroupView()
                 {
@@ -709,19 +721,19 @@ AND
         {
             List<UserAccessibleRoleView> accessibleUserRoles;
 
-            string query = @"	
-                        select Id,Name,ObjectTypeName,IsAccess=1 
+            string query = @"    
+                        select Id,Name,ObjectTypeName,IsAccess=1
                         from SuratRoles  suratRoles
                         where suratRoles.IsActive = 1 and suratRoles.Id in(
                         Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
                         where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
-                        union 
-                        select Id,Name,ObjectTypeName,IsAccess=0 
+                        union
+                        select Id,Name,ObjectTypeName,IsAccess=0
                         from SuratRoles  suratRoles
                         where suratRoles.IsActive = 1 and suratRoles.Id not in(
                         Select relationGroups.RoleId  from dbo.RelationGroups relationGroups
                         where ( UserId = @UserId  AND  WorkgroupId = 0 AND RoleId  != 0 and IsActive = 1 ))
-                        order by Name 
+                        order by Name
                         ";
             accessibleUserRoles = this.Context.ApplicationContext.DBContext.Database.SqlQuery<UserAccessibleRoleView>(
                                 query, new SqlParameter("@UserId", userId)).ToList();
@@ -788,15 +800,15 @@ AND
         {
             List<UserPageBaseView> baseUserPages;
 
-            string query = @"	
+            string query = @"    
                             SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId , userRoleRelations.RoleId,userRoleRelations.Id , p.Id as PageId
-                            FROM Pages p 
+                            FROM Pages p
                             JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
                             JOIN RelationGroups userRoleRelations ON userRoleRelations.Id = a.RelationGroupId and userRoleRelations.UserId =0 and userRoleRelations.RoleId !=0 and userRoleRelations.WorkgroupId = 0 and userRoleRelations.IsActive = 1
                             JOIN RelationGroups roleRelations ON userRoleRelations.RoleId = roleRelations.RoleId and  roleRelations.UserId = @UserId and roleRelations.WorkgroupId = 0 and roleRelations.IsActive = 1
                             UNION
                             SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId, userRelations.RoleId,userRelations.Id  ,p.Id as PageId
-                            FROM Pages p 
+                            FROM Pages p
                             JOIN AccessibleItems a ON a.DBObjectType= 1 and a.IsActive = 1and a.DBObjectId = p.Id
                             JOIN RelationGroups userRelations ON userRelations.Id = a.RelationGroupId and userRelations .UserId = @UserId and userRelations .RoleId =0 and userRelations .WorkgroupId = 0 and userRelations .IsActive = 1
                             ORDER BY p.Id ASC
@@ -866,7 +878,7 @@ AND
         {
             List<UserActionBaseView> baseUserActions;
 
-            string query = @"	
+            string query = @"    
                           SELECT a.RelationGroupId, a.Id, a.AccessRightTypeId , userRoleRelations.RoleId,userRoleRelations.Id , act.Id as ActionId
                             FROM SuratActions act
                             JOIN AccessibleItems a ON a.DBObjectType= 2 and a.IsActive = 1 and a.DBObjectId = act.Id
@@ -891,7 +903,7 @@ AND
             try
             {
                 initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-               
+
 
                 if (user.Id == 0)
                 {
@@ -903,9 +915,9 @@ AND
                     initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                     this.RelationGroup.Add(new RelationGroup()
                     {
-                        UserId=user.Id,
-                        RoleId=0,
-                        WorkgroupId=0
+                        UserId = user.Id,
+                        RoleId = 0,
+                        WorkgroupId = 0
                     });
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
 
@@ -918,8 +930,8 @@ AND
                         selectedUser.LastPasswordChangedDate = DateTime.Now;
                         selectedUser.Password = user.Password;
                     }
-                    if( selectedUser.Name != user.Name)
-                        
+                    if (selectedUser.Name != user.Name)
+
                         if (this.User.GetObjectsByParameters(m => m.UserName == user.UserName).Count() > 0)
                             throw new Exception("Bu kullanıcı adı daha önceden alınmış.");
 
@@ -935,14 +947,14 @@ AND
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                 }
 
-              
+
             }
             catch (Exception exception)
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveUser", this.ApplicationContext.SystemId, exception);
             }
         }
-       
+
 
         public void SaveUserRoles(int userId, IList<UserRoleView> userRoles)
         {
@@ -958,9 +970,9 @@ AND
                         throw new EntityProcessException(this.ApplicationContext, "SaveRolePages", this.ApplicationContext.SystemId);
 
                     if (currentRole.Count() > 0)
-                    {                       
+                    {
                         Surat.Base.Model.Entities.RelationGroup relation = currentRole[0];
-                        UpdateRelationForUserRole(userRole, relation);                      
+                        UpdateRelationForUserRole(userRole, relation);
                     }
                     else
                     {
@@ -987,7 +999,7 @@ AND
             {
                 if (relation.IsActive == true)
                 {
-                    relation.IsActive = false;                  
+                    relation.IsActive = false;
                 }
             }
             else
@@ -1038,7 +1050,7 @@ AND
                             #region AccessibleItem tablosuna kullanıcı için yeni kayıt atılıyor.
                             if (Page.IzinVer == Page.Yasakla) { continue; }
                             else { AddAccessibleForUserPage(Page, userRelationId); }
-                           #endregion
+                            #endregion
                         }
                     }
                 }
@@ -1050,7 +1062,7 @@ AND
 
         }
 
-        public void UpdateAccessibleForUserPage(AccessibleItem AccessibleItem,UserAccessiblePageView Page )
+        public void UpdateAccessibleForUserPage(AccessibleItem AccessibleItem, UserAccessiblePageView Page)
         {
             int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
@@ -1075,7 +1087,7 @@ AND
             this.ApplicationContext.CommitDBChanges(initializedDBContextId);
         }
 
-        public void AddAccessibleForUserPage(UserAccessiblePageView Page , int userRelationId)
+        public void AddAccessibleForUserPage(UserAccessiblePageView Page, int userRelationId)
         {
 
             int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
@@ -1249,19 +1261,19 @@ AND
             List<RoleActionView> accessibleRoleActions;
 
             string query = @"
- Select unRecorderActions.TypeName as ActionName, 
+Select unRecorderActions.TypeName as ActionName,
  unRecorderActions.Id as ActionId,
- case when recordedActions.AccessRightTypeId is null then 0 ELSE  1 END as IsAccessible, 
- recordedActions.RelationGroupId as RelationGroupId, 
+case when recordedActions.AccessRightTypeId is null then 0 ELSE  1 END as IsAccessible,
+ recordedActions.RelationGroupId as RelationGroupId,
  recordedActions.Id as AccessibleItemId
- from SuratActions  unRecorderActions
- Left JOIN (
- select a.Id,a.RelationGroupId,a.DBObjectId,a.AccessRightTypeId  from SuratRoles r 
+from SuratActions  unRecorderActions
+Left JOIN (
+select a.Id,a.RelationGroupId,a.DBObjectId,a.AccessRightTypeId  from SuratRoles r
  JOIN RelationGroups rg on rg.RoleId = r.Id and rg.UserId = 0 and rg.WorkgroupId =0 and rg.IsActive = 1
- JOIN AccessibleItems a on a.RelationGroupId = rg.Id and a.DBObjectType = 2 and a.IsActive = 1
- JOIN SuratActions sa on sa.Id = a.DBObjectId  and sa.IsActive = 1
- where r.IsActive = 1 and r.Id = @RoleId ) recordedActions  on recordedActions.DBObjectId  =  unRecorderActions.ID
- order by  unRecorderActions.TypeName ";
+JOIN AccessibleItems a on a.RelationGroupId = rg.Id and a.DBObjectType = 2 and a.IsActive = 1
+JOIN SuratActions sa on sa.Id = a.DBObjectId  and sa.IsActive = 1
+where r.IsActive = 1 and r.Id = @RoleId ) recordedActions  on recordedActions.DBObjectId  =  unRecorderActions.ID
+order by  unRecorderActions.TypeName ";
             accessibleRoleActions = this.Context.ApplicationContext.DBContext.Database.SqlQuery<RoleActionView>(
                                 query, new SqlParameter("@RoleId", roleId)).ToList();
 
@@ -1442,71 +1454,71 @@ AND
         {
             List<RoleAccessiblePageView> accessibleRolePages;
 
-            string query = @"	
-
+            string query = @"    
+ 
 select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=1 from Pages where Id in(
-select DISTINCT suratPages.Id 
+select DISTINCT suratPages.Id
 from dbo.Pages suratPages
-INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id   
 JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
-where 
+where
     suratPages.IsActive = 1
-    AND 
+    AND
        (
-       
+      
        (
-       suratPages.IsAccessControlRequired = 1 and 
-       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
+       suratPages.IsAccessControlRequired = 1 and
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1)
        AND
-       (accessibleItems.RelationGroupId IN 
+       (accessibleItems.RelationGroupId IN
              (
-                 
+                
             /*** role den gelen erişim hakları ***/
                Select relationGroups.Id from dbo.RelationGroups relationGroups
-               where 
-               (                 
+               where
+               (                
                      UserId = 0  AND  WorkgroupId = 0 AND RoleId = @RoleId
-                    
+                   
                   
                )
-                
+               
              )
        )))
-	   ) 
+          )
 and pages.IsAccessControlRequired=1
-
-
+ 
+ 
 union
-
+ 
 select Id,SystemId,Name,ObjectTypePrefix,ObjectTypeName,BigImagePath,SmallImagePath,IsAccess=0 from Pages where Id not in(
-select DISTINCT suratPages.Id 
+select DISTINCT suratPages.Id
 from dbo.Pages suratPages
-INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id    
+INNER JOIN SuratSystems suratSystems ON suratPages.SystemId = suratSystems.Id   
 JOIN AccessibleItems accessibleItems ON  accessibleItems.DBObjectType = 1   and suratPages.Id = accessibleItems.DBObjectId
-where 
+where
     suratPages.IsActive = 1
-    AND 
+    AND
        (
-       
+      
        (
-       suratPages.IsAccessControlRequired = 1 and 
-       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1) 
+       suratPages.IsAccessControlRequired = 1 and
+       (accessibleItems.DBObjectType = 1 AND accessibleItems.AccessRightTypeId = 1 AND accessibleItems.IsActive = 1)
        AND
-       (accessibleItems.RelationGroupId IN 
+       (accessibleItems.RelationGroupId IN
              (
-                 
+                
             /*** role den gelen erişim hakları ***/
                Select relationGroups.Id from dbo.RelationGroups relationGroups
-               where 
-               (                 
+               where
+               (                
                      UserId = 0  AND  WorkgroupId = 0 AND RoleId =@RoleId
-                    
+                   
                   
                )
-                
+               
              )
        )))
-	   ) 
+          )
 and pages.IsAccessControlRequired=1";
             accessibleRolePages = this.Context.ApplicationContext.DBContext.Database.SqlQuery<RoleAccessiblePageView>(
                                 query, new SqlParameter("@RoleId", roleId)).ToList();
@@ -1573,19 +1585,86 @@ and pages.IsAccessControlRequired=1";
 
         #endregion
 
-        #region RelationGroups
-        public void SaveUserRelationGroupByWorkgroupId(int? userId,int? workgroupId )
+        #region Actions
+
+        public void RegisterActions(List<SuratAction> Actions)
         {
-            
+            int systemId = this.ApplicationContext.SystemId;
+
+            try
+            {
+                if (Actions.Count > 0)
+                {
+
+                    Dictionary<string, SuratAction> dicRegisteredActions = new Dictionary<string, SuratAction>();
+                    Dictionary<string, SuratAction> dicUnregisteredActions = new Dictionary<string, SuratAction>();
+                    var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == systemId).ToList();
+
+                    ////OK::NOT:: sistemId koymuştum ama sistem mantığı tam oturmadığı için iptal ettim
+                    //foreach (var item in registeredActions)
+                    //    if (!dic.ContainsKey(item.SystemId + "_" + item.TypeName))
+                    //        dic.Add(item.SystemId + "_" + item.TypeName, item);
+
+                    //var unregisteredActions = Actions.Where(x => !dic.ContainsKey(systemId.ToString() + "_" + x.TypeName));
+
+
+                    //aynı controller altında aynı isimde action olabilir.
+                    foreach (var item in registeredActions)
+                        if (!dicRegisteredActions.ContainsKey(item.TypeName))
+                            dicRegisteredActions.Add(item.TypeName, item);
+
+                    foreach (var item in Actions)
+                        if (!dicUnregisteredActions.ContainsKey(item.TypeName))
+                            dicUnregisteredActions.Add(item.TypeName, item);
+
+                    var unregisteredActions = Actions.Where(x => !dicRegisteredActions.ContainsKey(x.TypeName)).ToList();
+                    var willDeletedActions = registeredActions.Where(x => !dicUnregisteredActions.ContainsKey(x.TypeName)).ToList();
+
+                    if (unregisteredActions.Count() > 0 || willDeletedActions.Count() > 0)
+                    {
+                        //int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                        foreach (var item in unregisteredActions)
+                        {
+                            this.Action.Add(new SuratAction() { SystemId = systemId, TypeName = item.TypeName, ChangedByUser = null, ChangedDate = null, InsertedByUser = 1, InsertedDate = DateTime.Now, IsActive = true });
+
+                        }
+
+                        foreach (var item in willDeletedActions)
+                        {
+                            item.IsActive = false;
+                            this.Action.Update(item);
+                        }
+
+                        //OK::NOT:: db leri ayırmadan bu işlemi yapma.
+                        // this.ApplicationContext.DBContext.SaveChanges();
+
+                        //this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("Seçtiğiniz kullanıcı zaten bu çalışma grubunda yer alıyor");
+            }
+        }
+
+        #endregion
+
+
+        #region RelationGroups
+        public void SaveUserRelationGroupByWorkgroupId(int? userId, int? workgroupId)
+        {
+
             try
             {
                 int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                 if (this.GetCountUserRelationgroupByWorkgroupId(userId, workgroupId) > 0)              
-                    throw new Exception("bu kullanıcıya ait Workgroup daha önceden tanımlanmış");               
+                if (this.GetCountUserRelationgroupByWorkgroupId(userId, workgroupId) > 0)
+                    throw new Exception("bu kullanıcıya ait Workgroup daha önceden tanımlanmış");
                 RelationGroup relationGroup = new RelationGroup();
                 relationGroup.UserId = userId;
                 relationGroup.WorkgroupId = workgroupId;
-                relationGroup.RoleId = 0;                
+                relationGroup.RoleId = 0;
                 this.RelationGroup.Add(relationGroup);
                 this.ApplicationContext.CommitDBChanges(initializedDBContextId);
             }
@@ -1594,12 +1673,12 @@ and pages.IsAccessControlRequired=1";
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveUserRelationGroup", this.ApplicationContext.SystemId, exception);
             }
-         
+
 
         }
-        public int GetCountUserRelationgroupByWorkgroupId(int? userId,int? workgroupId)
+        public int GetCountUserRelationgroupByWorkgroupId(int? userId, int? workgroupId)
         {
-            return this.RelationGroup.GetObjectsByParameters(m=>m.UserId==userId&m.RoleId==0&m.WorkgroupId==workgroupId&m.IsActive==true).Count();
+            return this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId == workgroupId & m.IsActive == true).Count();
         }
         public void SaveRelationGroup(RelationGroup relationGroup)
         {
@@ -1671,7 +1750,7 @@ and pages.IsAccessControlRequired=1";
         {
             return this.RelationGroup.GetIdByParameters(userId, 0, 0);
         }
-        public int GetRelationGroupId(int? userId,int? roleId,int? workgroupId)
+        public int GetRelationGroupId(int? userId, int? roleId, int? workgroupId)
         {
             return this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId & m.RoleId == roleId & m.WorkgroupId == workgroupId).FirstOrDefault().Id;
         }
@@ -1681,7 +1760,7 @@ and pages.IsAccessControlRequired=1";
         }
         public RelationGroup GetRelationGroup(int? relationGroupId)
         {
-            return this.RelationGroup.GetObjectsByParameters(m => m.Id==relationGroupId&m.IsActive==true).FirstOrDefault();
+            return this.RelationGroup.GetObjectsByParameters(m => m.Id == relationGroupId & m.IsActive == true).FirstOrDefault();
         }
         #endregion
 
@@ -1692,14 +1771,48 @@ and pages.IsAccessControlRequired=1";
             int initializedDBContextId;
             try
             {
-                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
+                var parent = this.Workgroup.GetObjectByParameters(m => m.Id == workgroup.ParentId);
 
                 if (workgroup.Id == 0)
                 {
+                    initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                     this.Workgroup.Add(workgroup);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
+                    initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                    if (workgroup.isCompanySite)
+                    {
+                        workgroup.CompanyId = workgroup.Id;
+                        this.Workgroup.Update(workgroup);
+                        //this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
+                        //initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                        this.CompanySite.Add(new CompanySite() { IsActive = true, InsertedByUser = 1, InsertedDate = DateTime.Now, CompanyCode = workgroup.Id, RelatedWorkgroupId = workgroup.Id });
+                        //this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                    }
+                    else
+                    {
+                        workgroup.CompanyId = parent.CompanyId;
+                        this.Workgroup.Update(workgroup);
+                    }
+
+                    //initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                    this.RelationGroup.Add(new RelationGroup()
+                    {
+                        UserId = 0,
+                        RoleId = 0,
+                        WorkgroupId = workgroup.Id,
+                        IsActive = true,
+                        InsertedByUser = 1,
+                        InsertedDate = DateTime.Now,
+                    });
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
                 }
                 else
                 {
+                    initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                     Workgroup selectedWorkgroup = this.Workgroup.GetObjectByParameters(m => m.Id == workgroup.Id);
 
                     selectedWorkgroup.Name = workgroup.Name;
@@ -1707,9 +1820,8 @@ and pages.IsAccessControlRequired=1";
                     selectedWorkgroup.ParentId = workgroup.ParentId;
                     selectedWorkgroup.isCompanySite = workgroup.isCompanySite;
                     this.Workgroup.Update(selectedWorkgroup);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                 }
-
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
             }
             catch (Exception exception)
             {
@@ -1803,13 +1915,13 @@ and pages.IsAccessControlRequired=1";
                 sessions = (from userSessions in this.Context.ApplicationContext.DBContext.UserSessions
                             join users in this.Context.ApplicationContext.DBContext.Users on userSessions.UserId equals users.Id
                             select new UserSessionView()
-                              {
-                                  Id = userSessions.Id,
-                                  UserName = users.UserName,
-                                  SessionStart = userSessions.SessionStart,
-                                  SessionEnd = userSessions.SessionEnd,
-                                  IP = userSessions.IP
-                              }).ToList();
+                            {
+                                Id = userSessions.Id,
+                                UserName = users.UserName,
+                                SessionStart = userSessions.SessionStart,
+                                SessionEnd = userSessions.SessionEnd,
+                                IP = userSessions.IP
+                            }).ToList();
 
                 return sessions;
             }
@@ -1824,4 +1936,3 @@ and pages.IsAccessControlRequired=1";
         #endregion
     }
 }
-
