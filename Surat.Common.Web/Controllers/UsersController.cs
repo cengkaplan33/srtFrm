@@ -30,7 +30,7 @@ namespace Surat.WebServer.Controllers
         #endregion
 
         #region Methods
-       
+
         public ActionResult Index()
         {
             return View();
@@ -41,19 +41,19 @@ namespace Surat.WebServer.Controllers
             return View();
         }
 
-        public ActionResult GetUsers(int pageSize,int skip)
-        {            
+        public ActionResult GetUsers(int pageSize, int skip)
+        {
             try
             {
-               var users = this.WebApplicationManager.Framework.Security.User.GetUsersActive();
-               var total = users.Count();
-               var data =users.OrderBy(m=>m.Id).Skip(skip).Take(pageSize).ToList();
-               return Json(new { total = total, data = data },JsonRequestBehavior.AllowGet);
+                var users = this.WebApplicationManager.Framework.Security.User.GetUsersActive();
+                var total = users.Count();
+                var data = users.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {            
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
@@ -69,40 +69,94 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+        public JsonResult GetChoosedWorkgroupId(int? userId=-1)
+        {
+            try
+            {
+                return Json(this.WebApplicationManager.Framework.Security.GetUserWorkgroup(userId), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+        public JsonResult GetUserWorkgroups(int? userId = -1)
+        {
+            try
+            {
+                return Json(this.WebApplicationManager.Framework.Security.GetUserWorkgroups(userId), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+        public JsonResult GetUserWorkgroupsWithCurentUsers()
+        {
+            try
+            {
+                return Json(this.WebApplicationManager.Framework.Security.GetUserWorkgroupsWithCurentUsers(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
         [HttpPost]
-        public ActionResult Add(SuratUser user, string Roles)
+        public ActionResult Add(SuratUser user, string Roles, string WorkGroupId)
         {
             try
             {
 
-                IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+                IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
+                IList<UserWorkGroupView> userWorkgroup = new JavaScriptSerializer().Deserialize<IList<UserWorkGroupView>>(WorkGroupId);
+                if (userWorkgroup.Count() <= 0)
+                    throw new Exception("Lütfen çalışma grubu seçiniz");
+                this.WebApplicationManager.Framework.Security.SaveUser(user);
+                this.WebApplicationManager.Framework.Security.SaveUserRelationGroupByWorkgroupId(user.Id, userWorkgroup.First().WorkGroupId);
+                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
+                return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
 
-                    this.WebApplicationManager.Framework.Security.SaveUser(user);
-                    this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
-                    return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {           
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
         [HttpPost]
-        public JsonResult Update(SuratUser user, string Roles)
+        public JsonResult Update(SuratUser user, string Roles, string WorkGroupId)
         {
             try
             {
                 IList<UserRoleView> userPages = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
-
-                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
+                IList<UserWorkGroupView> userWorkgroup = new JavaScriptSerializer().Deserialize<IList<UserWorkGroupView>>(WorkGroupId);
+                if (userWorkgroup.Count() <= 0)
+                    throw new Exception("Lütfen çalışma grubu seçiniz");
                 this.WebApplicationManager.Framework.Security.SaveUser(user);
+                //if (this.WebApplicationManager.Framework.Security.GetCountUserRelationgroupByWorkgroupId(user.Id, userWorkgroup.First().WorkGroupId) > 0)
+                //{
+                //    throw new Exception("bu kullanıcıya ait Workgroup daha önceden tanımlanmış");
+                //}
+                //else
+                //{
+                    int relationGroupId = this.WebApplicationManager.Framework.Security.GetRelationGroupIdByUserId(user.Id);
+                    RelationGroup relationGroup = this.WebApplicationManager.Framework.Security.GetRelationGroup(relationGroupId);
+                    relationGroup.WorkgroupId = userWorkgroup.First().WorkGroupId;
+                    this.WebApplicationManager.Framework.Security.SaveRelationGroup(relationGroup);
+              //  }
+                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userPages);
+
                 return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
@@ -111,15 +165,15 @@ namespace Surat.WebServer.Controllers
         {
             try
             {
-               
+
                 this.WebApplicationManager.Framework.Security.DeleteUser(users);
 
-                return Json(new {Result="Kayıt başarılı bir şekilde silindi"},JsonRequestBehavior.AllowGet);
+                return Json(new { Result = "Kayıt başarılı bir şekilde silindi" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
-            {            
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 

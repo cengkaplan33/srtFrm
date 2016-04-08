@@ -13,5 +13,6 @@ namespace Surat.Common.ViewModel
         public string ObjectTypeName { get; set; }
         public int? ParentId { get; set; }
         public bool isCompanySite { get; set; }
+        public int CompanyId { get; set; }
     }
 }

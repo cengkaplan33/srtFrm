@@ -19,7 +19,8 @@
                 ChangedByUser: { type: "number" },
                 ChangedDate: { type: "date" },
                 IsActive: { type: "boolean", title: "Aktif mi?" },
-                Roles:  {type:"string"}
+                Roles: { type: "string" },
+                WorkGroupId:{type:"string"}
             }
         });
         return userModel;

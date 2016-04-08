@@ -11,13 +11,14 @@
 
                         <div class="col-md-6" style="min-height:350px;">
                             <div id="workgroupTree" style="width:100%"
-                                  data-role="treelist" 
+                                 data-role="treelist"
                                  data-columns="[
-                                 { 'field': 'Name',title:'Çalışma Grubu' }
+                                 { 'field': 'Name',title:'Çalışma Grubu','expandable': 'true' }
 
                               ]"
-                                 data-selectable="true" 
-                                 data-bind="source:mysource,events:{change:onWorkgroupChange}"></div>
+                                 data-selectable="true"
+                                 data-bind="source:userWorkGroupDataSource,events: {change: onChange,dataBound: onDataBound}"></div>
+                          
                         </div>
 
 

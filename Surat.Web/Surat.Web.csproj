@@ -1431,6 +1431,7 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userChoosenWorkgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
@@ -1442,6 +1443,7 @@
     <Content Include="Framework\Scripts\app\datasources\userWorkGroupDataSource.js" />
     <Content Include="Framework\Scripts\app\datasources\workgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\main.js" />
+    <Content Include="Framework\Scripts\app\models\choosedWorkgroupModel.js" />
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
@@ -1453,6 +1455,7 @@
     <Content Include="Framework\Scripts\app\models\rolesModel.js" />
     <Content Include="Framework\Scripts\app\models\systemsModel.js" />
     <Content Include="Framework\Scripts\app\models\userModel.js" />
+    <Content Include="Framework\Scripts\app\models\userWorkgroupModel.js" />
     <Content Include="Framework\Scripts\app\models\workgroupModel.js" />
     <Content Include="Framework\Scripts\app\router.js" />
     <Content Include="Framework\Scripts\app\viewModels\actions\indexViewModel.js" />

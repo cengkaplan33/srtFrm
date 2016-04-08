@@ -1,7 +1,6 @@
 ﻿define(['kendo'],
     function (kendo) {
-        var workgroupModel = new kendo.data.Node.define({
-
+        var userWorkgroupModel = new kendo.data.Node.define({
             id: "Id",
             fields: {
                 Id: { type: "number", editable: false, nullable: false },
@@ -9,10 +8,10 @@
                 Name: { validation: { required: true } },
                 ObjectTypeName: { validation: { required: true } },
                 isCompanySite: { title: "Firma Sitesi mi?" },
-                CompanyId:{title:"Firma ID"},
-                IsActive: { type: "boolean" }
+                IsActive: { type: "boolean" },
+                CompanyId:{type:"number"}
             }
 
         });
-        return workgroupModel;
+        return userWorkgroupModel;
     });

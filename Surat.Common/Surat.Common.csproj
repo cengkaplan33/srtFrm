@@ -105,6 +105,7 @@
     <Compile Include="ViewModel\RoleActionView.cs" />
     <Compile Include="ViewModel\UserDefaultWorkGroupView.cs" />
     <Compile Include="ViewModel\UserSessionView.cs" />
+    <Compile Include="ViewModel\UserWorkGroupView.cs" />
     <Compile Include="ViewModel\WorkgroupView.cs" />
     <Compile Include="ViewModel\GlobalizationKeyView.cs" />
     <Compile Include="ViewModel\ParameterValueView.cs" />

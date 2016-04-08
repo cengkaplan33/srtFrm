@@ -11,6 +11,7 @@
         'rolePagesModel': 'models/rolePagesModel',
         'roleActionsModel':'models/roleActionsModel',
         'workgroupModel': 'models/workgroupModel',
+        'choosedWorkgroupModel': 'models/choosedWorkgroupModel',
         'systemsModel': 'models/systemsModel',
         'exceptionsModel': 'models/exceptionsModel',
         'userSessionsModel': 'models/userSessionsModel',
@@ -44,6 +45,8 @@
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
         'userRolesDatasource': 'datasources/userRolesDatasource',
+        'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
+        'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

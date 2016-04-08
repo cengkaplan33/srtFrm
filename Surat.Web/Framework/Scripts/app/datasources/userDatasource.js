@@ -1,5 +1,5 @@
-﻿define(['kendo', 'userModel','util'],
-function (kendo, userModel,util) {
+﻿define(['kendo', 'userModel','userChoosenWorkgroupDatasource','util'],
+function (kendo, userModel, userChoosenWorkgroupDatasource, util) {
 
 
     var userDatasource = new kendo.data.DataSource({
@@ -8,7 +8,14 @@ function (kendo, userModel,util) {
             read: {
                 async: false,
                 url: "/Users/GetUsers",
-                dataType: "json"
+                dataType: "json",
+                complete: function (jqXhr, textStatus) {
+                    if (textStatus = "success") {
+                     
+                        userChoosenWorkgroupDatasource.read();
+                      
+                    }
+                }
             },
             create: {
                 type: "POST",
@@ -17,6 +24,7 @@ function (kendo, userModel,util) {
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        userChoosenWorkgroupDatasource.read();
                         _notification.info(result.Result);
                     }
                 }
@@ -29,6 +37,7 @@ function (kendo, userModel,util) {
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        userChoosenWorkgroupDatasource.read();
                         _notification.warning(result.Result);
                     }
                 }
@@ -41,6 +50,7 @@ function (kendo, userModel,util) {
                 complete: function (jqXhr, textStatus) {
                     if (textStatus = "success") {
                         var result = jQuery.parseJSON(jqXhr.responseText);
+                        userChoosenWorkgroupDatasource.read();
                         _notification.info(result.Result);
                     }
                 }

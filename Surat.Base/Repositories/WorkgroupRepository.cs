@@ -89,9 +89,9 @@ namespace Surat.Base.Repositories
 
             selectedWorkgroup = this.GetById(workgroupId);
 
-            if (selectedWorkgroup == null)
-                throw new RecordNotFoundException(this.Context.ApplicationContext, "Workgroup", this.Context.ApplicationContext.SystemId,
-                    string.Format(this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId, Constants.ExceptionType.RecordNotFound), workgroupId));
+            //if (selectedWorkgroup == null)
+            //    throw new RecordNotFoundException(this.Context.ApplicationContext, "Workgroup", this.Context.ApplicationContext.SystemId,
+            //        string.Format(this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId, Constants.ExceptionType.RecordNotFound), workgroupId));
 
             return selectedWorkgroup.ParentId;
         }

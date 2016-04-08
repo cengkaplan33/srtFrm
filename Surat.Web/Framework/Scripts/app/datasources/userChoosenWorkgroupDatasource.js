@@ -1,10 +1,10 @@
-﻿define(['kendo', 'workgroupModel', 'util'],
-function (kendo, workgroupModel, util) {
-    var workgroupDatasource = new kendo.data.TreeListDataSource({
+﻿define(['kendo', 'choosedWorkgroupModel', 'util'],
+function (kendo, choosedWorkgroupModel, util) {
+    var workgroupDatasource = new kendo.data.DataSource({
         transport: {
 
             read: {
-                url: "/Users/GetUserWorkgroupsWithCurentUsers",
+                url: "/Users/GetChoosedWorkgroupId",
                 type: "POST"
             }
         },
@@ -12,7 +12,7 @@ function (kendo, workgroupModel, util) {
         cache: false,
         expanded: true,
         schema: {
-            model: workgroupModel
+            model: choosedWorkgroupModel
         },
         error: function (e) {
             util.errorHandler(e);

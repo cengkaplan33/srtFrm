@@ -539,6 +539,102 @@ AND
             return accessiblePages;
         }
 
+        public List<UserDefaultWorkGroupView> GetUserWorkgroups(int? userId=-1)
+        {
+            List<UserDefaultWorkGroupView> defaultWorkgroups = new List<UserDefaultWorkGroupView>();
+           
+            int? workgroupId = this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId &m.RoleId==0& m.IsActive == true).OrderByDescending(m=>m.Id).First().WorkgroupId;
+            int? companyId = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId&m.IsActive==true).First().CompanyId;
+            
+            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m=>m.IsActive==true&m.CompanyId==companyId))
+            {
+                defaultWorkgroups.Add(new UserDefaultWorkGroupView()
+                {
+                    CompanyId = workgroup.CompanyId,
+                    Id = workgroup.Id,
+                    isCompanySite = workgroup.isCompanySite,
+                    Name = workgroup.Name,
+                    ObjectTypeName = workgroup.ObjectTypeName,
+                    ParentId = workgroup.ParentId
+                });
+            }
+            
+            int? parentId =this.Workgroup.GetParentWorkgroupId(defaultWorkgroups.OrderBy(m => m.Id).First().Id);
+            Workgroup userWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.Id==parentId & m.IsActive == true).First();
+            defaultWorkgroups.Add(new UserDefaultWorkGroupView()
+            {
+                CompanyId = userWorkGroup.CompanyId,
+                Id = userWorkGroup.Id,
+                isCompanySite = userWorkGroup.isCompanySite,
+                Name = userWorkGroup.Name,
+                ObjectTypeName = userWorkGroup.ObjectTypeName,
+                ParentId = null
+            });
+            return defaultWorkgroups;
+        }
+
+        public int? GetUserWorkgroup(int? userId = -1)
+        {
+
+
+            return this.RelationGroup.GetObjectsByParameters(m => m.IsActive == true & m.RoleId == 0 & m.UserId == userId & m.WorkgroupId != 0).FirstOrDefault().WorkgroupId;
+        }
+
+        public List<UserDefaultWorkGroupView> GetUserWorkgroupsWithCurentUsers()
+        {
+
+            List<UserDefaultWorkGroupView> defaultWorkgroups = new List<UserDefaultWorkGroupView>();
+
+            int? workgroupId = this.RelationGroup.GetObjectsByParameters(m => m.UserId == this.ApplicationContext.CurrentUser.UserId & m.RoleId == 0 & m.IsActive == true).OrderByDescending(m => m.Id).First().WorkgroupId;
+            int? companyId = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId & m.IsActive == true).First().CompanyId;
+            Workgroup rootWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.CompanyId == companyId & m.IsActive == true).OrderBy(m => m.Id).FirstOrDefault();
+            rootWorkGroup.ParentId = null;
+            defaultWorkgroups.Add(new UserDefaultWorkGroupView()
+            {
+                CompanyId = rootWorkGroup.CompanyId,
+                Id = rootWorkGroup.Id,
+                isCompanySite = rootWorkGroup.isCompanySite,
+                Name = rootWorkGroup.Name,
+                ObjectTypeName = rootWorkGroup.ObjectTypeName,
+                ParentId = rootWorkGroup.ParentId
+                });
+            Workgroup firmWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.ParentId == rootWorkGroup.Id&m.IsActive==true&m.isCompanySite==true).OrderBy(m => m.Id).FirstOrDefault();
+            defaultWorkgroups.Add(new UserDefaultWorkGroupView()
+            {
+                CompanyId = firmWorkGroup.CompanyId,
+                Id = firmWorkGroup.Id,
+                isCompanySite = firmWorkGroup.isCompanySite,
+                Name = firmWorkGroup.Name,
+                ObjectTypeName = firmWorkGroup.ObjectTypeName,
+                ParentId = firmWorkGroup.ParentId
+            });
+            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m => m.IsActive == true & m.CompanyId == firmWorkGroup.CompanyId&m.Id!=firmWorkGroup.Id))
+            {
+                defaultWorkgroups.Add(new UserDefaultWorkGroupView()
+                {
+                    CompanyId = workgroup.CompanyId,
+                    Id = workgroup.Id,
+                    isCompanySite = workgroup.isCompanySite,
+                    Name = workgroup.Name,
+                    ObjectTypeName = workgroup.ObjectTypeName,
+                    ParentId = workgroup.ParentId
+                });
+            }
+
+            //int? parentId = this.Workgroup.GetParentWorkgroupId(defaultWorkgroups.OrderBy(m => m.Id).First().Id);
+            //Workgroup userWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.Id == parentId & m.IsActive == true).First();
+            //defaultWorkgroups.Add(new UserDefaultWorkGroupView()
+            //{
+            //    CompanyId = userWorkGroup.CompanyId,
+            //    Id = userWorkGroup.Id,
+            //    isCompanySite = userWorkGroup.isCompanySite,
+            //    Name = userWorkGroup.Name,
+            //    ObjectTypeName = userWorkGroup.ObjectTypeName,
+            //    ParentId = null
+            //});
+            return defaultWorkgroups;
+        }
+
         public HashSet<int> GetUserRightIds(UserDetailedView currentUser)
         {
             return UserRightCache.GetUserRights(currentUser.UserId);
@@ -640,11 +736,25 @@ AND
             try
             {
                 initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+               
 
                 if (user.Id == 0)
                 {
+                    if (this.User.GetObjectsByParameters(m => m.UserName == user.UserName).Count() > 0)
+                        throw new Exception("Bu kullanıcı adı daha önceden alınmış.");
 
                     this.User.Add(user);
+
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                    initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                    this.RelationGroup.Add(new RelationGroup()
+                    {
+                        UserId=user.Id,
+                        RoleId=0,
+                        WorkgroupId=0
+                    });
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+
                 }
                 else
                 {
@@ -654,6 +764,10 @@ AND
                         selectedUser.LastPasswordChangedDate = DateTime.Now;
                         selectedUser.Password = user.Password;
                     }
+                    if( selectedUser.Name != user.Name)
+                        
+                        if (this.User.GetObjectsByParameters(m => m.UserName == user.UserName).Count() > 0)
+                            throw new Exception("Bu kullanıcı adı daha önceden alınmış.");
 
                     selectedUser.Name = user.Name;
                     selectedUser.Notes = user.Notes;
@@ -664,15 +778,17 @@ AND
                     selectedUser.IsExternalUser = user.IsExternalUser;
                     selectedUser.IsLocked = user.IsLocked;
                     this.User.Update(selectedUser);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                 }
 
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+              
             }
             catch (Exception exception)
             {
                 throw new EntityProcessException(this.ApplicationContext, "SaveUser", this.ApplicationContext.SystemId, exception);
             }
         }
+       
 
         public void SaveUserRoles(int userId, IList<UserRoleView> userRoles)
         {
@@ -1097,7 +1213,33 @@ AND
         #endregion
 
         #region RelationGroups
+        public void SaveUserRelationGroupByWorkgroupId(int? userId,int? workgroupId )
+        {
+            
+            try
+            {
+                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                 if (this.GetCountUserRelationgroupByWorkgroupId(userId, workgroupId) > 0)              
+                    throw new Exception("bu kullanıcıya ait Workgroup daha önceden tanımlanmış");               
+                RelationGroup relationGroup = new RelationGroup();
+                relationGroup.UserId = userId;
+                relationGroup.WorkgroupId = workgroupId;
+                relationGroup.RoleId = 0;                
+                this.RelationGroup.Add(relationGroup);
+                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            }
 
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveUserRelationGroup", this.ApplicationContext.SystemId, exception);
+            }
+         
+
+        }
+        public int GetCountUserRelationgroupByWorkgroupId(int? userId,int? workgroupId)
+        {
+            return this.RelationGroup.GetObjectsByParameters(m=>m.UserId==userId&m.RoleId==0&m.WorkgroupId==workgroupId&m.IsActive==true).Count();
+        }
         public void SaveRelationGroup(RelationGroup relationGroup)
         {
             int initializedDBContextId;
@@ -1135,24 +1277,19 @@ AND
                     var relationGroupOfDatabase = this.RelationGroup.GetObjectByParameters(m => m.WorkgroupId == relationGroup.WorkgroupId & m.UserId == relationGroup.UserId);
                     if (relationGroupOfDatabase == null)
                     {
-                        relationGroup.ChangedByUser = null;
-                        relationGroup.ChangedDate = null;
-                        relationGroup.InsertedByUser = 1;
-                        relationGroup.InsertedDate = DateTime.Now;
-                        relationGroup.IsActive = true;
-                        this.RelationGroup.Add(relationGroup);
+                        this.RelationGroup.Update(relationGroup);
                     }
-                    else
-                    {
-                        if (relationGroup.WorkgroupId == 0)
-                        {
-                            throw new Exception("Seçtiğiniz kullanıcı zaten bu çalışma grubunda yer almaktadır.");
-                        }
-                        else
-                        {
-                            throw new Exception("Seçtiğiniz kullanıcı zaten bu çalışma grubunda yer alıyor");
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (relationGroup.WorkgroupId == 0)
+                    //    {
+                    //        throw new Exception("Seçtiğiniz kullanıcı zaten bu çalışma grubunda yer almaktadır.");
+                    //    }
+                    //    else
+                    //    {
+                    //        throw new Exception("Seçtiğiniz kullanıcı zaten bu çalışma grubunda yer alıyor");
+                    //    }
+                    //}
                 }
 
             }
@@ -1166,6 +1303,18 @@ AND
         public int GetRoleRelationGroupId(int roleId)
         {
             return this.RelationGroup.GetIdByParameters(0, roleId, 0);
+        }
+        public int GetRelationGroupId(int? userId,int? roleId,int? workgroupId)
+        {
+            return this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId & m.RoleId == roleId & m.WorkgroupId == workgroupId).FirstOrDefault().Id;
+        }
+        public int GetRelationGroupIdByUserId(int? userId)
+        {
+            return this.RelationGroup.GetObjectsByParameters(m => m.UserId == userId & m.RoleId == 0 & m.WorkgroupId != 0).FirstOrDefault().Id;
+        }
+        public RelationGroup GetRelationGroup(int? relationGroupId)
+        {
+            return this.RelationGroup.GetObjectsByParameters(m => m.Id==relationGroupId&m.IsActive==true).FirstOrDefault();
         }
         #endregion
 
