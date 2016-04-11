@@ -23,6 +23,7 @@ namespace Surat.Common.ViewModel
         public List<CompanySiteView> CompanySites { get; set; }
         public int? DefaultRole { get; set; }
         public int? DefaultWorkgroup { get; set; }
+        public WorkgroupView Workgroup{ get; set; }
     }
 }
 

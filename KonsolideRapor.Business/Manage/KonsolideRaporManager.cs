@@ -12,6 +12,7 @@ using Surat.Common.Application;
 using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -364,12 +365,12 @@ join PaymentCollectings payment
 on talep.PaymentCollectingId=payment.Id 
 join OdemeTalepDurumus durum
 on talep.OdemeTalepDurumuId=durum.Id
-where talep.IsActive=1 and talep.TalepTuru='odeme'
+where talep.IsActive=1 and talep.TalepTuru='odeme' and talep.WorkgroupId=@CompanyId
 ";
             try
             {
                 odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
-                                query).ToList();
+                               query, new SqlParameter("@CompanyId", this.ApplicationContext.CurrentUser.Workgroup.CompanyId)).ToList();
                 return odemeTalepleri;
             }
             catch (Exception exception)
@@ -386,12 +387,12 @@ join PaymentCollectings payment
 on talep.PaymentCollectingId=payment.Id 
 join OdemeTalepDurumus durum
 on talep.OdemeTalepDurumuId=durum.Id
-where talep.IsActive=1 and talep.TalepTuru='tahsilat'
+where talep.IsActive=1 and talep.TalepTuru='tahsilat' and talep.WorkgroupId=@CompanyId
 ";
             try
             {
                 odemeTalepleri = this.Context.ApplicationContext.DBContext.Database.SqlQuery<OdemeTalepView>(
-                                query).ToList();
+                                query, new SqlParameter("@CompanyId",this.ApplicationContext.CurrentUser.Workgroup.CompanyId)).ToList();
                 return odemeTalepleri;
             }
             catch (Exception exception)
@@ -408,7 +409,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
 
                 if (odemeTalep.Id == 0)
                 {
-                    odemeTalep.WorkgroupId = 1;
+                    odemeTalep.WorkgroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                     odemeTalep.TalepTuru = "odeme";
                     this.OdemeTalep.Add(odemeTalep);
                 }
@@ -416,7 +417,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                 {
                     OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
 
-                    selectedOdemeTalep.WorkgroupId = 1;
+                    selectedOdemeTalep.WorkgroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                     selectedOdemeTalep.Tarih = odemeTalep.Tarih;
                     selectedOdemeTalep.TL = odemeTalep.TL;
                     selectedOdemeTalep.USD = odemeTalep.USD;
@@ -444,7 +445,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
 
                 if (odemeTalep.Id == 0)
                 {
-                    odemeTalep.WorkgroupId = 1;
+                    odemeTalep.WorkgroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                     odemeTalep.TalepTuru = "tahsilat";
                     this.OdemeTalep.Add(odemeTalep);
                 }
@@ -452,7 +453,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
                 {
                     OdemeTalep selectedOdemeTalep = this.OdemeTalep.GetObjectByParameters(p => p.Id == odemeTalep.Id);
 
-                    selectedOdemeTalep.WorkgroupId = 1;
+                    selectedOdemeTalep.WorkgroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                     selectedOdemeTalep.Tarih = odemeTalep.Tarih;
                     selectedOdemeTalep.TL = odemeTalep.TL;
                     selectedOdemeTalep.USD = odemeTalep.USD;
@@ -594,7 +595,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat'
         {
             try
             {
-                int workGroupId = (int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
+                int workGroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                 List<HazirOdemeView> hazirOdemeViewList;
                 string query = @"                
                 select  o.Id as OId,h.BankId as  HBankId  ,b.Code as Kod,b.Id as BId,b.ObjectType as BObjectType,  b.Name as BName , o.Durum  as ODurum,h.TL as HTL,h.EURO as HEURO,h.USD as HUSD ,h.Id as HId
@@ -696,7 +697,7 @@ where b.IsActive=1  and o.IsActive=1 and h.WorkGroupId is null or ( h.WorkGroupI
                     hdt.TL = (decimal)hazirDegerTablosu.TL;
                     hdt.Tur = hazirDegerTablosu.Tur;
                     hdt.USD = (decimal)hazirDegerTablosu.USD;
-                    hdt.WorkGroupId = (int)this.Context.ApplicationContext.CurrentUser.DefaultWorkgroup;
+                    hdt.WorkGroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                    
                     this.HazirDegerlerTablosu.Add(hdt);
                 }

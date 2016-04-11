@@ -365,6 +365,17 @@ namespace Surat.Business.Security
             try
             {
                 currentUser = this.AuthenticationProvider.ValidateUser(this.ApplicationContext, userName, password);
+                int workgroupId=(int)this.RelationGroup.GetObjectsByParameters(m => m.RoleId == 0 & m.UserId == currentUser.UserId & m.WorkgroupId != 0&m.IsActive==true).First().WorkgroupId;
+                var wg = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId&m.IsActive==true).First();
+
+                currentUser.Workgroup = new WorkgroupView() { };
+                currentUser.Workgroup.CompanyId = wg.CompanyId;
+                currentUser.Workgroup.WorkgroupId = wg.Id;
+                currentUser.Workgroup.IsCompanySite = wg.isCompanySite;
+                currentUser.Workgroup.ParentWorkgroupId = wg.ParentId;
+                currentUser.Workgroup.WorkgroupName = wg.Name;
+
+
             }
             catch (WrongPasswordException exception)
             {
