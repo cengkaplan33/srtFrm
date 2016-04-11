@@ -27,7 +27,11 @@ function (kendo, workgroupModel, workgroupDatasource, router) {
                  },
                  {
                      field: "ObjectTypeName",
-                     title: "Nesne Tipi"
+                     title: "Nesne Tipi",
+                     editor: NesneTipiEditor,
+                     filterable: {
+                         ui: NesneTipiEditor
+                     },
                  },
                  {
                     
@@ -54,7 +58,15 @@ function (kendo, workgroupModel, workgroupDatasource, router) {
         });
 
     }
-    
+    function NesneTipiEditor(container, options) {
+        var ddEditor = $("<input id='ObjectTypeName'  data-bind='value:" + options.field + "' />");
+        ddEditor.appendTo(container).kendoDropDownList({
+            dataSource: {
+                data: ["Firma", "Grup"]
+            }
+        });
+
+    };
     var pageModel = new kendo.data.ObservableObject({
 
         onLoad: function () {
