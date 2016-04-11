@@ -604,8 +604,9 @@ LEFT JOIN OdemeTalepDurumus o  on (o.IsBanka = 1 and b.ObjectType='Banka')
 or (o.IsCek = 1 and b.ObjectType='Çek')
 or (o.IsKasa= 1 and b.ObjectType='Kasa')
 
-Left JOIN HazirDegerTablosus h on h.OdemeTalepDurumuId = o.Id and h.BankId = b.Id
-where b.IsActive=1  and o.IsActive=1 and h.WorkGroupId is null or ( h.WorkGroupId is not null and h.WorkGroupId = " + workGroupId + ") order by b.Id, o.Id";
+Left JOIN HazirDegerTablosus h on  h.OdemeTalepDurumuId = o.Id and ( h.WorkGroupId is not null and h.WorkGroupId = " + workGroupId + @" and h.BankId = b.Id )   
+where b.IsActive=1  and o.IsActive=1 
+order by b.Id, o.Id  ";
 
                 hazirOdemeViewList = this.Context.ApplicationContext.DBContext.Database.SqlQuery<HazirOdemeView>(query).ToList();
 
