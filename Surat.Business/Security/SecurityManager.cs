@@ -557,34 +557,11 @@ AND
 
             List<UserDefaultWorkGroupView> defaultWorkgroups = new List<UserDefaultWorkGroupView>();
 
-            int? workgroupId = this.RelationGroup.GetObjectsByParameters(m => m.UserId == this.ApplicationContext.CurrentUser.UserId & m.RoleId == 0 & m.IsActive == true).OrderByDescending(m => m.Id).First().WorkgroupId;
-            int? companyId = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId & m.IsActive == true).First().CompanyId;
-            Workgroup rootWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.CompanyId == companyId & m.IsActive == true).OrderBy(m => m.Id).FirstOrDefault();
-            rootWorkGroup.ParentId = null;
-            defaultWorkgroups.Add(new UserDefaultWorkGroupView()
-            {
-                CompanyId = rootWorkGroup.CompanyId,
-                Id = rootWorkGroup.Id,
-                isCompanySite = rootWorkGroup.isCompanySite,
-                Name = rootWorkGroup.Name,
-                ObjectTypeName = rootWorkGroup.ObjectTypeName,
-                ParentId = rootWorkGroup.ParentId
-            });
-            Workgroup firmWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.ParentId == rootWorkGroup.Id & m.IsActive == true & m.isCompanySite == true).OrderBy(m => m.Id).FirstOrDefault();
-            defaultWorkgroups.Add(new UserDefaultWorkGroupView()
-            {
-                CompanyId = firmWorkGroup.CompanyId,
-                Id = firmWorkGroup.Id,
-                isCompanySite = firmWorkGroup.isCompanySite,
-                Name = firmWorkGroup.Name,
-                ObjectTypeName = firmWorkGroup.ObjectTypeName,
-                ParentId = firmWorkGroup.ParentId
-            });
-            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m => m.IsActive == true & m.CompanyId == firmWorkGroup.CompanyId & m.Id != firmWorkGroup.Id))
+            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m=>m.IsActive==true).ToList())
             {
                 defaultWorkgroups.Add(new UserDefaultWorkGroupView()
                 {
-                    CompanyId = workgroup.CompanyId,
+                    CompanyId =workgroup.CompanyId,
                     Id = workgroup.Id,
                     isCompanySite = workgroup.isCompanySite,
                     Name = workgroup.Name,
@@ -592,20 +569,10 @@ AND
                     ParentId = workgroup.ParentId
                 });
             }
-
-            //int? parentId = this.Workgroup.GetParentWorkgroupId(defaultWorkgroups.OrderBy(m => m.Id).First().Id);
-            //Workgroup userWorkGroup = this.Workgroup.GetObjectsByParameters(m => m.Id == parentId & m.IsActive == true).First();
-            //defaultWorkgroups.Add(new UserDefaultWorkGroupView()
-            //{
-            //    CompanyId = userWorkGroup.CompanyId,
-            //    Id = userWorkGroup.Id,
-            //    isCompanySite = userWorkGroup.isCompanySite,
-            //    Name = userWorkGroup.Name,
-            //    ObjectTypeName = userWorkGroup.ObjectTypeName,
-            //    ParentId = null
-            //});
             return defaultWorkgroups;
         }
+
+
 
         public HashSet<int> GetUserRightIds(UserDetailedView currentUser)
         {

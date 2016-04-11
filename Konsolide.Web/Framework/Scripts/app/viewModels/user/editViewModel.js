@@ -1,12 +1,12 @@
 ﻿define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'workgroupDatasource', 'userActionsDatasource', 'userActionsModel', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
 function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPagesDatasource, userPagesModel, workgroupDatasource, userActionsDatasource, userActionsModel, userWorkGroupDataSource, userChoosenWorkgroupDatasource, util, router) {
-
+    userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
     if (util.getId() != 0) {
-        userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroups?userId=" + util.getId();
+        //userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroups?userId=" + util.getId();
         userChoosenWorkgroupDatasource.options.transport.read.url = "/Users/GetChoosedWorkgroupId?userId=" + util.getId();
     }
     else {
-        userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
+       
 
     }
 
