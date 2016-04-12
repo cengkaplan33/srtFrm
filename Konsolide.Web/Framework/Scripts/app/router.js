@@ -121,6 +121,54 @@ define(['kendo', 'kendo_culture_config', 'kendo_culture_messages'],
                 loadView(viewModel, view);
             });
         });
+
+        router.route("/Exceptions/Index", function () {
+            require(['exceptions-indexViewModel', 'text!/Exceptions/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#exceptionsgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+
+        router.route("/Pages/Index", function () {
+            require(['pages-indexViewModel', 'text!/Pages/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#pagesgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+        router.route("/UserSessions/Index", function () {
+            require(['userSessions-indexViewModel', 'text!/UserSessions/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#sessionsgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+        router.route("/Actions/Index", function () {
+            require(['actions-indexViewModel', 'text!/Actions/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#actionsgrid").find(".k-grid-toolbar"), viewModel);
+                });
+            });
+        });
+
+        router.route("/Systems/Index", function () {
+            require(['systems-indexViewModel', 'text!/Systems/Index'], function (viewModel, view) {
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#systemsTree"), viewModel);
+                });
+            });
+        });
+        router.route("/Systems/Edit/:status/:id", function () {
+            require(['systems-editViewModel', 'text!/Systems/Edit'], function (viewModel, view) {
+                loadView(viewModel.loadData(), view);
+                kendo.bind($("#form"), viewModel);
+
+            });
+        });
         //router.route("/home/about", function() {
         //    require(['text!/home/about'], function(view) {
         //        loadView(null, view);

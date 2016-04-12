@@ -1,0 +1,39 @@
+﻿
+<div class="col-md-12" id="BaseDiv">
+
+    <div id="pagesgrid"
+         data-role="grid"
+         data-sortable="true"
+         data-pageable="true"
+         data-filterable="true"
+         data-editable="inline"
+         data-resizable="true"
+         data-selectable="true"
+         data-toolbar='[ { template: kendo.template($("#toolbar").html()) } ]'
+         data-columns='[
+                { field: "Id", title: "ID", width: "75px" },
+                { field: "PageName", title: "Sayfa Adı"},
+                { field: "SystemName", title: "Sistem" },
+                { field: "ObjectTypePrefix", title: "Sayfa URL" },
+                { field: "IsAccessControlRequired", title: "Erişim İzni Gerekiyor mu?" , "template": "#= IsAccessControlRequired ? \"Evet\" : \"Hayır\" #"},
+                { field: "IsVisibleInMenu", title: "Menüde Görünsün mü?" , "template": "#= IsVisibleInMenu ? \"Evet\" : \"Hayır\" #" },
+                { field: "InsertedByUserName", title: "Ekleyen Kullanıcı" },
+                { field: "InsertedDate", title: "Eklenme Tarihi" ,  format: "{0:dd-MMM-yyyy hh:mm:ss tt}", parseFormats: ["MM/dd/yyyy h:mm:ss"]},
+                { field: "ChangedByUserName", title: "Değiştiren Kullanıcı" },
+                { field: "ChangedDate", title: "Değiştirilme Tarihi" ,  format: "{0:dd-MMM-yyyy hh:mm:ss tt}", parseFormats: ["MM/dd/yyyy h:mm:ss"]}, ]'
+         data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
+    </div>
+
+
+    <script type="text/x-kendo-template" id="toolbar">
+        <div>
+            <div>
+                @*<span data-role="button" id="buttonNew" data-bind="click: add"><span class="k-icon k-i-plus"></span>Yeni</span>
+                <span data-role="button" id="buttonUpdate" data-bind="click: edit"><span class="k-icon k-i-refresh"></span>Düzenle</span>
+                <span data-role="button" id="buttonDelete" data-bind="click: destroy"><span class="k-icon k-i-close"></span>Sil</span>*@
+            </div>
+        </div>
+    </script>
+
+</div>
+

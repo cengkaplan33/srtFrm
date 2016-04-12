@@ -8,14 +8,8 @@
         text: '/Framework/Scripts/text',
         router: '/Framework/Scripts/app/router',
         //models
-        'userModel': 'models/userModel',       
-        'bankModel': 'models/bankModel',
-        'paymentCollectingModel': 'models/paymentCollectingModel',
-        'odemeTalepModel': 'models/odemeTalepModel',
-        'odemeTuruModel': 'models/odemeTuruModel',
-        'odemeTuruModel': 'models/odemeTuruModel',
-        'odemeDurumuModel': 'models/odemeDurumuModel',
-        'hazirDegerlerTablosuModel': 'models/hazirDegerlerTablosuModel',
+        // region #BASE Model#
+        'userModel': 'models/userModel',
         'rolesModel': 'models/rolesModel',
         'rolePagesModel': 'models/rolePagesModel',
         'userRolesModel': 'models/userRolesModel',
@@ -25,11 +19,34 @@
         'userPagesModel': 'models/userPagesModel',
         'userActionsModel': 'models/userActionsModel',
         'pagesModel': 'models/pagesModel',
-        //viewModels        
+        'exceptionsModel': 'models/exceptionsModel',
+        'actionsModel': 'models/actionsModel',
+        'userSessionsModel': 'models/userSessionsModel',
+        'systemsModel': 'models/systemsModel',
+        //endregion #BASE Model#
+        'bankModel': 'models/bankModel',
+        'paymentCollectingModel': 'models/paymentCollectingModel',
+        'odemeTalepModel': 'models/odemeTalepModel',
+        'odemeTuruModel': 'models/odemeTuruModel',
+        'odemeTuruModel': 'models/odemeTuruModel',
+        'odemeDurumuModel': 'models/odemeDurumuModel',
+        'hazirDegerlerTablosuModel': 'models/hazirDegerlerTablosuModel',
+
+        //viewModels    
+        // region #BASE viewModels#
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
         'roles-indexViewModel': 'viewModels/roles/indexViewModel',
         'roles-editViewModel': 'viewModels/roles/editViewModel',
+        'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
+        'workgroup-editViewModel': 'viewModels/workgroup/editViewModel',
+        'exceptions-indexViewModel': 'viewModels/exceptions/indexViewModel',
+        'pages-indexViewModel': 'viewModels/pages/indexViewModel',
+        'actions-indexViewModel': 'viewModels/actions/indexViewModel',
+        'userSessions-indexViewModel': 'viewModels/userSessions/indexViewModel',
+        'systems-indexViewModel': 'viewModels/systems/indexViewModel',
+        'systems-editViewModel': 'viewModels/systems/editViewModel',
+        //endregion #BASE viewModels#
         'bankalar-indexViewModel': 'viewModels/bankalar/indexViewModel',
         'bankalar-editViewModel': 'viewModels/bankalar/editViewModel',
         'paymentCollecting-indexViewModel': 'viewModels/paymentCollecting/indexViewModel',
@@ -40,13 +57,26 @@
         'durumtanimlari-editViewModel': 'viewModels/durumtanimlari/editViewModel',
         'hazirdegerlertablosu-indexViewModel': 'viewModels/hazirdegerlertablosu/indexViewModel',
         'hazirdegerlertablosu-tanimViewModel': 'viewModels/hazirdegerlertablosu/tanimViewModel',
-        'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
-        'workgroup-editViewModel': 'viewModels/workgroup/editViewModel',
-        //datasources       
+
+
+        //datasources    
+        // region #BASE datasources#
         'userDatasource': 'datasources/userDatasource',
         'rolesDatasource': 'datasources/rolesDatasource',
         'rolePagesDatasource': 'datasources/rolePagesDatasource',
-        'roleActionsDatasource':'datasources/roleActionsDatasource',
+        'roleActionsDatasource': 'datasources/roleActionsDatasource',
+        'userRolesDatasource': 'datasources/userRolesDatasource',
+        'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
+        'workgroupDatasource': 'datasources/workgroupDatasource',
+        'userPagesDatasource': 'datasources/userPagesDatasource',
+        'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
+        'userActionsDatasource': 'datasources/userActionsDatasource',
+        'exceptionsDatasource': 'datasources/exceptionsDatasource',
+        'pagesDatasource': 'datasources/pagesDatasource',
+        'actionsDatasource': 'datasources/actionsDatasource',
+        'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
+        'systemsDatasource': 'datasources/systemsDatasource',
+        //endregion  #BASE datasources#
         'bankDatasource': 'datasources/bankDatasource',
         'paymentCollectingDatasource': 'datasources/paymentCollectingDatasource',
         'odemeTalepDatasource': 'datasources/odemeTalepDatasource',
@@ -58,12 +88,7 @@
         'TahsilatEkraniDurumTanimiDatasource': 'datasources/TahsilatEkraniDurumTanimiDatasource',
         'hazirDegerlerTablosuDatasource': 'datasources/hazirDegerlerTablosuDatasource',
         'hazirDegerlerTablosuTanimDatasource':'datasources/hazirDegerlerTablosuTanimDatasource',
-        'userRolesDatasource': 'datasources/userRolesDatasource',
-        'userWorkGroupDataSource': 'datasources/userWorkGroupDataSource',
-        'workgroupDatasource': 'datasources/workgroupDatasource',
-        'userPagesDatasource': 'datasources/userPagesDatasource',
-        'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
-        'userActionsDatasource': 'datasources/userActionsDatasource',
+       
         // utils
         util: '/Framework/Scripts/util'
     },
