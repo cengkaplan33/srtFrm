@@ -1,0 +1,79 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Sayfa Bilgisi</h5>
+                </div>
+                <div class="widget-body" style="text-align: center;">
+                    <div class="space"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label class="col-md-4 control-label" for="Name">Sayfa Adı</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="Name" name="Name" style="width:100%" data-bind="value: Page.Name" required validationmessage="Sayfa adı alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="SystemId">Sistem</label>
+                                <div class="col-md-8">
+                                    @*<input id="SystemId" name="SystemId" style="width:100%" data-bind="value: Page.SystemId" required validationmessage="Sistem adı alanı boş bırakılamaz" class="k-textbox" />*@
+                                    <select id="SystemId" data-role="dropdownlist" data-text-field="Name" data-value-field="id" data-value-primitive="true" data-bind="source:dataSource, value: Page.SystemId"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="ObjectTypePrefix">Sayfa URL</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="ObjectTypePrefix" name="ObjectTypePrefix" style="width:100%" data-bind="value:Page.ObjectTypePrefix" required validationmessage="Sayfa URL alanı boş bırakılamaz" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="ObjectTypeName">Nesne Tipi Adı</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="ObjectTypeName" name="ObjectTypeName" style="width:100%" data-bind="value:Page.ObjectTypeName" class="k-textbox" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="BigImagePath">Büyük Resim Yolu</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="BigImagePath" name="BigImagePath" style="width:100%" data-bind="value:Page.BigImagePath" class="k-textbox" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="SmallImagePath">Küçük Resim Yolu</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="SmallImagePath" name="SmallImagePath" style="width:100%" data-bind="value:Page.SmallImagePath" class="k-textbox" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left; padding-left:130px">
+                                    <input type="checkbox" id="IsAccessControlRequired" name="IsAccessControlRequired" data-bind="checked: Page.IsAccessControlRequired" />&nbsp; Erişim İzni Gerekiyor mu?
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12" style="text-align:left;padding-left:130px">
+                                    <input type="checkbox" id="IsVisibleInMenu" name="IsVisibleInMenu" data-bind="checked: Page.IsVisibleInMenu" />&nbsp; Menüde görünsün mü?
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>

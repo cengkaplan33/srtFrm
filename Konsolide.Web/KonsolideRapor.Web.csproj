@@ -1390,12 +1390,15 @@
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Framework\Scripts\ace\theme\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\exceptionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\hazirDegerlerTablosuDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\hazirDegerlerTablosuTanimDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\odemeDurumuDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\OdemeEkraniDurumTanimiDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\odemeTalepDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\odemeTuruDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\paymentCollectingDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\bankDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
@@ -1406,8 +1409,11 @@
     <Content Include="Framework\Scripts\app\datasources\userActionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userChoosenWorkgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
     <Content Include="Framework\Scripts\app\datasources\userWorkGroupDataSource.js" />
+    <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\choosedWorkgroupModel.js" />
+    <Content Include="Framework\Scripts\app\models\exceptionsModel.js" />
     <Content Include="Framework\Scripts\app\models\hazirDegerlerTablosuModel.js" />
     <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\models\odemeDurumuModel.js" />
@@ -1421,17 +1427,22 @@
     <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userWorkgroupModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\actions\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\durumtanimlari\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\exceptions\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\hazirdegerlertablosu\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\hazirdegerlertablosu\tanimViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\odemeTalep\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\pages\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\paymentCollecting\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\tahsilatTalep\indexViewModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\userSessions\indexViewModel.js" />
     <Content Include="Framework\Scripts\jquery-1.10.2.min.map" />
     <Content Include="Framework\Scripts\kendo2015.1.408\jszip.min.js" />
     <Content Include="Framework\Scripts\kendo2015.1.408\js\jquery.min.map" />
@@ -3256,6 +3267,11 @@
     <Content Include="Views\Users\EditTabPages.cshtml" />
     <Content Include="Views\Users\EditTabActions.cshtml" />
     <Content Include="Views\WorkGroups\Index.cshtml" />
+    <Content Include="Views\Exceptions\Index.cshtml" />
+    <Content Include="Views\Pages\Index.cshtml" />
+    <Content Include="Views\Actions\Index.cshtml" />
+    <Content Include="Views\UserSessions\Index.cshtml" />
+    <Content Include="Views\Systems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
