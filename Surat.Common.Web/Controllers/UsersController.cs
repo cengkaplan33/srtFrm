@@ -139,21 +139,12 @@ namespace Surat.WebServer.Controllers
         {
             try
             {
-                this.WebApplicationManager.Framework.Security.SaveUser(user);
-
                 IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
                 IList<UserWorkGroupView> userWorkgroup = new JavaScriptSerializer().Deserialize<IList<UserWorkGroupView>>(WorkGroupId);
-
-                if (userWorkgroup.Count() <= 0)
-                    throw new Exception("Lütfen çalışma grubu seçiniz");
-
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
-                this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
-                this.WebApplicationManager.Framework.Security.SaveUser(user);
-                this.WebApplicationManager.Framework.Security.SaveUserRelationGroupByWorkgroupId(user.Id, userWorkgroup.First().WorkGroupId);
-                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
                 IList<UserAccessibleActionView> userActions = new JavaScriptSerializer().Deserialize<IList<UserAccessibleActionView>>(Actions);
-                this.WebApplicationManager.Framework.Security.SaveUserActions(user.Id, userActions);
+
+                this.WebApplicationManager.Framework.Security.SaveUser(user, userRoles, userWorkgroup, userPages, userActions);
 
                 return Json(new { Result = "Kullanıcı başarılı bir şekilde oluşturuldu." }, JsonRequestBehavior.AllowGet);
 
@@ -173,22 +164,12 @@ namespace Surat.WebServer.Controllers
                 IList<UserRoleView> userRoles = new JavaScriptSerializer().Deserialize<IList<UserRoleView>>(Roles);
                 IList<UserWorkGroupView> userWorkgroup = new JavaScriptSerializer().Deserialize<IList<UserWorkGroupView>>(WorkGroupId);
                 IList<UserAccessiblePageView> userPages = new JavaScriptSerializer().Deserialize<IList<UserAccessiblePageView>>(Pages);
-
                 IList<UserAccessibleActionView> userActions = new JavaScriptSerializer().Deserialize<IList<UserAccessibleActionView>>(Actions);
-                this.WebApplicationManager.Framework.Security.SaveUserActions(user.Id, userActions);
 
-                if (userWorkgroup.Count() <= 0)
-                    throw new Exception("Lütfen çalışma grubu seçiniz");
+                this.WebApplicationManager.Framework.Security.SaveUser(user, userRoles, userWorkgroup, userPages, userActions);
 
-                this.WebApplicationManager.Framework.Security.SaveUserRoles(user.Id, userRoles);
-                this.WebApplicationManager.Framework.Security.SaveUserPages(user.Id, userPages);
-                this.WebApplicationManager.Framework.Security.SaveUser(user);
-                int relationGroupId = this.WebApplicationManager.Framework.Security.GetRelationGroupIdByUserId(user.Id);
-                RelationGroup relationGroup = this.WebApplicationManager.Framework.Security.GetRelationGroup(relationGroupId);
-                relationGroup.WorkgroupId = userWorkgroup.First().WorkGroupId;
-                this.WebApplicationManager.Framework.Security.SaveRelationGroup(relationGroup);
+                return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncelleştirildi." }, JsonRequestBehavior.AllowGet);
 
-                return Json(new { Result = "Kullanıcı bilgileri başarılı bir şekilde güncellendi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {

@@ -365,8 +365,8 @@ namespace Surat.Business.Security
             try
             {
                 currentUser = this.AuthenticationProvider.ValidateUser(this.ApplicationContext, userName, password);
-                int workgroupId=(int)this.RelationGroup.GetObjectsByParameters(m => m.RoleId == 0 & m.UserId == currentUser.UserId & m.WorkgroupId != 0&m.IsActive==true).First().WorkgroupId;
-                var wg = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId&m.IsActive==true).First();
+                int workgroupId = (int)this.RelationGroup.GetObjectsByParameters(m => m.RoleId == 0 & m.UserId == currentUser.UserId & m.WorkgroupId != 0 & m.IsActive == true).First().WorkgroupId;
+                var wg = this.Workgroup.GetObjectsByParameters(m => m.Id == workgroupId & m.IsActive == true).First();
 
                 currentUser.Workgroup = new WorkgroupView() { };
                 currentUser.Workgroup.CompanyId = wg.CompanyId;
@@ -557,11 +557,11 @@ AND
 
             List<UserDefaultWorkGroupView> defaultWorkgroups = new List<UserDefaultWorkGroupView>();
 
-            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m=>m.IsActive==true).ToList())
+            foreach (var workgroup in this.Workgroup.GetObjectsByParameters(m => m.IsActive == true).ToList())
             {
                 defaultWorkgroups.Add(new UserDefaultWorkGroupView()
                 {
-                    CompanyId =workgroup.CompanyId,
+                    CompanyId = workgroup.CompanyId,
                     Id = workgroup.Id,
                     isCompanySite = workgroup.isCompanySite,
                     Name = workgroup.Name,
@@ -875,18 +875,38 @@ AND
             return baseUserActions;
         }
 
-        public void SaveUser(SuratUser user)
+        public void SaveUser(SuratUser user, IList<UserRoleView> Roles, IList<UserWorkGroupView> WorkGroup, IList<UserAccessiblePageView> Paqes, IList<UserAccessibleActionView> Actions)
         {
-            int initializedDBContextId;
             try
             {
-                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                if (WorkGroup.Count() <= 0)
+                    throw new Exception("Lütfen çalışma grubu seçiniz");
 
+                this.SaveUser(user);
+                this.SaveUserPages(user.Id, Paqes);
+                this.SaveUserRelationGroupByWorkgroupId(user.Id, WorkGroup.First().WorkGroupId);
+                this.SaveUserRoles(user.Id, Roles);
+                this.SaveUserActions(user.Id, Actions);
+            }
+            catch (Exception exception)
+            {
+                throw new EntityProcessException(this.ApplicationContext, "SaveUser", this.ApplicationContext.SystemId, exception);
+            }
 
+        }
+
+        public void SaveUser(SuratUser user)
+        {
+            try
+            {
                 if (user.Id == 0)
                 {
+                     int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
                     if (this.User.GetObjectsByParameters(m => m.UserName == user.UserName).Count() > 0)
                         throw new Exception("Bu kullanıcı adı daha önceden alınmış.");
+                    
+                    user.LastPasswordChangedDate = DateTime.Now;
                     this.User.Add(user);
 
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
@@ -898,10 +918,11 @@ AND
                         WorkgroupId = 0
                     });
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
-
                 }
                 else
                 {
+                    int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+
                     SuratUser selectedUser = this.User.GetObjectByParameters(p => p.Id == user.Id);
                     if (selectedUser.Password != user.Password)
                     {
@@ -922,6 +943,7 @@ AND
                     selectedUser.IsExternalUser = user.IsExternalUser;
                     selectedUser.IsLocked = user.IsLocked;
                     this.User.Update(selectedUser);
+
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                 }
 
@@ -1636,15 +1658,24 @@ and pages.IsAccessControlRequired=1";
 
             try
             {
-                int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-                if (this.GetCountUserRelationgroupByWorkgroupId(userId, workgroupId) > 0)
-                    throw new Exception("bu kullanıcıya ait Workgroup daha önceden tanımlanmış");
-                RelationGroup relationGroup = new RelationGroup();
-                relationGroup.UserId = userId;
-                relationGroup.WorkgroupId = workgroupId;
-                relationGroup.RoleId = 0;
-                this.RelationGroup.Add(relationGroup);
-                this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                if (this.RelationGroup.GetObjectsByParameters(m=>m.IsActive==true&m.RoleId==0&m.WorkgroupId!=0&m.UserId==userId).Count()>0)
+                {
+                    int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                    var relationGroup = this.RelationGroup.GetObjectsByParameters(m=>m.IsActive==true&m.UserId==userId&m.WorkgroupId!=0&m.RoleId==0).First();
+                    relationGroup.WorkgroupId = workgroupId;
+                    this.RelationGroup.Update(relationGroup);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                }
+                else
+                {
+                    int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                    RelationGroup relationGroup = new RelationGroup();
+                    relationGroup.UserId = userId;
+                    relationGroup.WorkgroupId = workgroupId;
+                    relationGroup.RoleId = 0;
+                    this.RelationGroup.Add(relationGroup);
+                    this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+                }
             }
 
             catch (Exception exception)
@@ -1660,23 +1691,18 @@ and pages.IsAccessControlRequired=1";
         }
         public void SaveRelationGroup(RelationGroup relationGroup)
         {
-            int initializedDBContextId;
             int? workgroupId = relationGroup.WorkgroupId;
 
             try
             {
-                initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                 if (workgroupId == 0)
                 {
                     var relationGroupOfDatabase = this.RelationGroup.GetObjectByParameters(m => m.RoleId == relationGroup.RoleId & m.UserId == relationGroup.UserId);
                     if (relationGroupOfDatabase == null)
                     {
-                        relationGroup.ChangedByUser = null;
-                        relationGroup.ChangedDate = null;
-                        relationGroup.InsertedByUser = 1;
-                        relationGroup.InsertedDate = DateTime.Now;
-                        relationGroup.IsActive = true;
+                        int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                         this.RelationGroup.Add(relationGroup);
+                        this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                     }
                     else
                     {
@@ -1695,7 +1721,9 @@ and pages.IsAccessControlRequired=1";
                     var relationGroupOfDatabase = this.RelationGroup.GetObjectByParameters(m => m.WorkgroupId == relationGroup.WorkgroupId & m.UserId == relationGroup.UserId);
                     if (relationGroupOfDatabase == null)
                     {
+                        int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
                         this.RelationGroup.Update(relationGroup);
+                        this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                     }
                     //else
                     //{
@@ -1716,7 +1744,7 @@ and pages.IsAccessControlRequired=1";
 
                 throw new EntityProcessException(this.ApplicationContext, "SaveRelationGroup", this.ApplicationContext.SystemId, exception);
             }
-            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+            
         }
 
         public int GetRoleRelationGroupId(int roleId)
@@ -1780,10 +1808,7 @@ and pages.IsAccessControlRequired=1";
                     {
                         UserId = 0,
                         RoleId = 0,
-                        WorkgroupId = workgroup.Id,
-                        IsActive = true,
-                        InsertedByUser = 1,
-                        InsertedDate = DateTime.Now,
+                        WorkgroupId = workgroup.Id
                     });
                     this.ApplicationContext.CommitDBChanges(initializedDBContextId);
 
