@@ -9,14 +9,12 @@
                     <div class="space"></div>
                     <div class="row">
 
-                        <div class="col-md-6" style="min-height:350px;">
-                            <div id="workgroupTree" style="width:100%"
+                        <div class="col-md-6" style="min-height:350px;width:750px;">
+                            <div id="workgroupTree"
                                  data-role="treelist"
-                                 data-width="600"
                                  data-columns="[
-                                 { 'field': 'Name',title:'Çalışma Grubu','expandable': 'true' }
-
-                              ]"
+                                 { 'field': 'Name',title:'Çalışma Grubu','expandable': 'true','attributes':{style:' text-align:left;'} }
+                                 ]"
                                  data-selectable="true"
                                  data-bind="source:userWorkGroupDataSource,events: {change: onChange,dataBound: onDataBound}"></div>
                           
