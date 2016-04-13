@@ -1,6 +1,7 @@
 namespace KonsolideRapor.Base.Migrations
 {
     using KonsolideRapor.Base.Model.Entities;
+    using Surat.Base.Model;
     using Surat.Base.Model.Entities;
     using Surat.Common.Utilities;
     using System;
@@ -18,7 +19,7 @@ namespace KonsolideRapor.Base.Migrations
         protected override void Seed(KonsolideRapor.Base.Model.KonsolideRaporDbContext context)
         {
             
-           
+            this.AddSystems(context);
             this.AddBanks(context);
             this.AddOdemeTalepDurumlari(context);
         }
@@ -339,5 +340,35 @@ namespace KonsolideRapor.Base.Migrations
 
             });
         }
+
+        private void AddSystems(KonsolideRapor.Base.Model.KonsolideRaporDbContext context)
+        {
+            Surat.Base.Model.FrameworkDbContext frameworkContext = new FrameworkDbContext(context.Database.Connection.ConnectionString);
+            frameworkContext.Systems.AddOrUpdate(
+                        system => system.Id,
+                        new SuratSystem
+                        {
+                            Id = 20,// Root System
+                            ParentId = 1, //Kendo Tree null deðeri beklediði için bu þekilde yapýldý.
+                            ObjectTypeName =KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName,
+                            Name = KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName,
+                            IsActive = true,
+                            InsertedByUser = 1,
+                            InsertedDate = TimeUtility.GetCurrentDateTime()
+                        });
+            frameworkContext.Systems.AddOrUpdate(
+                    system => system.Id,
+                    new SuratSystem
+                    {
+                        Id = 21,// Root System
+                        ParentId = 1, //Kendo Tree null deðeri beklediði için bu þekilde yapýldý.
+                        ObjectTypeName = KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName,
+                        Name = KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName,
+                        IsActive = true,
+                        InsertedByUser = 1,
+                        InsertedDate = TimeUtility.GetCurrentDateTime()
+                    });
+            frameworkContext.SaveChanges();
+        }        
     }
 }
