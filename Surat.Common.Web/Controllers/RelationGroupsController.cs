@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Surat.Common.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -30,6 +31,7 @@ namespace Surat.WebServer.Controllers
         #region Methods        
 
         [HttpPost]
+        [ActionAttribute("Kullanıcı Rol İlişkisi Ekle", "Sisteme kullanıcıya ait rol tanımlaması ekler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult UserRoleAdd(RelationGroup relationGroup)
         {
             try
@@ -45,6 +47,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Kullanıcı Çalışma Grubu İlişkisi Ekle", "Sisteme kullanıcıya ait çalışma grubu tanımlaması ekler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult UserWorkgroupAdd(RelationGroup relationGroup)
         {
             try

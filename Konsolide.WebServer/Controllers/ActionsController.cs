@@ -1,5 +1,7 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.ViewModel;
+using Surat.Common.Data;
+using Surat.Common.Security;
 using KonsolideRapor.WebServer.Application;
 using KonsolideRapor.WebServer.Base;
 using System;
@@ -18,14 +20,14 @@ namespace KonsolideRapor.WebServer.Controllers
 
         public ActionsController()
         {
-            
+
         }
 
         #endregion
 
         #region Private Members
 
-        
+
         #endregion
 
         #region Public Members
@@ -33,12 +35,12 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
-        [ActionAttribute("Aksiyon Sayfası", "Sistemde kullanılan bütün aksiyonların(metodların) görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Aksiyon Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
-        [ActionAttribute("Aksiyonların Çağrılması", "Sistemde kullanılan bütün aksiyonların(metodların) getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Aksiyonları Getir", "Sistemde kayıtlı olan tüm aktif aksiyonları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetActions(int pageSize, int skip)
         {
             try
@@ -56,7 +58,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-      
+
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Surat.Common.Security;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Surat.Base.Repositories;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
 using Surat.Common.Data;
+
 namespace Surat.WebServer.Controllers
 {
     public class UserSessionsController: SuratControllerBase
@@ -29,15 +31,16 @@ namespace Surat.WebServer.Controllers
         #region Public Members
 
         #endregion
-
-       
+      
         #region Methods
 
+        [ActionAttribute("Kullanıcı  Oturumları Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Kullanıcı  Oturumlarını Getir", "Sistemde kayıtlı olan tüm kullanıcı oturumlarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserSessions(int pageSize, int skip)
         {
            

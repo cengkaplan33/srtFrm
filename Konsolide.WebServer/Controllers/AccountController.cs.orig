@@ -31,6 +31,7 @@ namespace KonsolideRapor.WebServer.Controllers
 
         #region Methods       
 
+        [ActionAttribute("Giriş Sayfası", "Kullanıcıların portala giriş yaptığı sayfayı görüntüler", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName,Surat.Common.Data.ActionType.Page)]
         [AllowAnonymous]
         [ActionAttribute("Giriş Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Login(string returnUrl)
@@ -45,6 +46,7 @@ namespace KonsolideRapor.WebServer.Controllers
             return View();
         }
 
+        [ActionAttribute("Kullanıcı Girişi", "Kullanıcının sistemde kayıtlı olup olmadığını kontrol eder", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [AllowAnonymous]
         [ActionAttribute("Giriş Yap", "Sistemde kayıtlı olan kullanıcıların giriş yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult UserLogin(LoginView kullanici, string returnUrl)
@@ -69,8 +71,12 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
             }            
         }
+<<<<<<< HEAD
+        [ActionAttribute("Kullanıcı Çıkışı", "Kullanıcının sistemde ki oturumunun sonlandırılmasını sağlar", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+=======
 
         [ActionAttribute("Çıkış Yap", "Giriş yapmış kullanıcıların çıkış yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+>>>>>>> 9f318357e77ee6bbdf36880cd229c0f00ece9ae7
         public ActionResult LogOut()
         {
             try

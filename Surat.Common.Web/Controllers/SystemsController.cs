@@ -3,6 +3,7 @@ using Surat.Common.Data;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
 using System;
+using Surat.Common.Security;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,18 +31,21 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [ActionAttribute("Sistem Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
+
+        [ActionAttribute("Sistem Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
-        public JsonResult GetSystems()
-        {
-            
 
+        [ActionAttribute("Sistemleri Getir", "Sistemde kayıtlı olan tüm aktif sistemleri getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult GetSystems()
+        {           
             try
             {
                 var suratsystems = this.WebApplicationManager.Framework.Configuration.System.GetActiveSystems();
@@ -55,6 +59,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Sistem Ekle", "Yeni sistem ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(SuratSystem suratsystem)
         {
 
@@ -70,7 +75,9 @@ namespace Surat.WebServer.Controllers
             }
             
         }
+
         [HttpPost]
+        [ActionAttribute("Sistem Güncelle", "Seçilen sistemi günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(SuratSystem suratsystem)
         {
             try
@@ -84,7 +91,9 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
         [HttpPost]
+        [ActionAttribute("Sistem Sil", "Seçilen sistemi siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(SuratSystem suratsystem)
         {
             try

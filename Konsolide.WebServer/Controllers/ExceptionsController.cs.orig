@@ -32,13 +32,21 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+<<<<<<< HEAD
+        [ActionAttribute("Hata Kayıtları Sayfası", "Hata Kayıtları sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+=======
         [ActionAttribute("Hata Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
+>>>>>>> 9f318357e77ee6bbdf36880cd229c0f00ece9ae7
         public ActionResult Index()
         {
             return View();
         }
 
+<<<<<<< HEAD
+        [ActionAttribute("Hata Kayıtlarının Çağrılması", "Sistemde oluşan tüm hata kayıtlarının getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+=======
         [ActionAttribute("Hataları Getir", "Sistemde loglanan tüm hataları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+>>>>>>> 9f318357e77ee6bbdf36880cd229c0f00ece9ae7
         public JsonResult GetExceptions(int pageSize, int skip)
         {
 

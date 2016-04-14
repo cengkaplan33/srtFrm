@@ -33,19 +33,19 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
-        [ActionAttribute("Sistem Sayfaları", "Sistem sayfalarının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Sayfalar Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [ActionAttribute("Sistem Sayfaları Düzenleme", "Sistem sayfalarının düzenlenmesini sağlayan sayfanın görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Sayfa Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
 
-        [ActionAttribute("Belirili Bir Sisteme Ait Sayfalar", "Belirli bir sisteme ait sayfaların görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Sayfaları Sisteme Göre Getir", "Seçilen sisteme ait sayfaları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetPagesBySystem(object[] parent)
         {
             int systemId;
@@ -74,7 +74,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Parametreler ile Sayfaların Getirilmesi", "Sisteme ait sayfaların belirli parametreler ile getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Sayfaları Parametrelere Göre Getir", "Kullanıcı, rol, çalışma grubu parametrelerine göre sayfaları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetSystemPagesByParameters(int userId, int roleId, int workgroupId)
         {
             List<RelationGroupAccessiblePageView> pages;
@@ -93,7 +93,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Sistem Sayfaların Getirilmesi", "Sisteme ait sayfaların getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Sayfaları Getir", "Sistemde kayıtlı olan tüm aktif sayfaları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetPages(int pageSize, int skip)
         {
             try
@@ -111,8 +111,8 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Sayfa Eklenmesi", "Sisteme ait yeni bir sayfa eklenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
+        [ActionAttribute("Sayfa Ekle", "Sisteme yeni sayfa ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(Page page)
         {
             try
@@ -127,8 +127,9 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Sayfa Düzenlenmesi", "Seçilen bir  sistem sayfasının düzenlenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        
         [HttpPost]
+        [ActionAttribute("Sayfa Güncelle", "Seçilen sayfayı günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(Page page)
         {
             try
@@ -143,8 +144,9 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Sayfa Silinmesi", "Seçilen bir  sistem sayfasının silinmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        
         [HttpPost]
+        [ActionAttribute("Sayfa Sil", "Seçilen sayfayı siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(Page page)
         {
 

@@ -1,32 +1,33 @@
 ﻿using Surat.Base.Model.Entities;
+using Surat.Common.ViewModel;
 using Surat.Common.Data;
 using Surat.Common.Security;
-using Surat.Common.ViewModel;
-using Surat.WebServer.Application;
-using Surat.WebServer.Base;
+using KonsolideRapor.WebServer.Application;
+using KonsolideRapor.WebServer.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-namespace Surat.WebServer.Controllers
+using System.Web.Security;
+using Surat.Common.Security;
+namespace KonsolideRapor.WebServer.Controllers
 {
-    public class ActionsController : SuratControllerBase
+    public class ActionsController : KonsolideControllerBase
     {
         #region Constructor
 
         public ActionsController()
         {
-
+            
         }
 
         #endregion
 
         #region Private Members
 
-
+        
         #endregion
 
         #region Public Members
@@ -34,14 +35,22 @@ namespace Surat.WebServer.Controllers
         #endregion
 
         #region Methods
+<<<<<<< HEAD
+        [ActionAttribute("Aksiyon Sayfası", "Sistemde kullanılan bütün aksiyonların(metodların) görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+=======
 
         [ActionAttribute("Aksiyon Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
+>>>>>>> 9f318357e77ee6bbdf36880cd229c0f00ece9ae7
         public ActionResult Index()
         {
             return View();
         }
+<<<<<<< HEAD
+        [ActionAttribute("Aksiyonların Çağrılması", "Sistemde kullanılan bütün aksiyonların(metodların) getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+=======
 
-        [ActionAttribute("Aksiyonları Getir", "Sistemde kayıtlı olan tüm aktif aksiyonları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName,ActionType.Action)]
+        [ActionAttribute("Aksiyonları Getir", "Sistemde kayıtlı olan tüm aktif aksiyonları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+>>>>>>> 9f318357e77ee6bbdf36880cd229c0f00ece9ae7
         public JsonResult GetActions(int pageSize, int skip)
         {
             try
@@ -59,6 +68,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+      
         #endregion
     }
 }

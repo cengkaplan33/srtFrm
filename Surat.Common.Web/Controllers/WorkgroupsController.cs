@@ -10,6 +10,7 @@ using Surat.WebServer.Application;
 using System.Web;
 using Surat.WebServer.Base;
 using Surat.Common.Data;
+using Surat.Common.Security;
 
 namespace Surat.WebServer.Controllers
 {
@@ -33,14 +34,19 @@ namespace Surat.WebServer.Controllers
 
         #region Methods        
 
+        [ActionAttribute("Çalışma Grupları Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
+
+        [ActionAttribute("Çalışma Grupları Düzenlme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
+
+        [ActionAttribute("Çalışma Gruplarını Getir", "Sistemde kayıtlı olan tüm aktif çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetWorkgroups()
         {   
             try
@@ -60,6 +66,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Çalışma Grubu Ekle", "Sisteme yeni çalışma grubu ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(Workgroup workgroup)
         {          
             try
@@ -76,6 +83,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Çalışma Grubu Güncelle", "Seçilen çalışma grubunu günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(Workgroup workgroup)
         {
             try
@@ -91,6 +99,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Çalışma Grubu Sil", "Seçilen çalışma grubunu siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(Workgroup workgroup)
         {
             try

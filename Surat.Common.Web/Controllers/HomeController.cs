@@ -1,4 +1,6 @@
 ﻿using Surat.Business.Security;
+using Surat.Common.Data;
+using Surat.Common.Security;
 using Surat.WebServer.ActionFilters;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
@@ -31,6 +33,7 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Constants.Application.FrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         [SuratAuthorizationFilter]
         public ActionResult Spa()
         {
@@ -55,6 +58,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [SuratAuthorizationFilter]
+        [ActionAttribute("Portal Anasayfası", "Portal anasayfasının görüntülenmesini sağlar ", Constants.Application.FrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
