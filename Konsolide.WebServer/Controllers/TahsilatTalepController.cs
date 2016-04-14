@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.Base.Model.Entities;
 using KonsolideRapor.WebServer.Base;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,14 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
+
+        [ActionAttribute("Tahsilat Talep Sayfası", "Tahsilat talepleri sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Tahsilat Taleplerinin Çağrılması", "Sistemde kullanılan bütün tahsilat taleplerinin  getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetTahsilatTalepleri(int pageSize, int skip)
         {
             try
@@ -51,6 +55,8 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [ActionAttribute("Tahsilat Talebinin Eklenmesi", "Yeni tahsilat talebinin eklenmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(OdemeTalep odemeTalep)
         {
@@ -66,6 +72,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Tahsilat Talebinin Düzenlenmesi", "Seçilen tahsilat talebinin düzenlenmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(OdemeTalep odemeTalep)
         {
@@ -81,6 +88,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Tahsilat Talebinin Silinmesi", "Seçilen tahsilat talebinin silinmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Delete(OdemeTalep odemeTalep)
         {

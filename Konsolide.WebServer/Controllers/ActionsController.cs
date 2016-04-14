@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
+using Surat.Common.Security;
 namespace KonsolideRapor.WebServer.Controllers
 {
     public class ActionsController : KonsolideControllerBase
@@ -32,12 +33,12 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
-
+        [ActionAttribute("Aksiyon Sayfası", "Sistemde kullanılan bütün aksiyonların(metodların) görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
-
+        [ActionAttribute("Aksiyonların Çağrılması", "Sistemde kullanılan bütün aksiyonların(metodların) getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetActions(int pageSize, int skip)
         {
             try

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
+using Surat.Common.Security;
 namespace KonsolideRapor.WebServer.Controllers
 {
     public class AccountController : KonsolideControllerBase
@@ -28,6 +29,7 @@ namespace KonsolideRapor.WebServer.Controllers
 
         #region Methods       
 
+        [ActionAttribute("Giriş Sayfası", "Kullanıcıların portala giriş yaptığı sayfayı görüntüler", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName,Surat.Common.Data.ActionType.Page)]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {            
@@ -41,6 +43,7 @@ namespace KonsolideRapor.WebServer.Controllers
             return View();
         }
 
+        [ActionAttribute("Kullanıcı Girişi", "Kullanıcının sistemde kayıtlı olup olmadığını kontrol eder", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [AllowAnonymous]
         public JsonResult UserLogin(LoginView kullanici, string returnUrl)
         {            
@@ -64,7 +67,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
             }            
         }
- 
+        [ActionAttribute("Kullanıcı Çıkışı", "Kullanıcının sistemde ki oturumunun sonlandırılmasını sağlar", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public ActionResult LogOut()
         {
             try

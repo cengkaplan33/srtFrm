@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.Base.Model.Entities;
 using KonsolideRapor.WebServer.Base;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace KonsolideRapor.WebServer.Controllers
 {
     public class OdemeTalepController : KonsolideControllerBase
     {
-         #region Constructor
+        #region Constructor
 
         public OdemeTalepController()
         {
-            
+
         }
 
         #endregion
@@ -30,11 +31,14 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
+
+        [ActionAttribute("Ödeme Talep Sayfası", "Ödeme talepleri sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Ödeme Taleplerinin Çağrılması", "Sistemde kullanılan bütün ödeme taleplerinin  getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetOdemeTalepleri(int pageSize, int skip)
         {
             try
@@ -51,6 +55,8 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [ActionAttribute("Ödeme Talebinin Eklenmesi", "Yeni Ödeme talebinin eklenmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(OdemeTalep odemeTalep)
         {
@@ -66,6 +72,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Ödeme Talebinin Düzenlenmesi", "Seçilen ödeme talebinin düzenlenmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(OdemeTalep odemeTalep)
         {
@@ -81,6 +88,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Ödeme Talebinin Silinmesi", "Seçilen ödeme talebinin silinmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Delete(OdemeTalep odemeTalep)
         {
@@ -95,6 +103,7 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
         #endregion
     }
 }

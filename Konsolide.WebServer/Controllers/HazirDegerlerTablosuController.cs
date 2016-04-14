@@ -2,6 +2,7 @@
 using KonsolideRapor.Common.ViewModel;
 using KonsolideRapor.WebServer.Base;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace KonsolideRapor.WebServer.Controllers
 {
     public class HazirDegerlerTablosuController : KonsolideControllerBase
     {
-         #region Constructor
+        #region Constructor
 
         public HazirDegerlerTablosuController()
         {
-            
+
         }
 
         #endregion
@@ -31,20 +32,19 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
+        [ActionAttribute("Banka Tablosu Sayfası", "Banka Tabloları sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
-        public ActionResult Tanim()
-        {
-            return View();
-        }
+        
+        [ActionAttribute("Banka Tablosu verilerinin Çağrılması", "Bankalara ait veri girişlerinin yapıldığı ekranı oluşturan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetHazirDegerler()
         {
             try
             {
-                
-                
+
+
                 return Json(this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetHazirDegerlerList(), JsonRequestBehavior.AllowGet);
 
             }
@@ -54,6 +54,8 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [ActionAttribute("Banka Tablosu Verilerinin Eklenmesi", "Bankalara ait veri girişlerinin eklenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(HazirOdemeTablosuView hazirDegerTablosu)
         {
@@ -69,6 +71,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Banka Tablosu Verilerinin Düzenlenmesi", "Bankalara ait veri girişlerinin düzenlenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(HazirOdemeTablosuView hazirDegerTablosu)
         {
@@ -85,7 +88,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-      
+
         #endregion
 
     }

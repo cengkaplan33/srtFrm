@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.Base.Model.Entities;
 using KonsolideRapor.WebServer.Base;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,16 +31,19 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
+        [ActionAttribute("Durum Tanımları Sayfası", "Durum Tanımları sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Durum Tanımları Düzenleme Sayfası", "Durum Tanımlarının düzenlendiği sayfanın görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
-    
+
+        [ActionAttribute("Durum Tanımlarının Çağrılması", "Sistemde kullanılan bütün durum tanımlarının  getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetDurumTanimlari(int pageSize, int skip)
         {
             try
@@ -57,6 +61,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Ödeme Ekranı-Durum Tanımlarının Çağrılması", "Sistemde kullanılan bütün ödeme ekranı durum tanımlarının  getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetOdemeEkraniDurumTanimlari()
         {
             try
@@ -72,6 +77,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Tahsilat Ekranı-Durum Tanımlarının Çağrılması", "Sistemde kullanılan bütün tahsilat ekranı durum tanımlarının  getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetTahsilatEkraniDurumTanimlari()
         {
             try
@@ -87,6 +93,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Durum Tanımı Eklenmesi", "Sisteme yeni bir durum tanımı yapılmasını sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(OdemeTalepDurumu konsolideState)
         {
@@ -102,6 +109,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Durum Tanımı Düzenlenmesi", "Sistemde seçilen bir durum tanımının düzenlenmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(OdemeTalepDurumu konsolideState)
         {
@@ -117,6 +125,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Durum Tanımı Silinmesi", "Sistemde seçilen bir durum tanımının silinmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Delete(OdemeTalepDurumu konsolideState)
         {

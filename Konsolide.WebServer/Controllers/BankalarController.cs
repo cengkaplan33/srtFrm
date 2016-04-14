@@ -2,6 +2,7 @@
 using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,16 +32,18 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
+        [ActionAttribute("Banka Sayfası", "Banka sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
-
+        [ActionAttribute("Banka Düzenleme Sayfası", "Banka bilgilerinin düzenlendiği sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
 
+        [ActionAttribute("Bankaların Çağrılması", "Sistemde kullanılan bütün bankaların  getirilmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetBanks(int pageSize, int skip)
         {
             try
@@ -58,6 +61,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }  
         }
 
+        [ActionAttribute("Banka Eklenmesi", "Sisteme yeni bir banka tanımı yapılmasını sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(Bank bank)
         {
@@ -73,6 +77,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Banka Düzenlenmesi", "Sistemde seçilen bir banka tanımının düzenlenmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(Bank bank)
         {
@@ -88,6 +93,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Banka Silinmesi", "Sistemde seçilen bir banka tanımının silinmesini sağlayan metod ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Delete(Bank bank)
         {
