@@ -3,6 +3,7 @@ using Surat.Common.Data;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
 using System;
+using Surat.Common.Security;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,11 +33,13 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [ActionAttribute("Parametre Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
-       
+
+        [ActionAttribute("Parametreleri Sisteme Göre Getir", "Seçilen sisteme ait parametreleri getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetParametersBySystem(object[] parent)
         {
             int dbObjectId;
@@ -64,6 +67,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Parametre Ekle", "Sisteme yeni parametre ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add([Bind(Prefix = "parameters")]IEnumerable<Parameter> parameter, object[] parent)
         {
             try
@@ -88,6 +92,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Parametre Güncelle", "Seçilen parametreyi günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update([Bind(Prefix = "parameters")]IEnumerable<Parameter> parameters,object[] parent)
         {
             try
@@ -103,6 +108,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Parametre Sil", "Seçilen parametreyi siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete([Bind(Prefix = "parameters")]IEnumerable<Parameter> parameters)
         {
             try

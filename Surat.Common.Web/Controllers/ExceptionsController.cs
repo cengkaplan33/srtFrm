@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Surat.Common.Security;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,11 +33,13 @@ namespace Surat.WebServer.Controllers
       
         #region Methods
 
+        [ActionAttribute("Hata Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Hataları Getir", "Sistemde loglanan tüm hataları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetExceptions(int pageSize, int skip)
         {
            

@@ -1,6 +1,7 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.Data;
 using Surat.Common.ViewModel;
+using Surat.Common.Security;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
 using System;
@@ -34,15 +35,19 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [ActionAttribute("Sayfalar Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Sayfa Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
+
+        [ActionAttribute("Sayfaları Sisteme Göre Getir", "Seçilen sisteme ait sayfaları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetPagesBySystem(object[] parent)
         {
             int systemId;
@@ -71,6 +76,7 @@ namespace Surat.WebServer.Controllers
             }            
         }
 
+        [ActionAttribute("Sayfaları Parametrelere Göre Getir", "Kullanıcı, rol, çalışma grubu parametrelerine göre sayfaları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetSystemPagesByParameters(int userId,int roleId,int workgroupId)
         {
             List<RelationGroupAccessiblePageView> pages;
@@ -89,6 +95,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Sayfaları Getir", "Sistemde kayıtlı olan tüm aktif sayfaları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]     
         public JsonResult GetPages(int pageSize, int skip)
         {
             try
@@ -106,8 +113,8 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-
         [HttpPost]
+        [ActionAttribute("Sayfa Ekle", "Sisteme yeni sayfa ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(Page page)
         {
             try
@@ -123,6 +130,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Sayfa Güncelle", "Seçilen sayfayı günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(Page page)
         {
             try
@@ -138,6 +146,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Sayfa Sil", "Seçilen sayfayı siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(Page page)
         {
 

@@ -41,7 +41,7 @@ namespace Surat.WebServer.Controllers
             return View();
         }
 
-        [ActionAttribute("Aksiyonları Getir", "Sistemde kayıtlı olan tüm aktif aksiyonları getir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName,ActionType.Action)]
+        [ActionAttribute("Aksiyonları Getir", "Sistemde kayıtlı olan tüm aktif aksiyonları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName,ActionType.Action)]
         public JsonResult GetActions(int pageSize, int skip)
         {
             try
@@ -58,7 +58,6 @@ namespace Surat.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         #endregion
     }

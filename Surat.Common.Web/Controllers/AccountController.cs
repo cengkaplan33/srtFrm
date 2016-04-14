@@ -1,5 +1,7 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.ViewModel;
+using Surat.Common.Security;
+using Surat.Common.Data;
 using Surat.SerendipApplication.Business;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
@@ -10,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
+
 namespace Surat.WebServer.Controllers
 {
     public class AccountController : SuratControllerBase
@@ -30,6 +33,7 @@ namespace Surat.WebServer.Controllers
         #region Methods       
 
         [AllowAnonymous]
+        [ActionAttribute("Giriş Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Login(string returnUrl)
         {            
             ViewBag.ReturnUrl = returnUrl;
@@ -42,6 +46,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [AllowAnonymous]
+        [ActionAttribute("Giriş Yap", "Sistemde kayıtlı olan kullanıcıların giriş yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult UserLogin(LoginView kullanici, string returnUrl)
         {            
             try
@@ -64,7 +69,8 @@ namespace Surat.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
             }            
         }
- 
+
+        [ActionAttribute("Çıkış Yap", "Giriş yapmış kullanıcıların çıkış yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public ActionResult LogOut()
         {
             try

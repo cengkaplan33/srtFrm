@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using Surat.Common.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -29,66 +30,74 @@ namespace Surat.WebServer.Controllers
 
         #endregion
 
-        #region Methods        
+        #region Methods
 
+        [ActionAttribute("Çalışma Grupları Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
+
+        [ActionAttribute("Çalışma Grupları Düzenlme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
+
+        [ActionAttribute("Çalışma Gruplarını Getir", "Sistemde kayıtlı olan tüm aktif çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetWorkgroups()
-        {   
+        {
             try
             {
 
-             var  workgroups = this.WebApplicationManager.Framework.Security.Workgroup.GetActiveWorkGroups();
-               
+                var workgroups = this.WebApplicationManager.Framework.Security.Workgroup.GetActiveWorkGroups();
+
                 return Json(workgroups, JsonRequestBehavior.AllowGet);
-               
+
             }
             catch (Exception exception)
             {
                 this.PublishException(exception);
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + exception.Message });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + exception.Message });
             }
         }
 
         [HttpPost]
+        [ActionAttribute("Çalışma Grubu Ekle", "Sisteme yeni çalışma grubu ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(Workgroup workgroup)
-        {          
+        {
             try
             {
                 this.WebApplicationManager.Framework.Security.SaveWorkgroup(workgroup);
-                return Json(new {Result="Kayıt işlemi gerçekleştirildi."}, JsonRequestBehavior.AllowGet);
+                return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 this.PublishException(exception);
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + exception.Message });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + exception.Message });
             }
         }
 
         [HttpPost]
+        [ActionAttribute("Çalışma Grubu Güncelle", "Seçilen çalışma grubunu günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(Workgroup workgroup)
         {
             try
-            {                
+            {
                 this.WebApplicationManager.Framework.Security.SaveWorkgroup(workgroup);
                 return Json(new { Result = "Kaydınız güncelleştirildi" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
         [HttpPost]
+        [ActionAttribute("Çalışma Grubu Sil", "Seçilen çalışma grubunu siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(Workgroup workgroup)
         {
             try
@@ -99,7 +108,7 @@ namespace Surat.WebServer.Controllers
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 

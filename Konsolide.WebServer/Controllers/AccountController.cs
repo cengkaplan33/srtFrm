@@ -1,5 +1,7 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.ViewModel;
+using Surat.Common.Security;
+using Surat.Common.Data;
 using KonsolideRapor.WebServer.Application;
 using KonsolideRapor.WebServer.Base;
 using System;
@@ -29,6 +31,7 @@ namespace KonsolideRapor.WebServer.Controllers
         #region Methods       
 
         [AllowAnonymous]
+        [ActionAttribute("Giriş Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Login(string returnUrl)
         {            
             
@@ -42,6 +45,7 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [AllowAnonymous]
+        [ActionAttribute("Giriş Yap", "Sistemde kayıtlı olan kullanıcıların giriş yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult UserLogin(LoginView kullanici, string returnUrl)
         {            
             try
@@ -64,7 +68,8 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
             }            
         }
- 
+
+        [ActionAttribute("Çıkış Yap", "Giriş yapmış kullanıcıların çıkış yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public ActionResult LogOut()
         {
             try

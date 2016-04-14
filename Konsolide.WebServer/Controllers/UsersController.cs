@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using Surat.Common.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -31,16 +32,19 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [ActionAttribute("Kullanıcı Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Kullanıcı Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
 
+        [ActionAttribute("Kullanıcıları Getir", "Sistemde kayıtlı olan tüm aktif kullanıcıları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public ActionResult GetUsers(int pageSize, int skip)
         {
             try
@@ -57,6 +61,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Kullanıcı Rollerini Getir", "Seçilen kullanıcıya ait rolleri getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserRoles(int? userId = -1)
         {
             try
@@ -70,6 +75,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Kullanıcı Sayfalarını Getir", "Seçilen kullanıcıya ait sayfa haklarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserPages(int? userId = -1)
         {
             try
@@ -83,6 +89,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Kullanıcı Aksiyonlarını Getir", "Seçilen kullanıcıya ait aksiyon haklarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserActions(int? userId = -1)
         {
             try
@@ -96,6 +103,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Çalışma Grubu ID Getir", "Seçilen çalışma grubunun Id'sini getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetChoosedWorkgroupId(int? userId = -1)
         {
             try
@@ -108,6 +116,8 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
+        [ActionAttribute("Kullınıcı Çalışma Gruplarını Getir", "Seçilen kullanıcıya ait çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserWorkgroups(int? userId = -1)
         {
             try
@@ -120,6 +130,8 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
+        [ActionAttribute("Mevcut Kullınıcının Çalışma Gruplarını Getir", "Sisteme giriş yapan kullanıcıya ait çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserWorkgroupsWithCurentUsers()
         {
             try
@@ -132,7 +144,9 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
         [HttpPost]
+        [ActionAttribute("Kullanıcı Ekle", "Sisteme yeni kullanıcı ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public ActionResult Add(SuratUser user, string Roles, string Pages, string Actions, string WorkGroupId)
         {
             try
@@ -155,6 +169,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Kullanıcı Güncelle", "Seçilen kullanıcıyı günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(SuratUser user, string Roles, string Pages, string Actions, string WorkGroupId)
         {
             try
@@ -177,6 +192,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Kullanıcı Sil", "Seçilen kullanıcıyı siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(SuratUser users)
         {
             try

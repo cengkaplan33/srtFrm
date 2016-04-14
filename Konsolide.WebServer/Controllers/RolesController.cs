@@ -2,6 +2,7 @@
 using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using Surat.Common.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -32,22 +33,25 @@ namespace KonsolideRapor.WebServer.Controllers
 
         #endregion
 
-       
         #region Methods
 
+        [ActionAttribute("Rol Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
+
+        [ActionAttribute("Rol Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
+
         public JsonResult GetRolesByUserName(string filter)
         {
             string b = filter;
             List<SuratRole> suratroles;
-            
+
             try
             {
                 suratroles = this.WebApplicationManager.Framework.Security.Role.GetRolesByName(filter);
@@ -56,28 +60,30 @@ namespace KonsolideRapor.WebServer.Controllers
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
+        [ActionAttribute("Rolleri Getir", "Sistemde kayıtlı olan tüm aktif rolleri getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetRoles(int pageSize, int skip)
         {
-           
+
             try
             {
                 var roles = this.WebApplicationManager.Framework.Security.Role.GetRolesActive();
                 var total = roles.Count();
                 var data = roles.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
                 return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
-               
+
             }
             catch (Exception exception)
-            {               
+            {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 
+        [ActionAttribute("Rol Sayfalarını Getir", "Seçilen role ait sayfa haklarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetRolePages(int? roleId = -1)
         {
 
@@ -94,6 +100,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Rol Aksiyonlarını Getir", "Seçilen role ait aksiyon haklarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetRoleActions(int? roleId = -1)
         {
 
@@ -111,6 +118,7 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Rol Ekle", "Sisteme yeni rol ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(SuratRole suratrole, string Pages, string Actions)
         {
             try
@@ -133,6 +141,7 @@ namespace KonsolideRapor.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Rol Güncelle", "Seçilen rolü günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(SuratRole suratrole, string Pages, string Actions)
         {
             try
@@ -150,18 +159,20 @@ namespace KonsolideRapor.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
         [HttpPost]
+        [ActionAttribute("Rol Sil", "Seçilen rolü siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(SuratRole suratrole)
         {
             try
-            {        
+            {
                 this.WebApplicationManager.Framework.Security.DeleteRole(suratrole);
                 return Json(new { Result = "Silme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId,Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
 

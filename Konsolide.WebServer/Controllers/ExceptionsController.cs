@@ -1,6 +1,7 @@
 ﻿using KonsolideRapor.WebServer.Base;
 using Surat.Base.Model.Entities;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using Surat.Common.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -31,11 +32,13 @@ namespace Surat.WebServer.Controllers
       
         #region Methods
 
+        [ActionAttribute("Hata Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Hataları Getir", "Sistemde loglanan tüm hataları getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetExceptions(int pageSize, int skip)
         {
            

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Surat.Common.Security;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Surat.WebServer.Base;
 using Surat.Common.Data;
 using Surat.Common.ViewModel;
 using System.Web.Script.Serialization;
+
 namespace Surat.WebServer.Controllers
 {
     public class RolesController: SuratControllerBase
@@ -31,18 +33,21 @@ namespace Surat.WebServer.Controllers
         #region Public Members
 
         #endregion
-
-       
+      
         #region Methods
 
+        [ActionAttribute("Rol Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
+
+        [ActionAttribute("Rol Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
+
         public JsonResult GetRolesByUserName(string filter)
         {
             string b = filter;
@@ -60,6 +65,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Rolleri Getir", "Sistemde kayıtlı olan tüm aktif rolleri getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetRoles(int pageSize, int skip)
         {
            
@@ -78,6 +84,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Rol Sayfalarını Getir", "Seçilen role ait sayfa haklarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetRolePages(int? roleId=-1)
         {
 
@@ -94,6 +101,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Rol Aksiyonlarını Getir", "Seçilen role ait aksiyon haklarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetRoleActions(int? roleId = -1)
         {
 
@@ -111,6 +119,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Rol Ekle", "Sisteme yeni rol ekler", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Add(SuratRole suratrole,string Pages,string Actions)
         {
             try
@@ -133,6 +142,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Rol Güncelle", "Seçilen rolü günceller.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Update(SuratRole suratrole,string Pages,string Actions)
         {
             try
@@ -152,6 +162,7 @@ namespace Surat.WebServer.Controllers
         }
 
         [HttpPost]
+        [ActionAttribute("Rol Sil", "Seçilen rolü siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(SuratRole suratrole)
         {
             try

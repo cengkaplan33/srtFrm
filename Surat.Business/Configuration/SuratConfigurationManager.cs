@@ -306,6 +306,7 @@ namespace Surat.Business.Configuration
                                    join systems in this.Context.ApplicationContext.DBContext.Systems on pages.SystemId equals systems.Id
                                    join InUser in this.Context.ApplicationContext.DBContext.Users on pages.InsertedByUser equals InUser.Id
                                    from ChUser in this.Context.ApplicationContext.DBContext.Users.Where(u => u.Id == pages.ChangedByUser).DefaultIfEmpty()
+                                   where(pages.IsActive == true)
                          select new PagesListView
                                    {
                                        Id = pages.Id,
