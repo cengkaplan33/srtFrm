@@ -16,25 +16,20 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                         url: "/HazirDegerlerTablosu/GetHazirDegerler",
                         type: "POST",
                         complete: function (jqXhr, textStatus) {
-                            //var items = localStorage["toExpand"];
-                            //if (items) {
-                            //    items = JSON.parse(items);
-                            //    var tl = $("#hazirDegerlerGrid").data("kendoTreeList");
-                              
-                            //        var row = $("#hazirDegerlerGrid").data("kendoTreeList").tbody.find("tr[data-uid='" +expandedId + "']");
-                            //       // var tr = tl.content.find("tr[data-uid='"+expandedId+"']").eq(val);
 
-                            //       tl.expand(row);
-                              
-                            //}
-                            var items = localStorage["toExpand"];
-                            if (items) {
-                                items = JSON.parse(items);
-                                var tl = $("#hazirDegerlerGrid").data("kendoTreeList");
-                                $.each(items, function (idx, val) {
-                                    var tr = tl.content.find("tr").eq(val);
-                                    tl.collapse(tr);
-                                })
+                            var tl = $("#hazirDegerlerGrid").data("kendoTreeList");
+                            var dataSourceView = tl.dataSource._view;
+                            for (var i = 0; i < dataSourceView.length; i++) {
+                                var pid = dataSourceView[i].Id;
+                                if (pid != expandedId) {
+                                    var uid = dataSourceView[i].uid;
+                                    $('[data-uid="' + uid + '"] tr').collapse();
+                                }
+                                else {
+                                    var uid = dataSourceView[i].uid;
+                                    $('[data-uid="' + uid + '"]').attr("aria-expanded", "true");
+                                    tl.expand($('[data-uid="' + uid + '"]'));
+                                }
                             }
                         }
                     },
@@ -47,11 +42,10 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                                 var result = jQuery.parseJSON(jqXhr.responseText);
                                 
                                 try {
-                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
+                                    
                                 } catch (e) {
-                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
                                 }
@@ -76,13 +70,15 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                                 var result = jQuery.parseJSON(jqXhr.responseText);
                               
                                 try {
-                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
+                                  
+                                   
                                 } catch (e) {
-                                    localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
+                                   
+                                    
                                 }
                                 _notification.info(result.Result);
                             }
@@ -133,9 +129,9 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
             ],
             expand:function(e)
             {
-                expandedId = e.model.uid;
-                localStorage["toExpand"] = JSON.stringify($.map($("#hazirDegerlerGrid .k-i-expand").closest("tr"), function (val, idx) { return $(val).index() }));
+                var row = e.model;
              
+                expandedId = row.Id;
                
             },
             dataBound: function onDataBound(e) {
