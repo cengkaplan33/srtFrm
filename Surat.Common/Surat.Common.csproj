@@ -64,6 +64,8 @@
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Globalization\IGlobalizationManager.cs" />
+    <Compile Include="Security\ActionAttribute.cs" />
+    <Compile Include="ViewModel\SuratActionView.cs" />
     <Compile Include="ViewModel\UserAccessibleActionView.cs" />
     <Compile Include="ViewModel\UserActionBaseView.cs" />
     <Compile Include="ViewModel\UserPageBaseView.cs" />

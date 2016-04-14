@@ -12,6 +12,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Surat.WebServer.Application
 {
@@ -84,6 +85,86 @@ namespace Surat.WebServer.Application
             RouteConfiguration.RegisterRoutes(RouteTable.Routes);
             BundleConfiguration.RegisterBundles(BundleTable.Bundles);
 
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            //    var controlleractionlist = assembly.GetTypes()
+            //.Where(type => typeof(System.Web.Mvc.Controller).IsAssignableFrom(type))
+            //.SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+            //.Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+            //.Select(x => new { Controller = x.DeclaringType.Name, Action = x.Name, ReturnType = x.ReturnType.Name, Attributes = String.Join(",", x.GetCustomAttributes().Select(a => a.GetType().Name.Replace("Attribute", ""))) })
+            //.OrderBy(x => x.Controller).ThenBy(x => x.Action).ToList();
+
+            //    Actions = controlleractionlist.Select(x => 
+            //        {
+            //            if ( Math.Round(2.4)  == 2)
+            //                return new SuratActionView { TypeName = x.Controller.Replace("Controller", "") + "/" + x.Action };
+            //            else
+            //          return      new SuratActionView { TypeName = x.Controller.Replace("Controller", "") + "/" + x.Action };
+            //        } 
+            //        ).ToList();
+            //    Surat.Common.Security.ActionAttribute ss = (Surat.Common.Security.ActionAttribute)assembly;
+
+
+            ////linqpad
+            //assembly.GetTypes()
+            //        .Where(type => typeof(System.Web.Mvc.Controller).IsAssignableFrom(type))
+            //    //.Where(type=> typeof(Surat.WebServer.Base.SuratControllerBase).IsAssignableFrom(type))
+            //        .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+            //        .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+            //        .Select(x =>
+            //        {
+            //            System.Attribute[] attrs = System.Attribute.GetCustomAttributes(x);
+            //            Surat.Common.Security.ActionAttribute att = null;
+            //            foreach (System.Attribute attr in attrs)
+            //            {
+            //                if (attr is Surat.Common.Security.ActionAttribute)
+            //                {
+            //                    att = (Surat.Common.Security.ActionAttribute)attr;
+            //                    break;
+            //                }
+            //            }
+
+            //            if (att == null)
+            //                att = new Surat.Common.Security.ActionAttribute("", "", "");
+            //            return new { def = att, URL = x.DeclaringType.Name.Replace("Controller", "") + "/" + x.Name, Controller = x.DeclaringType.Name, Action = x.Name, ReturnType = x.ReturnType.Name, Attributes = String.Join(",", x.GetCustomAttributes().Select(a => a.GetType().Name.Replace("Attribute", ""))) };
+            //        }).OrderBy(x => x.URL).ThenBy(x => x.Action).ToList();
+
+
+       Actions=      assembly.GetTypes()
+                //.Where(type => typeof(System.Web.Mvc.Controller).IsAssignableFrom(type))
+                    .Where(type => typeof(Surat.WebServer.Base.SuratControllerBase).IsAssignableFrom(type))
+                    .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+                    .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+                    .Select(x =>
+                    {
+                        System.Attribute[] attrs = System.Attribute.GetCustomAttributes(x);
+                        Surat.Common.Security.ActionAttribute att = null;
+                        foreach (System.Attribute attr in attrs)
+                        {
+                            if (attr is Surat.Common.Security.ActionAttribute)
+                            {
+                                att = (Surat.Common.Security.ActionAttribute)attr;
+                                break;
+                            }
+                        }
+
+                        if (att == null)
+                            att = new Surat.Common.Security.ActionAttribute("", "", "", ActionType.Action);
+
+                        return new SuratActionView
+                        {
+
+                            Description = att.Description,
+                            Name = att.Name,
+                            SystemName = att.SystemName,
+                            Type = att.Type,
+                            TypeName = x.DeclaringType.Name.Replace("Controller", "") + "/" + x.Name
+                        };
+                    }).OrderBy(x => x.TypeName).ToList();
+
+
+       var deneme = Actions;
             //Typeof(
             //var sss= new Surat.WebServer.Base.SuratControllerBase();
             //Assembly asm = Assembly.GetExecutingAssembly();
@@ -93,6 +174,8 @@ namespace Surat.WebServer.Application
             //    .SelectMany(type => type.GetMethods())
             //    .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
         }
+
+        public static List<SuratActionView> Actions;
 
         #endregion
 
@@ -118,8 +201,11 @@ namespace Surat.WebServer.Application
             
             if (currentUser != null)
                 framework = new FrameworkApplicationManager(currentUser);
-            else framework = new FrameworkApplicationManager();            
-            
+            else framework = new FrameworkApplicationManager();
+
+            framework.Security.RegisterActions(Actions);
+            Actions = new List<SuratActionView>();
+
             return framework;
         }
 

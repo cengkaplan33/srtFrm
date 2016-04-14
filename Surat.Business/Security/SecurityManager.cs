@@ -1587,65 +1587,88 @@ and pages.IsAccessControlRequired=1";
 
         #region Actions
 
-        public void RegisterActions(List<SuratAction> Actions)
+        public void RegisterActions(List<SuratActionView> Actions)
         {
-            int systemId = this.ApplicationContext.SystemId;
+            SuratSystem system;
+            Dictionary<string, int> dicSystems = new Dictionary<string, int>();
+
+            List<SuratActionView>  reflectedActions = new List<SuratActionView>();
+
+            foreach (var act in Actions)
+            {
+                if (act.SystemName.Length == 0)
+                    continue;
+
+                system = this.ApplicationContext.System.DBContext.Systems.Where(p => p.ObjectTypeName == act.SystemName).FirstOrDefault();
+                
+                if(system == null)
+                    continue;
+
+                if(!dicSystems.ContainsKey(system.Name))
+                    dicSystems[system.Name] = system.Id;
+
+                act.SystemId = system.Id;
+                reflectedActions.Add(act);
+            }
 
             try
             {
-                if (Actions.Count > 0)
+                if (reflectedActions.Count > 0)
                 {
-
-                    Dictionary<string, SuratAction> dicRegisteredActions = new Dictionary<string, SuratAction>();
-                    Dictionary<string, SuratAction> dicUnregisteredActions = new Dictionary<string, SuratAction>();
-                    var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == systemId).ToList();
-
-                    ////OK::NOT:: sistemId koymuştum ama sistem mantığı tam oturmadığı için iptal ettim
-                    //foreach (var item in registeredActions)
-                    //    if (!dic.ContainsKey(item.SystemId + "_" + item.TypeName))
-                    //        dic.Add(item.SystemId + "_" + item.TypeName, item);
-
-                    //var unregisteredActions = Actions.Where(x => !dic.ContainsKey(systemId.ToString() + "_" + x.TypeName));
-
-
-                    //aynı controller altında aynı isimde action olabilir.
-                    foreach (var item in registeredActions)
-                        if (!dicRegisteredActions.ContainsKey(item.TypeName))
-                            dicRegisteredActions.Add(item.TypeName, item);
-
-                    foreach (var item in Actions)
-                        if (!dicUnregisteredActions.ContainsKey(item.TypeName))
-                            dicUnregisteredActions.Add(item.TypeName, item);
-
-                    var unregisteredActions = Actions.Where(x => !dicRegisteredActions.ContainsKey(x.TypeName)).ToList();
-                    var willDeletedActions = registeredActions.Where(x => !dicUnregisteredActions.ContainsKey(x.TypeName)).ToList();
-
-                    if (unregisteredActions.Count() > 0 || willDeletedActions.Count() > 0)
+                    foreach (var item in dicSystems)
                     {
-                        //int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+                        
+                        Dictionary<string, SuratAction> dicRegisteredActions = new Dictionary<string, SuratAction>();
+                        Dictionary<string, SuratActionView> dicUnregisteredActions = new Dictionary<string, SuratActionView>();
+                        //var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == systemId).ToList();
+                        var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == item.Value).ToList();
 
-                        foreach (var item in unregisteredActions)
+                        ////OK::NOT:: sistemId koymuştum ama sistem mantığı tam oturmadığı için iptal ettim
+                        //foreach (var item in registeredActions)
+                        //    if (!dic.ContainsKey(item.SystemId + "_" + item.TypeName))
+                        //        dic.Add(item.SystemId + "_" + item.TypeName, item);
+
+                        //var unregisteredActions = Actions.Where(x => !dic.ContainsKey(systemId.ToString() + "_" + x.TypeName));
+
+
+                        //aynı controller altında aynı isimde action olabilir.
+                        foreach (var rItem in registeredActions)
+                            if (!dicRegisteredActions.ContainsKey(rItem.TypeName))
+                                dicRegisteredActions.Add(rItem.TypeName, rItem);
+
+                        foreach (var urItem in reflectedActions)
+                            if (!dicUnregisteredActions.ContainsKey(urItem.TypeName))
+                                dicUnregisteredActions.Add(urItem.TypeName, urItem);
+
+                        var unRegisteredActions = reflectedActions.Where(x => !dicRegisteredActions.ContainsKey(x.TypeName)).ToList();
+                        var willDeletedActions = registeredActions.Where(x => !dicUnregisteredActions.ContainsKey(x.TypeName)).ToList();
+
+                        if (unRegisteredActions.Count() > 0 || willDeletedActions.Count() > 0)
                         {
-                            this.Action.Add(new SuratAction() { SystemId = systemId, TypeName = item.TypeName, ChangedByUser = null, ChangedDate = null, InsertedByUser = 1, InsertedDate = DateTime.Now, IsActive = true });
+                            //int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
 
+                            foreach (var urItem in unRegisteredActions)
+                            {
+                                this.Action.Add(new SuratAction() { SystemId = urItem.SystemId, TypeName = urItem.TypeName, ChangedByUser = null, ChangedDate = null, InsertedByUser = 1, InsertedDate = DateTime.Now, IsActive = true });
+                            }
+
+                            foreach (var dItem in willDeletedActions)
+                            {
+                                dItem.IsActive = false;
+                                this.Action.Update(dItem);
+                            }
+
+                            //OK::NOT:: db leri ayırmadan bu işlemi yapma.
+                            // this.ApplicationContext.DBContext.SaveChanges();
+
+                            //this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                         }
-
-                        foreach (var item in willDeletedActions)
-                        {
-                            item.IsActive = false;
-                            this.Action.Update(item);
-                        }
-
-                        //OK::NOT:: db leri ayırmadan bu işlemi yapma.
-                        // this.ApplicationContext.DBContext.SaveChanges();
-
-                        //this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception("Seçtiğiniz kullanıcı zaten bu çalışma grubunda yer alıyor");
+                throw new Exception("Aksiyonlar eklenirken hata oluştu ! " + ex.Message, ex);
             }
         }
 

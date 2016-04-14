@@ -572,7 +572,7 @@
                                  InsertedByUser = 1,
                                  InsertedDate = TimeUtility.GetCurrentDateTime()
                              });
-                systemParameterValues.Add("MaxPasswordChangePeriodAsDays", "15");
+                systemParameterValues.Add("MaxPasswordChangePeriodAsDays", "30");
             }
 
             if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "IsCaptchaActive"))
@@ -988,7 +988,7 @@
                             system => system.Id,
                             new Page
                             {
-                                SystemId = 2,
+                                SystemId = 3,
                                 Name = "Kullanıcılar",
                                 ObjectTypePrefix = "Users/Index",
                                 ObjectTypeName = "Users",
@@ -1008,7 +1008,7 @@
                             system => system.Id,
                             new Page
                             {
-                                SystemId = 2,
+                                SystemId = 3,
                                 Name = "Roller",
                                 ObjectTypePrefix = "Roles/Index",
                                 ObjectTypeName = "Roles",
@@ -1028,7 +1028,7 @@
                             system => system.Id,
                             new Page
                             {
-                                SystemId = 2,
+                                SystemId = 3,
                                 Name = "Çalışma grupları",
                                 ObjectTypePrefix = "Workgroups/Index",
                                 ObjectTypeName = "Workgroups",
@@ -1048,7 +1048,7 @@
                             system => system.Id,
                             new Page
                             {
-                                SystemId = 2,
+                                SystemId = 3,
                                 Name = "Sistemler",
                                 ObjectTypePrefix = "Systems/Index",
                                 ObjectTypeName = "Systems",
@@ -1068,7 +1068,7 @@
                             system => system.Id,
                             new Page
                             {
-                                SystemId = 2,
+                                SystemId = 3,
                                 Name = "Parametreler",
                                 ObjectTypePrefix = "Parameters/Index",
                                 ObjectTypeName = "Parameters",

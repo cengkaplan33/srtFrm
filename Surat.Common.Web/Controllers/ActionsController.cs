@@ -1,5 +1,6 @@
 ﻿using Surat.Base.Model.Entities;
 using Surat.Common.Data;
+using Surat.Common.Security;
 using Surat.Common.ViewModel;
 using Surat.WebServer.Application;
 using Surat.WebServer.Base;
@@ -18,14 +19,14 @@ namespace Surat.WebServer.Controllers
 
         public ActionsController()
         {
-            
+
         }
 
         #endregion
 
         #region Private Members
 
-        
+
         #endregion
 
         #region Public Members
@@ -34,11 +35,13 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        [ActionAttribute("Aksiyon Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ActionAttribute("Aksiyonları Getir", "Sistemde kayıtlı olan tüm aktif aksiyonları getir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName,ActionType.Action)]
         public JsonResult GetActions(int pageSize, int skip)
         {
             try
@@ -56,7 +59,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-      
+
         #endregion
     }
 }

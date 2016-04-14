@@ -100,4 +100,10 @@ namespace Surat.Common.Data
         DateTime = 3,
         ContentType = 4
     }
+
+    public enum ActionType
+    {
+        Page = 1,
+        Action = 2,
+    }
 }
