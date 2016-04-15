@@ -2487,11 +2487,13 @@
     <Content Include="Framework\theme\images\browser_safari.gif" />
     <Content Include="Framework\theme\images\check.png" />
     <Content Include="Framework\theme\images\cross.png" />
+    <Content Include="Framework\theme\images\document.png" />
     <Content Include="Framework\theme\images\email1.png" />
     <Content Include="Framework\theme\images\email2.png" />
     <Content Include="Framework\theme\images\email3.png" />
     <Content Include="Framework\theme\images\email4.png" />
     <Content Include="Framework\theme\images\errorcompability.png" />
+    <Content Include="Framework\theme\images\flash.png" />
     <Content Include="Framework\theme\images\forward_disabled.png" />
     <Content Include="Framework\theme\images\forward_enabled.png" />
     <Content Include="Framework\theme\images\forward_enabled_hover.png" />

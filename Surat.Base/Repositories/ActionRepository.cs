@@ -61,11 +61,13 @@ namespace Surat.Base.Repositories
             List<UserAccessibleActionView> actions;
             actions = (from action in this.Context.ApplicationContext.DBContext.Actions
                        where (action.IsActive == true )
-                       orderby (action.TypeName)
+                       orderby (action.Name)
                      select new UserAccessibleActionView
                      {
                          ActionId = action.Id,
-                         ActionName = action.TypeName,
+                         ActionName = action.Name,
+                         Description = action.Description,
+                         Type = action.Type,
                      }).ToList();
 
             return actions;

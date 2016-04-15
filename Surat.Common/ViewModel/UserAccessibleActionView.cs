@@ -10,6 +10,8 @@ namespace Surat.Common.ViewModel
     {
         public int ActionId { get; set; }
         public string ActionName { get; set; }
+        public int Type { get; set; }
+        public string Description { get; set; }
         public bool IsRoleEffect { get; set; }
         public int? IzinVer { get; set; }
         public int? Yasakla { get; set; }

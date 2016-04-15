@@ -419,13 +419,15 @@ namespace Surat.Business.Configuration
                            join systems in this.Context.ApplicationContext.DBContext.Systems on actions.SystemId equals systems.Id
                            join InUser in this.Context.ApplicationContext.DBContext.Users on actions.InsertedByUser equals InUser.Id
                            from ChUser in this.Context.ApplicationContext.DBContext.Users.Where(u => u.Id == actions.ChangedByUser).DefaultIfEmpty()
+                           orderby (actions.Name)
                            select new ActionsListView
                          {
                              Id = actions.Id,
                              SystemParentId = systems.ParentId,
                              SystemName = systems.ObjectTypeName,
                              SystemId = actions.SystemId,
-                             TypeName = actions.TypeName,
+                             Name = actions.Name,
+                             Description = actions.Description,
                              InsertedByUser = actions.InsertedByUser,
                              InsertedByUserName = InUser.UserName,
                              InsertedDate = actions.InsertedDate,

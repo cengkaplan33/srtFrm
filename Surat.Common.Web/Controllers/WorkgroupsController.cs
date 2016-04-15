@@ -40,7 +40,7 @@ namespace Surat.WebServer.Controllers
             return View();
         }
 
-        [ActionAttribute("Çalışma Grupları Düzenlme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
+        [ActionAttribute("Çalışma Grupları Düzenleme Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Edit()
         {
             return View();

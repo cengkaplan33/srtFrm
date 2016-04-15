@@ -14,7 +14,8 @@ namespace Surat.Common.ViewModel
         public int  Id { get; set; }
         public int SystemId { get; set; }
         public int? SystemParentId { get; set; }
-        public string TypeName { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public string SystemName { get; set; }
         public int InsertedByUser { get; set; }
         public string InsertedByUserName { get; set; }
