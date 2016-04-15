@@ -352,8 +352,11 @@ function setAcccesIcon(model) {
 }
 
 function setRoleIcon(model) {
-
     if (model.IsRoleEffect) { return "<image src='/Framework/theme/images/plus-circle.png' / title='İzinli'>"; }
-    else
-        return "";
+    else    return "";
+}
+
+function setTypeIcon(model) {
+    if (model.Type == 1) { return "<image src='/Framework/theme/images/document.png' / title='Sayfa'>"; }
+    if (model.Type == 2) { return "<image src='/Framework/theme/images/flash.png' / title='Aksiyon'>"; }
 }

@@ -5,7 +5,9 @@
             fields: {
                 Id: { type: "number", editable: false },
                 SystemName: { type: "string", editable: false },
-                TypeName: { type: "string", validation: { required: true } },
+                Name: { type: "string", validation: { required: true } },
+                Type: { type: "number", editable: false },
+                Description: { type: "string", editable: false },
                 InsertedByUserName: { type: "string", editable: false },
                 InsertedDate: { type: "date", editable: false },
                 ChangedByUserName: { type: "string", editable: false },

@@ -5,7 +5,7 @@
                 <div class="widget-header">
                     <h5 class="widget-title">Aksiyon Seçimi</h5>
                 </div>
-                <div class="widget-body" style="text-align: center;">
+                <div class="widget-body" style="text-align: left;">
                     <div class="space"></div>
                     <div class="row">
                         <div class="col-md-10">
@@ -18,7 +18,8 @@
                                  data-selectable="multiple"
                                  data-columns='[
                                         { field: "ActionId", title: "ID", width: "75px" },
-                                        { field: "ActionName", title: "Aksiyon", width: "200px" },
+                                        { field: "ActionName", title: "Aksiyon", width: "250px", attributes: { "style": "white-space: nowrap"  }  },
+                                        { field: "Type", title: "Tip",  "template" : "#= setTypeIcon(data) #"  },
                                         { field: "IsRoleEffect", title: "Rol Hakkı",  attributes: { "class": "actionaccess" }, "template": "#= setRoleIcon(data) #"},
                                         { field: "IzinVer", title: "İzin Ver" , attributes: { "class": "useraction forGrant" }, template:"<input type=\"checkbox\"   # if (IzinVer) {# checked # }# data-bind=\"click:ActionIzinVerSec\" />",},
                                         { field: "Yasakla", title: "Yasakla", attributes: { "class": "useraction forDeny" }, template:"<input type=\"checkbox\"  # if (Yasakla) {# checked # }# data-bind=\"click:ActionYasaklaSec\" />"},
@@ -32,10 +33,19 @@
                 </div>
             </div>
 
-
-
         </div>
-
 
     </div>
 </div>
+
+<script>
+    $("#userActionsGrid").kendoTooltip({
+        filter: "td:nth-child(2)", //this filter selects the first column cells
+        position: "right",
+        content: function (e) {
+            var dataItem = $("#userActionsGrid").data("kendoGrid").dataItem(e.target.closest("tr"));
+            var content = dataItem.Description;
+            return content;
+        }
+    }).data("kendoTooltip");
+</script>
