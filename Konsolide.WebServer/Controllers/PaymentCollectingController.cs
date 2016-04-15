@@ -32,19 +32,19 @@ namespace KonsolideRapor.WebServer.Controllers
 
         #region Methods
 
-        [ActionAttribute("Ödeme Türleri Sayfası", "Ödeme tanımı sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Ödeme Türleri Sayfası", "Ödeme tanımı sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [ActionAttribute("Ödeme Türleri Sayfasının Düzenlenmesi", "Ödeme türü sayfasının düzenlenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Ödeme Türleri Sayfasının Düzenlenmesi", "Ödeme türü sayfasının düzenlenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Edit()
         {
             return View();
         }
 
-        [ActionAttribute("Aktif Ödeme Türleri Getirilmesi", "Sistemde ki aktif ödeme türlerinin getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Aktif Ödeme Türleri Getirilmesi", "Sistemde ki aktif ödeme türlerinin getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetOdemeTurleri()
         {
             try
@@ -60,7 +60,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Tahsilat Türleri Tanımlarının Getirilmesi", "Sistemde ki tahsilat türleri tanımlarının getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Tahsilat Türleri Tanımlarının Getirilmesi", "Sistemde ki tahsilat türleri tanımlarının getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetTahsilatTurleri()
         {
             try
@@ -76,7 +76,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Ödeme Türleri Tanımlarının Getirilmesi", "Sistemde ki tahsilat türleri tanımlarının getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Ödeme Türleri Tanımlarının Getirilmesi", "Sistemde ki tahsilat türleri tanımlarının getirilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetPaymentCollectings(int pageSize, int skip)
         {
             try
@@ -94,7 +94,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Ödeme Türlerinin Eklenmesi", "Sistemde yeni bir ödeme türünün eklenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Ödeme Türlerinin Eklenmesi", "Sistemde yeni bir ödeme türünün eklenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(PaymentCollecting paymentCollecting)
         {
@@ -110,7 +110,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Ödeme Türlerinin Düzenlenmesi", "Sistemde seçilen bir ödeme türünün seçilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Ödeme Türlerinin Düzenlenmesi", "Sistemde seçilen bir ödeme türünün seçilmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(PaymentCollecting paymentCollecting)
         {
@@ -126,7 +126,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Ödeme Türlerinin Silinmesi", "Sistemde seçilen bir ödeme türünün silinmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Ödeme Türlerinin Silinmesi", "Sistemde seçilen bir ödeme türünün silinmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Delete(PaymentCollecting paymentCollecting)
         {

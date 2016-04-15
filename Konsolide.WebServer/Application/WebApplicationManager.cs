@@ -7,11 +7,14 @@ using Surat.Common.Data;
 using Surat.Common.ViewModel;
 using Surat.Web;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using System.Linq;
 
 namespace KonsolideRapor.WebServer.Application
 {
@@ -79,7 +82,45 @@ namespace KonsolideRapor.WebServer.Application
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfiguration.RegisterRoutes(RouteTable.Routes);
             BundleConfiguration.RegisterBundles(BundleTable.Bundles);
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            ActionsFromReflection = assembly.GetTypes()
+                          //.Where(type => typeof(System.Web.Mvc.Controller).IsAssignableFrom(type))
+                         .Where(type => typeof(KonsolideRapor.WebServer.Base.KonsolideControllerBase).IsAssignableFrom(type))
+                         .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+                         .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+                         .Select(x =>
+                         {
+                             System.Attribute[] attrs = System.Attribute.GetCustomAttributes(x);
+                             Surat.Common.Security.ActionAttribute att = null;
+                             foreach (System.Attribute attr in attrs)
+                             {
+                                 if (attr is Surat.Common.Security.ActionAttribute)
+                                 {
+                                     att = (Surat.Common.Security.ActionAttribute)attr;
+                                     break;
+                                 }
+                             }
+
+                             if (att == null)
+                                 att = new Surat.Common.Security.ActionAttribute("", "", "", ActionType.Action);
+
+                             return new SuratActionView
+                             {
+
+                                 Description = att.Description,
+                                 Name = att.Name,
+                                 SystemName = att.SystemName,
+                                 Type = att.Type,
+                                 TypeName = x.DeclaringType.Name.Replace("Controller", "") + "/" + x.Name
+                             };
+                         }).OrderBy(x => x.TypeName).ToList();
+
+
         }
+
+        public static List<SuratActionView> ActionsFromReflection;
 
         #endregion
 
@@ -106,6 +147,10 @@ namespace KonsolideRapor.WebServer.Application
             if (currentUser != null)
                 framework = new FrameworkApplicationManager(currentUser);
             else framework = new FrameworkApplicationManager();
+
+            framework.Security.RegisterActions(ActionsFromReflection);
+            ActionsFromReflection = new List<SuratActionView>();
+
 
             return framework;
         }

@@ -1592,64 +1592,59 @@ and pages.IsAccessControlRequired=1";
             SuratSystem system;
             Dictionary<string, int> dicSystems = new Dictionary<string, int>();
 
-            List<SuratActionView>  reflectedActions = new List<SuratActionView>();
+            Dictionary<int, List<SuratActionView>> dicReflectedActionsBySystemId = new Dictionary<int, List<SuratActionView>>();
 
             foreach (var act in Actions)
             {
                 if (act.SystemName.Length == 0)
                     continue;
 
-                system = this.ApplicationContext.System.DBContext.Systems.Where(p => p.ObjectTypeName == act.SystemName).FirstOrDefault();
-                
-                if(system == null)
-                    continue;
+                if (!dicSystems.ContainsKey(act.SystemName))
+                {
+                    system = this.ApplicationContext.System.DBContext.Systems.Where(p => p.ObjectTypeName == act.SystemName).FirstOrDefault();
 
-                if(!dicSystems.ContainsKey(system.Name))
-                    dicSystems[system.Name] = system.Id;
+                    if (system == null)
+                        continue;
 
-                act.SystemId = system.Id;
-                reflectedActions.Add(act);
+                    dicSystems[act.SystemName] = system.Id;
+                    act.SystemId = system.Id;
+
+                    if (!dicReflectedActionsBySystemId.ContainsKey(system.Id))
+                        dicReflectedActionsBySystemId[system.Id] = new List<SuratActionView>();
+
+                }
+
+                dicReflectedActionsBySystemId[dicSystems[act.SystemName]].Add(act);
             }
 
             try
             {
-                if (reflectedActions.Count > 0)
+                foreach (var reflectedActionsBySystemId in dicReflectedActionsBySystemId)
                 {
-                    foreach (var item in dicSystems)
+                    if (reflectedActionsBySystemId.Value.Count > 0)
                     {
-                        
                         Dictionary<string, SuratAction> dicRegisteredActions = new Dictionary<string, SuratAction>();
                         Dictionary<string, SuratActionView> dicUnregisteredActions = new Dictionary<string, SuratActionView>();
                         //var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == systemId).ToList();
-                        var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == item.Value).ToList();
-
-                        ////OK::NOT:: sistemId koymuştum ama sistem mantığı tam oturmadığı için iptal ettim
-                        //foreach (var item in registeredActions)
-                        //    if (!dic.ContainsKey(item.SystemId + "_" + item.TypeName))
-                        //        dic.Add(item.SystemId + "_" + item.TypeName, item);
-
-                        //var unregisteredActions = Actions.Where(x => !dic.ContainsKey(systemId.ToString() + "_" + x.TypeName));
-
+                        var registeredActions = this.Action.GetObjectsByParameters(x => x.SystemId == reflectedActionsBySystemId.Key).ToList();
 
                         //aynı controller altında aynı isimde action olabilir.
                         foreach (var rItem in registeredActions)
                             if (!dicRegisteredActions.ContainsKey(rItem.TypeName))
                                 dicRegisteredActions.Add(rItem.TypeName, rItem);
 
-                        foreach (var urItem in reflectedActions)
+                        foreach (var urItem in reflectedActionsBySystemId.Value)
                             if (!dicUnregisteredActions.ContainsKey(urItem.TypeName))
                                 dicUnregisteredActions.Add(urItem.TypeName, urItem);
 
-                        var unRegisteredActions = reflectedActions.Where(x => !dicRegisteredActions.ContainsKey(x.TypeName)).ToList();
+                        var unRegisteredActions = reflectedActionsBySystemId.Value.Where(x => !dicRegisteredActions.ContainsKey(x.TypeName)).ToList();
                         var willDeletedActions = registeredActions.Where(x => !dicUnregisteredActions.ContainsKey(x.TypeName)).ToList();
 
                         if (unRegisteredActions.Count() > 0 || willDeletedActions.Count() > 0)
                         {
-                            //int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
-
                             foreach (var urItem in unRegisteredActions)
                             {
-                                this.Action.Add(new SuratAction() { SystemId = urItem.SystemId, TypeName = urItem.TypeName, ChangedByUser = null, ChangedDate = null, InsertedByUser = 1, InsertedDate = DateTime.Now, IsActive = true });
+                                this.Action.Add(new SuratAction() { SystemId = reflectedActionsBySystemId.Key, TypeName = urItem.TypeName, Name = urItem.Name, Description = urItem.Description, Type = (int)urItem.Type, ChangedByUser = null, ChangedDate = null, InsertedByUser = 1, InsertedDate = DateTime.Now, IsActive = true });
                             }
 
                             foreach (var dItem in willDeletedActions)
@@ -1657,12 +1652,28 @@ and pages.IsAccessControlRequired=1";
                                 dItem.IsActive = false;
                                 this.Action.Update(dItem);
                             }
-
-                            //OK::NOT:: db leri ayırmadan bu işlemi yapma.
-                            // this.ApplicationContext.DBContext.SaveChanges();
-
-                            //this.ApplicationContext.CommitDBChanges(initializedDBContextId);
                         }
+                        else
+                        {
+                            //silme veya ekleme işlemi yoksa güncelle gitsin.
+                            SuratAction ri;
+                            foreach (var dd in reflectedActionsBySystemId.Value)
+                            {
+                                if (dicRegisteredActions.TryGetValue(dd.TypeName, out ri))
+                                {
+
+                                    ri.Name = dd.Name;
+                                    ri.SystemId = reflectedActionsBySystemId.Key;
+                                    ri.Description = dd.Description;
+                                    ri.Type = (int)dd.Type;
+                                    ri.IsActive = true;
+
+                                    this.Action.Update(ri);
+                                }
+                            }
+                        }
+
+                        this.ApplicationContext.DBContext.SaveChanges();
                     }
                 }
             }

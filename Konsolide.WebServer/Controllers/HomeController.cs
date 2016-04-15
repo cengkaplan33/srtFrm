@@ -30,13 +30,13 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
-        [ActionAttribute("Portal Anasayfası", "Portal anasayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Portal Anasayfası", "Portal anasayfasının görüntülenmesini sağlar ", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         [AllowAnonymous]
         public ActionResult Spa()
         {

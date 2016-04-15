@@ -131,7 +131,7 @@ namespace Surat.WebServer.Application
             //        }).OrderBy(x => x.URL).ThenBy(x => x.Action).ToList();
 
 
-       Actions=      assembly.GetTypes()
+       ActionsFromReflection=      assembly.GetTypes()
                 //.Where(type => typeof(System.Web.Mvc.Controller).IsAssignableFrom(type))
                     .Where(type => typeof(Surat.WebServer.Base.SuratControllerBase).IsAssignableFrom(type))
                     .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
@@ -163,8 +163,6 @@ namespace Surat.WebServer.Application
                         };
                     }).OrderBy(x => x.TypeName).ToList();
 
-
-       var deneme = Actions;
             //Typeof(
             //var sss= new Surat.WebServer.Base.SuratControllerBase();
             //Assembly asm = Assembly.GetExecutingAssembly();
@@ -175,7 +173,7 @@ namespace Surat.WebServer.Application
             //    .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
         }
 
-        public static List<SuratActionView> Actions;
+        public static List<SuratActionView> ActionsFromReflection;
 
         #endregion
 
@@ -203,8 +201,8 @@ namespace Surat.WebServer.Application
                 framework = new FrameworkApplicationManager(currentUser);
             else framework = new FrameworkApplicationManager();
 
-            framework.Security.RegisterActions(Actions);
-            Actions = new List<SuratActionView>();
+            framework.Security.RegisterActions(ActionsFromReflection);
+            ActionsFromReflection = new List<SuratActionView>();
 
             return framework;
         }

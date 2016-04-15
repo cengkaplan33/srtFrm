@@ -32,13 +32,13 @@ namespace KonsolideRapor.WebServer.Controllers
         #endregion
 
         #region Methods
-        [ActionAttribute("Banka Tablosu Sayfası", "Banka Tabloları sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Page)]
+        [ActionAttribute("Banka Tablosu Sayfası", "Banka Tabloları sayfasının görüntülenmesini sağlar ", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
         {
             return View();
         }
         
-        [ActionAttribute("Banka Tablosu verilerinin Çağrılması", "Bankalara ait veri girişlerinin yapıldığı ekranı oluşturan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Banka Tablosu verilerinin Çağrılması", "Bankalara ait veri girişlerinin yapıldığı ekranı oluşturan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         public JsonResult GetHazirDegerler()
         {
             try
@@ -55,7 +55,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Banka Tablosu Verilerinin Eklenmesi", "Bankalara ait veri girişlerinin eklenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Banka Tablosu Verilerinin Eklenmesi", "Bankalara ait veri girişlerinin eklenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Add(HazirOdemeTablosuView hazirDegerTablosu)
         {
@@ -71,7 +71,7 @@ namespace KonsolideRapor.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Banka Tablosu Verilerinin Düzenlenmesi", "Bankalara ait veri girişlerinin düzenlenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporSystemName, Surat.Common.Data.ActionType.Action)]
+        [ActionAttribute("Banka Tablosu Verilerinin Düzenlenmesi", "Bankalara ait veri girişlerinin düzenlenmesini sağlayan metod", KonsolideRapor.Common.Data.KonsolideRaporConstants.Application.KonsolideRaporWebSystemName, Surat.Common.Data.ActionType.Action)]
         [HttpPost]
         public JsonResult Update(HazirOdemeTablosuView hazirDegerTablosu)
         {
