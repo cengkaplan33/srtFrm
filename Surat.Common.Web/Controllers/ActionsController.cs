@@ -48,7 +48,7 @@ namespace Surat.WebServer.Controllers
             {
                 var Actions = this.WebApplicationManager.Framework.Configuration.GetActiveActionList();
                 var total = Actions.Count();
-                var data = Actions.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                var data = Actions.OrderBy(m => m.Name).Skip(skip).Take(pageSize).ToList();
                 return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
 
             }
