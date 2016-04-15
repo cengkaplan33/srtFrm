@@ -22,9 +22,14 @@
         $(document).ready(function () {
             _notification = $("#popupNotification").kendoNotification({
                 button: true,
-                autoHideAfter: 2000,
-                appendTo: "#notification",
-                stacking: "up"
+                autoHideAfter: 3000,
+                // appendTo: "#notification",
+                width: 450,
+                position: {
+                    top: 10,
+                    right: 30
+                },
+                stacking: "down"
             }).data("kendoNotification");
         });
 
@@ -44,7 +49,15 @@
     </script>
 
     <style type="text/css">
-        .form-group { margin-bottom: 6px; }
+        .form-group {
+            margin-bottom: 6px;
+        }
+
+        .k-notification-wrap {
+            padding: .6em .5em;
+            cursor: default;
+            white-space: normal;
+        }
     </style> 
 </head>
 <body class="no-skin">
