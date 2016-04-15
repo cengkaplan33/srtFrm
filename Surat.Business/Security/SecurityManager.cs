@@ -1662,7 +1662,7 @@ and pages.IsAccessControlRequired=1";
                                 if (dicRegisteredActions.TryGetValue(dd.TypeName, out ri))
                                 {
 
-                                    ri.Name = dd.Name;
+                                    ri.Name = "[ " + dd.TypeName.Substring(0, dd.TypeName.IndexOf("/")) + " ] " + dd.Name;
                                     ri.SystemId = reflectedActionsBySystemId.Key;
                                     ri.Description = dd.Description;
                                     ri.Type = (int)dd.Type;
