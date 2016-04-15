@@ -106,8 +106,8 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
 
                  {
                      field: "HazirDeger",
-                     title: "Hazır Değerler",
-                     width: "120px",
+                     title: "Banka Tablosu",
+                     width: "200",
                      editable: false
                  },
                  {
@@ -125,8 +125,25 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                      title: "EURO",
                      format: "{0:n2}",
                  },
-              { command: [{ name: "edit", text: "Düzenle" }], title: "İşlemler" }
+              {
+                  command: [{
+                      name: "edit"
+                  }], title: "İşlemler"
+              }
             ],
+            messages:{
+
+                commands: {
+                    edit: "Düzenle",
+                    update: "Kaydet",
+                    canceledit: "İptal",
+                    create: "Add new record",
+                    createchild: "Add child record",
+                    destroy: "Sil",
+                    excel: "Export to Excel",
+                    pdf: "Export to PDF"
+                }
+            },
             expand:function(e)
             {
                 var row = e.model;
@@ -144,12 +161,15 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                         var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                         currenRow[0].style.fontWeight = "bold";
                         var editButton = $(currenRow).find(".k-grid-edit");
+                     
                         editButton.hide();
                     }
                     else {
                         var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                         currenRow[0].style.fontWeight = "normal";
                         var editButton = $(currenRow).find(".k-grid-edit");
+                      
+                        
                         editButton.show();
                     }
                 }
@@ -187,6 +207,7 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
         onLoad: function () {
             //LoadToolBar();
             LoadGrid();
+           
         }
     });
     return pageModel;
