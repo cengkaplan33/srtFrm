@@ -425,6 +425,7 @@ namespace Surat.Business.Configuration
                              Id = actions.Id,
                              SystemParentId = systems.ParentId,
                              SystemName = systems.ObjectTypeName,
+                             Type = actions.Type,
                              SystemId = actions.SystemId,
                              Name = actions.Name,
                              Description = actions.Description,

@@ -150,3 +150,9 @@
         return editViewModel;
 
     });
+
+function setTypeIcon(model) {
+
+    if (model.Type == 1) { return "<image src='/Framework/theme/images/document.png' / title='Sayfa'>"; }
+    if (model.Type == 2) { return "<image src='/Framework/theme/images/flash.png' / title='Aksiyon'>"; }
+}

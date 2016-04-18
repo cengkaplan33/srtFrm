@@ -4,6 +4,7 @@
            id: "PageId",
            fields: {
                ActionId: { type: "number", editable: false },
+               Type: { type: "number", editable: false },
                ActionName: { type: "string", editable: false },
                Description: { type: "string", editable: false },
                IsRoleEffect: { type: "boolean", editable: false },

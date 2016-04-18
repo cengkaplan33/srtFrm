@@ -5,12 +5,12 @@
                 <div class="widget-header">
                     <h5 class="widget-title">Sayfa Seçimleri</h5>
                 </div>
-                <div class="widget-body" style="text-align: center;">
+                <div class="widget-body" style="text-align: left;">
                     <div class="space"></div>
                     <div class="row">
 
                         <div class="col-md-8">
-                            <div id="rolePagesGrid"
+                            <div id="roleActionsGrid"
                                  data-role="grid"
                                  data-sortable="true"
                                  data-pageable="true"
@@ -20,21 +20,29 @@
                                  data-columns='[
                                  { field:"IsAccessible" , title:"#" , width:"25px", template:"<input type=\"checkbox\" # if (IsAccessible==1) {# checked # }# data-bind=\"click:ActionChoose\" />"  },
                                  { field: "ActionId", title: "ID", width: "25px" ,template: "<div style=\"text-align:right;\">#=ActionId#</div>" },
-                                 { field: "ActionName", title: "Methodlar", width: "200px" ,template: "<div style=\"text-align:left;\">#=ActionName#</div>" } ]'
+                                 { field: "ActionName", title: "Methodlar", width: "200px" ,template: "<div style=\"text-align:left;\">#=ActionName#</div>" } ,
+                                 { field: "Type", title: "Tip",  "template" : "#= setTypeIcon(data) #" , width:"50px" },]'                               
                                  data-bind="source: roleActionsDatasource" style="width:100%">
                             </div>
                         </div>
-
 
                     </div>
                 </div>
             </div>
 
-
-
         </div>
-
-
     </div>
 </div>
+
+<script>
+    $("#roleActionsGrid").kendoTooltip({
+        filter: "td:nth-child(3)", //this filter selects the first column cells
+        position: "right",
+        content: function (e) {
+            var dataItem = $("#roleActionsGrid").data("kendoGrid").dataItem(e.target.closest("tr"));
+            var content = dataItem.Description;
+            return content;
+        }
+    }).data("kendoTooltip");
+</script>
 
