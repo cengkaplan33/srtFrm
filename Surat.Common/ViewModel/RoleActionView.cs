@@ -9,10 +9,12 @@ namespace Surat.Common.ViewModel
     public class RoleActionView
     {
         public int ActionId { get; set; }
+        public int Type { get; set; }
         public int IsAccessible { get; set; }
         public int? RelationGroupId { get; set; }
         public int? AccessibleItemId { get; set; }
         public string ActionName { get; set; }
+        public string Description { get; set; }
 
     }
 }

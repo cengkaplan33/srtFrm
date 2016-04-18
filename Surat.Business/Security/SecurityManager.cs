@@ -1261,7 +1261,7 @@ AND
             List<RoleActionView> accessibleRoleActions;
 
             string query = @"
-Select unRecorderActions.TypeName as ActionName,
+Select unRecorderActions.Name as ActionName, unRecorderActions.Type as Type, unRecorderActions.Description as Description,
  unRecorderActions.Id as ActionId,
 case when recordedActions.AccessRightTypeId is null then 0 ELSE  1 END as IsAccessible,
  recordedActions.RelationGroupId as RelationGroupId,

@@ -13,6 +13,7 @@
          data-columns='[
                 { field: "Id", title: "ID", width: "75px" },
                 { field: "Name", title: "Aksiyon", attributes: { "style": "white-space: nowrap"  }},
+                { field: "Type", title: "Tip",  "template" : "#= setTypeIcon(data) #"  , width: "60px" },
                 { field: "SystemName", title: "Sistem" },
                 { field: "InsertedByUserName", title: "Ekleyen Kullanıcı" },
                 { field: "InsertedDate", title: "Eklenme Tarihi" ,  format: "{0:dd-MMM-yyyy hh:mm:ss tt}", parseFormats: ["MM/dd/yyyy h:mm:ss"]},
