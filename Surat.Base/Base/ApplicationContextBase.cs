@@ -196,6 +196,7 @@ namespace Surat.Base
                     }
                     else
                     {
+                        if (this.ApplicationContext.ApplicationContext.currentUser != null)
                         auditableEntity.ChangedByUser = this.ApplicationContext.ApplicationContext.CurrentUser.UserId;
                         auditableEntity.ChangedDate = TimeUtility.GetCurrentDateTime();
                     }
