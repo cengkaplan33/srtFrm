@@ -387,7 +387,6 @@
     var rememberPasswordViewModel = kendo.observable({
         data: new EmailModel(),
         rememberPassword: function (e) {
-            $("#ForgetPasswordBtn").text("Gönderiliyor...");
             var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
             if (validator.validate()) {
                 $.ajax({
@@ -402,7 +401,6 @@
                         errorAlert("hata oluştu.");
                     }
                 });
-                $("#ForgetPasswordBtn").text("Gönder");
             }
         }
     });
