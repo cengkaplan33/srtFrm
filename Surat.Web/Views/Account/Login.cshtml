@@ -87,8 +87,7 @@
                                                         </script>
                                                     </label>
 
-
-                                                    <button type="button" data-bind="click:doLogin" class="width-35 pull-right btn btn-sm btn-primary">
+                                                    <button type="button" id="LoginBtn" data-bind="click:doLogin" class="width-35 pull-right btn btn-sm btn-primary">
                                                         <i class="ace-icon fa fa-key"></i>
                                                         <span class="bigger-110">Giriş Yap</span>
                                                     </button>
@@ -147,17 +146,17 @@
                                            Lütfen email adresinizi giriniz
                                         </p>
 
-                                        <form>
+                                        <form id="forgetPasswordForm">
                                             <fieldset>
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
-                                                        <input type="email" class="form-control" placeholder="Email" />
+                                                        <input type="email" id="Email" name="Email" data-bind="value:data.Email" class="form-control" placeholder="Email" />
                                                         <i class="ace-icon fa fa-envelope"></i>
                                                     </span>
                                                 </label>
 
                                                 <div class="clearfix">
-                                                    <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
+                                                    <button type="button" id="ForgetPasswordBtn" data-bind="click:rememberPassword" class="width-35 pull-right btn btn-sm btn-danger">
                                                         <i class="ace-icon fa fa-lightbulb-o"></i>
                                                         <span class="bigger-110">Gönder!</span>
                                                     </button>
@@ -343,31 +342,30 @@
         });
 
         var loginViewModel = kendo.observable({
-
             data: new loginModel(),
             doLogin: function (e) {
-                $("button span").text("Giriş yapılıyor...");
+                $("#LoginBtn").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {                    
                     $.ajax({
                         url: '@Url.Action("UserLogin","Account")?returnUrl=@ViewBag.ReturnUrl',
                         type: 'POST',
                         dataType: 'json',
-                        data: ({ kullanici: serializeForm() }),
+                        data: ({ kullanici: serializeLoginForm() }),
                         success: function (result) {                
                             window.location.href = "@Url.Action("Spa","Home")";
                         },
                         error: function (message) {
-                            errorAlert(message.responseJSON.result);
-                      
+                            errorAlert(message.responseJSON.result);                     
                         }
                     });
-                    $("button span").text("Giriş Yap");
+                    $("#LoginBtn").text("Giriş Yap");
                 }
             }
         });
+   
         kendo.bind($("#loginForm"), loginViewModel);
-        function serializeForm() {
+        function serializeLoginForm() {
             var data = $("#loginForm").serializeArray();
            
             var formData = {};
@@ -377,7 +375,49 @@
 
             return formData;
         }
+    </script>
 
+     <script type="text/javascript">
+    var EmailModel = kendo.data.Model.define({
+        fields: {
+            Email: { type: "string", required: true }
+        }
+    });
+
+    var rememberPasswordViewModel = kendo.observable({
+        data: new EmailModel(),
+        rememberPassword: function (e) {
+            $("#ForgetPasswordBtn").text("Gönderiliyor...");
+            var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
+            if (validator.validate()) {
+                $.ajax({
+                    url: '@Url.Action("RememberPassword", "Account")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: ({ email: serializeForm() }),
+                    success: function (message) {
+                        alert("fonksiyon başarılı");                     
+                    },
+                    error: function (message) {
+                        errorAlert("hata oluştu.");
+                    }
+                });
+                $("#ForgetPasswordBtn").text("Gönder");
+            }
+        }
+    });
+
+    kendo.bind($("#forgetPasswordForm"), rememberPasswordViewModel);
+    function serializeForm() {
+        var data = $("#forgetPasswordForm").serializeArray();
+
+        var formData = {};
+        for (var i = 0; i < data.length; i++) {
+            formData[data[i].name] = data[i].value;
+        }
+
+        return formData;
+    }
     </script>
 
 </body>

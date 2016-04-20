@@ -151,13 +151,12 @@ namespace KonsolideRapor.WebServer.Application
             framework.Security.RegisterActions(ActionsFromReflection);
             ActionsFromReflection = new List<SuratActionView>();
 
-
             return framework;
         }
         private KonsolideRaporApplicationManager InitializeKonsolideRapor()
         {
             KonsolideRaporApplicationManager konsolideRaporApplicationManager;
-//
+
             konsolideRaporApplicationManager = new KonsolideRaporApplicationManager(this.Framework);
             return konsolideRaporApplicationManager;
         }
