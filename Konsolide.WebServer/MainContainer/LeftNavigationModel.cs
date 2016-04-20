@@ -27,7 +27,7 @@ namespace KonsolideRapor.WebServer
             var konsolideSection = new LeftNavigationSection("KonsolideIslemleri", "Konsolide İşlemleri", "fa fa-report", "", "0");
             InitKonsolideTanimlar(konsolideSection);
             InitKonsolideIslemler(konsolideSection);
-            konsolideSection.Add(new LeftNavigationLink { Title = "Raporlar", Controller = "#", CssClass = "fa fa-report" });
+            InitKonsolideRapor(konsolideSection);
 
 
             Sections.Add(systemsSection);
@@ -214,9 +214,12 @@ namespace KonsolideRapor.WebServer
                         link.CssClass = link.Links.Count > 0 ? link.CssClass += " open " : link.CssClass;
                     }
 
-                    var url = link.Url == null ? ("~/" + link.Controller) : link.Url;
-                    if (url.StartsWith("~/"))
-                        url = System.Web.VirtualPathUtility.ToAbsolute(url);
+                    var url = link.Url == null ? ("#/" + link.Controller) : link.Url;
+
+                    //var url = link.Url == null ? ("~/" + link.Controller) : link.Url;
+                    //if (url.StartsWith("~/"))
+                    //    url = System.Web.VirtualPathUtility.ToAbsolute(url);
+
                     var target = link.Target;
                     if (target != null)
                         target += " target=" + target;
@@ -228,7 +231,7 @@ namespace KonsolideRapor.WebServer
                     }
 
                     sb.Append("<li class=\"classthreeLevelText\">");
-                    sb.Append("<a href=\"#" + url + "\" " + target + " >");
+                    sb.Append("<a href=\"" + url + "\" " + target + " >");
                     //sb.Append("<i class=\"fa fa-double-angle-right\">");
                     sb.Append("<i class=\" menu-icon fa " + link.CssClass + "\" ></i>" + link.Title);
                     sb.Append("</a>");
@@ -241,7 +244,10 @@ namespace KonsolideRapor.WebServer
                         sb.Append(GetChildCategory(cSec, ActiveLink, maxDeep, currentDeep++));
 
                 if (Section.Links.Count > 0 || Section.Sections.Count > 0)
+                {
                     sb.Append("</ul>");
+                    sb.Append("</a>");
+                }
 
                 sb.Append("</li>");
                 return sb;
@@ -349,6 +355,16 @@ namespace KonsolideRapor.WebServer
 
             if (islemler.Links.Count > 0)
                 ParentSections.Sections.Add(islemler);
+        }
+
+        private void InitKonsolideRapor(LeftNavigationSection ParentSections)
+        {
+            var raporlar = new LeftNavigationSection("Raporlar", "Raporlar", "  fa fa-area-chart  ");
+
+            raporlar.Add(new LeftNavigationLink { Title = "Raporlar", Controller = "#", Url = "http://kaynakrapor/Reports/Pages/Folder.aspx?ItemPath=%2fKAYNAK+HOLD%C4%B0NG%2fHolding_Konsolide_Raporlar&ViewMode=List", CssClass = " fa fa-area-chart " });
+
+            if (raporlar.Links.Count > 0)
+                ParentSections.Sections.Add(raporlar);
         }
 
         #endregion
