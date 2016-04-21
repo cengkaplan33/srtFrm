@@ -172,29 +172,43 @@ namespace KonsolideRapor.WebServer.Application
                 {
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
                     this.Framework.StartUserSession(currentUser);
+                    //this.Framework.SetCurrentUser(currentUser);
                     this.Context.CurrentUser = currentUser;
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
                 }
                 else
                 {
-                    this.Context.WrongPasswordProcessCount++;
-                    if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
-                    {
-                        this.Framework.Security.SaveUserLock(userName, password, true);
-                    }
-                    else throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
-                        String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
+                    throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                       String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
                 }
 
                 FormsAuthentication.SetAuthCookie(userName, false);
             }
+
+            catch (WrongPasswordException)
+            {
+                this.Context.WrongPasswordProcessCount++;
+
+                if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
+                {
+                    this.Framework.Security.SaveUserLock(userName, password, true);
+                    this.Context.WrongPasswordProcessCount = 0;
+
+                    throw new WrongPasswordException(this.Context.FrameworkContext, "Login", this.Context.FrameworkContext.SystemId, this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(context.SystemId, Constants.Message.LockedAccount));
+                }
+
+                var remaining = this.Framework.Context.Security.MaxWrongPasswordAttempts - this.Context.WrongPasswordProcessCount;
+                var customMessage = string.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.ExceptionType.WrongPassword), this.Framework.Context.Security.MaxWrongPasswordAttempts, remaining);
+
+                throw new WrongPasswordException(this.Context.FrameworkContext, "Login", this.Context.FrameworkContext.SystemId, customMessage);
+
+            }
             catch (Exception exception)
             {
-
                 //PublishException(exception);
                 //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
-            }
+            } 
         }
 
         public void TraceAppendLine(string systemName, string traceInformation, TraceLevel traceLevel)

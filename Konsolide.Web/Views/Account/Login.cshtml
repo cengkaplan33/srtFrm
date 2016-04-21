@@ -35,10 +35,10 @@
                         <div class="center">
                             <h1>
                                 <i class="ace-icon fa fa-leaf green"></i>
-                                <span class="red">Sürat</span>
-                                <span class="white" id="id-text2">Uygulama Platformu</span>
+                                <span class="red">Kaynak Holding</span><br />
+                                <span class="white" id="id-text2">Yönetim Raporları Portalı</span>
                             </h1>
-                            <h4 class="blue" id="id-company-text">&copy; Sürat Teknoloji</h4>
+                            
                         </div>
 
                         <div class="space-6"></div>
@@ -54,7 +54,7 @@
 
                                         <div class="space-6"></div>
 
-                                        <form id="loginForm">
+                                        <form id="loginForm" >
                                             <fieldset>
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
@@ -78,7 +78,7 @@
                                                         <span class="lbl"> Beni Hatırla</span>
                                                         <script type="text/javascript">
                                                             function beniHatirla() {
-                                                              
+
                                                                 if ($('#RememberMe').is(':checked'))
                                                                 { $("#RememberMe").attr("value", true); }
                                                                 else
@@ -99,6 +99,8 @@
                                                 <div class="space-4"></div>
                                             </fieldset>
                                         </form>
+
+
 
                                         @*<div class="social-or-login center">
                                                 <span class="bigger-110">Or Login Using</span>
@@ -135,6 +137,7 @@
                                     </div>
                                 </div><!-- /.widget-body -->
                             </div><!-- /.login-box -->
+                            <h4 class="blue" id="id-company-text"><center>&copy; Sürat Teknoloji</center></h4>
 
                             <div id="forgot-box" class="forgot-box widget-box no-border">
                                 <div class="widget-body">
@@ -149,17 +152,17 @@
                                            Lütfen email adresinizi giriniz
                                         </p>
 
-                                        <form>
+                                        <form id="forgetPasswordForm">
                                             <fieldset>
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
-                                                        <input type="email" class="form-control" placeholder="Email" />
+                                                        <input type="email" id="Email" name="Email" data-bind="value:data.Email" class="form-control" placeholder="Email" />
                                                         <i class="ace-icon fa fa-envelope"></i>
                                                     </span>
                                                 </label>
 
                                                 <div class="clearfix">
-                                                    <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
+                                                    <button type="button" id="ForgetPasswordBtn" data-bind="click:rememberPassword" class="width-35 pull-right btn btn-sm btn-danger">
                                                         <i class="ace-icon fa fa-lightbulb-o"></i>
                                                         <span class="bigger-110">Gönder!</span>
                                                     </button>
@@ -333,6 +336,12 @@
                 e.preventDefault();
             });
 
+            $('#loginForm').on('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    loginViewModel.doLogin(e);
+                }
+            });
         });
     </script>
     <script type="text/javascript">
@@ -348,14 +357,14 @@
 
             data: new loginModel(),
             doLogin: function (e) {
-                $("button span").text("Giriş yapılıyor...");
+                $("#LoginBtn").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {                    
                     $.ajax({
                         url: '@Url.Action("UserLogin","Account")?returnUrl=@ViewBag.ReturnUrl',
                         type: 'POST',
                         dataType: 'json',
-                        data: ({ kullanici: serializeForm() }),
+                        data: ({ kullanici: serializeLoginForm() }),
                         success: function (result) {                
                             window.location.href = "@Url.Action("Spa","Home")";
                         },
@@ -364,12 +373,12 @@
                       
                         }
                     });
-                    $("button span").text("Giriş Yap");
+                    $("#LoginBtn").text("Giriş Yap");
                 }
             }
         });
         kendo.bind($("#loginForm"), loginViewModel);
-        function serializeForm() {
+        function serializeLoginForm() {
             var data = $("#loginForm").serializeArray();
            
             var formData = {};
@@ -381,6 +390,51 @@
         }
 
     </script>
+
+    <script type="text/javascript">
+    var EmailModel = kendo.data.Model.define({
+        fields: {
+            Email: { type: "string", required: true }
+        }
+    });
+
+    var rememberPasswordViewModel = kendo.observable({
+        data: new EmailModel(),
+        rememberPassword: function (e) {
+            $("#ForgetPasswordBtn").text("Gönderiliyor...");
+            var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
+            if (validator.validate()) {
+                $.ajax({
+                    url: '@Url.Action("RememberPassword", "Account")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: ({ email: serializeForm() }),
+                    success: function (message) {
+                        alert("fonksiyon başarılı");
+                    },
+                    error: function (message) {
+                        errorAlert("hata oluştu.");
+                    }
+                });
+                $("#ForgetPasswordBtn").text("Gönder");
+            }
+        }
+    });
+
+    kendo.bind($("#forgetPasswordForm"), rememberPasswordViewModel);
+    function serializeForm() {
+        var data = $("#forgetPasswordForm").serializeArray();
+
+        var formData = {};
+        for (var i = 0; i < data.length; i++) {
+            formData[data[i].name] = data[i].value;
+        }
+
+        return formData;
+    }
+    </script>
+
+
 
 </body>
 </html>

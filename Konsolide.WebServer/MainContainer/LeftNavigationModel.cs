@@ -17,8 +17,7 @@ namespace KonsolideRapor.WebServer
         {
 
             Sections = new List<LeftNavigationSection>();
-            Sections.Add(new LeftNavigationSection("Home", "Anasayfa", "fa fa-home", "", "0"));
-
+            var firmSection = new LeftNavigationSection("Firm", this.WebApplicationManager.Context.CurrentUser.Workgroup.WorkgroupName.ToUpper(), "fa fa-building", "", "0");
             var systemsSection = new LeftNavigationSection("SistemIslemleri", "Sistem İşlemleri", "fa fa-suitcase", "", "0");
             InitKullaniciIslemleri(systemsSection);
             InitTanimlar(systemsSection);
@@ -29,7 +28,8 @@ namespace KonsolideRapor.WebServer
             InitKonsolideIslemler(konsolideSection);
             InitKonsolideRapor(konsolideSection);
 
-
+            Sections.Add(firmSection);
+            Sections.Add(new LeftNavigationSection("Home", "Anasayfa", "fa fa-home", "Spa", "0"));
             Sections.Add(systemsSection);
             Sections.Add(konsolideSection);
 
@@ -194,9 +194,10 @@ namespace KonsolideRapor.WebServer
                 sb.Append("<li>");
                 sb.Append("<a href=\"#" + Section.Url + "\" class=\"dropdown-toggle\">");
                 sb.Append("<i class=\" " + Section.CssClass + "\" ></i>");
-                sb.Append("<span class=\"menu-text\"> " + Section.Title + "</span>");
-
-
+                if (Section.Key == "Firm")
+                    sb.Append("<span class=\"menu-text\" style = \"color:#2e6589;  font-size:14px;\"><b>" + " " + Section.Title + "</b></span>");
+                else
+                    sb.Append("<span class=\"menu-text\"> " + Section.Title + "</span>");
 
                 if (Section.Links.Count > 0 || Section.Sections.Count > 0)
                 {
