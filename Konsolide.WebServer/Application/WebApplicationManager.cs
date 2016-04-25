@@ -15,6 +15,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Linq;
+using Surat.Base.Model.Entities;
 
 namespace KonsolideRapor.WebServer.Application
 {
@@ -161,13 +162,28 @@ namespace KonsolideRapor.WebServer.Application
             return konsolideRaporApplicationManager;
         }
 
-        public void Login(string userName, string password)
+        public void Login(string userName, string password, bool isActiveDirectoryUser)
         {
             UserDetailedView currentUser = null;
+            SuratUser user = null;
             try
             {
-                currentUser = this.Framework.Security.ValidateUser(userName, password);
+                if (isActiveDirectoryUser)
+                {
 
+                    user = this.Framework.Security.User.GetActiveDirectoryUser(Environment.UserName);
+                    if (user == null)
+                        throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                       String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
+                    if (!this.Framework.ActiveDirectory.ActiveDirectoryUserCheck())
+                        throw new SecurityException(this.Context.FrameworkContext, "ActiveDirectoryLogin", this.Context.SystemId,
+                              String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.ActiveDirectoryUserNotAuthorized), userName));
+                    currentUser = this.Framework.Security.ValidateUser(user.UserName, user.Password);
+                }
+                else
+                {
+                    currentUser = this.Framework.Security.ValidateUser(userName, password);
+                }
                 if (currentUser != null)
                 {
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
@@ -208,7 +224,7 @@ namespace KonsolideRapor.WebServer.Application
                 //PublishException(exception);
                 //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
-            } 
+            }
         }
 
         public void TraceAppendLine(string systemName, string traceInformation, TraceLevel traceLevel)

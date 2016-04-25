@@ -1,7 +1,7 @@
 ﻿@using System.Web.Optimization;
 @{
     Layout = null;
-    
+
 }
 
 <!DOCTYPE html>
@@ -17,12 +17,12 @@
     @Styles.Render("~/Bundles/css")
     @Scripts.Render("~/Bundles/js")
     @*<style type="text/css">
-     #error .k-window-titlebar.k-header {
-    background: #275CAB;  /*set background to the titlebar*/
-    color: white; /*set color to the titlebar*/
-    font-weight: bold; /*set font-weight to the titlebar*/
-}
-    </style>*@
+             #error .k-window-titlebar.k-header {
+            background: #275CAB;  /*set background to the titlebar*/
+            color: white; /*set color to the titlebar*/
+            font-weight: bold; /*set font-weight to the titlebar*/
+        }
+            </style>*@
 
 </head>
 
@@ -39,7 +39,7 @@
                                 <span class="red">Yönetim Raporları Portalı</span>
                                 @*<span class="white" id="id-text2">Yönetim Raporları Portalı</span>*@
                             </h1>   
-                            
+
                         </div>
 
                         <div class="space-6"></div>
@@ -55,7 +55,7 @@
 
                                         <div class="space-6"></div>
 
-                                        <form id="loginForm" >
+                                        <form id="loginForm">
                                             <fieldset>
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
@@ -98,34 +98,24 @@
                                                 </div>
 
                                                 <div class="space-4"></div>
+                                                <div class="social-login" style="text-align:right;">
+                                                    <button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
+                                                        <i class="ace-icon fa fa-key"></i>
+                                                        <span class="bigger-110">Hızlı Giriş Yap</span>
+                                                    </button>
+
+
+                                                </div>
                                             </fieldset>
                                         </form>
 
 
 
-                                        @*<div class="social-or-login center">
-                                                <span class="bigger-110">Or Login Using</span>
-                                            </div>
-
-                                            <div class="space-6"></div>
-
-                                            <div class="social-login center">
-                                                <a class="btn btn-primary">
-                                                    <i class="ace-icon fa fa-facebook"></i>
-                                                </a>
-
-                                                <a class="btn btn-info">
-                                                    <i class="ace-icon fa fa-twitter"></i>
-                                                </a>
-
-                                                <a class="btn btn-danger">
-                                                    <i class="ace-icon fa fa-google-plus"></i>
-                                                </a>
-                                            </div>*@
+                                        
                                     </div><!-- /.widget-main -->
                                     <div class="toolbar clearfix">
-                                        <div id="message" style="color:red">     
-                                            @ViewBag.Message                                     
+                                        <div id="message" style="color:red">
+                                            @ViewBag.Message
                                         </div>
                                     </div>
                                     <div class="toolbar clearfix">
@@ -150,7 +140,7 @@
 
                                         <div class="space-6"></div>
                                         <p>
-                                           Lütfen email adresinizi giriniz
+                                            Lütfen email adresinizi giriniz
                                         </p>
 
                                         <form id="forgetPasswordForm">
@@ -350,6 +340,7 @@
             fields: {
                 UserName: { type: "string", required: true },
                 Password: { type: "string", required: true },
+                isActiveDirectoryUser: { type: "boolean" },
                 RememberMe: { type: "boolean" }
             }
         });
@@ -358,30 +349,103 @@
 
             data: new loginModel(),
             doLogin: function (e) {
-                $("#LoginBtn").text("Giriş yapılıyor...");
+                $("#LoginBtn span").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
-                if (validator.validate()) {                    
+                if (validator.validate()) {
                     $.ajax({
                         url: '@Url.Action("UserLogin","Account")?returnUrl=@ViewBag.ReturnUrl',
                         type: 'POST',
                         dataType: 'json',
                         data: ({ kullanici: serializeLoginForm() }),
-                        success: function (result) {                
+                        success: function (result) {
                             window.location.href = "@Url.Action("Spa","Home")";
                         },
-                        error: function (message) {
-                            errorAlert(message.responseJSON.result);
-                      
+                        error: function (jqXHR, status, thrownError) {
+                            var responseText = jQuery.parseJSON(jqXHR.responseText);
+                            errorAlert(responseText.result);
                         }
                     });
-                    $("#LoginBtn").text("Giriş Yap");
+                    $("#LoginBtn span").text("Giriş Yap");
+                }
+            },
+            doActiveDirectoryLogin: function (e) {
+                $("#LoginAdBtn span").text("Giriş yapılıyor...");
+                var validator = $("#loginForm").kendoValidator().data("kendoValidator")
+                if (validator.validate()) {
+                    $.ajax({
+                        url: '@Url.Action("UserLogin","Account")?returnUrl=@ViewBag.ReturnUrl',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: ({ kullanici: serializeActiveDirectoryLoginForm() }),
+                        success: function (result) {
+                            window.location.href = "@Url.Action("Spa","Home")";
+                        },
+                        error: function (jqXHR, status, thrownError) {
+                            var responseText = jQuery.parseJSON(jqXHR.responseText);
+                            errorAlert(responseText.result);
+                        }
+                    });
+                    $("#LoginAdBtn span").text("Giriş Yap");
                 }
             }
         });
         kendo.bind($("#loginForm"), loginViewModel);
         function serializeLoginForm() {
             var data = $("#loginForm").serializeArray();
-           
+
+            var formData = {};
+            for (var i = 0; i < data.length; i++) {
+                formData[data[i].name] = data[i].value;
+            }
+            formData["isActiveDirectoryUser"] = false;
+            return formData;
+        }
+        function serializeActiveDirectoryLoginForm() {
+            var data = $("#loginForm").serializeArray();
+
+            var formData = {};
+            for (var i = 0; i < data.length; i++) {
+                formData[data[i].name] = data[i].value;
+            }
+            formData["isActiveDirectoryUser"] = true;
+            return formData;
+        }
+    </script>
+
+    <script type="text/javascript">
+        var EmailModel = kendo.data.Model.define({
+            fields: {
+                Email: { type: "string", required: true }
+            }
+        });
+
+        var rememberPasswordViewModel = kendo.observable({
+            data: new EmailModel(),
+            rememberPassword: function (e) {
+                $("#ForgetPasswordBtn").text("Gönderiliyor...");
+                var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
+                if (validator.validate()) {
+                    $.ajax({
+                        url: '@Url.Action("RememberPassword", "Account")',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: ({ email: serializeForm() }),
+                        success: function (message) {
+                            alert("Yapım aşamasında");
+                        },
+                        error: function (message) {
+                            errorAlert("Hata oluştu.");
+                        }
+                    });
+                    $("#ForgetPasswordBtn").text("Gönder");
+                }
+            }
+        });
+
+        kendo.bind($("#forgetPasswordForm"), rememberPasswordViewModel);
+        function serializeForm() {
+            var data = $("#forgetPasswordForm").serializeArray();
+
             var formData = {};
             for (var i = 0; i < data.length; i++) {
                 formData[data[i].name] = data[i].value;
@@ -389,50 +453,6 @@
 
             return formData;
         }
-
-    </script>
-
-    <script type="text/javascript">
-    var EmailModel = kendo.data.Model.define({
-        fields: {
-            Email: { type: "string", required: true }
-        }
-    });
-
-    var rememberPasswordViewModel = kendo.observable({
-        data: new EmailModel(),
-        rememberPassword: function (e) {
-            $("#ForgetPasswordBtn").text("Gönderiliyor...");
-            var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
-            if (validator.validate()) {
-                $.ajax({
-                    url: '@Url.Action("RememberPassword", "Account")',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: ({ email: serializeForm() }),
-                    success: function (message) {
-                        alert("Yapım aşamasında");
-                    },
-                    error: function (message) {
-                        errorAlert("Hata oluştu.");
-                    }
-                });
-                $("#ForgetPasswordBtn").text("Gönder");
-            }
-        }
-    });
-
-    kendo.bind($("#forgetPasswordForm"), rememberPasswordViewModel);
-    function serializeForm() {
-        var data = $("#forgetPasswordForm").serializeArray();
-
-        var formData = {};
-        for (var i = 0; i < data.length; i++) {
-            formData[data[i].name] = data[i].value;
-        }
-
-        return formData;
-    }
     </script>
 
 

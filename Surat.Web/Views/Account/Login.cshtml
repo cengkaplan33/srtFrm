@@ -94,22 +94,21 @@
 
                                                 </div>
 
+                                                <div class="space-4"></div>
+                                                <div class="social-login" style="text-align:right;">
+                                                    <button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
+                                                        <i class="ace-icon fa fa-key"></i>
+                                                        <span class="bigger-110">Hızlı Giriş Yap</span>
+                                                    </button>
 
+
+                                                </div>
                                             </fieldset>
                                         </form>
 
 
 
-                                        <div class="space-6"></div>
-
-                                        <div class="social-login" style="text-align:right;">
-                                            <button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
-                                                <i class="ace-icon fa fa-key"></i>
-                                                <span class="bigger-110">Hızlı Giriş Yap</span>
-                                            </button>
-
-
-                                        </div>
+                                       
                                     </div><!-- /.widget-main -->
                                     <div class="toolbar clearfix">
                                         <div id="message" style="color:red">
@@ -346,7 +345,7 @@
         var loginViewModel = kendo.observable({
             data: new loginModel(),
             doLogin: function (e) {
-                $("#LoginBtn").text("Giriş yapılıyor...");
+                $("#LoginBtn span").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {
                     $.ajax({
@@ -362,11 +361,11 @@
                             errorAlert(responseText.result);
                         }
                     });
-                    $("#LoginBtn").text("Giriş Yap");
+                    $("#LoginBtn span").text("Giriş Yap");
                 }
             },
             doActiveDirectoryLogin: function (e) {
-                $("#LoginAdBtn").text("Giriş yapılıyor...");
+                $("#LoginAdBtn span").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {
                     $.ajax({
@@ -382,7 +381,7 @@
                             errorAlert(responseText.result);
                         }
                     });
-                    $("#LoginAdBtn").text("Giriş Yap");
+                    $("#LoginAdBtn span").text("Hızlı Giriş Yap");
                 }
             }
         });
