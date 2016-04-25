@@ -2851,6 +2851,7 @@
     <Content Include="Framework\theme\images\gallery\thumb-4.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-5.jpg" />
     <Content Include="Framework\theme\images\gallery\thumb-6.jpg" />
+    <Content Include="Framework\theme\images\logo_kaynak_holding.png" />
     <Content Include="Framework\theme\images\plus-circle.png" />
     <Content Include="Framework\theme\images\sort_asc.png" />
     <Content Include="Framework\theme\images\sort_asc_disabled.png" />
