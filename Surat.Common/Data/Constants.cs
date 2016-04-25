@@ -83,7 +83,7 @@ namespace Surat.Common.Data
             public const String FrameworkSessionNotClosed = "FrameworkSessionNotClosed|Sistem oturumu kapatılamadı.|Framework session has not been closed.";
             public const String ExceptionNotPublished = "ExceptionNotPublished|İstisna(Hata) yayınlanamadı.|Exception has not been published.";
             public const String WorkgroupCompanySiteNotFound = "WorkgroupCompanySiteNotFound|{0} Çalışma grubuna ait firma tanım kaydı bulunamadı.|Workgroup {0} does not has a related company record.";
-            public const String LockedAccount = "LockedAccount|<br>Yanlış denemeler sonucunda hesabınız kilitlenmiştir.Lütfen destek alınız.|<br>As a result of incorrect attempts, your account is locked. Please get support.";
+            public const String LockedAccount = "LockedAccount|<br>Yanlış denemeler sonucunda hesabınız kilitlenmiştir.Şifremi Unuttum linkini kullanabilir veya Sistem Yöneticiniz ile görüşebilirsiniz.|<br>As a result of incorrect attempts, your account is locked. You can use 'I forgot my password' link or contact your System Administrator.";
         }
 
         #endregion
