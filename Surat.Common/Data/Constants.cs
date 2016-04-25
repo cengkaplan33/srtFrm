@@ -57,6 +57,7 @@ namespace Surat.Common.Data
             public const String FrameworkNotInitialized = "FrameworkNotInitialized|Alt yapı bileşenleri(Framework) başlatılamadı.|Framework has not been initialized.";
             public const String OperationNotCompleted = "OperationNotCompleted|İşlem tamamlanamadı.|Operation has not been completed.";
             public const String UserNotAuthorized = "UserNotAuthorized|Kullanıcı {0} yetkili değildir.|User {0} has not been authorized.";
+            public const String ActiveDirectoryUserNotAuthorized = "ActiveDirectoryUserNotAuthorized|Active Directory Kullanıcısı {0} yetkili değildir.|Acitve Directory User {0} has not been authorized.";
             public const String UserAccessDenied = "UserAccessDenied|{0} işlemi için {1} kullanıcısının yetkisi bulunmamaktadır. | {1} has not access for {0} operation.";
             public const String RedirectToLogin = "RedirectToLogin|Oturum bilgisi bulunamadığından dolayı giriş sayfasına yönlendirileceksiniz. | because";
             public const String OperationCompleted = "OperationCompleted|İşlem tamamlandı.|Operation has been completed.";

@@ -24,8 +24,8 @@ namespace Surat.Base.ActiveDirectory
         private string service;
         private string domain;
         private string userName;
-        private string password;   
-
+        private string password;
+        private string container;
         #endregion
 
         #region Public Members       
@@ -60,6 +60,11 @@ namespace Surat.Base.ActiveDirectory
             set { password = value; }
         }
 
+        public string Container
+        {
+            get { return container; }
+            set { container = value; }
+        }
         #endregion
 
         #region Methods

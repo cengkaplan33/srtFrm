@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text;
 
@@ -89,7 +90,6 @@ namespace Surat.Business.ActiveDirectory
             try
             {
                 directoryEntry = new DirectoryEntry(this.Context.Service, this.Context.UserName, this.Context.Password, AuthenticationTypes.Secure | AuthenticationTypes.Sealing | AuthenticationTypes.ServerBind);
-
                 DirectorySearcher directorySearch = new DirectorySearcher(directoryEntry);
                 directorySearch.Filter = "(&(objectClass=user)(SAMAccountName=" + userName + "))";
                 SearchResult results = directorySearch.FindOne();
@@ -116,9 +116,23 @@ namespace Surat.Business.ActiveDirectory
                 return true;
             else return false;
         }
-
+        public bool ActiveDirectoryUserCheck()
+        {
+            PrincipalContext cn = new PrincipalContext(ContextType.Domain, this.Context.Domain, this.Context.Container, this.Context.UserName, this.Context.Password);
+            UserPrincipal userPrincipal = UserPrincipal.FindByIdentity(cn, Environment.UserName);
+            if (userPrincipal != null)
+                return true;
+           
+            return false;
+        }
         public ADUserDetailView GetADUser(string userName)
         {
+           
+        
+            
+            
+           // bool status = cn.ValidateCredentials("zafer.akkose", "gebzE.198s");
+          
             ADUserDetailView adUser = null;
             try
             {
