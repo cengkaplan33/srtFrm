@@ -51,7 +51,7 @@ namespace KonsolideRapor.WebServer.Controllers
         {            
             try
             {
-                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password);
+                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password,kullanici.isActiveDirectoryUser);
 
                 if (returnUrl == null)
                 {
