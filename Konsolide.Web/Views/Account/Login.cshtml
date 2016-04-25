@@ -358,7 +358,7 @@
                         dataType: 'json',
                         data: ({ kullanici: serializeLoginForm() }),
                         success: function (result) {
-                            window.location.href = "@Url.Action("Spa","Home")";
+                            window.location.href = "@Url.Action("Anasayfa","Home")";
                         },
                         error: function (jqXHR, status, thrownError) {
                             var responseText = jQuery.parseJSON(jqXHR.responseText);
@@ -378,7 +378,7 @@
                         dataType: 'json',
                         data: ({ kullanici: serializeActiveDirectoryLoginForm() }),
                         success: function (result) {
-                            window.location.href = "@Url.Action("Spa","Home")";
+                            window.location.href = "@Url.Action("Anasayfa", "Home")";
                         },
                         error: function (jqXHR, status, thrownError) {
                             var responseText = jQuery.parseJSON(jqXHR.responseText);
