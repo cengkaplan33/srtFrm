@@ -196,12 +196,18 @@ namespace KonsolideRapor.WebServer
                     sb.Append("<a href=\"#" + Section.Url + "\" class=\"dropdown-toggle\">");
                 else
                     sb.Append("<a href=\"" + Section.Url + "\"");
-
-                sb.Append("<i class=\" " + Section.CssClass + "\" ></i>");
+        
                 if (Section.Key == "Firm")
+                {
+                    sb.Append("<i class=\" " + Section.CssClass + "\" style = \"    height:80px; \"></i>");
                     sb.Append("<span class=\"menu-text\" style = \"color:#2e6589;  font-size:14px;\"><b>" + " " + Section.Title + "</b></span>");
+                }                 
                 else
+                {
+                    sb.Append("<i class=\" " + Section.CssClass + "\" ></i>");
                     sb.Append("<span class=\"menu-text\"> " + Section.Title + "</span>");
+                }
+
 
                 if (Section.Links.Count > 0 || Section.Sections.Count > 0)
                 {
