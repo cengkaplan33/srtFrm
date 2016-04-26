@@ -36,26 +36,26 @@ namespace KonsolideRapor.WebServer.Controllers
             return View();
         }
 
-        [ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
-        [AllowAnonymous]
-        public ActionResult Spa()
-        {
+        //[ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
+        //[AllowAnonymous]
+        //public ActionResult Spa()
+        //{
 
-            try
-            {
+        //    try
+        //    {
 
-                ViewBag.Title = this.WebApplicationManager.KonsolideRapor.Framework.Context.Product.CustomerProductName;
-                ViewBag.SessionStart = this.WebApplicationManager.KonsolideRapor.Framework.Context.CurrentUser.SessionStart;
+        //        ViewBag.Title = this.WebApplicationManager.KonsolideRapor.Framework.Context.Product.CustomerProductName;
+        //        ViewBag.SessionStart = this.WebApplicationManager.KonsolideRapor.Framework.Context.CurrentUser.SessionStart;
 
-            }
-            catch (Exception)
-            {
-                RedirectToAction("Login", "Account");
-            }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        RedirectToAction("Login", "Account");
+        //    }
 
 
-            return View();
-        }
+        //    return View();
+        //}
 
         [ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         [AllowAnonymous]
