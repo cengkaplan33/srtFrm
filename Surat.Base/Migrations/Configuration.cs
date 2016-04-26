@@ -980,6 +980,74 @@
             }
         }
 
+        //Zafer->ActiveDirectory Parametreleri ekleniyor...
+        private void AddActiveDirectoryParameters(FrameworkDbContext context)
+        {
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "ActiveDirectoryDomain"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2, //Framework system
+                                 TypeName = "ActiveDirectoryDomain",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("ActiveDirectoryDomain", "kaynakholding.one");
+            }
+            
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "ActiveDirectoryContainer"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2, //Framework system
+                                 TypeName = "ActiveDirectoryContainer",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("ActiveDirectoryContainer", "DC=kaynakholding,DC=one");
+            }
+
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "ActiveDirectoryUserName"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2, //Framework system
+                                 TypeName = "ActiveDirectoryUserName",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("ActiveDirectoryUserName", "test.sinerji");
+            }
+
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "ActiveDirectoryUserPassword"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2, //Framework system
+                                 TypeName = "ActiveDirectoryUserPassword",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("ActiveDirectoryUserPassword", "ts.12345");
+            }
+        }
+
         private void AddSystemPages(FrameworkDbContext context)
         {
             if (!MigrationUtility.CheckEntityByParameter<Page>(context, p => p.ObjectTypeName == "Users"))            

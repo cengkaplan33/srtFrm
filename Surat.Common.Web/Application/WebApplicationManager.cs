@@ -13,6 +13,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Linq;
 using System.Collections.Generic;
+using Surat.Base.Model.Entities;
 
 namespace Surat.WebServer.Application
 {
@@ -20,7 +21,8 @@ namespace Surat.WebServer.Application
     {
         #region Constructor
 
-        public WebApplicationManager():this(null)
+        public WebApplicationManager()
+            : this(null)
         {
 
         }
@@ -29,7 +31,7 @@ namespace Surat.WebServer.Application
         {
             if (applicationManager != null)
                 this.framework = applicationManager;
-            else this.framework = InitializeFramework();            
+            else this.framework = InitializeFramework();
         }
 
         #endregion
@@ -39,7 +41,7 @@ namespace Surat.WebServer.Application
         private WebApplicationContext context;
         private FrameworkApplicationManager framework;
         private SuratRights rights = null;
- 
+
         #endregion
 
         #region Public Members
@@ -131,37 +133,37 @@ namespace Surat.WebServer.Application
             //        }).OrderBy(x => x.URL).ThenBy(x => x.Action).ToList();
 
 
-       ActionsFromReflection=      assembly.GetTypes()
+            ActionsFromReflection = assembly.GetTypes()
                 //.Where(type => typeof(System.Web.Mvc.Controller).IsAssignableFrom(type))
-                    .Where(type => typeof(Surat.WebServer.Base.SuratControllerBase).IsAssignableFrom(type))
-                    .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
-                    .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
-                    .Select(x =>
-                    {
-                        System.Attribute[] attrs = System.Attribute.GetCustomAttributes(x);
-                        Surat.Common.Security.ActionAttribute att = null;
-                        foreach (System.Attribute attr in attrs)
-                        {
-                            if (attr is Surat.Common.Security.ActionAttribute)
-                            {
-                                att = (Surat.Common.Security.ActionAttribute)attr;
-                                break;
-                            }
-                        }
+                         .Where(type => typeof(Surat.WebServer.Base.SuratControllerBase).IsAssignableFrom(type))
+                         .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+                         .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+                         .Select(x =>
+                         {
+                             System.Attribute[] attrs = System.Attribute.GetCustomAttributes(x);
+                             Surat.Common.Security.ActionAttribute att = null;
+                             foreach (System.Attribute attr in attrs)
+                             {
+                                 if (attr is Surat.Common.Security.ActionAttribute)
+                                 {
+                                     att = (Surat.Common.Security.ActionAttribute)attr;
+                                     break;
+                                 }
+                             }
 
-                        if (att == null)
-                            att = new Surat.Common.Security.ActionAttribute("", "", "", ActionType.Action);
+                             if (att == null)
+                                 att = new Surat.Common.Security.ActionAttribute("", "", "", ActionType.Action);
 
-                        return new SuratActionView
-                        {
+                             return new SuratActionView
+                             {
 
-                            Description = att.Description,
-                            Name = att.Name,
-                            SystemName = att.SystemName,
-                            Type = att.Type,
-                            TypeName = x.DeclaringType.Name.Replace("Controller", "") + "/" + x.Name
-                        };
-                    }).OrderBy(x => x.TypeName).ToList();
+                                 Description = att.Description,
+                                 Name = att.Name,
+                                 SystemName = att.SystemName,
+                                 Type = att.Type,
+                                 TypeName = x.DeclaringType.Name.Replace("Controller", "") + "/" + x.Name
+                             };
+                         }).OrderBy(x => x.TypeName).ToList();
 
             //Typeof(
             //var sss= new Surat.WebServer.Base.SuratControllerBase();
@@ -182,10 +184,10 @@ namespace Surat.WebServer.Application
         private WebApplicationContext InitializeApplicationContext()
         {
             WebApplicationContext context = new WebApplicationContext(this.Framework.Context);
-            
+
             return context;
         }
- 
+
         private FrameworkApplicationManager InitializeFramework()
         {
             FrameworkApplicationManager framework;
@@ -196,7 +198,7 @@ namespace Surat.WebServer.Application
             if (HttpContext.Current != null)
                 if (HttpContext.Current.Session["CurrentUser"] != null)
                     currentUser = (UserDetailedView)HttpContext.Current.Session["CurrentUser"];
-            
+
             if (currentUser != null)
                 framework = new FrameworkApplicationManager(currentUser);
             else framework = new FrameworkApplicationManager();
@@ -214,13 +216,30 @@ namespace Surat.WebServer.Application
             rights.WebAuditManagement = this.framework.Security.RegisterRight("WebAuditManagement", "WebAuditManagement hakkının açıklamasını buraya girelim inş.  :)  ", this.Context.SystemId);
         }
 
-        public void Login(string userName, string password)
+
+
+        public void Login(string userName, string password, bool isActiveDirectoryUser)
         {
             UserDetailedView currentUser = null;
+            SuratUser user = null;
             try
-            {                
-                currentUser = this.Framework.Security.ValidateUser(userName, password);
+            {
+                if (isActiveDirectoryUser)
+                {
 
+                    user = this.Framework.Security.User.GetActiveDirectoryUser(Environment.UserName);
+                    if (user == null)
+                        throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                       String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
+                    if (!this.Framework.ActiveDirectory.ActiveDirectoryUserCheck())
+                        throw new SecurityException(this.Context.FrameworkContext, "ActiveDirectoryLogin", this.Context.SystemId,
+                              String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.ActiveDirectoryUserNotAuthorized), userName));
+                    currentUser = this.Framework.Security.ValidateUser(user.UserName, user.Password);
+                }
+                else
+                {
+                    currentUser = this.Framework.Security.ValidateUser(userName, password);
+                }
                 if (currentUser != null)
                 {
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
@@ -231,24 +250,37 @@ namespace Surat.WebServer.Application
                 }
                 else
                 {
-                    this.Context.WrongPasswordProcessCount++;
-                    if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
-                    {
-                        this.Framework.Security.SaveUserLock(userName, password, true);
-                    }
-                    else throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId, 
-                        String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId,Constants.Message.UserNotAuthorized),userName));
+                    throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                       String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
                 }
 
                 FormsAuthentication.SetAuthCookie(userName, false);
             }
+
+            catch (WrongPasswordException)
+            {
+                this.Context.WrongPasswordProcessCount++;
+
+                if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
+                {
+                    this.Framework.Security.SaveUserLock(userName, password, true);
+                    this.Context.WrongPasswordProcessCount = 0;
+
+                    throw new WrongPasswordException(this.Context.FrameworkContext, "Login", this.Context.FrameworkContext.SystemId, this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(context.SystemId, Constants.Message.LockedAccount));
+                }
+
+                var remaining = this.Framework.Context.Security.MaxWrongPasswordAttempts - this.Context.WrongPasswordProcessCount;
+                var customMessage = string.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.ExceptionType.WrongPassword), this.Framework.Context.Security.MaxWrongPasswordAttempts, remaining);
+
+                throw new WrongPasswordException(this.Context.FrameworkContext, "Login", this.Context.FrameworkContext.SystemId, customMessage);
+
+            }
             catch (Exception exception)
             {
-
                 //PublishException(exception);
                 //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;
-            }           
+            }
         }
 
         public void TraceAppendLine(string systemName, string traceInformation, TraceLevel traceLevel)
@@ -258,10 +290,10 @@ namespace Surat.WebServer.Application
             //else ToDo: Framework üzerinden Trace yazılamaz. Başka bir yöntem takip edilmelidir.
         }
 
-        public string GetGlobalizationKeyValue(int systemId,string globalizationKey)
+        public string GetGlobalizationKeyValue(int systemId, string globalizationKey)
         {
             if (this.Framework.IsContextInitialized)
-                return this.Framework.Globalization.GetGlobalizationKeyValue(systemId,globalizationKey);
+                return this.Framework.Globalization.GetGlobalizationKeyValue(systemId, globalizationKey);
             else return globalizationKey;
         }
 
@@ -270,7 +302,7 @@ namespace Surat.WebServer.Application
 
             if (HttpContext.Current.Request != null)
                 this.Framework.Context.ApplicationName = HttpContext.Current.Request.ServerVariables["APPL_MD_PATH"];
-            
+
             if (string.IsNullOrEmpty(this.Framework.Context.ApplicationName))
                 this.Framework.Context.ApplicationName = HttpRuntime.AppDomainAppVirtualPath;
 
@@ -279,12 +311,12 @@ namespace Surat.WebServer.Application
 
             UserDetailedView currentUser = null;
             if (this.Framework.IsContextInitialized)
-            { 
+            {
                 if (this.Framework.Context.IsCurrentUserAssigned)
                     currentUser = this.Framework.Context.CurrentUser;
-              return  this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
+                return this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, currentUser);
             }
-            else  return Constants.Message.FrameworkNotInitialized;
+            else return Constants.Message.FrameworkNotInitialized;
             //else ToDo: Framework üzerinden publish edilemez. Başka bir yöntem takip edilmelidir.
         }
 
@@ -299,7 +331,7 @@ namespace Surat.WebServer.Application
             {
                 this.Framework.Exception.Publish(this.Context.FrameworkContext, exception, null);
                 throw exception;
-            }  
+            }
         }
 
         public class SuratRights

@@ -91,24 +91,25 @@
                                                         <i class="ace-icon fa fa-key"></i>
                                                         <span class="bigger-110">Giriş Yap</span>
                                                     </button>
-
+                                             
                                                 </div>
 
-                                                <div class="space-4"></div>
-                                                <div class="social-login" style="text-align:right;">
-                                                    <button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
-                                                        <i class="ace-icon fa fa-key"></i>
-                                                        <span class="bigger-110">Hızlı Giriş Yap</span>
-                                                    </button>
-
-
-                                                </div>
+                                               
                                             </fieldset>
                                         </form>
 
+                                      
 
+                                            <div class="space-6"></div>
 
-                                       
+                                            <div class="social-login" style="text-align:right;">
+                                                <button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
+                                                    <i class="ace-icon fa fa-key"></i>
+                                                    <span class="bigger-110">Hızlı Giriş Yap</span>
+                                                </button>
+                                                
+
+                                            </div>
                                     </div><!-- /.widget-main -->
                                     <div class="toolbar clearfix">
                                         <div id="message" style="color:red">
@@ -333,39 +334,39 @@
         });
     </script>
     <script type="text/javascript">
-        var loginModel = kendo.data.Model.define({
-            fields: {
-                UserName: { type: "string", required: true },
-                Password: { type: "string", required: true },
-                isActiveDirectoryUser: { type: "boolean" },
-                RememberMe: { type: "boolean" }
-            }
-        });
+    var loginModel = kendo.data.Model.define({
+        fields: {
+            UserName: { type: "string", required: true },
+            Password: { type: "string", required: true },
+            isActiveDirectoryUser: { type: "boolean" },
+            RememberMe: { type: "boolean" }
+        }
+    });
 
-        var loginViewModel = kendo.observable({
-            data: new loginModel(),
-            doLogin: function (e) {
-                $("#LoginBtn span").text("Giriş yapılıyor...");
-                var validator = $("#loginForm").kendoValidator().data("kendoValidator")
-                if (validator.validate()) {
-                    $.ajax({
-                        url: '@Url.Action("UserLogin","Account")?returnUrl=@ViewBag.ReturnUrl',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: ({ kullanici: serializeLoginForm() }),
-                        success: function (result) {
-                            window.location.href = "@Url.Action("Spa","Home")";
+    var loginViewModel = kendo.observable({
+        data: new loginModel(),
+        doLogin: function (e) {
+            $("#LoginBtn").text("Giriş yapılıyor...");
+            var validator = $("#loginForm").kendoValidator().data("kendoValidator")
+            if (validator.validate()) {
+                $.ajax({
+                    url: '@Url.Action("UserLogin","Account")?returnUrl=@ViewBag.ReturnUrl',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: ({ kullanici: serializeLoginForm() }),
+                    success: function (result) {
+                        window.location.href = "@Url.Action("Spa","Home")";
                         },
-                        error: function (jqXHR, status, thrownError) {
-                            var responseText = jQuery.parseJSON(jqXHR.responseText);
-                            errorAlert(responseText.result);
+                        error: function (message) {
+                            errorAlert(message.responseJSON.result);
                         }
                     });
-                    $("#LoginBtn span").text("Giriş Yap");
+                    $("#LoginBtn").text("Giriş Yap");
                 }
             },
-            doActiveDirectoryLogin: function (e) {
-                $("#LoginAdBtn span").text("Giriş yapılıyor...");
+            doActiveDirectoryLogin:function(e)
+            {
+                $("#LoginAdBtn").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {
                     $.ajax({
@@ -376,12 +377,11 @@
                         success: function (result) {
                             window.location.href = "@Url.Action("Spa","Home")";
                         },
-                        error: function (jqXHR, status, thrownError) {
-                            var responseText = jQuery.parseJSON(jqXHR.responseText);
-                            errorAlert(responseText.result);
+                        error: function (message) {
+                            errorAlert(message.responseJSON.result);
                         }
                     });
-                    $("#LoginAdBtn span").text("Hızlı Giriş Yap");
+                    $("#LoginAdBtn").text("Giriş Yap");
                 }
             }
         });
@@ -416,6 +416,7 @@
             }
         });
 
+<<<<<<< HEAD
         var rememberPasswordViewModel = kendo.observable({
             data: new EmailModel(),
             rememberPassword: function (e) {
@@ -427,13 +428,32 @@
                         dataType: 'json',
                         data: ({ email: serializeForm() }),
                         success: function (message) {
-                            alert("Yapım aşamasında");
+                            alert("fonksiyon başarılı");
                         },
                         error: function (message) {
-                            errorAlert("Hata oluştu.");
+                            errorAlert("hata oluştu.");
                         }
                     });
                 }
+=======
+    var rememberPasswordViewModel = kendo.observable({
+        data: new EmailModel(),
+        rememberPassword: function (e) {
+            var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
+            if (validator.validate()) {
+                $.ajax({
+                    url: '@Url.Action("RememberPassword", "Account")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: ({ email: serializeForm() }),
+                    success: function (message) {
+                        alert("Yapım aşamasında");
+                    },
+                    error: function (message) {
+                        errorAlert("Hata oluştu.");
+                    }
+                });
+>>>>>>> 659204651b96bd033fa768fa3340789c4dfdd5b6
             }
         });
 

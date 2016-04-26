@@ -43,11 +43,15 @@ namespace Surat.Base.Application
             //adContext.UserName = "kanalist2";
             //adContext.Password = "ka.112233";
 
-            adContext.Service = "LDAP://172.27.40.54:389";
-            adContext.Domain = "demo.local";
-            adContext.UserName = "serendiptest";
-            adContext.Password = "asdf.123456";
+            //adContext.Service = "LDAP://172.27.40.54:389";
+            //adContext.Domain = "demo.local";
+            //adContext.UserName = "serendiptest";
+            //adContext.Password = "asdf.123456";
 
+            adContext.Container = ConfigurationUtility.GetParameter<string>(context, "ActiveDirectoryContainer");
+            adContext.Domain = ConfigurationUtility.GetParameter<string>(context, "ActiveDirectoryDomain");
+            adContext.UserName = ConfigurationUtility.GetParameter<string>(context, "ActiveDirectoryUserName");
+            adContext.Password = ConfigurationUtility.GetParameter<string>(context, "ActiveDirectoryUserPassword");
             return adContext;
         }
 

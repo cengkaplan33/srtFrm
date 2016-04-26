@@ -955,7 +955,6 @@ AND
             }
         }
 
-
         public void SaveUserRoles(int userId, IList<UserRoleView> userRoles)
         {
             try

@@ -15,6 +15,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Linq;
+using Surat.Base.Model.Entities;
 
 namespace KonsolideRapor.WebServer.Application
 {
@@ -151,47 +152,75 @@ namespace KonsolideRapor.WebServer.Application
             framework.Security.RegisterActions(ActionsFromReflection);
             ActionsFromReflection = new List<SuratActionView>();
 
-
             return framework;
         }
         private KonsolideRaporApplicationManager InitializeKonsolideRapor()
         {
             KonsolideRaporApplicationManager konsolideRaporApplicationManager;
-//
+
             konsolideRaporApplicationManager = new KonsolideRaporApplicationManager(this.Framework);
             return konsolideRaporApplicationManager;
         }
 
-        public void Login(string userName, string password)
+        public void Login(string userName, string password, bool isActiveDirectoryUser)
         {
             UserDetailedView currentUser = null;
+            SuratUser user = null;
             try
             {
-                currentUser = this.Framework.Security.ValidateUser(userName, password);
+                if (isActiveDirectoryUser)
+                {
 
+                    user = this.Framework.Security.User.GetActiveDirectoryUser(Environment.UserName);
+                    if (user == null)
+                        throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                       String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
+                    if (!this.Framework.ActiveDirectory.ActiveDirectoryUserCheck())
+                        throw new SecurityException(this.Context.FrameworkContext, "ActiveDirectoryLogin", this.Context.SystemId,
+                              String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.ActiveDirectoryUserNotAuthorized), userName));
+                    currentUser = this.Framework.Security.ValidateUser(user.UserName, user.Password);
+                }
+                else
+                {
+                    currentUser = this.Framework.Security.ValidateUser(userName, password);
+                }
                 if (currentUser != null)
                 {
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
                     this.Framework.StartUserSession(currentUser);
+                    //this.Framework.SetCurrentUser(currentUser);
                     this.Context.CurrentUser = currentUser;
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
                 }
                 else
                 {
-                    this.Context.WrongPasswordProcessCount++;
-                    if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
-                    {
-                        this.Framework.Security.SaveUserLock(userName, password, true);
-                    }
-                    else throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
-                        String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
+                    throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
+                       String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
                 }
 
                 FormsAuthentication.SetAuthCookie(userName, false);
             }
+
+            catch (WrongPasswordException)
+            {
+                this.Context.WrongPasswordProcessCount++;
+
+                if (this.Context.WrongPasswordProcessCount == this.Framework.Context.Security.MaxWrongPasswordAttempts)
+                {
+                    this.Framework.Security.SaveUserLock(userName, password, true);
+                    this.Context.WrongPasswordProcessCount = 0;
+
+                    throw new WrongPasswordException(this.Context.FrameworkContext, "Login", this.Context.FrameworkContext.SystemId, this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(context.SystemId, Constants.Message.LockedAccount));
+                }
+
+                var remaining = this.Framework.Context.Security.MaxWrongPasswordAttempts - this.Context.WrongPasswordProcessCount;
+                var customMessage = string.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.ExceptionType.WrongPassword), this.Framework.Context.Security.MaxWrongPasswordAttempts, remaining);
+
+                throw new WrongPasswordException(this.Context.FrameworkContext, "Login", this.Context.FrameworkContext.SystemId, customMessage);
+
+            }
             catch (Exception exception)
             {
-
                 //PublishException(exception);
                 //this.Framework.Exception.Publish(this.Context.FrameworkContext,exception, null);
                 throw exception;

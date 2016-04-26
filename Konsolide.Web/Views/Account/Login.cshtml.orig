@@ -1,5 +1,7 @@
-﻿@{
+﻿@using System.Web.Optimization;
+@{
     Layout = null;
+
 }
 
 <!DOCTYPE html>
@@ -32,11 +34,20 @@
                     <div class="login-container">
                         <div class="center">
                             <h1>
+<<<<<<< HEAD
+                                @*<span class="red">Kaynak Holding</span><br />*@
+                                <img src="/Framework/theme/images/logo_kaynak_holding.png" width="120" height="110"><br />
+                                <span class="red">Yönetim Raporları Portalı</span>
+                                @*<span class="white" id="id-text2">Yönetim Raporları Portalı</span>*@
+                            </h1>   
+                            
+=======
                                 <i class="ace-icon fa fa-leaf green"></i>
-                                <span class="red">Sürat</span>
-                                <span class="white" id="id-text2">Uygulama Platformu</span>
+                                <span class="red">Kaynak Holding</span><br />
+                                <span class="white" id="id-text2">Yönetim Raporları Portalı</span>
                             </h1>
-                            <h4 class="blue" id="id-company-text">&copy; Sürat Teknoloji</h4>
+
+>>>>>>> konsolideactivedirectorylogin
                         </div>
 
                         <div class="space-6"></div>
@@ -87,11 +98,11 @@
                                                         </script>
                                                     </label>
 
-                                                    <button type="button" id="LoginBtn" data-bind="click:doLogin" class="width-35 pull-right btn btn-sm btn-primary">
+
+                                                    <button type="button" data-bind="click:doLogin" class="width-35 pull-right btn btn-sm btn-primary">
                                                         <i class="ace-icon fa fa-key"></i>
                                                         <span class="bigger-110">Giriş Yap</span>
                                                     </button>
-
                                                 </div>
 
                                                 <div class="space-4"></div>
@@ -108,7 +119,7 @@
 
 
 
-                                       
+                                        
                                     </div><!-- /.widget-main -->
                                     <div class="toolbar clearfix">
                                         <div id="message" style="color:red">
@@ -125,6 +136,7 @@
                                     </div>
                                 </div><!-- /.widget-body -->
                             </div><!-- /.login-box -->
+                            <h4 class="blue" id="id-company-text"><center>&copy; Sürat Teknoloji</center></h4>
 
                             <div id="forgot-box" class="forgot-box widget-box no-border">
                                 <div class="widget-body">
@@ -329,7 +341,6 @@
                     loginViewModel.doLogin(e);
                 }
             });
-
         });
     </script>
     <script type="text/javascript">
@@ -343,6 +354,7 @@
         });
 
         var loginViewModel = kendo.observable({
+
             data: new loginModel(),
             doLogin: function (e) {
                 $("#LoginBtn span").text("Giriş yapılıyor...");
@@ -381,11 +393,10 @@
                             errorAlert(responseText.result);
                         }
                     });
-                    $("#LoginAdBtn span").text("Hızlı Giriş Yap");
+                    $("#LoginAdBtn span").text("Giriş Yap");
                 }
             }
         });
-
         kendo.bind($("#loginForm"), loginViewModel);
         function serializeLoginForm() {
             var data = $("#loginForm").serializeArray();
@@ -419,6 +430,7 @@
         var rememberPasswordViewModel = kendo.observable({
             data: new EmailModel(),
             rememberPassword: function (e) {
+                $("#ForgetPasswordBtn").text("Gönderiliyor...");
                 var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {
                     $.ajax({
@@ -433,6 +445,7 @@
                             errorAlert("Hata oluştu.");
                         }
                     });
+                    $("#ForgetPasswordBtn").text("Gönder");
                 }
             }
         });
@@ -449,6 +462,8 @@
             return formData;
         }
     </script>
+
+
 
 </body>
 </html>

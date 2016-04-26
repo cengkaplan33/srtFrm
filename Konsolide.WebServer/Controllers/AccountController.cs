@@ -51,7 +51,7 @@ namespace KonsolideRapor.WebServer.Controllers
         {            
             try
             {
-                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password);
+                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password,kullanici.isActiveDirectoryUser);
 
                 if (returnUrl == null)
                 {
@@ -68,6 +68,21 @@ namespace KonsolideRapor.WebServer.Controllers
                 Response.StatusCode = 500;
                 return Json(new { result = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
             }            
+        }
+
+        [AllowAnonymous]
+        [ActionAttribute("Şifre Hatırla", "Sistemde kayıtlı olan kullanıcıların şifrelerini mail yoluyla hatırlatır.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult RememberPassword(EmailView email)
+        {
+            try
+            {
+                return Json(new { result = "Mail adresi: " + email.Email }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [ActionAttribute("Çıkış Yap", "Giriş yapmış kullanıcıların çıkış yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]

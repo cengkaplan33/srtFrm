@@ -66,7 +66,11 @@ namespace Surat.Base.Repositories
         {
             return this.GetObjectsByParameters(p => p.IsActive == true).ToList();
         }
-
+        public SuratUser GetActiveDirectoryUser(string userName)
+        {
+            var activeDirectoryUser = this.GetObjectsByParameters(p => p.IsActive == true & p.IsActiveDirectoryUser == true & p.UserName == userName).FirstOrDefault();
+            return activeDirectoryUser;
+        }
         public bool IsAdmin(string userShortName, int userId)
         {
             bool resultByName, resultByRole;

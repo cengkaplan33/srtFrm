@@ -9,6 +9,7 @@ namespace Surat.Common.ViewModel
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+        public bool isActiveDirectoryUser { get; set; }
         public bool RememberMe { get; set; }
     }
 }

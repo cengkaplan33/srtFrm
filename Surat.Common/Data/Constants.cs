@@ -45,7 +45,7 @@ namespace Surat.Common.Data
             public const String SPAHomePrefix = "Home/Spa#/";
             public const String RedirectLoginAction = "~/Account/Login";      
             public const String RedirectLogoutAction = "~/Account/LogOut";
-            public static readonly string[] UnAuthorizedActions = { "Account/Login", "Account/UserLogin", "Account/LogOut" };
+            public static readonly string[] UnAuthorizedActions = { "Account/Login", "Account/UserLogin", "Account/LogOut", "Account/RememberPassword" };
             public static readonly string[] SharedActions = { "Home/Spa", "home/index", "Account/LogOut"};
         }
         #endregion
@@ -57,6 +57,7 @@ namespace Surat.Common.Data
             public const String FrameworkNotInitialized = "FrameworkNotInitialized|Alt yapı bileşenleri(Framework) başlatılamadı.|Framework has not been initialized.";
             public const String OperationNotCompleted = "OperationNotCompleted|İşlem tamamlanamadı.|Operation has not been completed.";
             public const String UserNotAuthorized = "UserNotAuthorized|Kullanıcı {0} yetkili değildir.|User {0} has not been authorized.";
+            public const String ActiveDirectoryUserNotAuthorized = "ActiveDirectoryUserNotAuthorized|Active Directory Kullanıcısı {0} yetkili değildir.|Acitve Directory User {0} has not been authorized.";
             public const String UserAccessDenied = "UserAccessDenied|{0} işlemi için {1} kullanıcısının yetkisi bulunmamaktadır. | {1} has not access for {0} operation.";
             public const String RedirectToLogin = "RedirectToLogin|Oturum bilgisi bulunamadığından dolayı giriş sayfasına yönlendirileceksiniz. | because";
             public const String OperationCompleted = "OperationCompleted|İşlem tamamlandı.|Operation has been completed.";
@@ -81,7 +82,8 @@ namespace Surat.Common.Data
             public const String FrameworkSessionNotStarted = "FrameworkSessionNotStarted|Sistem oturumu başlatılamadı.|Framework session has not been started.";
             public const String FrameworkSessionNotClosed = "FrameworkSessionNotClosed|Sistem oturumu kapatılamadı.|Framework session has not been closed.";
             public const String ExceptionNotPublished = "ExceptionNotPublished|İstisna(Hata) yayınlanamadı.|Exception has not been published.";
-            public const String WorkgroupCompanySiteNotFound = "WorkgroupCompanySiteNotFound|{0} Çalışma grubuna ait firma tanım kaydı bulunamadı.|Workgroup {0} does not has a related company record.";            
+            public const String WorkgroupCompanySiteNotFound = "WorkgroupCompanySiteNotFound|{0} Çalışma grubuna ait firma tanım kaydı bulunamadı.|Workgroup {0} does not has a related company record.";
+            public const String LockedAccount = "LockedAccount|<br>Yanlış denemeler sonucunda hesabınız kilitlenmiştir.Şifremi Unuttum linkini kullanabilir veya Sistem Yöneticiniz ile görüşebilirsiniz.|<br>As a result of incorrect attempts, your account is locked. You can use 'I forgot my password' link or contact your System Administrator.";
         }
 
         #endregion
@@ -129,12 +131,12 @@ namespace Surat.Common.Data
             public const String DBDuplicateKey = "DBDuplicateKeyException|Aynı anahtar değerli kayıt bulunmaktadır.|Record with same key exists in the database.";
             public const String AuthenticationFailed = "AuthenticationFailedException|Kimlik belirleme işlemi başarısız oldu.|Authentication has not been succeeded.";
             public const String SMTPMail = "SMTPMailException|SMTP mail hatası oluştu.|Mail has not been sent with SMTP protocol.";
-            public const String WrongPassword = "WrongPasswordException|Şifre hatalıdır.|Password is wrong.";
+            public const String WrongPassword = "WrongPasswordException|<br>Şifre hatalıdır.10 dakika içinde {0} defa yanlış şifre girmeniz durumunda son girilen hesap kilitlenecektir.<br><b>Kalan Hakkınız: {1}<b/> | <br>Password is wrong.If you enter the wrong password {0} times in 10 minutes, The last entered account will be locked.<br><b>Remaining Trial: {1}<b/>";
             public const String ForceChangePassword = "ForceChangePasswordException|Şifre değiştirilmelidir.|Password must be changed.";
             public const String SuratBusinessException = "SuratBusinessException|İş süreci ile ilgili hata oluştu.|Application has a business exception.";
             public const String MissingFeature = "MissingFeatureException|{0} Özelliği henüz geliştirilmemiştir.|The feature {0} is missing.";
             public const String Security = "SecurityException|Güvenlik problemi bulunmaktadır.|Application has a security problem.";
-            public const String Configuration = "ConfigurationException|Konfigurasyon erişimi problemi bulunmaktadır.|Application has a configuration access problem.";
+            public const String Configuration = "ConfigurationException|Konfigurasyon erişimi problemi bulunmaktadır.|Application has a configuration access problem.";        
         }
 
         #endregion
