@@ -72,8 +72,13 @@ namespace Surat.Base.Configuration
                 if (parameter != null)
                     return parameter;
 
-                startUpWorkgroupId = context.CurrentUser.DefaultWorkgroup.Value;
-            }            
+                if (context.CurrentUser.Workgroup == null)
+                    startUpWorkgroupId = context.CurrentUser.DefaultWorkgroup.Value;
+                else
+                {
+                    startUpWorkgroupId = context.CurrentUser.Workgroup.CompanyId;
+                }
+            }
             
             //Default workgrouptan başlayarak, yukarı doğru tarama gerçekleştirilecek. En sonda, Root (system) parametrelerine ulaşılacaktır.
             //Parametre işlemleri ilk aşama olduğu için, direkt erişim yapıldı. Framework alt yapısı (Context ve diğer Context ler) yeni hazırlanıyor. 
