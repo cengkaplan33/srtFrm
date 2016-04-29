@@ -3252,6 +3252,7 @@
     <Content Include="Views\Users\EditTabPages.cshtml" />
     <Content Include="Views\Users\EditTabActions.cshtml" />
     <Content Include="Views\Users\EditTabSerendipUsers.cshtml" />
+    <Content Include="Views\Home\Anasayfa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

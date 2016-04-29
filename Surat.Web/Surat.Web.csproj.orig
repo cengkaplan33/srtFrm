@@ -1431,11 +1431,9 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
-<<<<<<< HEAD
+    <Content Include="Framework\Scripts\app\datasources\userMasterDbVeritabanlariDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userChoosenWorkgroupDatasource.js" />
-=======
     <Content Include="Framework\Scripts\app\datasources\userActionsDatasource.js" />
->>>>>>> 01475624d9cf6e3255c611b33039d777c02d163a
     <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userRolesDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userSessionsDatasource .js" />
@@ -1452,6 +1450,7 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\userMasterDbVeritabanlariModel.js" />
     <Content Include="Framework\Scripts\app\models\userActionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
@@ -2490,11 +2489,13 @@
     <Content Include="Framework\theme\images\browser_safari.gif" />
     <Content Include="Framework\theme\images\check.png" />
     <Content Include="Framework\theme\images\cross.png" />
+    <Content Include="Framework\theme\images\document.png" />
     <Content Include="Framework\theme\images\email1.png" />
     <Content Include="Framework\theme\images\email2.png" />
     <Content Include="Framework\theme\images\email3.png" />
     <Content Include="Framework\theme\images\email4.png" />
     <Content Include="Framework\theme\images\errorcompability.png" />
+    <Content Include="Framework\theme\images\flash.png" />
     <Content Include="Framework\theme\images\forward_disabled.png" />
     <Content Include="Framework\theme\images\forward_enabled.png" />
     <Content Include="Framework\theme\images\forward_enabled_hover.png" />
@@ -3250,6 +3251,11 @@
     <Content Include="Views\Roles\EditTabActions.cshtml" />
     <Content Include="Views\Users\EditTabPages.cshtml" />
     <Content Include="Views\Users\EditTabActions.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Views\Users\EditTabSerendipUsers.cshtml" />
+=======
+    <Content Include="Views\Home\Anasayfa.cshtml" />
+>>>>>>> 986950de339d439a8e2a6cacdbf21075cd6e1f21
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

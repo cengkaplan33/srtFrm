@@ -274,7 +274,10 @@ namespace Surat.WebServer
 
 
                 sb.Append("<li>");
-                sb.Append("<a href=\"#"+Section.Url+"\" class=\"dropdown-toggle\">");
+                if (Section.Links.Count > 0 || Section.Sections.Count > 0)
+                    sb.Append("<a href=\"#" + Section.Url + "\" class=\"dropdown-toggle\">");
+                else
+                    sb.Append("<a href=\"" + Section.Url + "\"");
                 sb.Append("<i class=\" " + Section.CssClass + "\" ></i>");
                 sb.Append("<span class=\"menu-text\"> " + Section.Title + "</span>");
 

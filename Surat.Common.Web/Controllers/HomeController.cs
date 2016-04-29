@@ -18,13 +18,13 @@ namespace Surat.WebServer.Controllers
 
         public HomeController()
         {
-           
+
         }
 
         #endregion
 
-        #region Private Members        
-        
+        #region Private Members
+
         #endregion
 
         #region Public Members
@@ -33,11 +33,34 @@ namespace Surat.WebServer.Controllers
 
         #region Methods
 
+        //[ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
+        //[SuratAuthorizationFilter]
+        //public ActionResult Spa()
+        //{
+
+        //    try
+        //    {
+        //        var sss = this.WebApplicationManager.Framework.Security.HasOperationRight(this.WebApplicationManager.Rights.WebAuditor.Id);
+        //        //var sss = this.WebApplicationManager.Framework.Security.Rigths.AuditManagement1.Id;
+        //        //this.WebApplicationManager..Framework
+        //        var ssss = this.WebApplicationManager.Rights.WebAuditor.Id;
+
+        //        ViewBag.Title = this.WebApplicationManager.Framework.Context.Product.CustomerProductName;
+        //        ViewBag.SessionStart = this.WebApplicationManager.Framework.Context.CurrentUser.SessionStart;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        RedirectToAction("Login", "Account");
+        //    }
+
+
+        //    return View();
+        //}
+
         [ActionAttribute("Uygulama Başlangıç Anasayfası", "Uygulama başlangıç sayfasının görüntülenmesini sağlar ", Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         [SuratAuthorizationFilter]
-        public ActionResult Spa()
+        public ActionResult Anasayfa()
         {
-
             try
             {
                 var sss = this.WebApplicationManager.Framework.Security.HasOperationRight(this.WebApplicationManager.Rights.WebAuditor.Id);
@@ -52,11 +75,10 @@ namespace Surat.WebServer.Controllers
             {
                 RedirectToAction("Login", "Account");
             }
-               
-           
+
+
             return View();
         }
-
         [SuratAuthorizationFilter]
         [ActionAttribute("Portal Anasayfası", "Portal anasayfasının görüntülenmesini sağlar ", Constants.Application.WebFrameworkSystemName, Surat.Common.Data.ActionType.Page)]
         public ActionResult Index()
