@@ -46,7 +46,7 @@ namespace Surat.Common.Data
             public const String RedirectLoginAction = "~/Account/Login";      
             public const String RedirectLogoutAction = "~/Account/LogOut";
             public static readonly string[] UnAuthorizedActions = { "Account/Login", "Account/UserLogin", "Account/LogOut", "Account/RememberPassword" };
-            public static readonly string[] SharedActions = { "Home/Spa", "home/index", "Account/LogOut"};
+            public static readonly string[] SharedActions = { "Home/Spa", "home/index","Home/Anasayfa", "Account/LogOut"};
         }
         #endregion
 
