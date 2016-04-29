@@ -12,9 +12,9 @@ namespace KonsolideRapor.Web.Common.ViewModel
         public DateTime Tarih { get; set; }
         public int PaymentCollectingId { get; set; }
         public string Name { get; set; }
-        public decimal TL { get; set; }
-        public decimal USD { get; set; }
-        public decimal EURO { get; set; }
+        public decimal? TL { get; set; }
+        public decimal? USD { get; set; }
+        public decimal? EURO { get; set; }
         public int WorkgroupId { get; set; }
         public int OdemeTalepDurumuId { get; set; }
         public string Durum { get; set; }

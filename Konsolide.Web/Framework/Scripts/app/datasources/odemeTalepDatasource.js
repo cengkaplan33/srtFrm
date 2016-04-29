@@ -1,5 +1,5 @@
-﻿define(['kendo', 'odemeTalepModel','util'],
-function (kendo, odemeTalepModel,util) {
+﻿define(['kendo', 'odemeTalepModel', 'util'],
+function (kendo, odemeTalepModel, util) {
 
 
     var odemeTalepDatasource = new kendo.data.DataSource({
@@ -15,6 +15,15 @@ function (kendo, odemeTalepModel,util) {
                 dataType: "json",
                 data: function (data) {
                     data.Tarih = kendo.toString(data.Tarih, "dd-MM-yyyy");
+                    if (data.TL != null) {
+                        data.TL = data.TL.toString().replace(".", ",");
+                    }
+                    if (data.EURO != null) {
+                        data.EURO = data.EURO.toString().replace(".", ",");
+                    }
+                    if (data.USD != null) {
+                        data.USD = data.USD.toString().replace(".", ",");
+                    }
                     // repeat for all your date fields
                     return data;
                 },
@@ -27,12 +36,20 @@ function (kendo, odemeTalepModel,util) {
                 }
             },
             update: {
-
                 type: "POST",
                 url: "/OdemeTalep/Update",
                 dataType: "Json",
                 data: function (data) {
                     data.Tarih = kendo.toString(data.Tarih, "dd-MM-yyyy");
+                    if (data.TL != null) {
+                        data.TL = data.TL.toString().replace(".", ",");
+                    }
+                    if (data.EURO != null) {
+                        data.EURO = data.EURO.toString().replace(".", ",");
+                    }
+                    if (data.USD != null) {
+                        data.USD = data.USD.toString().replace(".", ",");
+                    }
                     // repeat for all your date fields
                     return data;
                 },
@@ -69,12 +86,12 @@ function (kendo, odemeTalepModel,util) {
        { field: "USD", aggregate: "sum" },
        { field: "EURO", aggregate: "sum" }
         ],
-        columns:[
+        columns: [
         { field: "TL", footerTemplate: "Total Count: #=sum#" },
         { field: "USD", footerTemplate: "Total Count: #=sum#" },
         { field: "EURO", footerTemplate: "Total Count: #=sum#" }
         ],
-       
+
         schema: {
             data: "data", // records are returned in the "data" field of the response
             total: "total",

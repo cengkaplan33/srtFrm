@@ -1,5 +1,5 @@
-﻿define(['kendo', 'hazirDegerlerTablosuModel', 'router','util'],
-function (kendo, hazirDegerlerTablosuModel, router,util) {
+﻿define(['kendo', 'hazirDegerlerTablosuModel', 'router', 'util'],
+function (kendo, hazirDegerlerTablosuModel, router, util) {
     var SelectedRow;
     var SelectedRowId;
     var SelectedRowParentId;
@@ -8,7 +8,7 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
     var expandedId = "";
     function LoadGrid() {
         grid = $("#hazirDegerlerGrid").kendoTreeList({
-           
+
             dataSource: new kendo.data.TreeListDataSource({
                 transport: {
 
@@ -37,14 +37,27 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                         type: "POST",
                         url: "/HazirDegerlerTablosu/Add",
                         dataType: "json",
+                        data: function (data) {
+                            if (data.TL != null) {
+                                data.TL = data.TL.toString().replace(".", ",");
+                            }
+                            if (data.EURO != null) {
+                                data.EURO = data.EURO.toString().replace(".", ",");
+                            }
+                            if (data.USD != null) {
+                                data.USD = data.USD.toString().replace(".", ",");
+                            }
+                            // repeat for all your date fields
+                            return data;
+                        },
                         complete: function (jqXhr, textStatus) {
                             if (textStatus = "success") {
                                 var result = jQuery.parseJSON(jqXhr.responseText);
-                                
+
                                 try {
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
-                                    
+
                                 } catch (e) {
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
@@ -61,24 +74,36 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
 
                     },
                     update: {
-
                         type: "POST",
                         url: "/HazirDegerlerTablosu/Update",
                         dataType: "Json",
+                        data: function (data) {
+                            if (data.TL != null) {
+                                data.TL = data.TL.toString().replace(".", ",");
+                            }
+                            if (data.EURO != null) {
+                                data.EURO = data.EURO.toString().replace(".", ",");
+                            }
+                            if (data.USD != null) {
+                                data.USD = data.USD.toString().replace(".", ",");
+                            }
+                            // repeat for all your date fields
+                            return data;
+                        },
                         complete: function (jqXhr, textStatus) {
                             if (textStatus = "success") {
                                 var result = jQuery.parseJSON(jqXhr.responseText);
-                              
+
                                 try {
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
-                                  
-                                   
+
+
                                 } catch (e) {
                                     var tree = $("#hazirDegerlerGrid").data("kendoTreeList");
                                     tree.dataSource.read();
-                                   
-                                    
+
+
                                 }
                                 _notification.info(result.Result);
                             }
@@ -131,7 +156,7 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                   }], title: "İşlemler"
               }
             ],
-            messages:{
+            messages: {
 
                 commands: {
                     edit: "Düzenle",
@@ -144,12 +169,11 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                     pdf: "Export to PDF"
                 }
             },
-            expand:function(e)
-            {
+            expand: function (e) {
                 var row = e.model;
-             
+
                 expandedId = row.Id;
-               
+
             },
             dataBound: function onDataBound(e) {
                 var grid = this;
@@ -161,26 +185,26 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
                         var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                         currenRow[0].style.fontWeight = "bold";
                         var editButton = $(currenRow).find(".k-grid-edit");
-                     
+
                         editButton.hide();
                     }
                     else {
                         var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                         currenRow[0].style.fontWeight = "normal";
                         var editButton = $(currenRow).find(".k-grid-edit");
-                      
-                        
+
+
                         editButton.show();
                     }
                 }
             },
             editable: true,
-           
+
         });
 
 
     }
-  
+
     function LoadToolBar() {
         toolbar = $("#FunctionsToolBar").kendoToolBar({
             items: [
@@ -207,7 +231,7 @@ function (kendo, hazirDegerlerTablosuModel, router,util) {
         onLoad: function () {
             //LoadToolBar();
             LoadGrid();
-           
+
         }
     });
     return pageModel;

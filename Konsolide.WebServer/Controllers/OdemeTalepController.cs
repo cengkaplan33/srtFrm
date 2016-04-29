@@ -62,6 +62,13 @@ namespace KonsolideRapor.WebServer.Controllers
         {
             try
             {
+                if (odemeTalep.EURO == null)
+                    throw new Exception("EURO alanı boş olamaz");
+                if (odemeTalep.USD == null)
+                    throw new Exception("USD alanı boş olamaz");
+                if (odemeTalep.TL == null)
+                    throw new Exception("TL alanı boş olamaz");
+
                 this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveOdemeTalep(odemeTalep);
                 return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
@@ -78,6 +85,13 @@ namespace KonsolideRapor.WebServer.Controllers
         {
             try
             {
+                if (odemeTalep.EURO == null)
+                    throw new Exception("EURO alanı boş olamaz");
+                if (odemeTalep.USD == null)
+                    throw new Exception("USD alanı boş olamaz");
+                if (odemeTalep.TL == null)
+                    throw new Exception("TL alanı boş olamaz");
+
                 this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveOdemeTalep(odemeTalep);
                 return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }

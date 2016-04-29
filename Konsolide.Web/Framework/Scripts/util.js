@@ -20,7 +20,7 @@
             errorHandler:
                 function (e) {
                     if (typeof (e.xhr.responseJSON.Status) == "undefined") {
-                        _notification.error(e.xhr.responseJSON);
+                        _notification.error(e.xhr.responseJSON.Result);
                     }
                     else if (e.xhr.responseJSON.Status == "AccessDenied")
                     {

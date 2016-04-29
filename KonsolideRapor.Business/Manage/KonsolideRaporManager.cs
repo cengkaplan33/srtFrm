@@ -359,7 +359,7 @@ namespace KonsolideRapor.Business.Manage
         public List<OdemeTalepView> GetAktifOdemeTalepleri()
         {
             List<OdemeTalepView> odemeTalepleri;
-            string query = @"select talep.Id,talep.Tarih,talep.PaymentCollectingId,payment.Name,talep.TL,talep.USD,talep.EURO,talep.WorkgroupId,talep.OdemeTalepDurumuId,durum.Durum,talep.Aciklama,talep.IsActive,talep.TalepTuru from
+            string query = @"select talep.Id,talep.Tarih,talep.PaymentCollectingId,payment.Name,isnull(talep.TL,0),isnull(talep.USD,0),isnull(talep.EURO,0),talep.WorkgroupId,talep.OdemeTalepDurumuId,durum.Durum,talep.Aciklama,talep.IsActive,talep.TalepTuru from
 OdemeTaleps talep
 join PaymentCollectings payment
 on talep.PaymentCollectingId=payment.Id 
@@ -598,7 +598,7 @@ where talep.IsActive=1 and talep.TalepTuru='tahsilat' and talep.WorkgroupId=@Com
                 int workGroupId = this.ApplicationContext.CurrentUser.Workgroup.CompanyId;
                 List<HazirOdemeView> hazirOdemeViewList;
                 string query = @"                
-                select  o.Id as OId,h.BankId as  HBankId  ,b.Code as Kod,b.Id as BId,b.ObjectType as BObjectType,  b.Name as BName , o.Durum  as ODurum,h.TL as HTL,h.EURO as HEURO,h.USD as HUSD ,h.Id as HId
+                select  o.Id as OId,h.BankId as  HBankId  ,b.Code as Kod,b.Id as BId,b.ObjectType as BObjectType,  b.Name as BName , o.Durum  as ODurum,isnull(h.TL,0) as HTL,isnull(h.EURO,0) as HEURO,isnull(h.USD,0) as HUSD ,h.Id as HId
 from Banks b
 LEFT JOIN OdemeTalepDurumus o  on (o.IsBanka = 1 and b.ObjectType='Banka') 
 or (o.IsCek = 1 and b.ObjectType='Çek')
