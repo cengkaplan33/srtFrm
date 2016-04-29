@@ -20,6 +20,7 @@
         'userPagesModel': 'models/userPagesModel',
         'roleActionsModel': 'models/roleActionsModel',
         'userActionsModel': 'models/userActionsModel',
+        'userMasterDbVeritabanlariModel':'models/userMasterDbVeritabanlariModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
@@ -49,6 +50,7 @@
         'userPagesDatasource': 'datasources/userPagesDatasource',
         'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
         'userActionsDatasource': 'datasources/userActionsDatasource',
+        'userMasterDbVeritabanlariDatasource':'datasources/userMasterDbVeritabanlariDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },

@@ -91,6 +91,8 @@
     <Compile Include="Base\SuratControllerBase.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionsController.cs" />
+    <Compile Include="Controllers\Serendip\SerendipSatisSiparisController.cs" />
+    <Compile Include="Controllers\Serendip\SerendipController.cs" />
     <Compile Include="Controllers\UserSessionsController.cs" />
     <Compile Include="Controllers\HomeController.cs">
       <SubType>
@@ -120,6 +122,7 @@
     <Compile Include="MainContainer\LeftNavigationModel.cs" />
     <Compile Include="MainContainer\LeftNavigationSection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SerendipService.cs" />
     <Compile Include="ViewModel\LoginView.cs" />
     <Compile Include="ViewModel\LogoutView.cs" />
   </ItemGroup>

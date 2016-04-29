@@ -12,6 +12,7 @@ using Surat.SerendipApplication.Common;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -25,6 +26,9 @@ namespace Surat.SerendipApplication.Business
         public SerendipApplicationManager(FrameworkApplicationManager applicationManager)
         {
             this.framework = applicationManager;
+
+            if (context == null && this.framework.Context != null && this.framework.Context.IsCurrentUserAssigned)
+                InitializeSerendipApplicationContext();
         }
 
         #endregion
@@ -33,6 +37,8 @@ namespace Surat.SerendipApplication.Business
 
         private SerendipApplicationContext context;
         private FrameworkApplicationManager framework;
+        private List<Veritabani> masterDbVeritabanlari;
+        private List<ExternalSystemsUsersView> kullaniciMasterDbVeritabanlari;
  
         #endregion
 
@@ -42,7 +48,7 @@ namespace Surat.SerendipApplication.Business
         {
             get
             {
-                if (context == null)
+                if (context == null && this.Framework.Context != null && this.Framework.Context.IsCurrentUserAssigned )
                     InitializeSerendipApplicationContext();
 
                 return context;
@@ -55,7 +61,30 @@ namespace Surat.SerendipApplication.Business
             {
                 return framework;
             }
-        }       
+        }
+
+        public List<ExternalSystemsUsersView> KullaniciMasterDbVeritabanlari
+        {
+            get
+            {
+                if (kullaniciMasterDbVeritabanlari == null)
+                    LoadKullaniciMasterDbVeritabanlari();
+
+                return kullaniciMasterDbVeritabanlari;
+            }
+        }
+
+        public List<Veritabani> MasterDbVeritabanlari
+        {
+            get
+            {
+                if (masterDbVeritabanlari == null)
+                    LoadMasterDbVeritabanlari();
+
+                return masterDbVeritabanlari;
+            }
+        }
+
 
         #endregion
 
@@ -75,16 +104,85 @@ namespace Surat.SerendipApplication.Business
             if (externalSystemUser == null)
             {
                 this.Framework.Trace.AppendLine(this.Context.SystemName, "Serendip bağlantı bilgileri alınamadı.", TraceLevel.Basic);
-                throw new SuratBusinessException(this.Framework.Context, "Serendip.ExternalSystemUser", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId,SerendipConstants.Message.SerendipUserNotFound));
+                throw new SuratBusinessException(this.Framework.Context, "Serendip.ExternalSystemUser", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId, SerendipConstants.Message.SerendipUserNotFound));
             }
             else
             {
-                context.DBKeyName = this.Framework.Context.CurrentUser.SelectedCompanySite.SelectedDBConnection.DBKeyName;
+                //context.DBKeyName = this.Framework.Context.CurrentUser.SelectedCompanySite.SelectedDBConnection.DBKeyName;
+                context.ExternalUser = externalSystemUser;
+
+                context.DBKeyName = externalSystemUser.DatabaseName;
+                context.FirmaDonem = externalSystemUser.FirmaDonem;
                 context.DBUserName = externalSystemUser.UserName;
                 context.DBUserPassword = externalSystemUser.Password;
             }
 
+            //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
+
+            //var ss = KullaniciMasterDbVeritabanlari; 
+
+            //Login();
             this.Framework.Trace.AppendLine(this.Context.SystemName, "SerendipApplicationContext Initialized.", TraceLevel.Basic);
+
+            //var sss = MasterDbVeritabanlari;
+        }
+
+        private void LoadMasterDbVeritabanlari()
+        {
+            this.masterDbVeritabanlari = Serendip.Common.ConfigurationHelper.SerendipMasterDBList.ToList();
+        }
+
+        private void LoadKullaniciMasterDbVeritabanlari()
+        {
+            List<ExternalSystemsUsersView> externalSystemsUsersViews = null;
+
+            externalSystemsUsersViews = GetUserDelegates();
+
+            if (externalSystemsUsersViews == null)
+            {
+                externalSystemsUsersViews = Serendip.Common.ConfigurationHelper.SerendipMasterDBList.Select(sList => new ExternalSystemsUsersView()
+                          {
+                              Id = null,
+                              DelegateDBObjectId = this.framework.Context.CurrentUser.UserId,
+                              DelegateDBObjectType = DelegateObjectType.User,
+                              SystemId = this.Context.SystemId,
+                              UserName = "",
+                              Password = "",
+                              FirmaDonemTipi = (int?)sList.FirmaDonemiTipi,
+                              FirmaDonem = sList.Donem,
+                              FirmaDonemId = sList.FirmaDonemiID,
+                              DatabaseName = sList.Adi,
+                              VarsayilanMi = false,
+                          }).ToList();
+
+                kullaniciMasterDbVeritabanlari = externalSystemsUsersViews;
+            }
+            else
+            {
+                var temp = from sList in Serendip.Common.ConfigurationHelper.SerendipMasterDBList.ToList()
+                           join uList in externalSystemsUsersViews on sList.FirmaDonemiID equals uList.FirmaDonemId
+                           into p_d
+                           from j in p_d.DefaultIfEmpty()
+                           //where kog.Id == request.AktifOgrenci.Id
+                           //where (!(ko.IsDefault.Value == true || ko.Bolge_Id == 70) || !k.KitapTuru.Contains("zümre"))
+                           //select new  ExternalSystemsUsersView {   });
+                           select new ExternalSystemsUsersView()
+                                {
+                                    Id = j == null ? null : j.Id,
+                                    DelegateDBObjectId = this.framework.Context.CurrentUser.UserId,
+                                    DelegateDBObjectType = DelegateObjectType.User,
+                                    SystemId = this.Context.SystemId,
+                                    UserName = j == null ? "" : j.UserName,
+                                    Password = j == null ? "" : j.Password,
+                                    FirmaDonemTipi = j == null ? (int?)sList.FirmaDonemiTipi : j.FirmaDonemTipi,
+                                    FirmaDonem = j == null ? sList.Donem : j.FirmaDonem,
+                                    FirmaDonemId = j == null ? sList.FirmaDonemiID : j.FirmaDonemId,
+                                    DatabaseName = j == null ? sList.Adi : j.DatabaseName,
+                                    VarsayilanMi = j == null ? false : j.VarsayilanMi,
+                                };
+                kullaniciMasterDbVeritabanlari = temp.ToList();
+            }
+            //var allList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList.ToList().Join<.Where(x=> x.DonemAdi );
         }
 
         private void LoadExternalSystemsUsers()
@@ -127,8 +225,18 @@ namespace Surat.SerendipApplication.Business
             return this.Framework.Context.Security.ExternalSystemsUsers.Where
                (p => p.DelegateDBObjectType == DelegateObjectType.User && 
                      p.DelegateDBObjectId == this.Framework.Context.CurrentUser.UserId &&
-                     p.SystemId == this.Context.SystemId
+                     p.SystemId == this.Context.SystemId &&
+                     p.VarsayilanMi == true
                ).FirstOrDefault();
+        }
+
+        private List<ExternalSystemsUsersView> GetUserDelegates()
+        {
+            return this.Framework.Context.Security.ExternalSystemsUsers.Where
+               (p => p.DelegateDBObjectType == DelegateObjectType.User &&
+                     p.DelegateDBObjectId == this.Framework.Context.CurrentUser.UserId &&
+                     p.SystemId == this.Context.SystemId
+               ).ToList();
         }
 
         private ExternalSystemsUsersView GetRoleDelegate()
@@ -179,8 +287,13 @@ namespace Surat.SerendipApplication.Business
                 Serendip.WinFormLib.Provider.StartServerWeb(this.Context.DBKeyName, this.Context.DBUserName, this.Context.DBUserPassword);
 
                 Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.DBKeyName);
+               //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
 
-                AnaKategori[] kategoriler = AnaKategori.ActiveRecord.FindAllBySql<AnaKategori>("Select * From AnaKategori", null);
+               //var ss = KullaniciMasterDbVeritabanlari; 
+
+               //DataTable dt = SerendipHelper.GetMasterDb(Serendip.Common.KonfigurasyonTuru.Sistem);
+                
+                //AnaKategori[] kategoriler = AnaKategori.ActiveRecord.FindAllBySql<AnaKategori>("Select * From AnaKategori", null);
             }
             catch (Exception exception)
             {
@@ -191,11 +304,12 @@ namespace Surat.SerendipApplication.Business
         #endregion              
 
         #region Dispose
-        
+
         public override void Dispose()
         {
             this.Framework.Trace.WriteTraceToFile();
-            this.Context.Dispose();            
+            if (this.Context != null)
+                this.Context.Dispose();
         }
 
         #endregion

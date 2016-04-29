@@ -1431,6 +1431,7 @@
     <Content Include="Framework\Scripts\app\datasources\customerDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\actionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\userMasterDbVeritabanlariDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userChoosenWorkgroupDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userActionsDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\userPagesDatasource.js" />
@@ -1449,6 +1450,7 @@
     <Content Include="Framework\Scripts\app\models\companyModel.js" />
     <Content Include="Framework\Scripts\app\models\actionsModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\userMasterDbVeritabanlariModel.js" />
     <Content Include="Framework\Scripts\app\models\userActionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userPagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userRolesModel.js" />
@@ -3249,6 +3251,7 @@
     <Content Include="Views\Roles\EditTabActions.cshtml" />
     <Content Include="Views\Users\EditTabPages.cshtml" />
     <Content Include="Views\Users\EditTabActions.cshtml" />
+    <Content Include="Views\Users\EditTabSerendipUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

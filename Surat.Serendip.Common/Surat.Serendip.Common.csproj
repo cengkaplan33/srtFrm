@@ -60,10 +60,6 @@
     <Content Include="RequiredDLLs\Serendip.Report.dll" />
     <Content Include="RequiredDLLs\Serendip.Rule.dll" />
     <Content Include="RequiredDLLs\Serendip.Rule.Rules.Uretim.dll" />
-    <Content Include="RequiredDLLs\Serendip.WinForm.Inka.dll" />
-    <Content Include="RequiredDLLs\Serendip.WinForm.Maliyet.dll" />
-    <Content Include="RequiredDLLs\Serendip.WinForm.Uretim.dll" />
-    <Content Include="RequiredDLLs\Serendip.WinFormBase.dll" />
     <Content Include="RequiredDLLs\Serendip.WinFormLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

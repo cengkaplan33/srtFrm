@@ -8,11 +8,17 @@ namespace Surat.Common.ViewModel
 {
     public class ExternalSystemsUsersView
     {
+        public int? Id { get; set; }
         public DelegateObjectType DelegateDBObjectType { get; set; }
         public long DelegateDBObjectId { get; set; }
         public int SystemId { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; } 
+        public string Password { get; set; }
+        public int? FirmaDonemId { get; set; }
+        public string FirmaDonem { get; set; }
+        public int? FirmaDonemTipi { get; set; }
+        public string DatabaseName { get; set; }
+        public bool VarsayilanMi { get; set; }
     }
 }
 

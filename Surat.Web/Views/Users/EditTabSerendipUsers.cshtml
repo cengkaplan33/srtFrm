@@ -1,0 +1,43 @@
+﻿<div class="boxFix">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h5 class="widget-title">Serendip Veritabanları</h5>
+                </div>
+                <div class="widget-body" style="text-align: left;">
+                    <div class="space"></div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div id="serendipUsersGrid"
+                                 data-role="grid"
+                                 data-sortable="true"
+                                 data-pageable="true"
+                                 data-filterable="true"
+                                 data-editable="inline"
+                                 data-selectable="multiple"
+                                 data-columns='[
+                                 { field: "Id", title: "ID", width: "40px" },
+                                 { field: "DatabaseName", title: "Database Adı", width: "220px" },
+                                 { field: "FirmaDonem", title: "Dönem", width: "120px" },
+                                 { field: "FirmaDonemTipi", title: "Dönem Tipi", width: "100px" },
+                                 { field: "UserName", title: "Kullanıcı Adı", width: "120px" },
+                                 { field: "Password", title: "Kullanıcı Şifresi", width: "120px" },
+                                 { field: "VarsayilanMi", title: "Varsayılan", width: "60px" }
+                                  ]'
+                                 data-bind="source: userMasterDbVeritabanlariDatasource" style="width:100%">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>

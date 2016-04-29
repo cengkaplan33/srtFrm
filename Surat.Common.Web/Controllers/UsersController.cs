@@ -61,6 +61,21 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Serendip MasterDb Bağlantılarını Listele", "Master DB üzerinde tanımlanmış firma bağlantılarını mevcut kullanıcıya bağlı olarak listeler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult KullaniciMasterDbVeritabanlari()
+        {
+            try
+            {
+                var l = this.Serendip.KullaniciMasterDbVeritabanlari;
+
+                return Json(l, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
         [ActionAttribute("Kullanıcı Rollerini Getir", "Seçilen kullanıcıya ait rolleri getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserRoles(int? userId = -1)
         {
@@ -117,7 +132,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Kullınıcı Çalışma Gruplarını Getir", "Seçilen kullanıcıya ait çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        [ActionAttribute("Kullanıcı Çalışma Gruplarını Getir", "Seçilen kullanıcıya ait çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserWorkgroups(int? userId = -1)
         {
             try
@@ -131,7 +146,7 @@ namespace Surat.WebServer.Controllers
             }
         }
 
-        [ActionAttribute("Mevcut Kullınıcının Çalışma Gruplarını Getir", "Sisteme giriş yapan kullanıcıya ait çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        [ActionAttribute("Mevcut Kullanıcının Çalışma Gruplarını Getir", "Sisteme giriş yapan kullanıcıya ait çalışma gruplarını getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult GetUserWorkgroupsWithCurentUsers()
         {
             try

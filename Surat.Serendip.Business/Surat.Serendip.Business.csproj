@@ -56,22 +56,12 @@
     <Reference Include="Serendip.Rule.Rules.Uretim">
       <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.Rule.Rules.Uretim.dll</HintPath>
     </Reference>
-    <Reference Include="Serendip.WinForm.Inka">
-      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinForm.Inka.dll</HintPath>
-    </Reference>
-    <Reference Include="Serendip.WinForm.Maliyet">
-      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinForm.Maliyet.dll</HintPath>
-    </Reference>
-    <Reference Include="Serendip.WinForm.Uretim">
-      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinForm.Uretim.dll</HintPath>
-    </Reference>
-    <Reference Include="Serendip.WinFormBase">
-      <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinFormBase.dll</HintPath>
-    </Reference>
-    <Reference Include="Serendip.WinFormLib">
+    <Reference Include="Serendip.WinFormLib, Version=0.9.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Surat.Serendip.Common\RequiredDLLs\Serendip.WinFormLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -81,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\SerendipApplicationManager.cs" />
+    <Compile Include="Helper\SerendipHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1048,6 +1048,73 @@
             }
         }
 
+        private void AddSerendipParameters(FrameworkDbContext context)
+        {
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "SerendipMasterDbFirmaDonemiTipi"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2,
+                                 TypeName = "SerendipMasterDbFirmaDonemiTipi",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("SerendipMasterDbFirmaDonemiTipi", "TEST");
+            }
+
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "SerendipMasterDbFirmaDönemi"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2,
+                                 TypeName = "SerendipMasterDbFirmaDönemi",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("SerendipMasterDbFirmaDönemi", "DC=kaynakholding,DC=one");
+            }
+
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "ActiveDirectoryUserName"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2, //Framework system
+                                 TypeName = "ActiveDirectoryUserName",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("ActiveDirectoryUserName", "test.sinerji");
+            }
+
+            if (!MigrationUtility.CheckEntityByParameter<Parameter>(context, p => p.TypeName == "ActiveDirectoryUserPassword"))
+            {
+                context.Parameters.AddOrUpdate(
+                             parameter => parameter.Id,
+                             new Parameter
+                             {
+                                 DBObjectType = 0,
+                                 DBObjectId = 2, //Framework system
+                                 TypeName = "ActiveDirectoryUserPassword",
+                                 IsActive = true,
+                                 InsertedByUser = 1,
+                                 InsertedDate = TimeUtility.GetCurrentDateTime()
+                             });
+                systemParameterValues.Add("ActiveDirectoryUserPassword", "ts.12345");
+            }
+        }
+
         private void AddSystemPages(FrameworkDbContext context)
         {
             if (!MigrationUtility.CheckEntityByParameter<Page>(context, p => p.ObjectTypeName == "Users"))            

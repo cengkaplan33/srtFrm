@@ -31,8 +31,10 @@ namespace Surat.SerendipApplication.Base
         private string systemName;
         private int systemId;
         private string dbKeyName;
+        private string firmaDonem;
         private string dbUserName;
         private string dbUserPassword;
+        private ExternalSystemsUsersView externalUser = null;
          
         #endregion
 
@@ -61,19 +63,49 @@ namespace Surat.SerendipApplication.Base
                 return systemName;
             }
         }
-     
+
+        public ExternalSystemsUsersView ExternalUser
+        {
+            get
+            {
+                if (externalUser == null)
+                    throw new NullValueException(this.FrameworkContext, "externalUser", this.SystemId);
+
+                return externalUser;
+            }
+            set
+            {
+                externalUser = value;
+            }
+        }
+
         public string DBKeyName
         {
             get
             {
                 if (string.IsNullOrEmpty(dbKeyName))
-                    throw new NullValueException(this.FrameworkContext,"DBKeyName", this.SystemId);
+                    throw new NullValueException(this.FrameworkContext, "DBKeyName", this.SystemId);
 
                 return dbKeyName;
             }
             set
             {
                 dbKeyName = value;
+            }
+        }
+
+        public string FirmaDonem
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(firmaDonem))
+                    throw new NullValueException(this.FrameworkContext, "FirmaDonem", this.SystemId);
+
+                return firmaDonem;
+            }
+            set
+            {
+                firmaDonem= value;
             }
         }
 

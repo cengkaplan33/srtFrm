@@ -57,11 +57,17 @@ namespace Surat.Base.Repositories
                                where (externalSystemsUsers.IsActive == true)
                                select new ExternalSystemsUsersView()
                                {
+                                   Id = externalSystemsUsers.Id,
                                     DelegateDBObjectId = externalSystemsUsers.DelegateDBObjectId,
                                     DelegateDBObjectType = (DelegateObjectType)externalSystemsUsers.DelegateDBObjectType,
                                     Password = externalSystemsUsers.Password,
                                     SystemId = externalSystemsUsers.SystemId,
-                                    UserName = externalSystemsUsers.UserName  
+                                    UserName = externalSystemsUsers.UserName,
+                                    FirmaDonemTipi = externalSystemsUsers.FirmaDonemTipi,
+                                    FirmaDonem = externalSystemsUsers.FirmaDonem,
+                                    FirmaDonemId = externalSystemsUsers.FirmaDonemId,
+                                    DatabaseName = externalSystemsUsers.DbName,
+                                    VarsayilanMi = externalSystemsUsers.VarsayilanMi
                                }).ToList();
 
             return externalSystemsUsersList;

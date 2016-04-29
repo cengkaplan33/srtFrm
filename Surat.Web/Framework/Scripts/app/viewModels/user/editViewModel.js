@@ -1,5 +1,5 @@
-﻿define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource', 'userPagesModel', 'workgroupDatasource', 'userActionsDatasource', 'userActionsModel', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
-function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPagesDatasource, userPagesModel, workgroupDatasource, userActionsDatasource, userActionsModel, userWorkGroupDataSource, userChoosenWorkgroupDatasource, util, router) {
+﻿define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource','userMasterDbVeritabanlariDatasource', 'userPagesModel', 'workgroupDatasource', 'userActionsDatasource', 'userActionsModel', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
+function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPagesDatasource,userMasterDbVeritabanlariDatasource, userPagesModel, workgroupDatasource, userActionsDatasource, userActionsModel, userWorkGroupDataSource, userChoosenWorkgroupDatasource, util, router) {
 
     userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
     if (util.getId() != 0) {
@@ -198,6 +198,7 @@ function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPa
                 userRolesDatasource: userRolesDatasource,
                 userPagesDatasource: userPagesDatasource,
                 userActionsDatasource: userActionsDatasource,
+                userMasterDbVeritabanlariDatasource:userMasterDbVeritabanlariDatasource,
                 onChange: function (arg) {
                     var grid = arg.sender;
                     lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
