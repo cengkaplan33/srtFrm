@@ -359,7 +359,7 @@ namespace KonsolideRapor.Business.Manage
         public List<OdemeTalepView> GetAktifOdemeTalepleri()
         {
             List<OdemeTalepView> odemeTalepleri;
-            string query = @"select talep.Id,talep.Tarih,talep.PaymentCollectingId,payment.Name,isnull(talep.TL,0),isnull(talep.USD,0),isnull(talep.EURO,0),talep.WorkgroupId,talep.OdemeTalepDurumuId,durum.Durum,talep.Aciklama,talep.IsActive,talep.TalepTuru from
+            string query = @"select talep.Id,talep.Tarih,talep.PaymentCollectingId,payment.Name,isnull(talep.TL,0) as TL,isnull(talep.USD,0) as USD,isnull(talep.EURO,0) as EURO,talep.WorkgroupId,talep.OdemeTalepDurumuId,durum.Durum,talep.Aciklama,talep.IsActive,talep.TalepTuru from
 OdemeTaleps talep
 join PaymentCollectings payment
 on talep.PaymentCollectingId=payment.Id 
