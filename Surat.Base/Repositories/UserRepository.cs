@@ -16,7 +16,7 @@ namespace Surat.Base.Repositories
     public class UserRepository : GenericRepository<SuratUser>
     {
         #region Constructor
-       
+
         public UserRepository(SecurityContext context)
             : base(context.ApplicationContext.DBContext)
         {
@@ -42,6 +42,12 @@ namespace Surat.Base.Repositories
 
         #region Methods
 
+        public SuratUser GetUser(int userId)
+        {
+            var user = this.GetObjectsByParameters(p => p.IsActive == true & p.Id == userId).FirstOrDefault();
+            return user;
+        }
+
         public int GetUserDefaultWorkgroup(int userId)
         {
             int? workgroupId;
@@ -52,14 +58,14 @@ namespace Surat.Base.Repositories
                            select users.DefaultWorkgroup).FirstOrDefault();
 
             if (!workgroupId.HasValue)
-                throw new SuratBusinessException(this.Context.ApplicationContext, "GetUserDefaultWorkgroup", this.Context.ApplicationContext.SystemId, this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId,Constants.Message.UserDefaultWorkgroupMissing));
+                throw new SuratBusinessException(this.Context.ApplicationContext, "GetUserDefaultWorkgroup", this.Context.ApplicationContext.SystemId, this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId, Constants.Message.UserDefaultWorkgroupMissing));
 
             return workgroupId.Value;
         }
 
         public List<SuratUser> GetUsersByName(string nameStartsWith)
         {
-            return this.GetObjectsByParameters(p => p.IsActive == true & p.Name.Contains(nameStartsWith)).ToList(); 
+            return this.GetObjectsByParameters(p => p.IsActive == true & p.Name.Contains(nameStartsWith)).ToList();
         }
 
         public List<SuratUser> GetUsersActive()
@@ -81,14 +87,14 @@ namespace Surat.Base.Repositories
 
             return resultByName || resultByRole;
         }
-     
+
         public bool HasAdminRole(int userId)
         {
-            bool result = false;  
+            bool result = false;
             RelationGroup relationGroup;
 
-           
-                relationGroup = (from relationGroups in this.Context.ApplicationContext.DBContext.RelationGroups
+
+            relationGroup = (from relationGroups in this.Context.ApplicationContext.DBContext.RelationGroups
                              join roles in this.Context.ApplicationContext.DBContext.Roles on relationGroups.RoleId equals roles.Id
                              where (roles.ObjectTypeName == Constants.Application.Admin)
                                    && ((relationGroups.RoleId != 0) && (relationGroups.UserId == userId) && (relationGroups.WorkgroupId == 0))
@@ -97,23 +103,23 @@ namespace Surat.Base.Repositories
 
             if (relationGroup != null)
                 result = true;
-    
+
             return result;
         }
 
         public List<RoleShortView> GetUserRoles(int userId)
-        {   
+        {
             List<RoleShortView> roleList;
 
             roleList = (from relationGroups in this.Context.ApplicationContext.DBContext.RelationGroups
-                             join roles in this.Context.ApplicationContext.DBContext.Roles on relationGroups.RoleId equals roles.Id
-                             where ((relationGroups.RoleId != 0) && (relationGroups.UserId == userId) && (relationGroups.WorkgroupId == 0))
-                                   && (relationGroups.IsActive == true)
-                             select new RoleShortView
-                             {
-                                  Id = roles.Id,
-                                  Name = roles.Name
-                             }).ToList();
+                        join roles in this.Context.ApplicationContext.DBContext.Roles on relationGroups.RoleId equals roles.Id
+                        where ((relationGroups.RoleId != 0) && (relationGroups.UserId == userId) && (relationGroups.WorkgroupId == 0))
+                              && (relationGroups.IsActive == true)
+                        select new RoleShortView
+                        {
+                            Id = roles.Id,
+                            Name = roles.Name
+                        }).ToList();
 
             return roleList;
         }
@@ -125,27 +131,27 @@ namespace Surat.Base.Repositories
             List<CompanySiteView> companySites = null;
 
             userWorkgroupList = (from relationGroups in this.Context.ApplicationContext.DBContext.RelationGroups
-                             join workgroups in this.Context.ApplicationContext.DBContext.Workgroups on relationGroups.WorkgroupId equals workgroups.Id
-                             where (relationGroups.UserId == userId) && (relationGroups.WorkgroupId != 0) && (relationGroups.RoleId == 0) && (relationGroups.IsActive == true)
-                             select new WorkgroupView()
-                             { 
-                                 CompanyId = workgroups.CompanyId,
-                                 IsCompanySite = workgroups.isCompanySite,
-                                 WorkgroupId = workgroups.Id,
-                                 ParentWorkgroupId = workgroups.ParentId,
-                                 WorkgroupName = workgroups.Name
-                             }).ToList();
+                                 join workgroups in this.Context.ApplicationContext.DBContext.Workgroups on relationGroups.WorkgroupId equals workgroups.Id
+                                 where (relationGroups.UserId == userId) && (relationGroups.WorkgroupId != 0) && (relationGroups.RoleId == 0) && (relationGroups.IsActive == true)
+                                 select new WorkgroupView()
+                                 {
+                                     CompanyId = workgroups.CompanyId,
+                                     IsCompanySite = workgroups.isCompanySite,
+                                     WorkgroupId = workgroups.Id,
+                                     ParentWorkgroupId = workgroups.ParentId,
+                                     WorkgroupName = workgroups.Name
+                                 }).ToList();
 
             companySites = new List<CompanySiteView>();
-                        
+
             foreach (WorkgroupView workgroup in userWorkgroupList)
             {
-                CompanySiteView companySite = ProcessWorkgroup(workgroup,this.Context.ActiveWorkgroups);
+                CompanySiteView companySite = ProcessWorkgroup(workgroup, this.Context.ActiveWorkgroups);
 
                 if (companySite != null)
                     AddCompanySite(companySites, companySite);
             }
-            
+
             return companySites;
         }
 
@@ -158,12 +164,12 @@ namespace Surat.Base.Repositories
             selectedCompanySite = companySiteRepository.GetCompanySiteByWorkgroupId(companySite.WorkgroupId);
 
             if (selectedCompanySite == null)
-                throw new RecordNotFoundException(this.Context.ApplicationContext,"CompanySite", this.Context.ApplicationContext.SystemId,
-                    string.Format(this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId,Constants.Message.WorkgroupCompanySiteNotFound), companySite.WorkgroupId));
+                throw new RecordNotFoundException(this.Context.ApplicationContext, "CompanySite", this.Context.ApplicationContext.SystemId,
+                    string.Format(this.Context.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.Context.ApplicationContext.SystemId, Constants.Message.WorkgroupCompanySiteNotFound), companySite.WorkgroupId));
 
             companySite.Id = selectedCompanySite.Id;
-            companySite.CompanyCode = selectedCompanySite.CompanyCode;                 
-            
+            companySite.CompanyCode = selectedCompanySite.CompanyCode;
+
             //Decorate with DBConnections from CompanySiteDBPeriods
             CompanySiteDBPeriodsRepository companySiteDBPeriodsRepository = new CompanySiteDBPeriodsRepository(this.Context);
             companySite.DBConnections = companySiteDBPeriodsRepository.GetCompanyDBConnections(selectedCompanySite.Id);
@@ -173,13 +179,13 @@ namespace Surat.Base.Repositories
             companySites.Add(companySite);
         }
 
-        private CompanySiteView ProcessWorkgroup(WorkgroupView workgroup,List<WorkgroupView> allWorkgroups)
+        private CompanySiteView ProcessWorkgroup(WorkgroupView workgroup, List<WorkgroupView> allWorkgroups)
         {
             CompanySiteView companySite = null;
 
             if (workgroup.IsCompanySite || workgroup.CompanyId == workgroup.WorkgroupId)
             {
-                companySite = new CompanySiteView();                
+                companySite = new CompanySiteView();
                 companySite.WorkgroupId = workgroup.WorkgroupId;
                 companySite.WorkgroupName = workgroup.WorkgroupName;
                 return companySite;

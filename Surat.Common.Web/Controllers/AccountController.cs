@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
+using Surat.Base.Exceptions;
 
 namespace Surat.WebServer.Controllers
 {
@@ -32,7 +33,7 @@ namespace Surat.WebServer.Controllers
         #endregion
 
         #region Methods
-        
+
         [AllowAnonymous]
         [ActionAttribute("Giriş Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Login(string returnUrl)
@@ -52,8 +53,8 @@ namespace Surat.WebServer.Controllers
         {
             try
             {
-                
-                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password,kullanici.isActiveDirectoryUser);
+
+                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password, kullanici.isActiveDirectoryUser);
 
                 if (returnUrl == null)
                 {
@@ -69,6 +70,46 @@ namespace Surat.WebServer.Controllers
             {
                 Response.StatusCode = 500;
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [Authorize]
+        [ActionAttribute("Şifre Değiştirme Sayfası", "Kullnaıcının şifresini değiştirmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
+        public ActionResult PasswordChange()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [ActionAttribute("Şifre Değiştir", "Kullnaıcının şifresini değiştirmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult UserPasswordChange(PasswordChangeView passwordChangeView)
+        {
+            try
+            {
+                var user = this.WebApplicationManager.Framework.Security.User.GetUser(this.WebApplicationManager.Context.CurrentUser.UserId);
+
+                if (user.Password != passwordChangeView.DefaultPassword)
+                    throw new Exception(this.WebApplicationManager.Framework.Context.Globalization.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.UserPasswordDontMatch));
+
+                else if (passwordChangeView.NewPassword != passwordChangeView.NewPasswordAgain)
+                    throw new Exception(this.WebApplicationManager.Framework.Context.Globalization.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.UserEnteredPasswordsDontMatch));
+
+                else if (!this.WebApplicationManager.Framework.Security.PasswordQualityCheckerStatus(passwordChangeView.NewPassword))
+                    throw new Exception(this.WebApplicationManager.Framework.Context.Globalization.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.PasswordNotSafety));
+
+                else
+                {
+                    user.Password = passwordChangeView.NewPassword;
+                    this.WebApplicationManager.Framework.Security.SaveUser(user);
+                    return Json(new { Result = Constants.Message.UserPasswordChanged }, JsonRequestBehavior.AllowGet);
+                }
+
+
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
 

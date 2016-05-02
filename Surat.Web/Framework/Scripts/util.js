@@ -18,20 +18,24 @@
                 },
             errorHandler:
              function (e) {
-                 if(typeof(e.xhr.responseJSON.Status)=="undefined")
-                 {
-                     _notification.error(e.xhr.responseJSON);
-                 }
-                 else if (e.xhr.responseJSON.Status == "AccessDenied") {
-                     _notification.error(e.xhr.responseJSON.Message);
-                 }
+                 try {
+                     if (typeof (e.xhr.responseJSON.Status) == "undefined") {
+                         _notification.error(e.xhr.responseJSON.Result);
+                     }
+                     else if (e.xhr.responseJSON.Status == "AccessDenied") {
+                         _notification.error(e.xhr.responseJSON.Message);
+                     }
 
-                 else if (e.xhr.responseJSON.Status == "RedirectToLogin") {
-                     _notification.warning(e.xhr.responseJSON.Message);
-                     setTimeout(function () { window.location.href = "/Account/Login"; }, 3000);
+                     else if (e.xhr.responseJSON.Status == "RedirectToLogin") {
+                         _notification.warning(e.xhr.responseJSON.Message);
+                         setTimeout(function () { window.location.href = "/Account/Login"; }, 3000);
+                     }
+                     else
+                         _notification.warning(e.xhr.responseJSON.Message);
+                 } catch (ex) {
+                     _notification.error(e.xhr.responseJSON.Result);
                  }
-                 else
-                     _notification.warning(e.xhr.responseJSON.Message);
+          
              }
 
         };
