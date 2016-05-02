@@ -1,4 +1,6 @@
-﻿using Serendip.Entity.Sistem;
+﻿using Serendip.Entity;
+using Serendip.Entity.Satis;
+using Serendip.Entity.Sistem;
 using Surat.Base.Application;
 using Surat.Base.Cache;
 using Surat.Base.Exceptions;
@@ -9,6 +11,7 @@ using Surat.Common.Data;
 using Surat.Common.ViewModel;
 using Surat.SerendipApplication.Base;
 using Surat.SerendipApplication.Common;
+using Surat.SerendipApplication.Common.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -284,9 +287,9 @@ namespace Surat.SerendipApplication.Business
             try
             {
                 Serendip.WinFormLib.Provider.StopServer();
-                Serendip.WinFormLib.Provider.StartServerWeb(this.Context.DBKeyName, this.Context.DBUserName, this.Context.DBUserPassword);
+                Serendip.WinFormLib.Provider.StartServerWeb(this.Context.FirmaDonem, this.Context.DBUserName, this.Context.DBUserPassword);
 
-                Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.DBKeyName);
+                Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.FirmaDonem);
                //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
 
                //var ss = KullaniciMasterDbVeritabanlari; 
@@ -301,6 +304,16 @@ namespace Surat.SerendipApplication.Business
             }
         }
 
+        public List<SatisSiparisView> SatisSiparisleri()
+        {
+            List<SatisSiparisView> SatisSiparisleri = new List<SatisSiparisView>();
+
+            //var result = Serendip.CoreSet.Provider..satissi((satisSiparis);
+            SatisSiparisleri = Entity.ActiveRecord.FindAll<SatisSiparis>("ObjId > 5000550100014932931", new object[] { }, null).DefaultIfEmpty().Select(x => new SatisSiparisView() { BelgeNo = x.BelgeNo, EvrakNo = x.EvrakNo, Id = x.ObjId }).ToList();
+
+
+            return SatisSiparisleri;
+        }
         #endregion              
 
         #region Dispose

@@ -31,11 +31,10 @@ namespace Surat.WebServer.Controllers
         {
             try
             {
-                var Actions = this.WebApplicationManager.Framework.Configuration.GetActiveActionList();
-                var total = Actions.Count();
-                var data = Actions.OrderBy(m => m.Name).Skip(skip).Take(pageSize).ToList();
-                return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
+                this.Serendip.Login();
+                var list = this.Serendip.SatisSiparisleri();
 
+                return Json(list, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
@@ -43,7 +42,6 @@ namespace Surat.WebServer.Controllers
                 return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
-
         #endregion
     }
 }

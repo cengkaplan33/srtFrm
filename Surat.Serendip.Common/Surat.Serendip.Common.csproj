@@ -46,11 +46,11 @@
     <Compile Include="Data\SerendipConstants.cs" />
     <Compile Include="Data\SerendipEnumeration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\SatisSiparisView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\" />
     <Folder Include="Utilities\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="RequiredDLLs\Cassia.dll" />
