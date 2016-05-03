@@ -1,6 +1,6 @@
 ﻿<div class="boxFix">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="widget-box transparent">
                 <div class="widget-header">
                     <h5 class="widget-title">Serendip Veritabanları</h5>
@@ -8,22 +8,24 @@
                 <div class="widget-body" style="text-align: left;">
                     <div class="space"></div>
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div id="serendipUsersGrid"
                                  data-role="grid"
                                  data-sortable="true"
                                  data-pageable="true"
                                  data-filterable="true"
-                                 data-editable="inline"
+                                 data-editable= "inline" 
+                                 data-resizable="true"
                                  data-selectable="multiple"
                                  data-columns='[
-                                 { field: "Id", title: "ID", width: "40px" },
+                                 { field: "Id", title: "ID", width: "45px" },
                                  { field: "DatabaseName", title: "Database Adı", width: "220px" },
-                                 { field: "FirmaDonem", title: "Dönem", width: "120px" },
-                                 { field: "FirmaDonemTipi", title: "Dönem Tipi", width: "100px" },
-                                 { field: "UserName", title: "Kullanıcı Adı", width: "120px" },
-                                 { field: "Password", title: "Kullanıcı Şifresi", width: "120px" },
-                                 { field: "VarsayilanMi", title: "Varsayılan", width: "60px" }
+                                 { field: "FirmaDonem", title: "Dönem"},
+                                 { field: "FirmaDonemTipi", title: "Dönem Tipi" },
+                                 { field: "UserName", title: "Kullanıcı Adı" },
+                                 { field: "Password", title: "Kullanıcı Şifresi" },
+                                 { field: "VarsayilanMi", title: "Varsayılan", "template": "#= VarsayilanMi ? \"Evet\" : \"Hayır\" #"},
+                                 { command: [  { name: "edit", text:{edit: "Düzenle",	update: "Kaydet", cancel: "İptal"}} ,{name: "destroy", text: "Sil"} ], title: "İşlemler", width: "180px"  }
                                   ]'
                                  data-bind="source: userMasterDbVeritabanlariDatasource" style="width:100%">
                             </div>

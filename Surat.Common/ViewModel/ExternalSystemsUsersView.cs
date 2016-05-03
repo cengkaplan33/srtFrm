@@ -12,6 +12,7 @@ namespace Surat.Common.ViewModel
         public DelegateObjectType DelegateDBObjectType { get; set; }
         public long DelegateDBObjectId { get; set; }
         public int SystemId { get; set; }
+        public int SuratUserId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public int? FirmaDonemId { get; set; }
