@@ -20,22 +20,22 @@ namespace KonsolideRapor.WebServer.Controllers
 
         public AccountController()
         {
-            
+
         }
 
         #endregion
 
-        #region Private Members        
+        #region Private Members
 
         #endregion
 
-        #region Methods       
+        #region Methods
 
         [AllowAnonymous]
         [ActionAttribute("Giriş Sayfası", "Sayfanın görüntülenmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
         public ActionResult Login(string returnUrl)
-        {            
-            
+        {
+
             ViewBag.ReturnUrl = returnUrl;
             if (!string.IsNullOrEmpty(this.ExceptionMessage))
                 ViewBag.Message = this.ExceptionMessage;
@@ -48,26 +48,66 @@ namespace KonsolideRapor.WebServer.Controllers
         [AllowAnonymous]
         [ActionAttribute("Giriş Yap", "Sistemde kayıtlı olan kullanıcıların giriş yapmasını sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult UserLogin(LoginView kullanici, string returnUrl)
-        {            
+        {
             try
             {
-                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password,false);
+                this.WebApplicationManager.Login(kullanici.UserName, kullanici.Password, false);
 
                 if (returnUrl == null)
                 {
-                    return Json(new { returnUrl = "/" },JsonRequestBehavior.AllowGet);
+                    return Json(new { returnUrl = "/" }, JsonRequestBehavior.AllowGet);
                     //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    return Json(new { returnUrl = returnUrl },JsonRequestBehavior.AllowGet);                    
+                    return Json(new { returnUrl = returnUrl }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { result = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
-            }            
+                return Json(new { result = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [Authorize]
+        [ActionAttribute("Şifre Değiştirme Sayfası", "Kullnaıcının şifresini değiştirmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Page)]
+        public ActionResult PasswordChange()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [ActionAttribute("Şifre Değiştir", "Kullnaıcının şifresini değiştirmesini sağlar.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult UserPasswordChange(PasswordChangeView passwordChangeView)
+        {
+            try
+            {
+                var user = this.WebApplicationManager.Framework.Security.User.GetUser(this.WebApplicationManager.Context.CurrentUser.UserId);
+
+                if (user.Password != passwordChangeView.DefaultPassword)
+                    throw new Exception(this.WebApplicationManager.Framework.Context.Globalization.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.UserPasswordDontMatch));
+
+                else if (passwordChangeView.NewPassword != passwordChangeView.NewPasswordAgain)
+                    throw new Exception(this.WebApplicationManager.Framework.Context.Globalization.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.UserEnteredPasswordsDontMatch));
+
+                else if (!this.WebApplicationManager.Framework.Security.PasswordQualityCheckerStatus(passwordChangeView.NewPassword))
+                    throw new Exception(this.WebApplicationManager.Framework.Context.Globalization.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.PasswordNotSafety));
+
+                else
+                {
+                    user.Password = passwordChangeView.NewPassword;
+                    this.WebApplicationManager.Framework.Security.SaveUser(user);
+                    return Json(new { Result = Constants.Message.UserPasswordChanged }, JsonRequestBehavior.AllowGet);
+                }
+
+
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [AllowAnonymous]
@@ -96,13 +136,13 @@ namespace KonsolideRapor.WebServer.Controllers
                 if (this.WebApplicationManager.KonsolideRapor.Framework.Context.IsCurrentUserAssigned)
                     this.WebApplicationManager.Logout();
                 //ToDo : else : Aktif session nasıl kapatılabilir.                       
-                
-                return Json(new { sonuc="Çıkış işleminiz gerçekleştirildi"},JsonRequestBehavior.AllowGet);
+
+                return Json(new { sonuc = "Çıkış işleminiz gerçekleştirildi" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 Response.StatusCode = 500;
-                return Json(new { sonuc = this.PublishException(exception)},JsonRequestBehavior.AllowGet);
+                return Json(new { sonuc = this.PublishException(exception) }, JsonRequestBehavior.AllowGet);
             }
         }
 

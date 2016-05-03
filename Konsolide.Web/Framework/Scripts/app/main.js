@@ -23,6 +23,7 @@
         'actionsModel': 'models/actionsModel',
         'userSessionsModel': 'models/userSessionsModel',
         'systemsModel': 'models/systemsModel',
+        'passwordChangeModel': 'models/passwordChangeModel',
         //endregion #BASE Model#
         'bankModel': 'models/bankModel',
         'paymentCollectingModel': 'models/paymentCollectingModel',
@@ -46,6 +47,7 @@
         'userSessions-indexViewModel': 'viewModels/userSessions/indexViewModel',
         'systems-indexViewModel': 'viewModels/systems/indexViewModel',
         'systems-editViewModel': 'viewModels/systems/editViewModel',
+        'account-passwordChangeViewModel': 'viewModels/account/passwordChangeViewModel',
         //endregion #BASE viewModels#
         'bankalar-indexViewModel': 'viewModels/bankalar/indexViewModel',
         'bankalar-editViewModel': 'viewModels/bankalar/editViewModel',
@@ -76,6 +78,7 @@
         'actionsDatasource': 'datasources/actionsDatasource',
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'systemsDatasource': 'datasources/systemsDatasource',
+        'passwordChangeDatasource': 'datasources/passwordChangeDatasource',
         //endregion  #BASE datasources#
         'bankDatasource': 'datasources/bankDatasource',
         'paymentCollectingDatasource': 'datasources/paymentCollectingDatasource',
