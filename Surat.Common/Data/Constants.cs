@@ -43,10 +43,10 @@ namespace Surat.Common.Data
         public class Web
         {
             public const String SPAHomePrefix = "Home/Spa#/";
-            public const String RedirectLoginAction = "~/Account/Login";      
+            public const String RedirectLoginAction = "~/Account/Login";
             public const String RedirectLogoutAction = "~/Account/LogOut";
             public static readonly string[] UnAuthorizedActions = { "Account/Login", "Account/UserLogin", "Account/LogOut", "Account/RememberPassword" };
-            public static readonly string[] SharedActions = { "Home/Spa", "home/index","Home/Anasayfa", "Account/LogOut"};
+            public static readonly string[] SharedActions = { "Home/Spa", "home/index", "Home/Anasayfa", "Account/LogOut" };
         }
         #endregion
 
@@ -54,6 +54,8 @@ namespace Surat.Common.Data
 
         public class Message
         {
+            #region Hata Mesajları
+
             public const String FrameworkNotInitialized = "FrameworkNotInitialized|Alt yapı bileşenleri(Framework) başlatılamadı.|Framework has not been initialized.";
             public const String OperationNotCompleted = "OperationNotCompleted|İşlem tamamlanamadı.|Operation has not been completed.";
             public const String UserNotAuthorized = "UserNotAuthorized|Kullanıcı {0} yetkili değildir.|User {0} has not been authorized.";
@@ -84,6 +86,17 @@ namespace Surat.Common.Data
             public const String ExceptionNotPublished = "ExceptionNotPublished|İstisna(Hata) yayınlanamadı.|Exception has not been published.";
             public const String WorkgroupCompanySiteNotFound = "WorkgroupCompanySiteNotFound|{0} Çalışma grubuna ait firma tanım kaydı bulunamadı.|Workgroup {0} does not has a related company record.";
             public const String LockedAccount = "LockedAccount|<br>Yanlış denemeler sonucunda hesabınız kilitlenmiştir.Şifremi Unuttum linkini kullanabilir veya Sistem Yöneticiniz ile görüşebilirsiniz.|<br>As a result of incorrect attempts, your account is locked. You can use 'I forgot my password' link or contact your System Administrator.";
+            public const String UserPasswordDontMatch = "UserPasswordDontMatch|Kullanıcı şifresi ile girilen şifre uyuşmuyor|User Password and entered password do not match";
+            public const String UserEnteredPasswordsDontMatch = "UserEnteredPasswordsDontMatch|Girilen şifreler birbirleri ile uyuşmuyor| Entered passwords do not match";
+            public const String PasswordNotSafety = "PasswordNotSafety|Şifreniz belirtilen güvenlik kurallarına uymuyor|Password does not comply with the safety rules";
+
+            #endregion
+
+            #region Bilgi Mesajları
+
+            public const String UserPasswordChanged = "UserPasswordChanged|Kullanıcı şifreniz başarılı bir şekilde değiştirildi.Şifre değişikliği sisteme tekrar giriş yaptığınızda geçerli olacak|Your user password was changed successfully. Password changes to the system will be available when you log back";
+
+            #endregion
         }
 
         #endregion
@@ -136,7 +149,7 @@ namespace Surat.Common.Data
             public const String SuratBusinessException = "SuratBusinessException|İş süreci ile ilgili hata oluştu.|Application has a business exception.";
             public const String MissingFeature = "MissingFeatureException|{0} Özelliği henüz geliştirilmemiştir.|The feature {0} is missing.";
             public const String Security = "SecurityException|Güvenlik problemi bulunmaktadır.|Application has a security problem.";
-            public const String Configuration = "ConfigurationException|Konfigurasyon erişimi problemi bulunmaktadır.|Application has a configuration access problem.";        
+            public const String Configuration = "ConfigurationException|Konfigurasyon erişimi problemi bulunmaktadır.|Application has a configuration access problem.";
         }
 
         #endregion

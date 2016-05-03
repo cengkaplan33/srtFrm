@@ -12,6 +12,7 @@
         'workgroupModel': 'models/workgroupModel',
         'choosedWorkgroupModel': 'models/choosedWorkgroupModel',
         'systemsModel': 'models/systemsModel',
+        'passwordChangeModel': 'models/passwordChangeModel',
         'exceptionsModel': 'models/exceptionsModel',
         'userSessionsModel': 'models/userSessionsModel',
         'pagesModel': 'models/pagesModel',
@@ -20,15 +21,16 @@
         'userPagesModel': 'models/userPagesModel',
         'roleActionsModel': 'models/roleActionsModel',
         'userActionsModel': 'models/userActionsModel',
-        'userMasterDbVeritabanlariModel':'models/userMasterDbVeritabanlariModel',
+        'userMasterDbVeritabanlariModel': 'models/userMasterDbVeritabanlariModel',
         //viewModels
         'user-indexViewModel': 'viewModels/user/indexViewModel',
         'user-editViewModel': 'viewModels/user/editViewModel',
         'workgroup-indexViewModel': 'viewModels/workgroup/indexViewModel',
-        'roles-indexViewModel':'viewModels/roles/indexViewModel',
+        'roles-indexViewModel': 'viewModels/roles/indexViewModel',
         'roles-editViewModel': 'viewModels/roles/editViewModel',
         'systems-indexViewModel': 'viewModels/systems/indexViewModel',
         'systems-editViewModel': 'viewModels/systems/editViewModel',
+        'account-passwordChangeViewModel': 'viewModels/account/passwordChangeViewModel',
         'exceptions-indexViewModel': 'viewModels/exceptions/indexViewModel',
         'userSessions-indexViewModel': 'viewModels/userSessions/indexViewModel',
         'pages-indexViewModel': 'viewModels/pages/indexViewModel',
@@ -39,9 +41,10 @@
         'rolesDatasource': 'datasources/rolesDatasource',
         'workgroupDatasource': 'datasources/workgroupDatasource',
         'systemsDatasource': 'datasources/systemsDatasource',
+        'passwordChangeDatasource': 'datasources/passwordChangeDatasource',
         'exceptionsDatasource': 'datasources/exceptionsDatasource',
         'rolePagesDatasource': 'datasources/rolePagesDatasource',
-        'roleActionsDatasource':'datasources/roleActionsDatasource',
+        'roleActionsDatasource': 'datasources/roleActionsDatasource',
         'userSessionsDatasource ': 'datasources/userSessionsDatasource ',
         'pagesDatasource': 'datasources/pagesDatasource',
         'actionsDatasource': 'datasources/actionsDatasource',
@@ -50,7 +53,7 @@
         'userPagesDatasource': 'datasources/userPagesDatasource',
         'userChoosenWorkgroupDatasource': 'datasources/userChoosenWorkgroupDatasource',
         'userActionsDatasource': 'datasources/userActionsDatasource',
-        'userMasterDbVeritabanlariDatasource':'datasources/userMasterDbVeritabanlariDatasource',
+        'userMasterDbVeritabanlariDatasource': 'datasources/userMasterDbVeritabanlariDatasource',
         // utils
         'util': '/Framework/Scripts/util'
     },
@@ -64,6 +67,6 @@
 
 require([
         'app'
-    ], function(app) {
-        app.initialize();
-    });
+], function (app) {
+    app.initialize();
+});

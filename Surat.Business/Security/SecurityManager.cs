@@ -276,6 +276,22 @@ namespace Surat.Business.Security
                 throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker - Special Characters : " + Constants.Parameter.SpecialCharacters, this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneSpecialCharacter));
         }
 
+        public bool PasswordQualityCheckerStatus(string password)
+        {
+            if (password.Length < this.Context.MinPasswordLength)
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId,
+                    string.Format(this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordLenghtRule), this.Context.MinPasswordLength));
+            if (password.IndexOfAny(Constants.Parameter.Digits.ToCharArray()) < 0)
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneDigitRule));
+
+            if (password.IndexOfAny(Constants.Parameter.UpperCharacters.ToCharArray()) < 0)
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker", this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneUpperCharacterRule));
+
+            if (password.IndexOfAny(Constants.Parameter.SpecialCharacters.ToCharArray()) < 0)
+                throw new SecurityException(this.ApplicationContext, "PasswordQualityChecker - Special Characters : " + Constants.Parameter.SpecialCharacters, this.ApplicationContext.SystemId, this.ApplicationContext.Globalization.GetGlobalizationKeyValue(this.ApplicationContext.SystemId, Constants.Message.PasswordAtLeastOneSpecialCharacter));
+            return true;
+        }
+
         #endregion
 
         #region Authentication
