@@ -2860,6 +2860,7 @@
     <Content Include="Framework\theme\images\sort_desc_disabled.png" />
     <Content Include="Framework\theme\images\spritemap%402x.png" />
     <Content Include="Framework\theme\images\spritemap.png" />
+    <Content Include="Framework\theme\images\logo_kaynak_yazisiz.png" />
     <Content Include="Framework\theme\img\clear.png" />
     <Content Include="Framework\theme\img\glyphicons-halflings-white.png" />
     <Content Include="Framework\theme\img\glyphicons-halflings.png" />
