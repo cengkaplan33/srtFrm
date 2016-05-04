@@ -1,9 +1,28 @@
 ﻿@*@using Surat.Web.Security*@
 @using Microsoft.AspNet.Identity
-<div class="navbar navbar-default" id="navbar">
+<div class="navbar navbar-default" id="navbar" style="background: white;">
     <script type="text/javascript">
         try { ace.settings.check('navbar', 'fixed') } catch (e) { }
     </script>
+
+    <script type="text/javascript">
+    function LogOut() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("LogOut","Account")",
+            dataType: "json",
+            success: function (result) {
+                alert(result.sonuc);
+                location.href = "/";
+            },
+            error: function (result) {
+                alert(result.sonuc);
+            }
+
+        });
+    }
+    </script>
+
     <div class="navbar-container" id="navbar-container">
         <!-- #section:basics/sidebar.mobile.toggle -->
         <button type="button" class="navbar-toggle menu-toggler pull-left red" id="menu-toggler"
@@ -13,36 +32,18 @@
         </button>
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
-                <small>
-                    <i class="fa fa-leaf green"></i><span style="color:#9BD2FF">
-                                                        Kaynak Holding
-                    </span><span class="white"> Yönetim Raporları Portalı</span>
-                </small>
+                 <small>
+                     <img src="/Framework/theme/images/logo_kaynak_yazisiz.png" width="20" height="30"><span style="color:black;"> <b>
+                            KAYNAK HOLDİNG </b>
+                    </span><span style="color:#62a8d1;"><b>YÖNETİM RAPORLARI PORTALI</b> </span>
+                   </small>
             </a>
             <!-- /.brand -->
         </div>
         <!-- /.navbar-header -->
-        <script type="text/javascript">
-            function LogOut() {
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("LogOut","Account")",
-                    dataType: "json",
-                    success: function (result) {
-                        alert(result.sonuc);
-                        location.href = "/";
-                    },
-                    error:function(result)
-                    {
-                        alert(result.sonuc);
-                    }
-
-                });
-            }
-        </script>
 
         <div class="navbar-header pull-right" role="navigation">
-            
+
             <ul class="nav ace-nav">
                 <li class="light-blue">
 
@@ -52,7 +53,6 @@
 
                         <span class="user-info">
                             <small>Dil Seçiniz</small>
-
 
                             @*@Surat.SecurityHelper.LoggedUser*@
                         </span><i class="ace-icon fa fa-caret-down"></i>
@@ -108,7 +108,7 @@
                         </li>
                     </ul>
                 </li>
-                
+
             </ul>
             <!-- /.ace-nav -->
         </div>
@@ -116,3 +116,4 @@
     </div>
     <!-- /.container -->
 </div>
+
