@@ -15,7 +15,15 @@ function (kendo, odemeTalepModel,util) {
                 dataType: "json",
                 data: function (data) {
                     data.Tarih = kendo.toString(data.Tarih, "dd-MM-yyyy");
-                    // repeat for all your date fields
+                    if (data.TL != null) {
+                        data.TL = data.TL.toString().replace(".", ",");
+                    }
+                    if (data.EURO != null) {
+                        data.EURO = data.EURO.toString().replace(".", ",");
+                    }
+                    if (data.USD != null) {
+                        data.USD = data.USD.toString().replace(".", ",");
+                    }
                     return data;
                 },
                 complete: function (jqXhr, textStatus) {
@@ -33,7 +41,15 @@ function (kendo, odemeTalepModel,util) {
                 dataType: "Json",
                 data: function (data) {
                     data.Tarih = kendo.toString(data.Tarih, "dd-MM-yyyy");
-                    // repeat for all your date fields
+                    if (data.TL != null) {
+                        data.TL = data.TL.toString().replace(".", ",");
+                    }
+                    if (data.EURO != null) {
+                        data.EURO = data.EURO.toString().replace(".", ",");
+                    }
+                    if (data.USD != null) {
+                        data.USD = data.USD.toString().replace(".", ",");
+                    }
                     return data;
                 },
                 complete: function (jqXhr, textStatus) {
@@ -62,7 +78,7 @@ function (kendo, odemeTalepModel,util) {
         serverPaging: true,
         serverSorting: true,
         serverFiltering: false,
-        pageSize: 10,
+        pageSize: 300,
         cache: false,
         aggregate: [
        { field: "TL", aggregate: "sum" },

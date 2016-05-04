@@ -45,7 +45,7 @@ namespace KonsolideRapor.WebServer.Controllers
             {
                 var odemeTalepleri = this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetAktifTahsilatTalepleri();
                 var total = odemeTalepleri.Count();
-                var data = odemeTalepleri.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                var data = odemeTalepleri.OrderByDescending(m => m.Tarih).Skip(skip).Take(pageSize).ToList();
                 return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
 
             }
@@ -62,6 +62,12 @@ namespace KonsolideRapor.WebServer.Controllers
         {
             try
             {
+                if (odemeTalep.EURO == null)
+                    throw new Exception("EURO alanı boş olamaz");
+                if (odemeTalep.USD == null)
+                    throw new Exception("USD alanı boş olamaz");
+                if (odemeTalep.TL == null)
+                    throw new Exception("TL alanı boş olamaz");
                 this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveTahsilatTalep(odemeTalep);
                 return Json(new { Result = "Kayıt işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }
@@ -78,6 +84,12 @@ namespace KonsolideRapor.WebServer.Controllers
         {
             try
             {
+                if (odemeTalep.EURO == null)
+                    throw new Exception("EURO alanı boş olamaz");
+                if (odemeTalep.USD == null)
+                    throw new Exception("USD alanı boş olamaz");
+                if (odemeTalep.TL == null)
+                    throw new Exception("TL alanı boş olamaz");
                 this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.SaveTahsilatTalep(odemeTalep);
                 return Json(new { Result = "Güncelleme işlemi gerçekleştirildi." }, JsonRequestBehavior.AllowGet);
             }

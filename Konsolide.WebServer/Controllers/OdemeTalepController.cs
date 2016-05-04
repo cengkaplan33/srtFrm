@@ -45,7 +45,7 @@ namespace KonsolideRapor.WebServer.Controllers
             {
                 var odemeTalepleri = this.WebApplicationManager.KonsolideRapor.KonsolideRaporManager.GetAktifOdemeTalepleri();
                 var total = odemeTalepleri.Count();
-                var data = odemeTalepleri.OrderBy(m => m.Id).Skip(skip).Take(pageSize).ToList();
+                var data = odemeTalepleri.OrderByDescending(m => m.Tarih).Skip(skip).Take(pageSize).ToList();
                 return Json(new { total = total, data = data }, JsonRequestBehavior.AllowGet);
 
             }
