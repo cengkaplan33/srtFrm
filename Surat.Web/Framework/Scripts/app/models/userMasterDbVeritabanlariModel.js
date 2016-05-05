@@ -9,7 +9,7 @@
                 SystemId: { type: "number", editable: false, },
                 UserName: { type: "string", title: "", editable: true, validation: { required: { message: "Zorunlu Alan" } } },
                 Password: { type: "string", editable: true, validation: { required: { message: "Zorunlu Alan" } } },
-                FirmaDonemTipi: { type: "number", editable: false, },
+                FirmaDonemTipiName: { type: "string", editable: false, },
                 FirmaDonem: { type: "string", editable: false, },
                 FirmaDonemId: { type: "number", editable: false, },
                 DatabaseName: { type: "string", editable: false, },

@@ -17,9 +17,10 @@ namespace Surat.Common.ViewModel
         public string Password { get; set; }
         public int? FirmaDonemId { get; set; }
         public string FirmaDonem { get; set; }
-        public int? FirmaDonemTipi { get; set; }
+        public MasterDBFirmaDonemiTipi FirmaDonemTipi { get; set; }
         public string DatabaseName { get; set; }
         public bool VarsayilanMi { get; set; }
+        public string FirmaDonemTipiName { get; set; }
     }
 }
 

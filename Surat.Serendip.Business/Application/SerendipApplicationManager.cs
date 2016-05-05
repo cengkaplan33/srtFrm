@@ -230,11 +230,12 @@ namespace Surat.SerendipApplication.Business
                     SuratUserId = (int)userId,
                     UserName = "",
                     Password = "",
-                    FirmaDonemTipi = (int?)sList.FirmaDonemiTipi,
+                    FirmaDonemTipi = (MasterDBFirmaDonemiTipi)sList.FirmaDonemiTipi,
                     FirmaDonem = sList.Donem,
                     FirmaDonemId = sList.FirmaDonemiID,
                     DatabaseName = sList.Adi,
                     VarsayilanMi = false,
+                    FirmaDonemTipiName = sList.FirmaDonemiTipi.ToString(),
                 }).ToList();
 
                 return externalSystemsUsersViews;
@@ -257,11 +258,12 @@ namespace Surat.SerendipApplication.Business
                                SuratUserId = (int)userId,
                                UserName = j == null ? "" : j.UserName,
                                Password = j == null ? "" : j.Password,
-                               FirmaDonemTipi = j == null ? (int?)sList.FirmaDonemiTipi : j.FirmaDonemTipi,
+                               FirmaDonemTipi = j == null ? (MasterDBFirmaDonemiTipi)sList.FirmaDonemiTipi : j.FirmaDonemTipi,
                                FirmaDonem = j == null ? sList.Donem : j.FirmaDonem,
                                FirmaDonemId = j == null ? sList.FirmaDonemiID : j.FirmaDonemId,
                                DatabaseName = j == null ? sList.Adi : j.DatabaseName,
                                VarsayilanMi = j == null ? false : j.VarsayilanMi,
+                               FirmaDonemTipiName = j == null ? sList.FirmaDonemiTipi.ToString() : j.FirmaDonemTipi.ToString(),
                            };
                 return temp.ToList();
             }
