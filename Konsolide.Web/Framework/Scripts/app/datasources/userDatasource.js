@@ -54,7 +54,7 @@ function (kendo, userModel, userChoosenWorkgroupDatasource, util) {
         serverPaging: true,
         serverSorting: true,
         serverFiltering: true,
-        pageSize: 10,
+        pageSize: 20,
         cache: false,
         schema: {
             data: "data", // records are returned in the "data" field of the response
