@@ -111,6 +111,7 @@
     <Compile Include="ViewModel\LoginView.cs" />
     <Compile Include="ViewModel\RoleActionView.cs" />
     <Compile Include="ViewModel\UserDefaultWorkGroupView.cs" />
+    <Compile Include="ViewModel\UserView.cs" />
     <Compile Include="ViewModel\UserSessionView.cs" />
     <Compile Include="ViewModel\UserWorkGroupView.cs" />
     <Compile Include="ViewModel\WorkgroupView.cs" />

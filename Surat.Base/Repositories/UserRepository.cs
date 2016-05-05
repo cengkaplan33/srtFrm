@@ -62,10 +62,40 @@ namespace Surat.Base.Repositories
             return this.GetObjectsByParameters(p => p.IsActive == true & p.Name.Contains(nameStartsWith)).ToList(); 
         }
 
-        public List<SuratUser> GetUsersActive()
+        public List<UserView> GetUsersActive()
         {
-            return this.GetObjectsByParameters(p => p.IsActive == true).ToList();
+            var query = (from user in this.Context.ApplicationContext.DBContext.Users
+                         join relationGroup in this.Context.ApplicationContext.DBContext.RelationGroups on
+                            new { uId = user.Id, rId = 0, wId = true, rgActive = true, uActive = user.IsActive } equals
+                            new { uId = relationGroup.UserId.Value, rId = relationGroup.RoleId.Value, wId = (relationGroup.WorkgroupId.Value != 0), rgActive = relationGroup.IsActive, uActive = true }
+                         join workgroup in this.Context.ApplicationContext.DBContext.Workgroups on
+                            new { wId = relationGroup.WorkgroupId.Value, wActive = true } equals
+                            new { wId = workgroup.Id, wActive = workgroup.IsActive }
+                         //join workgroup in this.Context.ApplicationContext.DBContext.Workgroups on workgroup .RoleId equals roles.Id
+                         select new UserView()
+                         {
+                             Id = user.Id,
+                             UserName = user.UserName,
+                             Name = user.Name,
+                             Password = user.Password,
+                             Notes = user.Notes,
+                             LastPasswordChangedDate = user.LastPasswordChangedDate,
+                             IsLocked = user.IsLocked,
+                             IsActiveDirectoryUser = user.IsActiveDirectoryUser,
+                             IsExternalUser = user.IsExternalUser,
+
+                             DefaultRole = user.DefaultRole,
+                             DefaultWorkgroup = user.DefaultWorkgroup,
+
+                             WorkgroupName = workgroup.Name,
+                             //companyName in doldurulması için bir JOIN veya Cachê'te var ise oradan alınabilinir. 
+                         });
+
+            //return this.GetObjectsByParameters(p => p.IsActive == true).ToList();
+            return query.ToList();
+
         }
+
         public SuratUser GetActiveDirectoryUser(string userName)
         {
             var activeDirectoryUser = this.GetObjectsByParameters(p => p.IsActive == true & p.IsActiveDirectoryUser == true & p.UserName == userName).FirstOrDefault();

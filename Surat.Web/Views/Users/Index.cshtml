@@ -1,20 +1,21 @@
 ﻿
 <div class="col-md-12" id="BaseDiv">
 
-            <div id="usergrid"
-                 data-role="grid"
-                 data-sortable="true"
-                 data-pageable="true"
-                 data-filterable="true"
-                 data-editable="inline"
-                 data-selectable="true"
-                 data-toolbar='[ { template: kendo.template($("#toolbar").html()) } ]'
-                 data-columns='[
-                { field: "Id", title: "ID", width: "75px" },
-                { field: "Name", title: "Ad Soyad"},
-                { field: "UserName", title: "Kullanıcı Adı" } ]'
-                 data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
-            </div>
+    <div id="usergrid"
+         data-role="grid"
+         data-sortable="true"
+         data-pageable="true"
+         data-filterable="true"
+         data-editable="inline"
+         data-selectable="true"
+         data-toolbar='[ { template: kendo.template($("#toolbar").html()) } ]'
+         data-columns='[
+                { field: "Id", title: "ID", width: "30px" },
+                { field: "Name", title: "Ad Soyad", width: "200px" },
+                { field: "UserName", title: "Kullanıcı Adı", width: "200px" },
+                { field: "WorkgroupName", title: "Çalışma Birimi" , width: "220px" } ]'
+         data-bind="source: dataSource, events: { change: onChange, dataBound: onDataBound }" style="width:100%">
+    </div>
     
 
     <script type="text/x-kendo-template" id="toolbar">

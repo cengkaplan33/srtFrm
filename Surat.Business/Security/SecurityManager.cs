@@ -877,10 +877,12 @@ AND
 
         public void SaveUser(SuratUser user, IList<UserRoleView> Roles, IList<UserWorkGroupView> WorkGroup, IList<UserAccessiblePageView> Paqes, IList<UserAccessibleActionView> Actions)
         {
+            if (WorkGroup.Count() <= 0)
+                throw new Exception("Lütfen çalışma grubu seçiniz");
+
             try
             {
-                if (WorkGroup.Count() <= 0)
-                    throw new Exception("Lütfen çalışma grubu seçiniz");
+                user.DefaultWorkgroup = WorkGroup.FirstOrDefault().WorkGroupId;
 
                 this.SaveUser(user);
                 this.SaveUserPages(user.Id, Paqes);
@@ -905,6 +907,9 @@ AND
 
                     if (this.User.GetObjectsByParameters(m => m.UserName == user.UserName).Count() > 0)
                         throw new Exception("Bu kullanıcı adı daha önceden alınmış.");
+
+                    if (user.DefaultWorkgroup == null && user.DefaultWorkgroup == 0)
+                        throw new Exception("Kullanıcı için birim seçimi yapılmamış");
                     
                     user.LastPasswordChangedDate = DateTime.Now;
                     this.User.Add(user);
@@ -935,10 +940,11 @@ AND
                             throw new Exception("Bu kullanıcı adı daha önceden alınmış.");
 
                     selectedUser.Name = user.Name;
+                    selectedUser.DefaultWorkgroup = user.DefaultWorkgroup;
                     selectedUser.Notes = user.Notes;
                     selectedUser.UserName = user.UserName;
                     selectedUser.ChangedDate = DateTime.Now;
-                    selectedUser.IsActive = user.IsActive;
+                    //selectedUser.IsActive = user.IsActive;
                     selectedUser.IsActiveDirectoryUser = user.IsActiveDirectoryUser;
                     selectedUser.IsExternalUser = user.IsExternalUser;
                     selectedUser.IsLocked = user.IsLocked;
