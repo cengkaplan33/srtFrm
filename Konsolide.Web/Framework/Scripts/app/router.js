@@ -13,7 +13,14 @@ define(['kendo', 'kendo_culture_config', 'kendo_culture_messages'],
         //        loadView(null, view);
         //    });
         //});
-      
+        router.route("/Account/PasswordChange", function () {
+            require(['account-passwordChangeViewModel', 'text!/Account/PasswordChange'], function (viewModel, view) {
+                setBreadCrumb("#/Account/PasswordChange", "Şifre İşlemleri");
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#form"), viewModel);
+                });
+            });
+        });
         router.route("/Users/Index", function () {
             require(['user-indexViewModel', 'text!/Users/Index'], function (viewModel, view) {
                 loadView(viewModel, view, function () {

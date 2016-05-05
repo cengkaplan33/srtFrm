@@ -1,15 +1,23 @@
 ﻿
 define(['kendo'],
-    function(kendo) {
+    function (kendo) {
         var router = new kendo.Router(),
             layout = new kendo.Layout("<div id='content'></div>");
 
         layout.render($("#app"));
 
-        
-        router.route("/", function() {
-            require(['text!/home/index'], function(view) {
+
+        router.route("/", function () {
+            require(['text!/home/index'], function (view) {
                 loadView(null, view);
+            });
+        });
+        router.route("/Account/PasswordChange", function () {
+            require(['account-passwordChangeViewModel', 'text!/Account/PasswordChange'], function (viewModel, view) {
+                setBreadCrumb("#/Account/PasswordChange", "Şifre İşlemleri");
+                loadView(viewModel, view, function () {
+                    kendo.bind($("#form"), viewModel);
+                });
             });
         });
         router.route("/Users/Index", function () {
@@ -28,7 +36,7 @@ define(['kendo'],
 
         });
         router.route("/Workgroups/Index", function () {
-           
+
             require(['workgroup-indexViewModel', 'text!/Workgroups/Index'], function (viewModel, view) {
                 loadView(viewModel, view);
             });
@@ -61,8 +69,8 @@ define(['kendo'],
 
             });
         });
-        router.route("/home/index", function() {
-            require(['text!/home/index'], function(view) {
+        router.route("/home/index", function () {
+            require(['text!/home/index'], function (view) {
                 loadView(null, view);
             });
         });
@@ -133,7 +141,7 @@ define(['kendo'],
         //        loadView(null, view);
         //    });
         //});
-        
+
         //router.route("/Systems/Index", function () {
         //    require(['text!/Systems/Index'], function (view) {
         //        loadView(null, view);
@@ -144,7 +152,7 @@ define(['kendo'],
         //        loadView(null, view);
         //    });
         //});        
-        
+
 
         var loadView = function (viewModel, view, delegate) {
             var kendoView = new kendo.View(view, { model: viewModel });

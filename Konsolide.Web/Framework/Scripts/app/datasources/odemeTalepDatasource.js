@@ -79,7 +79,7 @@ function (kendo, odemeTalepModel, util) {
         serverPaging: true,
         serverSorting: true,
         serverFiltering: false,
-        pageSize: 10,
+        pageSize: 300,
         cache: false,
         aggregate: [
        { field: "TL", aggregate: "sum" },

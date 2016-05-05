@@ -1399,6 +1399,7 @@
     <Content Include="Framework\Scripts\app\datasources\odemeTalepDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\odemeTuruDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\pagesDatasource.js" />
+    <Content Include="Framework\Scripts\app\datasources\passwordChangeDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\paymentCollectingDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\bankDatasource.js" />
     <Content Include="Framework\Scripts\app\datasources\roleActionsDatasource.js" />
@@ -1420,6 +1421,7 @@
     <Content Include="Framework\Scripts\app\models\odemeTalepModel.js" />
     <Content Include="Framework\Scripts\app\models\odemeTuruModel.js" />
     <Content Include="Framework\Scripts\app\models\pagesModel.js" />
+    <Content Include="Framework\Scripts\app\models\passwordChangeModel.js" />
     <Content Include="Framework\Scripts\app\models\paymentCollectingModel.js" />
     <Content Include="Framework\Scripts\app\models\bankModel.js" />
     <Content Include="Framework\Scripts\app\models\roleActionsModel.js" />
@@ -1429,6 +1431,7 @@
     <Content Include="Framework\Scripts\app\models\rolePagesModel.js" />
     <Content Include="Framework\Scripts\app\models\userSessionsModel.js" />
     <Content Include="Framework\Scripts\app\models\userWorkgroupModel.js" />
+    <Content Include="Framework\Scripts\app\viewModels\account\passwordChangeViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\actions\indexViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\editViewModel.js" />
     <Content Include="Framework\Scripts\app\viewModels\bankalar\indexViewModel.js" />
@@ -2860,6 +2863,7 @@
     <Content Include="Framework\theme\images\sort_desc_disabled.png" />
     <Content Include="Framework\theme\images\spritemap%402x.png" />
     <Content Include="Framework\theme\images\spritemap.png" />
+    <Content Include="Framework\theme\images\logo_kaynak_yazisiz.png" />
     <Content Include="Framework\theme\img\clear.png" />
     <Content Include="Framework\theme\img\glyphicons-halflings-white.png" />
     <Content Include="Framework\theme\img\glyphicons-halflings.png" />
@@ -3275,6 +3279,7 @@
     <Content Include="Views\Actions\Index.cshtml" />
     <Content Include="Views\UserSessions\Index.cshtml" />
     <Content Include="Views\Systems\Index.cshtml" />
+    <Content Include="Views\Account\PasswordChange.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

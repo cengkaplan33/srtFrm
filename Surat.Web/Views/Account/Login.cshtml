@@ -96,10 +96,10 @@
 
                                                 <div class="space-4"></div>
                                                 <div class="social-login" style="text-align:right;">
-                                                    <button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
+                                                    @*<button type="button" id="LoginAdBtn" data-bind="click:doActiveDirectoryLogin" class="width-35 btn btn-sm btn-primary">
                                                         <i class="ace-icon fa fa-key"></i>
                                                         <span class="bigger-110">Hızlı Giriş Yap</span>
-                                                    </button>
+                                                    </button>*@
 
 
                                                 </div>
@@ -364,7 +364,7 @@
                     $("#LoginBtn span").text("Giriş Yap");
                 }
             },
-            doActiveDirectoryLogin: function (e) {
+            @*doActiveDirectoryLogin: function (e) {
                 $("#LoginAdBtn span").text("Giriş yapılıyor...");
                 var validator = $("#loginForm").kendoValidator().data("kendoValidator")
                 if (validator.validate()) {
@@ -383,7 +383,7 @@
                     });
                     $("#LoginAdBtn span").text("Hızlı Giriş Yap");
                 }
-            }
+            }*@
         });
 
         kendo.bind($("#loginForm"), loginViewModel);
