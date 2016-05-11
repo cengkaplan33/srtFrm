@@ -588,8 +588,6 @@ AND
             return defaultWorkgroups;
         }
 
-
-
         public HashSet<int> GetUserRightIds(UserDetailedView currentUser)
         {
             return UserRightCache.GetUserRights(currentUser.UserId);

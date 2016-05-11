@@ -62,13 +62,12 @@ namespace Surat.WebServer.Controllers
         }
 
         [ActionAttribute("Serendip MasterDb Bağlantılarını Listele", "Master DB üzerinde tanımlanmış firma bağlantılarını mevcut kullanıcıya bağlı olarak listeler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
-        public JsonResult KullaniciMasterDbVeritabanlari()
+        public JsonResult GetUserMasterDbVeritabanlari(int? userId)
         {
             try
             {
-                var l = this.Serendip.KullaniciMasterDbVeritabanlari;
-
-                return Json(l, JsonRequestBehavior.AllowGet);
+                var ExUsers = this.Serendip.LoadKullaniciMasterDbVeritabanlari(userId);
+                return Json(ExUsers, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
@@ -206,6 +205,21 @@ namespace Surat.WebServer.Controllers
             }
         }
 
+        [ActionAttribute("Dış Kullanıcı Kaydet", "Veritabanına bağlı eklenen kullanıcıyı kaydeder.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult UpdateExternalUser(ExternalSystemsUsersView ExternalUser)
+        {
+            try
+            {
+                this.Serendip.SaveExternalUser(ExternalUser);
+                return Json(new { Result = "" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
         [HttpPost]
         [ActionAttribute("Kullanıcı Sil", "Seçilen kullanıcıyı siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
         public JsonResult Delete(SuratUser users)
@@ -223,6 +237,22 @@ namespace Surat.WebServer.Controllers
                 return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
             }
         }
+
+        [ActionAttribute("Dış Kullanıcı Sil", "Veritabanına bağlı seçilen kullanıcıyı siler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult DeleteExternalUser(ExternalSystemsUsersView ExternalUser)
+        {
+            try
+            {
+                this.Serendip.DeleteExternalUser(ExternalUser);
+                return Json(new { Result = "" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
 
         #endregion
     }
