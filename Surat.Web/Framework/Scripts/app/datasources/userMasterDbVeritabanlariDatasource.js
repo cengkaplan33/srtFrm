@@ -7,10 +7,32 @@ function (kendo, userMasterDbVeritabanlariModel,  util) {
         transport: {
             read: {
                 async: false,
-                url: "/Users/KullaniciMasterDbVeritabanlari",
+                url: "/Users/GetUserMasterDbVeritabanlari",
                 dataType: "json"
-            }
+            },
+            destroy: {
+                type: "POST",
+                url: "/Users/DeleteExternalUser",
+                dataType: "Json",
+                complete: function (jqXhr, textStatus) {
+                    if (textStatus = "success") {
+                        var result = jQuery.parseJSON(jqXhr.responseText);
+                        userMasterDbVeritabanlariDatasource.read();
+                    }
+                }
+            },
+            update: {
 
+                type: "POST",
+                url: "/Users/UpdateExternalUser",
+                dataType: "Json",
+                complete: function (jqXhr, textStatus) {
+                    if (textStatus = "success") {
+                        var result = jQuery.parseJSON(jqXhr.responseText);
+                        userMasterDbVeritabanlariDatasource.read();
+                    }
+                }
+            }
         },
         batch: false,
         serverPaging: false,

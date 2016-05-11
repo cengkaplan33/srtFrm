@@ -388,10 +388,15 @@ namespace Surat.SerendipApplication.Business
                 Serendip.WinFormLib.Provider.StopServer();
                 Serendip.WinFormLib.Provider.StartServerWeb(this.Context.FirmaDonem, this.Context.DBUserName, this.Context.DBUserPassword);
 
+<<<<<<< HEAD
                 Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.FirmaDonem);
+               //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
+=======
+                Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.DBKeyName);
                 //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
 
                 //var ss = KullaniciMasterDbVeritabanlari; 
+>>>>>>> imp-masterDb-kullanici-ekleme-silme
 
                 //DataTable dt = SerendipHelper.GetMasterDb(Serendip.Common.KonfigurasyonTuru.Sistem);
 
@@ -402,8 +407,9 @@ namespace Surat.SerendipApplication.Business
                 throw new SuratBusinessException(this.Framework.Context, "SerendipLogin", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId, SerendipConstants.Message.SerendipIntegrationFailed), exception);
             }
         }
-        
-          public List<SatisSiparisView> SatisSiparisleri()
+
+<<<<<<< HEAD
+        public List<SatisSiparisView> SatisSiparisleri()
         {
             List<SatisSiparisView> SatisSiparisleri = new List<SatisSiparisView>();
 
@@ -413,8 +419,8 @@ namespace Surat.SerendipApplication.Business
 
             return SatisSiparisleri;
         }
-
-
+        #endregion              
+=======
         public void SaveExternalUser(ExternalSystemsUsersView externalUser)
         {
             try
@@ -551,6 +557,7 @@ namespace Surat.SerendipApplication.Business
         }
 
         #endregion
+>>>>>>> imp-masterDb-kullanici-ekleme-silme
 
         #region Dispose
 

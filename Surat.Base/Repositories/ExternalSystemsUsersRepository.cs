@@ -63,7 +63,7 @@ namespace Surat.Base.Repositories
                                     Password = externalSystemsUsers.Password,
                                     SystemId = externalSystemsUsers.SystemId,
                                     UserName = externalSystemsUsers.UserName,
-                                    FirmaDonemTipi = externalSystemsUsers.FirmaDonemTipi,
+                                    FirmaDonemTipi = (MasterDBFirmaDonemiTipi)externalSystemsUsers.FirmaDonemTipi,
                                     FirmaDonem = externalSystemsUsers.FirmaDonem,
                                     FirmaDonemId = externalSystemsUsers.FirmaDonemId,
                                     DatabaseName = externalSystemsUsers.DbName,

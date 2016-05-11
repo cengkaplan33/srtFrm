@@ -1,4 +1,4 @@
-﻿define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource','userMasterDbVeritabanlariDatasource', 'userPagesModel', 'workgroupDatasource', 'userActionsDatasource', 'userActionsModel', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
+﻿define(['userDatasource', 'userModel', 'userRolesDatasource', 'userRolesModel', 'userPagesDatasource', 'userMasterDbVeritabanlariDatasource', 'userPagesModel', 'workgroupDatasource', 'userActionsDatasource', 'userActionsModel', 'userWorkGroupDataSource', 'userChoosenWorkgroupDatasource', 'util', 'router'],
 function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPagesDatasource,userMasterDbVeritabanlariDatasource, userPagesModel, workgroupDatasource, userActionsDatasource, userActionsModel, userWorkGroupDataSource, userChoosenWorkgroupDatasource, util, router) {
 
     userWorkGroupDataSource.options.transport.read.url = "/Users/GetUserWorkgroupsWithCurentUsers";
@@ -198,7 +198,7 @@ function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPa
                 userRolesDatasource: userRolesDatasource,
                 userPagesDatasource: userPagesDatasource,
                 userActionsDatasource: userActionsDatasource,
-                userMasterDbVeritabanlariDatasource:userMasterDbVeritabanlariDatasource,
+                userMasterDbVeritabanlariDatasource: userMasterDbVeritabanlariDatasource,
                 onChange: function (arg) {
                     var grid = arg.sender;
                     lastWorkgroupSelectedDataItem = grid.dataItem(grid.select());
@@ -265,6 +265,9 @@ function (userDatasource, userModel, userRolesDatasource, userRolesModel, userPa
 
                             userActionsDatasource.options.transport.read.url = "/Users/GetUserActions?userId=" + data[i].Id;
                             userActionsDatasource.read();
+
+                            userMasterDbVeritabanlariDatasource.options.transport.read.url = "/Users/GetUserMasterDbVeritabanlari?userId=" + data[i].Id;
+                            userMasterDbVeritabanlariDatasource.read();
                             break;
                         }
                         viewModel.set("User", new userModel());

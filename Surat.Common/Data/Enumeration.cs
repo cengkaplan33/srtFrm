@@ -106,4 +106,12 @@ namespace Surat.Common.Data
         Page = 1,
         Action = 2,
     }
+
+    public enum MasterDBFirmaDonemiTipi
+    {
+        TEST = 1,
+        CANLI = 2,
+        ARSIV = 3,
+        CANLIveARSIV = 4
+    }
 }
