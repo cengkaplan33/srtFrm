@@ -193,8 +193,19 @@ namespace Surat.WebServer.Application
             FrameworkApplicationManager framework;
             UserDetailedView currentUser = null;
 
-            //Session da user varsa, ona göre framework başlatılacaktır.
 
+            #region OK::NOT:: aslında session nesnesine gerek yok zaten FormsAuthentication yaptık ve kullanıcı adı ile login olduk daha sonra session'ı kontrol etsek daha mantıklı ve düzgün olacak ki zaten çoğu yerde IsAuthenticated kontrolü yapılmış.
+            //if (HttpContext.Current.Request.IsAuthenticated)
+            //{
+            //    var uss = HttpContext.Current.User.Identity;
+
+            //    if (HttpContext.Current != null)
+            //        if (HttpContext.Current.Session["CurrentUser"] != null)
+            //            currentUser = (UserDetailedView)HttpContext.Current.Session["CurrentUser"];
+            //}
+            #endregion
+
+            //Session da user varsa, ona göre framework başlatılacaktır.
             if (HttpContext.Current != null)
                 if (HttpContext.Current.Session["CurrentUser"] != null)
                     currentUser = (UserDetailedView)HttpContext.Current.Session["CurrentUser"];
@@ -240,6 +251,7 @@ namespace Surat.WebServer.Application
                 {
                     currentUser = this.Framework.Security.ValidateUser(userName, password);
                 }
+
                 if (currentUser != null)
                 {
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Validated.", TraceLevel.Basic);
@@ -247,14 +259,42 @@ namespace Surat.WebServer.Application
                     //this.Framework.SetCurrentUser(currentUser);
                     this.Context.CurrentUser = currentUser;
                     this.Framework.Trace.AppendLine(this.Framework.Context.SystemName, "User Session started.", TraceLevel.Basic);
+
+
+                    #region OK::NOT:: Login FormsAuthentication işleminin olmasının sağlayan 2 method. birinci method'ta bazı değerleri değiştirebilme şansımız var. şimdilik ikiyi kullanacağız.
+                    /*
+                     * FormsAuthentication sonucunda HttpContext.Current.Request.IsAuthenticated ve HttpContext.Current.User.Identity alanları dolmuş olacak session'ı kontrol etmemize gerek kalmaz.
+                     */
+                    ////1. method
+                    //HttpCookie authCookie = FormsAuthentication.GetAuthCookie(userName, true);
+                    //FormsAuthenticationTicket tempTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+                    //var cookiePath = HttpContext.Current.Request.ApplicationPath;
+                    //FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                    //    tempTicket.Version,
+                    //    tempTicket.Name,
+                    //    tempTicket.IssueDate,
+                    //    tempTicket.Expiration,
+                    //    true,
+                    //    "",
+                    //    cookiePath);
+                    //authCookie.Value = FormsAuthentication.Encrypt(authTicket);
+                    //authCookie.Name = FormsAuthentication.FormsCookieName;
+                    //authCookie.Path = cookiePath;
+
+                    //HttpContext.Current.Response.Cookies.Remove(authCookie.Name);
+                    //HttpContext.Current.Response.Cookies.Add(authCookie);
+
+                    ////2. method
+                    FormsAuthentication.SetAuthCookie(userName, false);
+
+                    #endregion
                 }
                 else
                 {
                     throw new SecurityException(this.Context.FrameworkContext, "Login", this.Context.SystemId,
                        String.Format(this.Context.FrameworkContext.Globalization.GetGlobalizationKeyValue(this.Context.FrameworkContext.SystemId, Constants.Message.UserNotAuthorized), userName));
                 }
-
-                FormsAuthentication.SetAuthCookie(userName, false);
             }
 
             catch (WrongPasswordException)
