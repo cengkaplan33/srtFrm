@@ -1,6 +1,7 @@
 ﻿using Serendip.Entity;
 using Serendip.Entity.Satis;
 using Serendip.Entity.Sistem;
+using Surat.Base.Model;
 using Surat.Base.Application;
 using Surat.Base.Cache;
 using Surat.Base.Exceptions;
@@ -389,6 +390,7 @@ namespace Surat.SerendipApplication.Business
                 Serendip.WinFormLib.Provider.StartServerWeb(this.Context.FirmaDonem, this.Context.DBUserName, this.Context.DBUserPassword);
 
                 Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.FirmaDonem);
+                
                 //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
 
                 //var ss = KullaniciMasterDbVeritabanlari; 
@@ -403,7 +405,7 @@ namespace Surat.SerendipApplication.Business
             }
         }
         
-          public List<SatisSiparisView> SatisSiparisleri()
+        public List<SatisSiparisView> SatisSiparisleri()
         {
             List<SatisSiparisView> SatisSiparisleri = new List<SatisSiparisView>();
 
@@ -413,7 +415,6 @@ namespace Surat.SerendipApplication.Business
 
             return SatisSiparisleri;
         }
-
 
         public void SaveExternalUser(ExternalSystemsUsersView externalUser)
         {
@@ -467,9 +468,7 @@ namespace Surat.SerendipApplication.Business
                     {
                         if (VarsayilanId != externalUser.Id)
                         {
-                            ExternalSystemsUser VarExtUser = this.ExternalSystemsUsers.GetObjectByParameters(m => m.Id == (int)VarsayilanId);
-                            VarExtUser.VarsayilanMi = false;
-                            this.ExternalSystemsUsers.Update(VarExtUser);
+                            SetFalseOldDefaultDB((int)VarsayilanId);
                         }
                     }
                 }
@@ -507,9 +506,7 @@ namespace Surat.SerendipApplication.Business
 
                     if (VarsayilanId != -1)
                     {
-                        ExternalSystemsUser VarExtUser = this.ExternalSystemsUsers.GetObjectByParameters(m => m.Id == (int)VarsayilanId);
-                        VarExtUser.VarsayilanMi = false;
-                        this.ExternalSystemsUsers.Update(VarExtUser);
+                        SetFalseOldDefaultDB((int)VarsayilanId);
                     }
                 }
 
@@ -548,6 +545,48 @@ namespace Surat.SerendipApplication.Business
             {
                 throw new EntityProcessException(this.ApplicationContext, "DeleteExternalUser", this.Context.SystemId, exception);
             }
+        }
+
+        public void ChangeDefaultMasterDbVeritabani(int VarsayilanId_New)
+        {
+            var VarsayilanId_Old = GetUserVarsayilanDelegate(this.ApplicationContext.CurrentUser.UserId);
+            if (VarsayilanId_Old != -1)
+            SetFalseOldDefaultDB((int)VarsayilanId_Old);   
+
+            if(VarsayilanId_New != 0)
+            SetTrueNewDefaultDB(VarsayilanId_New);
+            CacheUtility.RemoveCachedObject(Constants.CacheList.ExternalSystemsUsers);   
+        }
+
+        public void SetFalseOldDefaultDB(int VarsayilanId)
+        {
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+            ExternalSystemsUser VarExtUser = this.ExternalSystemsUsers.GetObjectByParameters(m => m.Id == (int)VarsayilanId);
+            VarExtUser.VarsayilanMi = false;
+            this.ExternalSystemsUsers.Update(VarExtUser);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+        }
+
+        public void SetTrueNewDefaultDB (int VarsayilanId)
+        {
+            int initializedDBContextId = this.ApplicationContext.InitializeDBContext();
+            ExternalSystemsUser ExtUser = this.ExternalSystemsUsers.GetObjectByParameters(m => m.Id == VarsayilanId);
+            ExtUser.VarsayilanMi = true;
+            this.ExternalSystemsUsers.Update(ExtUser);
+            this.ApplicationContext.CommitDBChanges(initializedDBContextId);
+        }
+
+        public SerendipLoginInfoView GetDefaultDBInfos()
+        {
+            SerendipLoginInfoView loginInfo = new SerendipLoginInfoView
+            {
+                KullaniciTamAdi = Serendip.Common.SystemConfigurationServer.Provider.AktifKullanici.TamAdi,
+                PersonelNo = Serendip.Common.SystemConfigurationServer.Provider.AktifKullanici.PersonelNo,
+                DBAdi = Serendip.Common.SystemConfigurationServer.Provider.AktifVeritabani.Adi,
+                SunucuAdi = Serendip.Common.SystemConfigurationServer.Provider.AktifVeritabani.SunucuAdi
+            };
+
+            return loginInfo;
         }
 
         #endregion

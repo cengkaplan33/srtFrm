@@ -46,6 +46,7 @@
     <Compile Include="Data\SerendipConstants.cs" />
     <Compile Include="Data\SerendipEnumeration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\SerendipLoginInfoView.cs" />
     <Compile Include="ViewModel\SatisSiparisView.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -73,6 +73,22 @@ namespace Surat.Base.Repositories
             return externalSystemsUsersList;
         }
 
+        public List<ExternalSystemsUsersShortView> GetUserDefinedMasterDbVeritabanlari()
+        {
+            List<ExternalSystemsUsersShortView> userDatabases = null;
+
+            userDatabases = (from ESU in this.Context.ApplicationContext.DBContext.ExternalSystemsUsers
+                             where (ESU.IsActive == true & ESU.DelegateDBObjectType == (int)DelegateObjectType.User & ESU.DelegateDBObjectId == this.Context.ApplicationContext.CurrentUser.UserId & ESU.UserName != "")
+                             select new ExternalSystemsUsersShortView()
+                             {
+                                 Id = ESU.Id,
+                                 DatabaseName = ESU.DbName,
+                                 VarsayilanMi = ESU.VarsayilanMi
+                             }).ToList();
+
+            return userDatabases;
+        }
+
         #endregion
     }
 }
