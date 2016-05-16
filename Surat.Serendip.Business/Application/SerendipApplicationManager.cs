@@ -384,13 +384,13 @@ namespace Surat.SerendipApplication.Business
             //string password = "1FBDD789FE104A75A5A6F32FE107D65E";
 
             SerendipApplicationContext context = this.Context;
+            bool isLogin = false;
             try
             {
                 Serendip.WinFormLib.Provider.StopServer();
                 Serendip.WinFormLib.Provider.StartServerWeb(this.Context.FirmaDonem, this.Context.DBUserName, this.Context.DBUserPassword);
 
-                Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.FirmaDonem);
-                
+                  isLogin = Serendip.Server.Provider.ServicesProviderService.AuthenticationService.Login(this.Context.DBUserName, this.Context.DBUserPassword, this.Context.FirmaDonem);           
                 //Veritabani[] dbList = Serendip.Common.ConfigurationHelper.SerendipMasterDBList;
 
                 //var ss = KullaniciMasterDbVeritabanlari; 
@@ -403,6 +403,9 @@ namespace Surat.SerendipApplication.Business
             {
                 throw new SuratBusinessException(this.Framework.Context, "SerendipLogin", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId, SerendipConstants.Message.SerendipIntegrationFailed), exception);
             }
+
+            if (!isLogin)
+                throw new SuratBusinessException(this.Framework.Context, "SerendipLogin", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId, SerendipConstants.Message.SerendipUserNotFound));
         }
         
         public List<SatisSiparisView> SatisSiparisleri()
