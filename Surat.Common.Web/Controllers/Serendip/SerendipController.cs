@@ -133,7 +133,7 @@ namespace Surat.WebServer.Controllers
         public JsonResult ChangeDefaultMasterDbVeritabani(int Id)
         {
             try
-            {
+            {             
                 this.Serendip.ChangeDefaultMasterDbVeritabani(Id);
                 return Json(new { Result = "" }, JsonRequestBehavior.AllowGet);
             }
@@ -145,10 +145,16 @@ namespace Surat.WebServer.Controllers
         }
 
         [ActionAttribute("Varsayılan MasterDb Bilgilerini Getir.", "Varsayılan MasterDb bilgilerini getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
-        public JsonResult GetDefaultDBInfos()
+        public JsonResult GetDefaultDBInfos(int Id)
         {
             try
             {
+                if (Id == 0)
+                {
+                    Response.StatusCode = 500;
+                    return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + "Varsayılan veritabanı bulunmamaktadır." });
+                }
+
                 this.Serendip.Login();
                 var Infos = this.Serendip.GetDefaultDBInfos();
                 return Json(Infos, JsonRequestBehavior.AllowGet);

@@ -23,6 +23,32 @@
         </div>
         <!-- /.navbar-header -->
         <script type="text/javascript">  
+            //Util içindeki  errorhandler fonksiyonu kullanılmak için buraya kopyalandı.
+            var util;
+                util = {
+                    errorHandler:
+                     function (e) {
+                         try {
+                             debugger
+                             if (typeof (e.responseJSON.Status) == "undefined") {
+                                 _notification.error(e.responseJSON.Result);
+                             }
+                             else if (e.responseJSON.Status == "AccessDenied") {
+                                 _notification.error(e.responseJSON.Message);
+                             }
+
+                             else if (e.responseJSON.Status == "RedirectToLogin") {
+                                 _notification.warning(e.responseJSON.Message);
+                                 setTimeout(function () { window.location.href = "/Account/Login"; }, 3000);
+                             }
+                             else
+                                 _notification.warning(e.responseJSON.Message);
+                         } catch (ex) {
+                             _notification.error(e.responseJSON.Message);
+                         }
+
+                     }
+                };
              
             $(document).ready(function () {
                 GetDatabaseList();
@@ -41,7 +67,6 @@
                     {
                         alert(result.sonuc);
                     }
-
                 });
             }
 
@@ -63,11 +88,10 @@
                             list.add(option);
                         });                   
                 },
-                error:function(result)
+                error:function(e)
                 {
-                    _notification.warning(result.responseText);
+                    util.errorHandler(e);
                 }
-
             });
             }
 
@@ -78,12 +102,14 @@
                     dataType: "json",
                     success: function (result) {
                         window.location.reload();
-                  alert("Varsayılan master veritabanı değiştirildi.")
+                        if (document.getElementById("UserDatabases").value == 0)
+                            alert("Varsayılan master veritabanı boş olacak şekilde değiştirildi.")
+                        else
+                             alert("Varsayılan master veritabanı değiştirildi.")
                 },
-                error:function(result)
+                error:function(e)
                 {
-                    debugger
-                    _notification.warning(result.responseText);
+                    util.errorHandler(e);
                 }
             });
             }
@@ -91,7 +117,7 @@
             function ConnectSerendip() {
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("GetDefaultDBInfos", "Serendip")" ,
+                    url: "@Url.Action("GetDefaultDBInfos", "Serendip")?Id=" + document.getElementById("UserDatabases").value.toString(),
                     dataType: "json",
                     success: function (result) {
                         var message = "Serendipten Gelen Bilgiler: \n"; 
@@ -101,11 +127,10 @@
                         message += "Sunucu Adı: " + result.SunucuAdi;
                         alert(message);
                 },
-                error:function(result)
-                {
-                    debugger
-                    _notification.warning(result.responseText);
-                }
+                    error: function (e)
+                    {
+                        util.errorHandler(e);          
+                    }
             });
             }
 
