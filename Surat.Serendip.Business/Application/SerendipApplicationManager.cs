@@ -405,7 +405,7 @@ namespace Surat.SerendipApplication.Business
             }
 
             if (!isLogin)
-                throw new SuratBusinessException(this.Framework.Context, "SerendipLogin", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId, SerendipConstants.Message.SerendipUserNotFound));
+                throw new SuratBusinessException(this.Framework.Context, "", this.Context.SystemId, this.Framework.Context.Globalization.GetGlobalizationKeyValue(this.Context.SystemId, SerendipConstants.Message.SerendipUserNotFound));
         }
         
         public List<SatisSiparisView> SatisSiparisleri()

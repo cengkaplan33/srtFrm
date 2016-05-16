@@ -96,42 +96,46 @@
             }
 
             function ChangeDatabase() {
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("ChangeDefaultMasterDbVeritabani", "Serendip")?Id=" + document.getElementById("UserDatabases").value.toString(),
-                    dataType: "json",
-                    success: function (result) {
-                        window.location.reload();
-                        if (document.getElementById("UserDatabases").value == 0)
-                            alert("Varsayılan master veritabanı boş olacak şekilde değiştirildi.")
-                        else
-                             alert("Varsayılan master veritabanı değiştirildi.")
-                },
-                error:function(e)
-                {
-                    util.errorHandler(e);
+                if (document.getElementById("UserDatabases").value != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("ChangeDefaultMasterDbVeritabani", "Serendip")?Id=" + document.getElementById("UserDatabases").value.toString(),
+                        dataType: "json",
+                        success: function (result) {
+                            window.location.reload();
+                            _notification.info("Serendip için varsayılan master veritabanı değiştirildi.");
+                        },
+                        error: function (e) {
+                            util.errorHandler(e);
+                        }
+                    });
                 }
-            });
-            }
+                }
+
 
             function ConnectSerendip() {
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("GetDefaultDBInfos", "Serendip")?Id=" + document.getElementById("UserDatabases").value.toString(),
-                    dataType: "json",
-                    success: function (result) {
-                        var message = "Serendipten Gelen Bilgiler: \n"; 
-                        message += "Kullanıcı Tam Adı: " + result.KullaniciTamAdi + "\n";
-                        message += "Personel No: " + result.PersonelNo + "\n";
-                        message += "Veri Tabanı Adı: " + result.DBAdi + "\n";
-                        message += "Sunucu Adı: " + result.SunucuAdi;
-                        alert(message);
-                },
-                    error: function (e)
-                    {
-                        util.errorHandler(e);          
-                    }
-            });
+                if (document.getElementById("UserDatabases").value != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("GetDefaultDBInfos", "Serendip")",
+                        dataType: "json",
+                        success: function (result) {
+                            var message = "Serendipten Gelen Bilgiler: \n";
+                            message += "Kullanıcı Tam Adı: " + result.KullaniciTamAdi + "\n";
+                            message += "Personel No: " + result.PersonelNo + "\n";
+                            message += "Veri Tabanı Adı: " + result.DBAdi + "\n";
+                            message += "Sunucu Adı: " + result.SunucuAdi;
+                            alert(message);
+                        },
+                        error: function (e) {
+                            util.errorHandler(e);
+                        }
+                    });
+                }
+                else
+                {
+                    _notification.warning("Serendip Bağlantısı için bir varsayılan veritabanı tanımlı değildir.");
+                }
             }
 
         </script>
@@ -145,7 +149,7 @@
                         <img class="nav-user-photo" src="~/Framework/theme/avatars/serendip_logo.png" alt="Serendipe Bağlan" title="Serendipe Bağlan" onclick="ConnectSerendip()" style="background:white;" />
                         <span class="user-info " style="max-width:90%">
                             <select id="UserDatabases" style="max-width:100%" onchange="ChangeDatabase()">
-                                <option selected value="0">DB Seçiniz</option>
+                                <option selected value="0" disabled="true" >DB Seçiniz</option>
                             </select>
                         </span>
                     </a>

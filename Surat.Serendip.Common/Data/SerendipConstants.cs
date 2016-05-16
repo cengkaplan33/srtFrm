@@ -20,7 +20,7 @@ namespace Surat.SerendipApplication.Common
         public class Message
         {
             public const String SerendipIntegrationFailed = "SerendipIntegrationFailed|Serendip entegrasyonu sağlanamadı.|Serendip integration has not been succeeded.";
-            public const String SerendipUserNotFound = "SerendipUserNotFound|Serendip kullanıcısı bulunamadı.|Serendip user was not found.";
+            public const String SerendipUserNotFound = "SerendipUserNotFound|Serendip kullanıcısı bulunamadı.Kullanıcı adı veya parola hatalı olabilir.|Serendip user was not found.";
         }
         #endregion
     }
