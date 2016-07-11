@@ -2361,6 +2361,7 @@
     <Content Include="Framework\theme\avatars\avatar4.png" />
     <Content Include="Framework\theme\avatars\avatar5.png" />
     <Content Include="Framework\theme\avatars\earth.png" />
+    <Content Include="Framework\theme\avatars\serendip_logo.png" />
     <Content Include="Framework\theme\avatars\icon_english.jpg" />
     <Content Include="Framework\theme\avatars\icon_turkish.jpg" />
     <Content Include="Framework\theme\avatars\profile-pic.jpg" />

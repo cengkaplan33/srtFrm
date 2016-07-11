@@ -111,5 +111,54 @@ namespace Surat.WebServer.Controllers
         //}
 
         //#endregion
+
+        #region Methods
+
+        [ActionAttribute("Serendip MasterDb Veritabanlarını Listele", "Master DB üzerinde tanımlanmış firma bağlantılarından mevcut kullanıcı için tanımlı kullanıcı olan firmaları listeler.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult GetUserDefinedMasterDbVeritabanlari()
+        {
+            try
+            {
+                var ExUsers = this.WebApplicationManager.Framework.Security.ExternalSystemsUsers.GetUserDefinedMasterDbVeritabanlari();
+                return Json(ExUsers, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
+        [ActionAttribute("Serendip MasterDb Varsayılan Veritabanlarını Değiştir", "Master DB üzerinde tanımlanmış mevcut kullanıcı için varsayılan veritabanını değiştirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult ChangeDefaultMasterDbVeritabani(int Id)
+        {
+            try
+            {             
+                this.Serendip.ChangeDefaultMasterDbVeritabani(Id);
+                return Json(new { Result = "" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.WebApplicationManager.GetGlobalizationKeyValue(this.WebApplicationManager.Framework.Context.SystemId, Constants.Message.OperationNotCompleted) + " " + this.PublishException(exception) });
+            }
+        }
+
+        [ActionAttribute("Varsayılan MasterDb Bilgilerini Getir.", "Varsayılan MasterDb bilgilerini getirir.", Surat.Common.Data.Constants.Application.WebFrameworkSystemName, ActionType.Action)]
+        public JsonResult GetDefaultDBInfos()
+        {
+            try
+            {
+                this.Serendip.Login();
+                var Infos = this.Serendip.GetDefaultDBInfos();
+                return Json(Infos, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = 500;
+                return Json(new { Result = this.PublishException(exception) });
+            }
+        }
+        #endregion
     }
 }

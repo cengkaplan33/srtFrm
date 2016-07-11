@@ -22,7 +22,38 @@
             <!-- /.brand -->
         </div>
         <!-- /.navbar-header -->
-        <script type="text/javascript">
+        <script type="text/javascript">  
+            //Util içindeki  errorhandler fonksiyonu kullanılmak için buraya kopyalandı.
+            var util;
+                util = {
+                    errorHandler:
+                     function (e) {
+                         try {
+                             debugger
+                             if (typeof (e.responseJSON.Status) == "undefined") {
+                                 _notification.error(e.responseJSON.Result);
+                             }
+                             else if (e.responseJSON.Status == "AccessDenied") {
+                                 _notification.error(e.responseJSON.Message);
+                             }
+
+                             else if (e.responseJSON.Status == "RedirectToLogin") {
+                                 _notification.warning(e.responseJSON.Message);
+                                 setTimeout(function () { window.location.href = "/Account/Login"; }, 3000);
+                             }
+                             else
+                                 _notification.warning(e.responseJSON.Message);
+                         } catch (ex) {
+                             _notification.error(e.responseJSON.Message);
+                         }
+
+                     }
+                };
+             
+            $(document).ready(function () {
+                GetDatabaseList();
+            });
+
             function LogOut() {
                 $.ajax({
                     type: "POST",
@@ -36,19 +67,98 @@
                     {
                         alert(result.sonuc);
                     }
-
                 });
             }
+
+            function GetDatabaseList() {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetUserDefinedMasterDbVeritabanlari", "Serendip")",
+                    dataType: "json",
+                    success: function (result) {
+                        var list = document.getElementById("UserDatabases");
+                        jQuery.each(result, function (index, itemData) {                  
+                            var option = document.createElement("option");
+                            option.text = itemData.DatabaseName;
+                            option.value = itemData.Id;
+                            if (itemData.VarsayilanMi == true)
+                                option.selected = true;
+                            else
+                                option.selected = false;
+                            list.add(option);
+                        });                   
+                },
+                error:function(e)
+                {
+                    util.errorHandler(e);
+                }
+            });
+            }
+
+            function ChangeDatabase() {
+                if (document.getElementById("UserDatabases").value != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("ChangeDefaultMasterDbVeritabani", "Serendip")?Id=" + document.getElementById("UserDatabases").value.toString(),
+                        dataType: "json",
+                        success: function (result) {
+                            window.location.reload();
+                            _notification.info("Serendip için varsayılan master veritabanı değiştirildi.");
+                        },
+                        error: function (e) {
+                            util.errorHandler(e);
+                        }
+                    });
+                }
+                }
+
+
+            function ConnectSerendip() {
+                if (document.getElementById("UserDatabases").value != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("GetDefaultDBInfos", "Serendip")",
+                        dataType: "json",
+                        success: function (result) {
+                            var message = "Serendipten Gelen Bilgiler: \n";
+                            message += "Kullanıcı Tam Adı: " + result.KullaniciTamAdi + "\n";
+                            message += "Personel No: " + result.PersonelNo + "\n";
+                            message += "Veri Tabanı Adı: " + result.DBAdi + "\n";
+                            message += "Sunucu Adı: " + result.SunucuAdi;
+                            alert(message);
+                        },
+                        error: function (e) {
+                            util.errorHandler(e);
+                        }
+                    });
+                }
+                else
+                {
+                    _notification.warning("Serendip Bağlantısı için bir varsayılan veritabanı tanımlı değildir.");
+                }
+            }
+
         </script>
 
         <div class="navbar-header pull-right" role="navigation">
             
             <ul class="nav ace-nav">
                 <li class="light-blue">
+                    <a data-toggle="dropdown"
+                       href="#" class="dropdown-toggle" style="background-color:black;">
+                        <img class="nav-user-photo" src="~/Framework/theme/avatars/serendip_logo.png" alt="Serendipe Bağlan" title="Serendipe Bağlan" onclick="ConnectSerendip()" style="background:white;" />
+                        <span class="user-info " style="max-width:90%">
+                            <select id="UserDatabases" style="max-width:100%" onchange="ChangeDatabase()">
+                                <option selected value="0" disabled="true" >DB Seçiniz</option>
+                            </select>
+                        </span>
+                    </a>
+                </li>
+                <li class="light-blue">
 
                     <a data-toggle="dropdown"
-                       href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="~/Framework/theme/avatars/earth.png" alt="Dil Seçiniz" />
+                       href="#" class="dropdown-toggle" style="background-color:black;">
+                        <img class="nav-user-photo" src="~/Framework/theme/avatars/earth.png" alt="Dil Seçiniz" style="background:white;" />
 
                         <span class="user-info">
                             <small>Dil Seçiniz</small>
@@ -72,7 +182,7 @@
                     @if (Request.IsAuthenticated)
                     {
                         <a data-toggle="dropdown"
-                           href="#" class="dropdown-toggle">
+                           href="#" class="dropdown-toggle" style="background-color:black;">
                             <img class="nav-user-photo" src="~/Framework/theme/avatars/avatar2.png" alt="Jason's Photo" />
 
                             <span class="user-info">
