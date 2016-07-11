@@ -150,7 +150,7 @@ namespace Surat.Business.Globalization
         public List<GlobalizationKeyView> GetGlobalizationKeyValueList(int systemId,Culture culture)
         {
             List<GlobalizationKeyView> keyValueList;
-            string cacheKeyName = Constants.CacheList.GlobalizationKeyValueList + ((int)culture).ToString();
+            string cacheKeyName = Constants.CacheList.GlobalizationKeyValueList + systemId.ToString() + "-" + ((int)culture).ToString();
 
             keyValueList = (List<GlobalizationKeyView>)this.Cache.GetCachedObject(cacheKeyName);
 

@@ -23,22 +23,27 @@ namespace Surat.Base.Mail
 
         #region Methods
 
-        public static MailMessage GetNewExceptionEMailTemplate(FrameworkContext context,Int64 id, string user, DateTime logDate, string data)
+        public static MailMessage GetNewExceptionEMailTemplate(FrameworkContext context, Int64 id, string user, DateTime logDate, string data)
         {
+
             StringBuilder messageBody = new StringBuilder();
             MailMessage message = new MailMessage();
 
-            //message.Subject = context.Globalization.GetGlobalizationKeyValue("ExceptionEMailSubject");
+            //message.Subject = context.Globalization.GetGlobalizationKeyValue(context.SystemId, "ExceptionEMailSubject");
 
-            //messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue("Id") + " : " + id.ToString());
-            //messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue("LogDate") + " : " + logDate.ToString("yyyyMMdd-hhmmss"));
-            //messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue("User") + " : " + user);
-            //messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue("Message") + " :" + data);
-            
-            //message.Body = messageBody.ToString();
-            //message.From = new MailAddress(context.Mail.SMTPMailFrom);
-            //message.To.Add(context.Product.CustomerSystemAdministratorEmail1);
-            //message.To.Add(context.Product.ProducerSupportEmail);
+            if (id > 0)
+                messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue(context.SystemId, "Id") + " : " + id.ToString());
+
+            if (user != "0" && user.Trim().Length > 0)
+                messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue(context.SystemId, "User") + " : " + user);
+
+            messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue(context.SystemId, "Date") + " : " + logDate.ToString("yyyyMMdd-hhmmss"));
+            messageBody.AppendLine(context.Globalization.GetGlobalizationKeyValue(context.SystemId, "Message") + " :" + data);
+
+            message.Body = messageBody.ToString();
+            message.From = new MailAddress(context.Mail.SMTPMailFrom);
+            message.To.Add(context.Product.CustomerSystemAdministratorEmail1);
+            message.To.Add(context.Product.ProducerSupportEmail);
 
             return message;
         }

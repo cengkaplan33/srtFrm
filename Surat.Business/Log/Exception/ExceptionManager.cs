@@ -306,6 +306,10 @@ namespace Surat.Business.Log
 
             try
             {
+                //var a = 3;
+                //var b = 0;
+                //var c = a / b;
+
                 logProvider.WriteExceptionLog(exceptionlogItem);  //DB Write            
             }
             catch
@@ -313,6 +317,10 @@ namespace Surat.Business.Log
                 //Try to write to file
                 try
                 {
+                    //var a = 3;
+                    //var b = 0;
+                    //var c = a / b;
+
                     internalLogProvider = ExceptionLogProviderFactory.GetNewExceptionLogProvider(this.ApplicationContext, this, Constants.Log.ExceptionToFile);
                     internalLogProvider.WriteExceptionLog(exceptionlogItem);
                 }

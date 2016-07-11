@@ -78,14 +78,26 @@ namespace Surat.Business.Mail
         public void Send(MailMessage message)
         {
             SmtpClient smtpClient = null;
-
+            string sss;
             try
             {
-                smtpClient = SMTPFactory.GetNewSmtpClient(this.ApplicationContext.Mail);
-                smtpClient.EnableSsl = true;
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                //smtpClient = SMTPFactory.GetNewSmtpClient(this.ApplicationContext.Mail);
+                //smtpClient.EnableSsl = true;
+                //smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 
-                smtpClient.Send(message);
+                //smtpClient.Send(message);
+
+                SerendipEMailServiceClient.SerendipEMailClient client = new SerendipEMailServiceClient.SerendipEMailClient();
+
+                var mail = new SerendipEMailServiceClient.SerendipEMail() { };
+                mail.MailFrom = message.From.Address;
+                mail.MailTo = String.Join(";", message.To.Select(x => x.Address));
+                mail.MailBody = message.Body;
+
+                sss= client.SendEMail(mail);
+                
+                //SerendipEMailServiceDB.connection dosyasının içindeki veri.
+                 //data source=172.27.10.20\kaynakdbt;user id=SerendipEMailService;password=S+E*Ser1-3/5;initial catalog=SerendipEMailServiceDB;MultipleActiveResultSets=true;
             }
             catch //(Exception exception)
             {
